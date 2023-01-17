@@ -41,15 +41,25 @@
 
   # Add stuff for your user as you see fit:
 
-  # home.packages = with pkgs; [ steam ];
+  #home.packages = with pkgs; [ steam ];
 
   programs = {
     home-manager.enable = true;
-    git.enable = true;
+
+    # essentials
+    git = {
+      enable = true;
+      userName = "tupakkatapa";
+      userEmail = "jeskar95@outlook.com";
+    };
+
+    vim.enable = true;
     neovim.enable = true;
-    htop.enable = true;
+
+    # terminal 
     zsh.enable = true;
-  }
+    starship.enable = true;
+  };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
