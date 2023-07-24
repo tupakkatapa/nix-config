@@ -1,6 +1,10 @@
 # derived from https://github.com/nix-community/nixos-generators/blob/master/formats/install-iso.nix
-{ config, lib, modulesPath, ... }:
 {
+  config,
+  lib,
+  modulesPath,
+  ...
+}: {
   imports = [
     "${toString modulesPath}/installer/cd-dvd/installation-cd-base.nix"
   ];
@@ -16,5 +20,5 @@
   boot.loader.timeout = lib.mkForce 1;
 
   # Load into a tmpfs during stage-1
-  boot.kernelParams = [ "copytoram" ];
+  boot.kernelParams = ["copytoram"];
 }

@@ -1,9 +1,15 @@
-{ inputs, outputs, config, lib, pkgs, ... }: {
-
+{
+  inputs,
+  outputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   nix = {
     # This will add each flake input as a registry
     # To make nix3 commands consistent with your flake
-    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
+    registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
 
     # This will additionally add your inputs to the system's legacy channels
     # Making legacy nix commands consistent as well, awesome!
@@ -31,15 +37,15 @@
 
     buildMachines = [
       {
-        systems = [ "aarch64-linux" "i686-linux" "x86_64-linux" ];
-        supportedFeatures = [ "benchmark" "big-parallel" "kvm" "nixos-test" ];
+        systems = ["aarch64-linux" "i686-linux" "x86_64-linux"];
+        supportedFeatures = ["benchmark" "big-parallel" "kvm" "nixos-test"];
         sshUser = "kari";
         hostName = "buidl0.ponkila.com";
         maxJobs = 20;
       }
       {
-        systems = [ "aarch64-linux" "armv7l-linux" ];
-        supportedFeatures = [ "benchmark" "big-parallel" "gccarch-armv8-a" "kvm" "nixos-test" ];
+        systems = ["aarch64-linux" "armv7l-linux"];
+        supportedFeatures = ["benchmark" "big-parallel" "gccarch-armv8-a" "kvm" "nixos-test"];
         sshUser = "kari";
         hostName = "buidl1.ponkila.com";
         maxJobs = 16;
@@ -50,7 +56,6 @@
     extraOptions = ''
       builders-use-substitutes = true
     '';
-
   };
 
   boot = {

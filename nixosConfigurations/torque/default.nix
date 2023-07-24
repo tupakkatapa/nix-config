@@ -1,12 +1,18 @@
-{ pkgs, config, inputs, lib, ... }: with lib; {
-
+{
+  pkgs,
+  config,
+  inputs,
+  lib,
+  ...
+}:
+with lib; {
   networking.hostName = "torque";
   networking.firewall.enable = false;
   time.timeZone = "Europe/Helsinki";
   system.stateVersion = "23.11";
 
   # AMD GPU
-  boot.kernelParams = [ "amdgpu.ppfeaturemask=0xffffffff" ];
+  boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
 
   # Use stable kernel
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
@@ -35,7 +41,7 @@
     waybar = {
       enable = true;
       package = pkgs.waybar.overrideAttrs (oa: {
-        mesonFlags = (oa.mesonFlags or  [ ]) ++ [ "-Dexperimental=true" ];
+        mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
       });
     };
     fish.loginShellInit = ''

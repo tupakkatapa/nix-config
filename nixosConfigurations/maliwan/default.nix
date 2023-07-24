@@ -1,5 +1,11 @@
-{ pkgs, config, inputs, lib, ... }: with lib; {
-
+{
+  pkgs,
+  config,
+  inputs,
+  lib,
+  ...
+}:
+with lib; {
   networking.hostName = "maliwan";
   networking.firewall.enable = false;
   time.timeZone = "Europe/Helsinki";
@@ -32,7 +38,7 @@
     waybar = {
       enable = true;
       package = pkgs.waybar.overrideAttrs (oa: {
-        mesonFlags = (oa.mesonFlags or  [ ]) ++ [ "-Dexperimental=true" ];
+        mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
       });
     };
     fish.loginShellInit = ''

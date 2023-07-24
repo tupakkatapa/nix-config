@@ -1,8 +1,6 @@
-{ config }:
-let
+{config}: let
   inherit (config.environment.sessionVariables) TERMINAL BROWSER EDITOR;
-in
-''
+in ''
   ### Tupakkatapa ############################## -->
   #
   #       ~/.config/hypr/hyprland.conf
@@ -22,7 +20,7 @@ in
 
   # # Wallpaper
   # #exec-once = ~/.config/hypr/scripts/set_wallpaper.sh ~/Pictures/Wallpapers/random/
-  # exec-once = swaybg -m "fill" -i $(cat ~/.cache/wall) 
+  # exec-once = swaybg -m "fill" -i $(cat ~/.cache/wall)
 
   # ### My programs
   # exec-once = openrgb --startminimized -d 1 -m marquee -c 3e0694 # flickering "ultraviolet"
@@ -51,7 +49,7 @@ in
 
 
   ### Input #################################### -->
-  input { 
+  input {
     follow_mouse = 1
     kb_layout    = fi
     kb_options   = caps:escape
@@ -99,7 +97,7 @@ in
     blur_new_optimizations = true
     blur_passes            = 3
     blur_size              = 3
-  
+
     # Blurls
     blurls = gtk-layer-shell
     blurls = lockscreen
@@ -178,7 +176,7 @@ in
   windowrule = float, moe.launcher.an-anime-game-launcher # Genshin Impact
   windowrule = float, mpv
   windowrule = float, notification
-  windowrule = float, org.kde.polkit-kde-authentication-agent-1 
+  windowrule = float, org.kde.polkit-kde-authentication-agent-1
   windowrule = float, org.raspberrypi.rpi-imager
   windowrule = float, pavucontrol
   windowrule = float, pavucontrol-qt
@@ -232,7 +230,7 @@ in
   windowrule = opacity 0.9 override 0.9 override, ^(Plexamp)$
 
   ### Key binds ################################ -->
-  bind = SUPER SHIFT, R,      exec, hyprctl reload && notify-send "Hyprland reloaded" 
+  bind = SUPER SHIFT, R,      exec, hyprctl reload && notify-send "Hyprland reloaded"
   bind = SUPER SHIFT, W,      exec, killall waybar; waybar & notify-send "Waybar reloaded"
   bind = SUPER SHIFT, Return, exec, sh ~/.config/hypr/scripts/dm-fullmenu
   bind = SUPER, Return,       exec, [tile]${TERMINAL}
@@ -244,12 +242,12 @@ in
 
   # Screenshot
   #bind = , Print, exec, grim $(xdg-user-dir PICTURES)/$(date +'%s.png') && exec ~/.config/hypr/scripts/screenshot_notify
-  bind = , Print, exec, grim  -g "$(slurp)" ~/Pictures/Screenshots/$(date +"Screenshot_%Y-%m-%d_%H-%M-%S.png") && exec ~/.config/hypr/scripts/screenshot_notify 
+  bind = , Print, exec, grim  -g "$(slurp)" ~/Pictures/Screenshots/$(date +"Screenshot_%Y-%m-%d_%H-%M-%S.png") && exec ~/.config/hypr/scripts/screenshot_notify
 
   # Submaps
   bind = SUPER, p, submap, p
   submap = p
-  
+
     # Pipewire switcher
     bind = ,p, exec, ~/.config/hypr/scripts/dm-pipewire-out-switcher
     bind = ,p, submap, reset
@@ -263,7 +261,7 @@ in
     bind = ,w, submap, reset
 
     # Emoji menu
-    bind = ,e, exec, rofi -mode emoji -show emoji -theme ~/.config/rofi/emoji.rasi 
+    bind = ,e, exec, rofi -mode emoji -show emoji -theme ~/.config/rofi/emoji.rasi
     bind = ,e, submap, reset
 
     # Lighting fast memes
@@ -285,15 +283,15 @@ in
 
   ## Fn keys
 
-  # Volume 
+  # Volume
   bind = ,XF86AudioRaiseVolume, exec, pamixer -i 5 && exec ~/.config/hypr/scripts/volume_notify
   bind = ,XF86AudioLowerVolume, exec, pamixer -d 5 && exec ~/.config/hypr/scripts/volume_notify
-  bind = ,XF86AudioMute,        exec, pamixer -t 
+  bind = ,XF86AudioMute,        exec, pamixer -t
 
   # Media
   bind = ,XF86AudioNext, exec, playerctl -p Plexamp next
   bind = ,XF86AudioPlay, exec, playerctl -p Plexamp play-pause
-  bind = ,XF86AudioPrev, exec, playerctl -p Plexamp previous 
+  bind = ,XF86AudioPrev, exec, playerctl -p Plexamp previous
 
   ### Window management ################ -->
   bind = SUPER SHIFT, F, togglefloating,
@@ -337,7 +335,7 @@ in
   # Swaps the focused window with the next one
   bind = SUPER SHIFT, comma, swapnext, prev
 
-  # Swaps the current window with master 
+  # Swaps the current window with master
   bind = SUPER SHIFT, M, layoutmsg, swapwithmaster auto
 
   ## Resize

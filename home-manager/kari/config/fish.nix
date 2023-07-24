@@ -1,11 +1,14 @@
-{ pkgs, lib, config, ... }:
-let
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
   inherit (lib) mkIf;
   hasPackage = pname: lib.any (p: p ? pname && p.pname == pname) config.home.packages;
   hasNeovim = config.programs.neovim.enable;
   hasExa = hasPackage "exa";
-in
-{
+in {
   programs.fish = {
     enable = true;
     shellAbbrs = rec {
@@ -41,7 +44,8 @@ in
         set fish_cursor_insert      line       blink
         set fish_cursor_replace_one underscore blink
         set fish_cursor_visual      block
-      '' +
+      ''
+      +
       # Use terminal colors
       ''
         set -U fish_color_autosuggestion      brblack

@@ -1,5 +1,10 @@
-{ outputs, config, lib, pkgs, ... }:
 {
+  outputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.waybar = {
     enable = true;
     settings = {
@@ -32,7 +37,7 @@
           format = "{status_icon} {artist} - {title}";
           format-paused = "{status_icon} {artist} - {title}";
           interval = 10;
-          ignored-players = [ "firefox" ];
+          ignored-players = ["firefox"];
           status-icons = {
             paused = "";
             playing = "";
@@ -73,7 +78,7 @@
             "phone" = "";
             "portable" = "";
             "car" = "";
-            "default" = [ "" "" "" ];
+            "default" = ["" "" ""];
           };
           on-click = "pavucontrol";
         };
@@ -102,17 +107,7 @@
           icon-size = 21;
           spacing = 10;
         };
-
-
-
-
-
-
-
-
       };
-
-
     };
   };
 }

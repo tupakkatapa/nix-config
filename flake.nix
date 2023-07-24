@@ -17,20 +17,18 @@
   };
 
   # Add the inputs declared above to the argument attribute set
-  outputs =
-    { self
-    , darwin
-    , flake-parts
-    , home-manager
-    , hyprland
-    , nixpkgs
-    , nixpkgs-stable
-    , sops-nix
-    , ...
-    }@inputs:
-
-    flake-parts.lib.mkFlake { inherit inputs; } rec {
-
+  outputs = {
+    self,
+    darwin,
+    flake-parts,
+    home-manager,
+    hyprland,
+    nixpkgs,
+    nixpkgs-stable,
+    sops-nix,
+    ...
+  } @ inputs:
+    flake-parts.lib.mkFlake {inherit inputs;} rec {
       imports = [
         inputs.flake-root.flakeModule
         inputs.mission-control.flakeModule
@@ -42,24 +40,30 @@
         "x86_64-darwin"
         "x86_64-linux"
       ];
-      perSystem = { pkgs, lib, config, system, ... }: {
+      perSystem = {
+        pkgs,
+        lib,
+        config,
+        system,
+        ...
+      }: {
         # Nix code formatter, accessible through 'nix fmt'
-        formatter = nixpkgs.legacyPackages.${system}.nixpkgs-fmt;
+        formatter = nixpkgs.legacyPackages.${system}.alejandra;
 
         # Git hook scripts for identifying issues before submission
         pre-commit.settings = {
-          # hooks = {
-          #   shellcheck.enable = true;
-          #   nixpkgs-fmt.enable = true;
-          #   flakecheck = {
-          #     enable = true;
-          #     name = "flakecheck";
-          #     description = "Check whether the flake evaluates and run its tests.";
-          #     entry = "nix flake check --no-warn-dirty";
-          #     language = "system";
-          #     pass_filenames = false;
-          #   };
-          # };
+          hooks = {
+            shellcheck.enable = true;
+            alejandra.enable = true;
+            flakecheck = {
+              enable = true;
+              name = "flakecheck";
+              description = "Check whether the flake evaluates and run its tests.";
+              entry = "nix flake check --no-warn-dirty";
+              language = "system";
+              pass_filenames = false;
+            };
+          };
         };
         # Do not perform hooks with 'nix flake check'
         pre-commit.check.enable = false;
@@ -118,48 +122,48 @@
           # "maliwan" = maliwan.config.system.build.kexecTree;
         };
       };
-      flake =
-        let
-          inherit (self) outputs;
+      flake = let
+        inherit (self) outputs;
 
-          torque = {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs outputs; };
-            modules = [
-              ./nixosConfigurations/torque
-              ./system
-              ./system/bootloaders/default.nix
-              ./home-manager/kari
-              sops-nix.nixosModules.sops
-              home-manager.nixosModules.home-manager
-            ];
-          };
+        torque = {
+          system = "x86_64-linux";
+          specialArgs = {inherit inputs outputs;};
+          modules = [
+            ./nixosConfigurations/torque
+            ./system
+            ./system/bootloaders/default.nix
+            ./home-manager/kari
+            sops-nix.nixosModules.sops
+            home-manager.nixosModules.home-manager
+          ];
+        };
 
-          maliwan = {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs outputs; };
-            modules = [
-              ./nixosConfigurations/torque
-              ./system
-              ./home-manager/kari
-              ./system/bootloaders/default.nix
-              sops-nix.nixosModules.sops
-              home-manager.nixosModules.home-manager
-            ];
-          };
-        in
-        {
-          # Patches and version overrides for some packages
-          overlays = import ./overlays { inherit inputs; };
+        maliwan = {
+          system = "x86_64-linux";
+          specialArgs = {inherit inputs outputs;};
+          modules = [
+            ./nixosConfigurations/torque
+            ./system
+            ./home-manager/kari
+            ./system/bootloaders/default.nix
+            sops-nix.nixosModules.sops
+            home-manager.nixosModules.home-manager
+          ];
+        };
+      in {
+        # Patches and version overrides for some packages
+        overlays = import ./overlays {inherit inputs;};
 
-          # NixOS configuration entrypoints
-          nixosConfigurations = with nixpkgs.lib; {
+        # NixOS configuration entrypoints
+        nixosConfigurations = with nixpkgs.lib;
+          {
             "torque" = nixosSystem torque;
             "maliwan" = nixosSystem maliwan;
-          } // (with nixpkgs-stable.lib; { });
+          }
+          // (with nixpkgs-stable.lib; {});
 
-          # Darwin configuration entrypoints        
-          darwinConfigurations = with darwin.lib; { };
-        };
+        # Darwin configuration entrypoints
+        darwinConfigurations = with darwin.lib; {};
+      };
     };
 }
