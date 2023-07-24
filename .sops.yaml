@@ -1,0 +1,10 @@
+keys:
+  - &torque age1gj520tzjg3xfk77r9twtj75lrcz7078g4ya707rklyw9t05l752qh6jakf
+  - &jesse 773DC99EDAF29D356155DC91269CF32D790D1789
+creation_rules:
+  - path_regex: nixosConfigurations/torque/secrets.ya?ml$
+    key_groups:
+      - pgp:
+        - *jesse
+        age:
+        - *torque
