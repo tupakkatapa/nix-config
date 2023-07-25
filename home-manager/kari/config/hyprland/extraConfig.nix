@@ -8,35 +8,26 @@ in ''
   ##
 
   ### Exec ##################################### -->
-  # exec-once = /usr/lib/polkit-kde-authentication-agent-1
-  # exec-once = ~/.config/hypr/desktop-portals.sh
-  # exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-  # exec-once = echo fi > /tmp/kb_layout
-  # exec-once = greenclip daemon
-  # exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-  # exec-once = waybar
-  # exec-once = wl-clipboard-history -t
-  # exec-once = wlsunset -S 9:00 -s 9:00 -t 4500
+  exec-once = wl-clipboard-history -t
+  exec-once = swayidle -w
+  exec-once = dunst
 
-  # # Wallpaper
-  # #exec-once = ~/.config/hypr/scripts/set_wallpaper.sh ~/Pictures/Wallpapers/random/
-  # exec-once = swaybg -m "fill" -i $(cat ~/.cache/wall)
+  # Wallpaper
+  exec-once = curl -o /tmp/bg.jpg https://gitlab.com/dwt1/wallpapers/-/raw/master/0277.jpg && swaybg -i /tmp/bg.jpg --mode fill
 
-  # ### My programs
-  # exec-once = openrgb --startminimized -d 1 -m marquee -c 3e0694 # flickering "ultraviolet"
-  # exec-once = solaar -w=hide
+  ### My programs
+  exec-once = openrgb --startminimized -d 1 -m marquee -c 3e0694 # flickering "ultraviolet"
+  exec-once = solaar -w=hide
 
-  # # social (ws4)
-  # #exec-once = whatsapp-for-linux
-  # #exec-once = telegram-desktop
-  # exec-once = discord
-  # exec-once = ferdium
-  # #exec-once = signal-desktop
+  # social (ws4)
+  exec-once = discord
+  exec-once = ferdium
+  #exec-once = signal-desktop
 
-  # # audio (ws5)
-  # exec-once = ~/Applications/Plexamp*
-  # #exec-once = qjackctl
-  # #exec-once = guitarix
+  # audio (ws5)
+  exec-once = plexamp
+  #exec-once = qjackctl
+  #exec-once = guitarix
 
 
   ### Monitors ################################# -->
@@ -158,7 +149,7 @@ in ''
   windowrule = workspace 5, qjackctl
 
   # Floats a window
-  windowrule = float, ${TERMINAL}
+  windowrule = float, Alacritty
   windowrule = float, yad
   windowrule = float, blueberry
   windowrule = float, blueman
@@ -199,19 +190,19 @@ in ''
 
   # Plexamp
   windowrule = float,        Plexamp # Float
-  windowrule = move 79% 6%,  Plexamp # Move
-  windowrule = size 668 376, Plexamp # Resize
+  #windowrule = move 79% 6%,  Plexamp # Move
+  #windowrule = size 668 376, Plexamp # Resize
 
   # Moves a floating window
-  windowrule = move 2% 5%, guitarix
-  windowrule = move 5% 50%, qjackctl
+  #windowrule = move 2% 5%, guitarix
+  #windowrule = move 5% 50%, qjackctl
 
   # Resizes a floating window
-  windowrule = size 600 400, title:^(Volume Control)$
+  #windowrule = size 600 400, title:^(Volume Control)$
 
   # Picture-in-Picture
   windowrule = float,       title:^(Picture-in-Picture)$  # Float
-  windowrule = move 79% 6%, title:^(Picture-in-Picture)$  # Move
+  #windowrule = move 79% 6%, title:^(Picture-in-Picture)$  # Move
   windowrule = pin,         title:^(Picture-in-Picture)$  # Pin
 
   # Sets an idle inhibit rule for the window
@@ -226,13 +217,13 @@ in ''
   windowrule = animation none, Rofi
 
   # Additional opacity multiplier
-  windowrule = opacity 0.9 override 0.9 override, ^(${TERMINAL})$
+  windowrule = opacity 0.9 override 0.9 override, ^(Alacritty)$
   windowrule = opacity 0.9 override 0.9 override, ^(Plexamp)$
 
   ### Key binds ################################ -->
   bind = SUPER SHIFT, R,      exec, hyprctl reload && notify-send "Hyprland reloaded"
   bind = SUPER SHIFT, W,      exec, killall waybar; waybar & notify-send "Waybar reloaded"
-  bind = SUPER SHIFT, Return, exec, sh ~/.config/hypr/scripts/dm-fullmenu
+  bind = SUPER SHIFT, Return, exec, sh ~/.config/wofi/dm-fullmenu.sh
   bind = SUPER, Return,       exec, [tile]${TERMINAL}
   bind = SUPER, Backspace,    exec, ${TERMINAL}
   bind = SUPER, C,            exec, codium
@@ -241,51 +232,42 @@ in ''
   bind = SUPER, V,            exec, ${TERMINAL} -e ${EDITOR} -c 'Telescope find_files find_command=rg,--hidden,--files'
 
   # Screenshot
-  #bind = , Print, exec, grim $(xdg-user-dir PICTURES)/$(date +'%s.png') && exec ~/.config/hypr/scripts/screenshot_notify
-  bind = , Print, exec, grim  -g "$(slurp)" ~/Pictures/Screenshots/$(date +"Screenshot_%Y-%m-%d_%H-%M-%S.png") && exec ~/.config/hypr/scripts/screenshot_notify
+  #bind = , Print, exec, grim $(xdg-user-dir PICTURES)/$(date +'%s.png') && exec ~/.config/hypr/screenshot_notify
+  bind = , Print, exec, grim  -g "$(slurp)" ~/Pictures/Screenshots/$(date +"Screenshot_%Y-%m-%d_%H-%M-%S.png") && exec sh ~/.config/hypr/screenshot_notify
 
   # Submaps
-  bind = SUPER, p, submap, p
-  submap = p
+  bind = SUPER, p, submap, scripts
+  submap = scripts
 
-    # Pipewire switcher
-    bind = ,p, exec, ~/.config/hypr/scripts/dm-pipewire-out-switcher
-    bind = ,p, submap, reset
+  # Pipewire switcher
+  bind = , p, exec, sh ~/.config/wofi/pipewire-out-switcher.sh
+  bind = , p, submap, reset
 
-    # Colorpicker
-    bind = ,c, exec, hyprpicker -a -n
-    bind = ,c, submap, reset
+  # Colorpicker
+  bind = , c, exec, hyprpicker -a -n
+  bind = , c, submap, reset
 
-    # Window props
-    bind = ,w, exec, ~/.config/hypr/scripts/hyprprop_notify
-    bind = ,w, submap, reset
+  # Window props
+  bind = , w, exec, sh ~/.config/hypr/hyprprop_notify.sh
+  bind = , w, submap, reset
 
-    # Emoji menu
-    bind = ,e, exec, rofi -mode emoji -show emoji -theme ~/.config/rofi/emoji.rasi
-    bind = ,e, submap, reset
+  # Set background
+  bind = , b, exec, sh ~/.config/wofi/dm-setbg.sh
+  bind = , b, submap, reset
 
-    # Lighting fast memes
-    bind = ,m, exec, [float]Thunar /mnt/sftp/media/b/
-    bind = ,m, submap, reset
-
-    # Set background
-    bind = ,b, exec, ~/.config/hypr/scripts/dm-setbg
-    bind = ,b, submap, reset
-
-    # Radio
-    bind = ,r, exec, ~/.config/hypr/scripts/dm-radio
-    bind = ,r, submap, reset
-
+  # Radio
+  bind = , r, exec, sh ~/.config/wofi/dm-radio.sh
+  bind = , r, submap, reset
 
   # Reset submaps
-  bind = ,escape, submap, reset
+  bind = , escape, submap, reset
   submap = reset
 
   ## Fn keys
 
   # Volume
-  bind = ,XF86AudioRaiseVolume, exec, pamixer -i 5 && exec ~/.config/hypr/scripts/volume_notify
-  bind = ,XF86AudioLowerVolume, exec, pamixer -d 5 && exec ~/.config/hypr/scripts/volume_notify
+  bind = ,XF86AudioRaiseVolume, exec, pamixer -i 5 && exec sh ~/.config/hypr/volume_notify
+  bind = ,XF86AudioLowerVolume, exec, pamixer -d 5 && exec sh ~/.config/hypr/volume_notify
   bind = ,XF86AudioMute,        exec, pamixer -t
 
   # Media

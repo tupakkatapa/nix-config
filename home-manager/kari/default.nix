@@ -1,33 +1,36 @@
 {
   pkgs,
-  config,
   inputs,
+  config,
   lib,
   ...
 }:
 with lib; {
   users.users.kari = {
     isNormalUser = true;
-    password = "random123";
-    #passwordFile = config.sops.secrets.kari-password.path;
     group = "kari";
-    extraGroups = ["wheel" "users"];
-    openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEdpdbTOz0h9tVvkn13k1e8X7MnctH3zHRFmYWTbz9T kari@torque"];
+    extraGroups = [
+      "wheel"
+      "users"
+      "video"
+      "audio"
+      "input"
+    ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEdpdbTOz0h9tVvkn13k1e8X7MnctH3zHRFmYWTbz9T kari@torque"
+    ];
     shell = pkgs.fish;
   };
   users.groups.kari = {};
   environment.shells = [pkgs.fish];
-
-  sops.secrets.kari-password = {
-    sopsFile = ../../nixosConfigurations/torque/secrets.yaml;
-    neededForUsers = true;
-  };
   security.pam.services = {swaylock = {};};
 
+  fonts.fonts = with pkgs; [
+    jetbrains-mono
+    font-awesome
+  ];
+
   programs = {
-    neovim = {
-      enable = true;
-    };
     fish = {
       enable = true;
       vendor = {
@@ -38,50 +41,137 @@ with lib; {
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    plexamp
-    plex-media-player
-    guitarix
-    qjackctl
-    ferdium
-    discord
-  ];
-
   # Home-manager
   home-manager.users.kari = {
     imports = [
-      ./config/fish.nix
-      ./config/waybar.nix
+      ./config/fish
+      ./config/waybar
+      ./config/neovim
+      ./config/dunst
+      ./config/swaylock
+      ./config/swayidle
+      ./config/wofi
+      ./config/librewolf
     ];
 
-    wayland.windowManager.hyprland = {
+  home.file = {
+    ".config/hypr/volume_notify.sh".source = ./config/hyprland/volume_notify.sh;
+    ".config/hypr/hyprprop.sh".source = ./config/hyprland/hyprprop_notify.sh;
+    ".config/hypr/screenshot_notify.sh".source = ./config/hyprland/screenshot_notify.sh;
+  };
+  wayland.windowManager.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.default;
+    extraConfig = import ./config/hyprland/extraConfig.nix { inherit config; };
+  };
+
+    gtk = {
       enable = true;
-      package = inputs.hyprland.packages.${pkgs.system}.default;
-      extraConfig = import ./config/hyprland.nix {inherit config;};
+
+      iconTheme = {
+        name = "oomox-gruvbox-dark";
+        package = pkgs.gruvbox-dark-icons-gtk;
+      };
+      font = {
+        name = "JetBrains Mono";
+        package = pkgs.jetbrains-mono;
+        size = 10;
+      };
+      cursorTheme = {
+        name = "Bibata-Modern-Ice";
+        package = pkgs.bibata-cursors;
+      };
+      theme = {
+        name = "gruvbox-dark";
+        package = pkgs.gruvbox-dark-gtk;
+      };
     };
 
     home.packages = with pkgs; [
-      gnupg
+      # GUI Apps
+      discord
+      ferdium
+      guitarix
+      plex-media-player
+      plexamp
+      qjackctl
+      solaar
+      ventoy
+      rpi-imager
+      openrgb
+      vscode
+      steam
+      ardour
+      blueberry
+      pavucontrol
+      mpv
+      sxiv
+
+      # CLI Apps
+      jq
+      vim
+      git
       rsync
+      kexec-tools
+      nix
+      ssh-to-age
+      wget
+      gnupg
+      exa
+
+      # Window manager
+      gnome.file-roller
+      grim
+      swaybg
+      swayidle
+      wl-clipboard
+      wl-color-picker
+      wl-gammactl
+      wl-mirror
+      xfce.thunar
+      xfce.thunar-archive-plugin
     ];
 
+    programs.alacritty = {
+      enable = true;
+      settings = {
+        window.padding = {
+          x = 10;
+          y = 10;
+        };
+        font = {
+          normal = {
+            family = "JetBrains Mono";
+            style = "Bold";
+          };
+          bold = {
+            family = "JetBrains Mono";
+            style = "Bold";
+          };
+          italic = {
+            family = "JetBrains Mono";
+            style = "MediumItalic";
+          };
+          bold_italic = {
+            family = "JetBrains Mono";
+            style = "BoldItalic";
+          };
+          size = 10;
+        };
+        draw_bold_text_with_bright_colors = true;
+        selection.save_to_clioboard = false;
+        shell.program = "${pkgs.fish}/bin/fish";
+      };
+    };
+
+    programs.direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
     programs = {
-      exa.enable = true;
-      tmux.enable = true;
-      htop.enable = true;
-      vim.enable = true;
       git.enable = true;
-      direnv = {
-        enable = true;
-        nix-direnv.enable = true;
-      };
-      swaylock = {
-        enable = true;
-        package = pkgs.swaylock-effects;
-      };
       home-manager.enable = true;
-      alacritty.enable = true;
-      #librewolf.enable = true;
     };
 
     home.stateVersion = "23.05";

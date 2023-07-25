@@ -6,13 +6,47 @@
   ...
 }:
 with lib; {
-  networking.hostName = "maliwan";
-  networking.firewall.enable = false;
+  boot.loader.systemd-boot.enable = true;
   time.timeZone = "Europe/Helsinki";
   system.stateVersion = "23.11";
 
+  # Autologin if password not set
+  services.getty.autologinUser = "kari";
+
+  imports = [
+    ./hardware-configuration.nix
+  ];
+
+  # Connectivity
+  networking = {
+    networkmanager.enable = true;
+    hostName = "maliwan";
+    firewall.enable = false;
+  };
+  hardware.bluetooth.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    pulseaudio
+    gummy
+  ];
+
   # Use stable kernel
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
+
+  # SSH
+  services.openssh = {
+    enable = true;
+    allowSFTP = false;
+    extraConfig = ''
+      AllowTcpForwarding yes
+      X11Forwarding no
+      AllowAgentForwarding no
+      AllowStreamLocalForwarding no
+      AuthenticationMethods publickey
+    '';
+    settings.PasswordAuthentication = false;
+    settings.KbdInteractiveAuthentication = false;
+  };
 
   # Sound
   services.pipewire = {
@@ -21,9 +55,6 @@ with lib; {
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
-  # Connectivity
-  hardware.bluetooth.enable = true;
 
   # Window manager
   home-manager.sharedModules = [

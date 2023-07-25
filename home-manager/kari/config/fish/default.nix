@@ -5,6 +5,7 @@
   ...
 }: let
   inherit (lib) mkIf;
+  inherit config;
   hasPackage = pname: lib.any (p: p ? pname && p.pname == pname) config.home.packages;
   hasNeovim = config.programs.neovim.enable;
   hasExa = hasPackage "exa";
@@ -30,7 +31,7 @@ in {
       grep = "grep --color=auto";
       jctl = "journalctl -p 3 -xb";
 
-      # Other
+      # Misc
       vim = mkIf hasNeovim "nvim";
     };
     functions = {
@@ -75,5 +76,18 @@ in {
         set -U fish_pager_color_prefix        'white' '--bold' '--underline'
         set -U fish_pager_color_progress      'brwhite' '--background=cyan'
       '';
+    #loginShellInit = ''
+    #  set -x PATH '${lib.concatStringsSep ":" [
+    #    "/home/kari/.nix-profile/bin"
+    #    "/run/wrappers/bin"
+    #    "/etc/profiles/per-user/kari/bin"
+    #    "/run/current-system/sw/bin"
+    #    "/nix/var/nix/profiles/default/bin"
+    #    "/opt/homebrew/bin"
+    #    "/usr/bin"
+    #    "/sbin"
+    #    "/bin"
+    #  ]}'
+    #'';
   };
 }
