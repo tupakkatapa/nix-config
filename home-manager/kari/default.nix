@@ -110,7 +110,6 @@ with lib; {
       # CLI Apps
       jq
       vim
-      git
       rsync
       kexec-tools
       nix
@@ -164,16 +163,27 @@ with lib; {
       };
     };
 
+    programs.git = {
+      enable = true;
+      package = pkgs.gitFull;
+      signing.key = "773DC99EDAF29D356155DC91269CF32D790D1789";
+      signing.signByDefault = true;
+      userEmail = "jesse@ponkila.com";
+      userName = "Jesse Karjalainen";
+      extraConfig = {
+        http = {
+          # https://stackoverflow.com/questions/22369200/git-pull-push-error-rpc-failed-result-22-http-code-408
+          postBuffer = "524288000";
+        };
+      };
+    };
+
     programs.direnv = {
       enable = true;
       nix-direnv.enable = true;
     };
 
-    programs = {
-      git.enable = true;
-      home-manager.enable = true;
-    };
-
+    programs.home-manager.enable = true;
     home.stateVersion = "23.05";
   };
 }

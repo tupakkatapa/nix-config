@@ -67,24 +67,36 @@
         # Custom packages and aliases for building hosts
         # Accessible through 'nix build', 'nix run', etc
         packages = with flake.nixosConfigurations; {
-          # "torque" = torque.config.system.build.kexecTree;
-          # "maliwan" = maliwan.config.system.build.kexecTree;
+           "jakobs" = jakobs.config.system.build.kexecTree;
         };
       };
       flake = let
         inherit (self) outputs;
 
-        #torque = {
-        #  system = "x86_64-linux";
-        #  specialArgs = {inherit inputs outputs;};
-        #  modules = [
-        #    ./nixosConfigurations/torque
-        #    ./system
-        #    ./system/bootloaders/default.nix
-        #    ./home-manager/kari
-        #    home-manager.nixosModules.home-manager
-        #  ];
-        #};
+        torque = {
+          system = "x86_64-linux";
+          specialArgs = {inherit inputs outputs;};
+          modules = [
+            ./nixosConfigurations/torque
+            ./system
+            ./system/bootloaders/default.nix
+            ./system/formats/kexec-netboot.nix # TODO
+            ./home-manager/kari
+            home-manager.nixosModules.home-manager
+          ];
+        };
+
+        jakobs = {
+          system = "x86_64-linux";
+          specialArgs = {inherit inputs outputs;};
+          modules = [
+            ./home-manager/core
+            ./nixosConfigurations/jakobs
+            ./system
+            ./system/bootloaders/default.nix
+            ./system/formats/kexec-netboot.nix
+          ];
+        };
 
         maliwan = {
           system = "x86_64-linux";
@@ -104,8 +116,9 @@
         # NixOS configuration entrypoints
         nixosConfigurations = with nixpkgs.lib;
           {
-            #"torque" = nixosSystem torque;
+            "torque" = nixosSystem torque;
             "maliwan" = nixosSystem maliwan;
+            "jakobs" = nixosSystem jakobs;
           }
           // (with nixpkgs-stable.lib; {});
 
