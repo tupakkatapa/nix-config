@@ -54,16 +54,16 @@ with lib; {
       ./config/librewolf
     ];
 
-  home.file = {
-    ".config/hypr/volume_notify.sh".source = ./config/hyprland/volume_notify.sh;
-    ".config/hypr/hyprprop.sh".source = ./config/hyprland/hyprprop_notify.sh;
-    ".config/hypr/screenshot_notify.sh".source = ./config/hyprland/screenshot_notify.sh;
-  };
-  wayland.windowManager.hyprland = {
-    enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.default;
-    extraConfig = import ./config/hyprland/extraConfig.nix { inherit config; };
-  };
+    home.file = {
+      ".config/hypr/volume_notify.sh".source = ./config/hyprland/volume_notify.sh;
+      ".config/hypr/hyprprop.sh".source = ./config/hyprland/hyprprop_notify.sh;
+      ".config/hypr/screenshot_notify.sh".source = ./config/hyprland/screenshot_notify.sh;
+    };
+    wayland.windowManager.hyprland = {
+      enable = true;
+      package = inputs.hyprland.packages.${pkgs.system}.default;
+      extraConfig = import ./config/hyprland/extraConfig.nix {inherit config;};
+    };
 
     gtk = {
       enable = true;

@@ -67,7 +67,7 @@
         # Custom packages and aliases for building hosts
         # Accessible through 'nix build', 'nix run', etc
         packages = with flake.nixosConfigurations; {
-           "jakobs" = jakobs.config.system.build.kexecTree;
+          #"hostname" = hostname.config.system.build.kexecTree;
         };
       };
       flake = let
@@ -81,20 +81,7 @@
             ./system
             ./system/bootloaders/default.nix
             ./system/formats/kexec-netboot.nix # TODO
-            ./home-manager/kari
             home-manager.nixosModules.home-manager
-          ];
-        };
-
-        jakobs = {
-          system = "x86_64-linux";
-          specialArgs = {inherit inputs outputs;};
-          modules = [
-            ./home-manager/core
-            ./nixosConfigurations/jakobs
-            ./system
-            ./system/bootloaders/default.nix
-            ./system/formats/kexec-netboot.nix
           ];
         };
 
@@ -104,7 +91,6 @@
           modules = [
             ./nixosConfigurations/maliwan
             ./system
-            ./home-manager/kari
             ./system/bootloaders/default.nix
             home-manager.nixosModules.home-manager
           ];
@@ -118,7 +104,6 @@
           {
             "torque" = nixosSystem torque;
             "maliwan" = nixosSystem maliwan;
-            "jakobs" = nixosSystem jakobs;
           }
           // (with nixpkgs-stable.lib; {});
 

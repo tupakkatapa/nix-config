@@ -10,28 +10,29 @@ with lib; {
   time.timeZone = "Europe/Helsinki";
   system.stateVersion = "23.11";
 
+  imports = [
+    ./hardware-configuration.nix
+    ../../home-manager/kari
+  ];
+
   # Autologin if password not set
   services.getty.autologinUser = "kari";
 
-  imports = [
-    ./hardware-configuration.nix
-  ];
-
-  # Connectivity
-  networking = {
-    networkmanager.enable = true;
-    hostName = "maliwan";
-    firewall.enable = false;
-  };
-  hardware.bluetooth.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    pulseaudio
-    gummy
+  # AMD GPU
+  boot.kernelParams = [
+    "amdgpu.ppfeaturemask=0xffffffff"
   ];
 
   # Use stable kernel
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
+
+  # Connectivity
+  networking = {
+    networkmanager.enable = true;
+    hostName = "torque";
+    firewall.enable = false;
+  };
+  hardware.bluetooth.enable = true;
 
   # SSH
   services.openssh = {
@@ -48,6 +49,38 @@ with lib; {
     settings.KbdInteractiveAuthentication = false;
   };
 
+  # Gaming
+  nixpkgs.config.allowUnfree = true;
+  programs.steam.enable = true;
+  programs.gamemode = {
+    enable = true;
+    settings = {
+      general = {
+        renice = 10;
+      };
+      gpu = {
+        apply_gpu_optimisations = "accept-responsibility";
+        gpu_device = 0;
+        amd_performance_level = "high";
+      };
+    };
+  };
+  environment.systemPackages = with pkgs; [
+    libblockdev # a Steam dependency
+    gamescope
+  ];
+  hardware.opengl = {
+    ## radv: an open-source Vulkan driver from freedesktop
+    driSupport = true;
+    driSupport32Bit = true;
+
+    ## amdvlk: an open-source Vulkan driver from AMD
+    extraPackages = [pkgs.amdvlk];
+    extraPackages32 = [pkgs.driversi686Linux.amdvlk];
+  };
+  hardware.steam-hardware.enable = true;
+  hardware.xpadneo.enable = true;
+
   # Sound
   services.pipewire = {
     enable = true;
@@ -55,12 +88,14 @@ with lib; {
     alsa.support32Bit = true;
     pulse.enable = true;
   };
+  environment.systemPackages = with pkgs; [
+    pulseaudio # has pactl
+  ];
 
   # Window manager
   home-manager.sharedModules = [
     inputs.hyprland.homeManagerModules.default
   ];
-
   programs = {
     hyprland = {
       enable = true;

@@ -15,7 +15,7 @@
     ".config/wofi/menu_colors".source = ./menu_colors;
     ".config/wofi/menu_config".source = ./menu_config;
     ".config/wofi/menu_style.css".source = ./menu_style.css;
-    # Scripts
+    # Scripts 
     ".config/wofi/dm-fullmenu.sh".source = ./dm-fullmenu.sh;
     ".config/wofi/dm-pipewire-out-switcher.sh".source = ./dm-pipewire-out-switcher.sh;
     ".config/wofi/dm-radio.sh".source = ./dm-radio.sh;

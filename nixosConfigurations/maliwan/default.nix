@@ -6,16 +6,48 @@
   ...
 }:
 with lib; {
-  networking.hostName = "torque";
-  networking.firewall.enable = false;
+  boot.loader.systemd-boot.enable = true;
   time.timeZone = "Europe/Helsinki";
   system.stateVersion = "23.11";
 
-  # AMD GPU
-  boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
+  imports = [
+    ./hardware-configuration.nix
+    ../../home-manager/kari
+  ];
+
+  # Autologin if password not set
+  services.getty.autologinUser = "kari";
 
   # Use stable kernel
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
+
+  # Connectivity
+  networking = {
+    networkmanager.enable = true;
+    hostName = "maliwan";
+    firewall.enable = false;
+  };
+  hardware.bluetooth.enable = true;
+
+  # SSH
+  services.openssh = {
+    enable = true;
+    allowSFTP = false;
+    extraConfig = ''
+      AllowTcpForwarding yes
+      X11Forwarding no
+      AllowAgentForwarding no
+      AllowStreamLocalForwarding no
+      AuthenticationMethods publickey
+    '';
+    settings.PasswordAuthentication = false;
+    settings.KbdInteractiveAuthentication = false;
+  };
+
+  # Host spesific packages
+  environment.systemPackages = with pkgs; [
+    gummy # backlight control
+  ];
 
   # Sound
   services.pipewire = {
@@ -24,15 +56,14 @@ with lib; {
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
-  # Connectivity
-  hardware.bluetooth.enable = true;
+  environment.systemPackages = with pkgs; [
+    pulseaudio # has pactl
+  ];
 
   # Window manager
   home-manager.sharedModules = [
     inputs.hyprland.homeManagerModules.default
   ];
-
   programs = {
     hyprland = {
       enable = true;
