@@ -65,10 +65,7 @@ with lib; {
       };
     };
   };
-  environment.systemPackages = with pkgs; [
-    libblockdev # a Steam dependency
-    gamescope
-  ];
+
   hardware.opengl = {
     ## radv: an open-source Vulkan driver from freedesktop
     driSupport = true;
@@ -88,9 +85,6 @@ with lib; {
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-  environment.systemPackages = with pkgs; [
-    pulseaudio # has pactl
-  ];
 
   # Window manager
   home-manager.sharedModules = [
@@ -124,6 +118,11 @@ with lib; {
     TERMINAL = "alacritty";
     EDITOR = "nvim";
   };
+
+  environment.systemPackages = with pkgs; [
+    libblockdev # as team dependency
+    pulseaudio # has pactl
+  ];
 
   # Firmware blobs
   hardware.enableRedistributableFirmware = true;
