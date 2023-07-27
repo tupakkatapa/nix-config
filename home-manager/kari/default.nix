@@ -144,6 +144,10 @@ with lib; {
       mpv
       sxiv
 
+      # High quality games
+      osu-lazer
+      runelite
+
       # CLI Apps
       killall
       pamixer
