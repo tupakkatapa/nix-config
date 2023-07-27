@@ -4,10 +4,10 @@
 set -euo pipefail
 
 # Config
-CONFIG="$HOME/.config/wofi/config"
+CONFIG="$HOME/.config/wofi/config_dmenu"
 STYLE="$HOME/.config/wofi/style.css"
 COLORS="$HOME/.config/wofi/colors"
-DMENU="wofi --dmenu -p Search... --conf ${CONFIG} --style ${STYLE} --color ${COLORS}"
+DMENU="wofi -p Search... --conf ${CONFIG} --style ${STYLE} --color ${COLORS}"
 
 # Script
 get_default_sink() {

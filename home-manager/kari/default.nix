@@ -36,14 +36,12 @@ with lib; {
     font-awesome
   ];
 
-  programs = {
-    fish = {
-      enable = true;
-      vendor = {
-        completions.enable = true;
-        config.enable = true;
-        functions.enable = true;
-      };
+  programs.fish = {
+    enable = true;
+    vendor = {
+      completions.enable = true;
+      config.enable = true;
+      functions.enable = true;
     };
   };
 
@@ -63,7 +61,7 @@ with lib; {
     # Hyprland
     home.file = {
       ".config/hypr/volume_notify.sh".source = ./config/hyprland/scripts/volume_notify.sh;
-      ".config/hypr/hyprprop.sh".source = ./config/hyprland/scripts/hyprprop_notify.sh;
+      ".config/hypr/hyprprop_notify.sh".source = ./config/hyprland/scripts/hyprprop_notify.sh;
       ".config/hypr/screenshot_notify.sh".source = ./config/hyprland/scripts/screenshot_notify.sh;
       "Pictures/wallpaper.jpg".source = ./assets/wallpaper.jpg;
     };

@@ -47,7 +47,7 @@
         supportedFeatures = ["benchmark" "big-parallel" "kvm" "nixos-test"];
         sshUser = "kari";
         protocol = "ssh-ng";
-        #sshKey = "~/.ssh/id_ed25519";
+        sshKey = "/root/.ssh/id_ed25519";
         hostName = "buidl0.ponkila.com";
         maxJobs = 20;
       }
@@ -56,7 +56,7 @@
         supportedFeatures = ["benchmark" "big-parallel" "gccarch-armv8-a" "kvm" "nixos-test"];
         sshUser = "kari";
         protocol = "ssh-ng";
-        #sshKey = "~/.ssh/id_ed25519";
+        sshKey = "/root/.ssh/id_ed25519";
         hostName = "buidl1.ponkila.com";
         maxJobs = 16;
       }

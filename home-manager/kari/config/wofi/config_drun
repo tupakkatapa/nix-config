@@ -4,15 +4,15 @@
 show=drun
 prompt=Apps
 normal_window=true
-layer=top
+layer=overlay
 term=alacritty
-columns=1
+columns=5
 
 ## Geometry
-#width=40%
-#height=30%
-dynamic_lines=true
-location=0
+width=80%
+height=80%
+dynamic_lines=false
+#location=0
 orientation=vertical
 halign=fill
 line_wrap=off

@@ -1,10 +1,12 @@
 #!/bin/bash
-CONFIG="$HOME/.config/wofi/full_config"
-STYLE="$HOME/.config/wofi/full_style.css"
-COLORS="$HOME/.config/wofi/full_colors"
+
+# Config
+CONFIG="$HOME/.config/wofi/config_drun"
+STYLE="$HOME/.config/wofi/style.css"
+COLORS="$HOME/.config/wofi/colors"
 
 if [[ ! $(pidof wofi) ]]; then
-	wofi --show drun --prompt 'Search...' --conf ${CONFIG} --style ${STYLE} --color ${COLORS}
+	wofi --prompt 'Search...' --conf ${CONFIG} --style ${STYLE} --color ${COLORS}
 else
 	pkill wofi
 fi

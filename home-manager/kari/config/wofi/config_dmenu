@@ -1,21 +1,21 @@
 ## Wofi Config
 
 ## General
-show=drun
+show=dmenu
 prompt=Apps
 normal_window=true
-layer=overlay
-term=kitty
-columns=5
+layer=top
+term=alacritty
+columns=1
 
 ## Geometry
-width=80%
-height=80%
-#location=0
+#width=40%
+#height=30%
+dynamic_lines=true
+location=0
 orientation=vertical
 halign=fill
 line_wrap=off
-dynamic_lines=false
 
 ## Images
 allow_markup=true
