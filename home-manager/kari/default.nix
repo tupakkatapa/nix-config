@@ -173,7 +173,7 @@ with lib; {
       swaybg
       swayidle
       wl-clipboard
-      wl-color-picker
+      hyprpicker
       wl-gammactl
       wl-mirror
       xfce.thunar
