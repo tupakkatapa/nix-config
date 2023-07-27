@@ -24,6 +24,10 @@
     };
   };
 
+  home.sessionVariables = {
+    BROWSER = lib.mkDefault "librewolf";
+  };
+
   xdg.mimeApps.defaultApplications = {
     "text/html" = ["librewolf.desktop"];
     "text/xml" = ["librewolf.desktop"];
