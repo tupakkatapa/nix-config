@@ -232,8 +232,8 @@ in ''
   bind = SUPER, V,            exec, ${TERMINAL} -e ${EDITOR} -c 'Telescope find_files find_command=rg,--hidden,--files'
 
   # Screenshot
-  #bind = , Print, exec, grim $(xdg-user-dir PICTURES)/$(date +'%s.png') && exec ~/.config/hypr/screenshot_notify
-  bind = , Print, exec, grim  -g "$(slurp)" ~/Pictures/Screenshots/$(date +"Screenshot_%Y-%m-%d_%H-%M-%S.png") && exec sh ~/.config/hypr/screenshot_notify
+  #bind = , Print, exec, grim $(xdg-user-dir PICTURES)/$(date +'%s.png') && exec ~/.config/hypr/screenshot_notify.sh
+  bind = , Print, exec, grim  -g "$(slurp)" ~/Pictures/Screenshots/$(date +"Screenshot_%Y-%m-%d_%H-%M-%S.png") && exec sh ~/.config/hypr/screenshot_notify.sh
 
   # Submaps
   bind = SUPER, p, submap, scripts
@@ -262,8 +262,8 @@ in ''
   ## Fn keys
 
   # Volume
-  bind = ,XF86AudioRaiseVolume, exec, pamixer -i 5 && exec sh ~/.config/hypr/volume_notify
-  bind = ,XF86AudioLowerVolume, exec, pamixer -d 5 && exec sh ~/.config/hypr/volume_notify
+  bind = ,XF86AudioRaiseVolume, exec, pamixer -i 5 && exec sh ~/.config/hypr/volume_notify.sh
+  bind = ,XF86AudioLowerVolume, exec, pamixer -d 5 && exec sh ~/.config/hypr/volume_notify.sh
   bind = ,XF86AudioMute,        exec, pamixer -t
 
   # Media

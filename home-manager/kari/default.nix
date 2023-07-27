@@ -60,6 +60,7 @@ with lib; {
 
     # Hyprland
     home.file = {
+      ".config/hypr/audio-volume-high-panel.svg".source = ./assets/audio-volume-high-panel.svg;
       ".config/hypr/volume_notify.sh".source = ./config/hyprland/scripts/volume_notify.sh;
       ".config/hypr/hyprprop_notify.sh".source = ./config/hyprland/scripts/hyprprop_notify.sh;
       ".config/hypr/screenshot_notify.sh".source = ./config/hyprland/scripts/screenshot_notify.sh;
@@ -112,6 +113,8 @@ with lib; {
       sxiv
 
       # CLI Apps
+      killall
+      pamixer
       exa
       gnupg
       htop
