@@ -53,12 +53,12 @@ with lib; {
       });
     };
     fish = {
-    enable = true;
-    vendor = {
-      completions.enable = true;
-      config.enable = true;
-      functions.enable = true;
-    };
+      enable = true;
+      vendor = {
+        completions.enable = true;
+        config.enable = true;
+        functions.enable = true;
+      };
       loginShellInit = ''
         if test (tty) = "/dev/tty1"
           exec Hyprland &> /dev/null
