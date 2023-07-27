@@ -126,6 +126,7 @@ with lib; {
       vim
       wget
       wireguard-tools
+      inputs.hyprwm-contrib.packages.${system}.hyprprop
 
       # Window manager
       gnome.file-roller
