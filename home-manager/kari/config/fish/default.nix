@@ -44,6 +44,7 @@ in {
 
       # Misc
       vim = mkIf hasNeovim "nvim";
+      rebuidl = "sudo nixos-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
     };
     functions = {
       fish_greeting = "";
