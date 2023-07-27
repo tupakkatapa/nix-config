@@ -81,14 +81,20 @@ with lib; {
   # Home-manager
   home-manager.users.kari = {
     imports = [
+      # GUI Apps
+      ./config/librewolf
+      ./config/alacritty
+
+      # CLI Apps
       ./config/fish
-      ./config/waybar
       ./config/neovim
+
+      # WM Apps
+      ./config/waybar
       ./config/dunst
       ./config/swaylock
       ./config/swayidle
       ./config/wofi
-      ./config/librewolf
     ];
 
     # Hyprland
@@ -165,52 +171,18 @@ with lib; {
       vim
       wget
       wireguard-tools
-      inputs.hyprwm-contrib.packages.${system}.hyprprop
       yt-dlp
 
-      # Window manager
+      # WM Apps
       grim
       swaybg
       swayidle
       wl-clipboard
       hyprpicker
-      wl-gammactl
-      wl-mirror
       xfce.thunar
       xfce.thunar-archive-plugin
+      inputs.hyprwm-contrib.packages.${system}.hyprprop
     ];
-
-    programs.alacritty = {
-      enable = true;
-      settings = {
-        window.padding = {
-          x = 10;
-          y = 10;
-        };
-        font = {
-          normal = {
-            family = "JetBrains Mono";
-            style = "Bold";
-          };
-          bold = {
-            family = "JetBrains Mono";
-            style = "Bold";
-          };
-          italic = {
-            family = "JetBrains Mono";
-            style = "MediumItalic";
-          };
-          bold_italic = {
-            family = "JetBrains Mono";
-            style = "BoldItalic";
-          };
-          size = 10;
-        };
-        draw_bold_text_with_bright_colors = true;
-        selection.save_to_clioboard = false;
-        shell.program = "${pkgs.fish}/bin/fish";
-      };
-    };
 
     programs.git = {
       enable = true;
