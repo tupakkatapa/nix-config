@@ -29,6 +29,7 @@ with lib; {
   systemd.tmpfiles.rules = [
     "d /home/kari/.ssh 755 kari kari -"
     "d /home/kari/Workspace 755 kari kari -"
+    "d /home/kari/Pictures/Screenshots 755 kari kari -"
   ];
 
   fonts.packages = with pkgs; [
