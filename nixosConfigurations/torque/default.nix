@@ -38,7 +38,6 @@ in
 
     # Host spesific packages
     environment.systemPackages = with pkgs; [
-      libblockdev # as steam dependency
       pulseaudio # has pactl
     ];
 
@@ -59,7 +58,25 @@ in
 
     # Gaming
     nixpkgs.config.allowUnfree = true;
-    programs.steam.enable = true;
+    programs.steam = {
+      enable = true;
+      package = pkgs.steam.override {
+        extraPkgs = pkgs:
+          with pkgs; [
+          xorg.libXcursor
+          xorg.libXi
+          xorg.libXinerama
+          xorg.libXScrnSaver
+          libblockdev
+          libpng
+          libpulseaudio
+          libvorbis
+          stdenv.cc.cc.lib
+          libkrb5
+          keyutils
+        ];
+      };
+    };
     programs.gamemode = {
       enable = true;
       settings = {
@@ -73,7 +90,6 @@ in
         };
       };
     };
-
     hardware.opengl = {
       ## radv: an open-source Vulkan driver from freedesktop
       driSupport = true;

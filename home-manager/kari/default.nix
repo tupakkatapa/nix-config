@@ -105,7 +105,6 @@ with lib; {
       ventoy
       rpi-imager
       openrgb
-      steam
       ardour
       blueberry
       pavucontrol
