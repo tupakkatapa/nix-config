@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: {
-  home.packages = [ pkgs.wofi ];
+  home.packages = [pkgs.wofi];
 
   home.file = {
     # Full
@@ -15,7 +15,7 @@
     ".config/wofi/colors".source = ./colors;
     ".config/wofi/config".source = ./config;
     ".config/wofi/style.css".source = ./style.css;
-    # Scripts 
+    # Scripts
     ".config/wofi/fullmenu.sh".source = ./scripts/fullmenu.sh;
     ".config/wofi/pipewire-out-switcher.sh".source = ./scripts/pipewire-out-switcher.sh;
     ".config/wofi/radio.sh".source = ./scripts/radio.sh;
