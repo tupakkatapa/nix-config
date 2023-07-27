@@ -17,6 +17,12 @@ in {
       c = "clear";
       ka = "killall";
 
+      # Powerstate
+      sdn = "shutdown -h now";
+      rbt = "reboot";
+      sus = "systemctl suspend";
+      bios = "systemctl reboot --firmware-setup";
+
       # Changing 'ls' to 'exa'
       ls = mkIf hasExa "exa -al --color=always --group-directories-first";
       tree = mkIf hasExa "exa -T";
@@ -30,6 +36,11 @@ in {
       free = "free -h";
       grep = "grep --color=auto";
       jctl = "journalctl -p 3 -xb";
+
+      # Confirm before overwriting something
+      cp = "cp -i";
+      mv = "mv -i";
+      rm = "rm -i";
 
       # Misc
       vim = mkIf hasNeovim "nvim";
