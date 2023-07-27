@@ -11,7 +11,6 @@
   };
 in
   with lib; {
-    boot.loader.systemd-boot.enable = true;
     time.timeZone = "Europe/Helsinki";
     system.stateVersion = "23.11";
 
