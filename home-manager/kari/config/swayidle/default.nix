@@ -4,11 +4,14 @@
   config,
   ...
 }: let
+  hasPackage = pname: lib.any (p: p ? pname && p.pname == pname) config.home.packages;
+
   swaylock = "${pkgs.swaylock-effects}/bin/swaylock";
   pactl = "${pkgs.pulseaudio}/bin/pactl";
   pgrep = "${pkgs.procps}/bin/pgrep";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   swaymsg = "${pkgs.sway}/bin/swaymsg";
+  openrgb = "${pkgs.openrgb}/bin/openrgb";
 
   isLocked = "${pgrep} -x swaylock";
   actionLock = "${swaylock} -S --daemonize";
@@ -29,8 +32,11 @@ in {
     (mkEvent 10 "${pactl} set-source-mute @DEFAULT_SOURCE@ yes" "${pactl} set-source-mute @DEFAULT_SOURCE@ no")
     +
     # If has RGB, turn it off 20 seconds after locked
-    #lib.optionalString config.services.rgbdaemon.enable
-    #  (mkEvent 20 "systemctl --user stop rgbdaemon" "systemctl --user start rgbdaemon") +
+    # (if hasPackage "openrgb" then
+    #   (mkEvent 20 "${openrgb} --device 1 --client --color \"000000\" --mode direct" "${openrgb} --device 1 --client --color \"330099\" --mode direct")
+    # else
+    #   "")
+    #+
     # Hyprland - Turn off screen (DPMS)
     lib.optionalString config.wayland.windowManager.hyprland.enable
     (mkEvent 40 "${hyprctl} dispatch dpms off" "${hyprctl} dispatch dpms on")

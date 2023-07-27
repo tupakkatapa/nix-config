@@ -4,7 +4,12 @@
   inputs,
   lib,
   ...
-}:
+}: let
+  openrgb-rules = builtins.fetchurl {
+    url = "https://gitlab.com/CalcProgrammer1/OpenRGB/-/blob/84de7ebc3ea7186d9d4da4397b6ff7bf8ed180d0/60-openrgb.rules";
+    sha256 = "sha256:0cv30p5qycq8yrnyf77f06r86cdfxpq72l00kwvf4qdxbrraxvm7";
+  };
+in
 with lib; {
   boot.loader.systemd-boot.enable = true;
   time.timeZone = "Europe/Helsinki";
@@ -36,6 +41,21 @@ with lib; {
     libblockdev # as team dependency
     pulseaudio # has pactl
   ];
+
+  # RGB
+  systemd.services.openrgb = {
+    description = "OpenRGB Daemon";
+      wantedBy = ["multi-user.target"];
+    serviceConfig = {
+      ExecStart = "${pkgs.openrgb}/bin/openrgb --server";
+      Restart = "on-failure";
+    };
+  };
+    services.udev.packages = [pkgs.openrgb];
+    services.udev.extraRules = builtins.readFile openrgb-rules;
+  # You must load the i2c-dev module along with the correct i2c driver for your motherboard.  
+  # This is usually i2c-piix4 for AMD systems and i2c-i801 for Intel systems.
+    boot.kernelModules = ["v4l2loopback" "i2c-dev" "i2c-piix4"];
 
   # Gaming
   nixpkgs.config.allowUnfree = true;
