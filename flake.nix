@@ -11,6 +11,7 @@
     hyprland.url = "github:hyprwm/Hyprland";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    pre-commit-hooks-nix.url = "github:hercules-ci/pre-commit-hooks.nix/flakeModule";
   };
 
   # Add the inputs declared above to the argument attribute set
@@ -27,6 +28,7 @@
     flake-parts.lib.mkFlake {inherit inputs;} rec {
       imports = [
         inputs.flake-root.flakeModule
+        inputs.pre-commit-hooks-nix.flakeModule
       ];
       systems = [
         "aarch64-darwin"
@@ -44,6 +46,14 @@
         # Nix code formatter, accessible through 'nix fmt'
         formatter = nixpkgs.legacyPackages.${system}.alejandra;
 
+        # Git hook scripts for identifying issues before submission
+        pre-commit.settings = {
+          hooks = {
+            shellcheck.enable = true;
+            alejandra.enable = true;
+          };
+        };
+
         # Devshells for bootstrapping
         # Accessible through 'nix develop' or 'nix-shell' (legacy)
         devShells.default = pkgs.mkShell {
@@ -59,6 +69,9 @@
           inputsFrom = [
             config.flake-root.devShell
           ];
+          shellHook = ''
+            ${config.pre-commit.installationScript}
+          '';
         };
 
         # Custom packages and aliases for building hosts
