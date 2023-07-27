@@ -28,6 +28,7 @@
     BROWSER = lib.mkDefault "librewolf";
   };
 
+  xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = {
     "text/html" = ["librewolf.desktop"];
     "text/xml" = ["librewolf.desktop"];
