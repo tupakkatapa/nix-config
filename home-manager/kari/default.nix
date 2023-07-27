@@ -207,6 +207,7 @@ with lib; {
       ];
       userSettings = {
         "terminal.integrated.fontFamily" = "JetBrains Mono";
+        "editor.tabSize" = 2;
       };
     };
 
