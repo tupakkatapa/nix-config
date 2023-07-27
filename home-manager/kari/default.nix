@@ -130,9 +130,9 @@ with lib; {
       wget
       wireguard-tools
       inputs.hyprwm-contrib.packages.${system}.hyprprop
+      yt-dlp
 
       # Window manager
-      gnome.file-roller
       grim
       swaybg
       swayidle
