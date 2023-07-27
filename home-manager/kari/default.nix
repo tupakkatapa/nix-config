@@ -37,13 +37,45 @@ with lib; {
     font-awesome
   ];
 
-  programs.fish = {
+  # Window manager
+  home-manager.sharedModules = [
+    inputs.hyprland.homeManagerModules.default
+  ];
+  programs = {
+    hyprland = {
+      enable = true;
+      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    };
+    waybar = {
+      enable = true;
+      package = pkgs.waybar.overrideAttrs (oa: {
+        mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
+      });
+    };
+    fish = {
     enable = true;
     vendor = {
       completions.enable = true;
       config.enable = true;
       functions.enable = true;
     };
+      loginShellInit = ''
+        if test (tty) = "/dev/tty1"
+          exec Hyprland &> /dev/null
+        end
+      '';
+    };
+  };
+  environment.sessionVariables = {
+    MOZ_ENABLE_WAYLAND = "1";
+    QT_QPA_PLATFORM = "wayland";
+    LIBSEAT_BACKEND = "logind";
+    WLR_NO_HARDWARE_CURSORS = "1";
+    WLR_RENDERER_ALLOW_SOFTWARE = "1";
+
+    BROWSER = "librewolf";
+    TERMINAL = "alacritty";
+    EDITOR = "nvim";
   };
 
   # Home-manager
