@@ -15,9 +15,6 @@ with lib; {
     ../../home-manager/kari
   ];
 
-  # Autologin
-  #services.getty.autologinUser = "kari";
-
   # AMD GPU
   boot.kernelParams = [
     "amdgpu.ppfeaturemask=0xffffffff"
@@ -48,6 +45,12 @@ with lib; {
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;
   };
+
+  # Host spesific packages
+  environment.systemPackages = with pkgs; [
+    libblockdev # as team dependency
+    pulseaudio # has pactl
+  ];
 
   # Gaming
   nixpkgs.config.allowUnfree = true;
@@ -118,11 +121,6 @@ with lib; {
     TERMINAL = "alacritty";
     EDITOR = "nvim";
   };
-
-  environment.systemPackages = with pkgs; [
-    libblockdev # as team dependency
-    pulseaudio # has pactl
-  ];
 
   # Firmware blobs
   hardware.enableRedistributableFirmware = true;

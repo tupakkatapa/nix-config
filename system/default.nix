@@ -24,14 +24,20 @@
       extra-substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
-        #"http://buidl0.ponkila.com:5000"
-        #"http://buidl1.ponkila.com:5000"
+        "http://buidl0.ponkila.com:5000"
+        "http://buidl1.ponkila.com:5000"
       ];
       extra-trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        #"buidl0.ponkila.com:qJZUo9Aji8cTc0v6hIGqbWT8sy+IT/rmSKUFTfhVGGw="
-        #"buidl1.ponkila.com:ZIIETN3bdTS4DtymDmVGKqG6UOPy4gU89DPCfAKDcx8="
+        "buidl0.ponkila.com:qJZUo9Aji8cTc0v6hIGqbWT8sy+IT/rmSKUFTfhVGGw="
+        "buidl1.ponkila.com:ZIIETN3bdTS4DtymDmVGKqG6UOPy4gU89DPCfAKDcx8="
+      ];
+
+      # Allows this server to be used as a remote builder
+      trusted-users = [
+        "root"
+        "@wheel"
       ];
     };
 
@@ -40,6 +46,8 @@
         systems = ["aarch64-linux" "i686-linux" "x86_64-linux"];
         supportedFeatures = ["benchmark" "big-parallel" "kvm" "nixos-test"];
         sshUser = "kari";
+        protocol = "ssh-ng";
+        #sshKey = "~/.ssh/id_ed25519";
         hostName = "buidl0.ponkila.com";
         maxJobs = 20;
       }
@@ -47,6 +55,8 @@
         systems = ["aarch64-linux" "armv7l-linux"];
         supportedFeatures = ["benchmark" "big-parallel" "gccarch-armv8-a" "kvm" "nixos-test"];
         sshUser = "kari";
+        protocol = "ssh-ng";
+        #sshKey = "~/.ssh/id_ed25519";
         hostName = "buidl1.ponkila.com";
         maxJobs = 16;
       }
@@ -57,6 +67,13 @@
       builders-use-substitutes = true
     '';
   };
+
+  # Nixpkgs
+  nixpkgs.overlays = [
+    outputs.overlays.additions
+    outputs.overlays.modifications
+  ];
+  nixpkgs.config.allowUnfree = true;
 
   boot = {
     kernelParams = [
@@ -84,23 +101,20 @@
     btrfs-progs
     kexec-tools
     fuse-overlayfs
-    ssh-to-age
-    nix-tree
-    gnupg
-    tmux
-    sops
-    ripgrep
-    exa
-    lshw
-    htop
-    rsync
-    git
-    nix
-    wireguard-tools
     bind
     file
     vim
   ];
+
+  # Enable podman with DNS
+  virtualisation.podman = {
+    enable = true;
+    # dnsname allows containers to use ${name}.dns.podman to reach each other
+    # on the same host instead of using hard-coded IPs.
+    # NOTE: --net must be the same on the containers, and not eq "host"
+    # TODO: extend this with flannel ontop of wireguard for cross-node comms
+    defaultNetwork.settings = {dns_enabled = true;};
+  };
 
   # Reboots hanged system
   systemd.watchdog.device = "/dev/watchdog";
@@ -110,13 +124,6 @@
   zramSwap.enable = true;
   zramSwap.algorithm = "zstd";
   zramSwap.memoryPercent = 100;
-
-  # Nixpkgs
-  nixpkgs.overlays = [
-    outputs.overlays.additions
-    outputs.overlays.modifications
-  ];
-  nixpkgs.config.allowUnfree = true;
 
   # Allow passwordless sudo from wheel group
   security.sudo = {

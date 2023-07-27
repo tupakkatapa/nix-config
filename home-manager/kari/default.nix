@@ -114,15 +114,20 @@ with lib; {
       sxiv
 
       # CLI Apps
-      jq
-      vim
-      rsync
-      kexec-tools
-      nix
-      ssh-to-age
-      wget
-      gnupg
       exa
+      gnupg
+      htop
+      jq
+      kexec-tools
+      lshw
+      nix
+      nix-tree
+      ripgrep
+      rsync
+      ssh-to-age
+      vim
+      wget
+      wireguard-tools
 
       # Window manager
       gnome.file-roller

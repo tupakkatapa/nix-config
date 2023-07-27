@@ -15,9 +15,6 @@ with lib; {
     ../../home-manager/kari
   ];
 
-  # Autologin if password not set
-  services.getty.autologinUser = "kari";
-
   # Use stable kernel
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
 
@@ -47,6 +44,7 @@ with lib; {
   # Host spesific packages
   environment.systemPackages = with pkgs; [
     gummy # backlight control
+    pulseaudio # has pactl
   ];
 
   # Sound
@@ -56,9 +54,6 @@ with lib; {
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-  environment.systemPackages = with pkgs; [
-    pulseaudio # has pactl
-  ];
 
   # Window manager
   home-manager.sharedModules = [
