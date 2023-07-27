@@ -1,5 +1,5 @@
 #!/bin/bash
-CONFIG="$HOME/.config/wofi//full_config"
+CONFIG="$HOME/.config/wofi/full_config"
 STYLE="$HOME/.config/wofi/full_style.css"
 COLORS="$HOME/.config/wofi/full_colors"
 

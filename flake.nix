@@ -8,10 +8,7 @@
     flake-root.url = "github:srid/flake-root";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-23.05";
-    hyprwm-contrib = {
-      url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    hyprland.url = "github:hyprwm/Hyprland";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
@@ -80,7 +77,6 @@
             ./nixosConfigurations/torque
             ./system
             ./system/bootloaders/default.nix
-            ./system/formats/kexec-netboot.nix # TODO
             home-manager.nixosModules.home-manager
           ];
         };

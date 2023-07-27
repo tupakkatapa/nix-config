@@ -13,7 +13,7 @@ in ''
   exec-once = dunst
 
   # Wallpaper
-  exec-once = curl -o /tmp/bg.jpg https://gitlab.com/dwt1/wallpapers/-/raw/master/0277.jpg && swaybg -i /tmp/bg.jpg --mode fill
+  exec-once = swaybg -i ~/Pictures/wallpaper.jpg --mode fill
 
   ### My programs
   exec-once = openrgb --startminimized -d 1 -m marquee -c 3e0694 # flickering "ultraviolet"
@@ -191,14 +191,14 @@ in ''
   # Plexamp
   windowrule = float,        Plexamp # Float
   #windowrule = move 79% 6%,  Plexamp # Move
-  #windowrule = size 668 376, Plexamp # Resize
+  windowrule = size 700 400, Plexamp # Resize
 
   # Moves a floating window
   #windowrule = move 2% 5%, guitarix
   #windowrule = move 5% 50%, qjackctl
 
   # Resizes a floating window
-  #windowrule = size 600 400, title:^(Volume Control)$
+  windowrule = size 700 400, title:^(Volume Control)$
 
   # Picture-in-Picture
   windowrule = float,       title:^(Picture-in-Picture)$  # Float
@@ -223,10 +223,10 @@ in ''
   ### Key binds ################################ -->
   bind = SUPER SHIFT, R,      exec, hyprctl reload && notify-send "Hyprland reloaded"
   bind = SUPER SHIFT, W,      exec, killall waybar; waybar & notify-send "Waybar reloaded"
-  bind = SUPER SHIFT, Return, exec, sh ~/.config/wofi/dm-fullmenu.sh
+  bind = SUPER SHIFT, Return, exec, sh ~/.config/wofi/fullmenu.sh
   bind = SUPER, Return,       exec, [tile]${TERMINAL}
   bind = SUPER, Backspace,    exec, ${TERMINAL}
-  bind = SUPER, C,            exec, codium
+  bind = SUPER, C,            exec, code
   bind = SUPER, F,            exec, thunar
   bind = SUPER, B,            exec, ${BROWSER}
   bind = SUPER, V,            exec, ${TERMINAL} -e ${EDITOR} -c 'Telescope find_files find_command=rg,--hidden,--files'
@@ -251,12 +251,8 @@ in ''
   bind = , w, exec, sh ~/.config/hypr/hyprprop_notify.sh
   bind = , w, submap, reset
 
-  # Set background
-  bind = , b, exec, sh ~/.config/wofi/dm-setbg.sh
-  bind = , b, submap, reset
-
   # Radio
-  bind = , r, exec, sh ~/.config/wofi/dm-radio.sh
+  bind = , r, exec, sh ~/.config/wofi/radio.sh
   bind = , r, submap, reset
 
   # Reset submaps

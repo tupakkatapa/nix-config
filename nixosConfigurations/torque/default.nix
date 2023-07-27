@@ -15,8 +15,8 @@ with lib; {
     ../../home-manager/kari
   ];
 
-  # Autologin if password not set
-  services.getty.autologinUser = "kari";
+  # Autologin
+  #services.getty.autologinUser = "kari";
 
   # AMD GPU
   boot.kernelParams = [

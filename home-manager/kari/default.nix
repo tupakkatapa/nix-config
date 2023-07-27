@@ -25,10 +25,17 @@ with lib; {
   environment.shells = [pkgs.fish];
   security.pam.services = {swaylock = {};};
 
-  fonts.fonts = with pkgs; [
+  # Creating some directories
+  systemd.tmpfiles.rules = [
+    "d /home/kari/.ssh 755 kari kari -"
+    "d /home/kari/Workspace 755 kari kari -"
+  ];
+
+  fonts.packages = with pkgs; [
     jetbrains-mono
     font-awesome
   ];
+
 
   programs = {
     fish = {
@@ -54,20 +61,21 @@ with lib; {
       ./config/librewolf
     ];
 
+    # Hyprland
     home.file = {
-      ".config/hypr/volume_notify.sh".source = ./config/hyprland/volume_notify.sh;
-      ".config/hypr/hyprprop.sh".source = ./config/hyprland/hyprprop_notify.sh;
-      ".config/hypr/screenshot_notify.sh".source = ./config/hyprland/screenshot_notify.sh;
+      ".config/hypr/volume_notify.sh".source = ./config/hyprland/scripts/volume_notify.sh;
+      ".config/hypr/hyprprop.sh".source = ./config/hyprland/scripts/hyprprop_notify.sh;
+      ".config/hypr/screenshot_notify.sh".source = ./config/hyprland/scripts/screenshot_notify.sh;
+      "Pictures/wallpaper.jpg".source = ./assets/wallpaper.jpg;
     };
     wayland.windowManager.hyprland = {
       enable = true;
       package = inputs.hyprland.packages.${pkgs.system}.default;
-      extraConfig = import ./config/hyprland/extraConfig.nix {inherit config;};
+      extraConfig = import ./config/hyprland/extraConfig.nix { inherit config; };
     };
 
     gtk = {
       enable = true;
-
       iconTheme = {
         name = "oomox-gruvbox-dark";
         package = pkgs.gruvbox-dark-icons-gtk;
@@ -99,7 +107,6 @@ with lib; {
       ventoy
       rpi-imager
       openrgb
-      vscode
       steam
       ardour
       blueberry
@@ -176,6 +183,17 @@ with lib; {
           postBuffer = "524288000";
         };
       };
+    };
+
+    programs.vscode = {
+        enable = true;
+        package = pkgs.vscode;
+        extensions = with pkgs.vscode-extensions; [
+            bbenoist.nix
+        ];
+        userSettings = {
+            "terminal.integrated.fontFamily" = "JetBrains Mono";
+        };
     };
 
     programs.direnv = {

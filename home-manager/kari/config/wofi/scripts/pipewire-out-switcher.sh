@@ -4,9 +4,9 @@
 set -euo pipefail
 
 # Config
-CONFIG="$HOME/.config/wofi/menu_config"
-STYLE="$HOME/.config/wofi/menu_style.css"
-COLORS="$HOME/.config/wofi/menu_colors"
+CONFIG="$HOME/.config/wofi/config"
+STYLE="$HOME/.config/wofi/style.css"
+COLORS="$HOME/.config/wofi/colors"
 DMENU="wofi --dmenu -p Search... --conf ${CONFIG} --style ${STYLE} --color ${COLORS}"
 
 # Script

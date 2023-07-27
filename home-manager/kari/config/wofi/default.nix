@@ -4,21 +4,20 @@
   pkgs,
   ...
 }: {
-  home.packages = [pkgs.wofi];
+  home.packages = [ pkgs.wofi ];
 
   home.file = {
     # Full
-    ".config/wofi/full_colors".source = ./full_colors;
-    ".config/wofi/full_config".source = ./full_config;
-    ".config/wofi/full_style.css".source = ./full_style.css;
+    ".config/wofi/full_colors".source = ./full/colors;
+    ".config/wofi/full_config".source = ./full/config;
+    ".config/wofi/full_style.css".source = ./full/style.css;
     # Menu
-    ".config/wofi/menu_colors".source = ./menu_colors;
-    ".config/wofi/menu_config".source = ./menu_config;
-    ".config/wofi/menu_style.css".source = ./menu_style.css;
+    ".config/wofi/colors".source = ./colors;
+    ".config/wofi/config".source = ./config;
+    ".config/wofi/style.css".source = ./style.css;
     # Scripts 
-    ".config/wofi/dm-fullmenu.sh".source = ./dm-fullmenu.sh;
-    ".config/wofi/dm-pipewire-out-switcher.sh".source = ./dm-pipewire-out-switcher.sh;
-    ".config/wofi/dm-radio.sh".source = ./dm-radio.sh;
-    ".config/wofi/dm-setbg.sh".source = ./dm-setbg.sh;
+    ".config/wofi/fullmenu.sh".source = ./scripts/fullmenu.sh;
+    ".config/wofi/pipewire-out-switcher.sh".source = ./scripts/pipewire-out-switcher.sh;
+    ".config/wofi/radio.sh".source = ./scripts/radio.sh;
   };
 }
