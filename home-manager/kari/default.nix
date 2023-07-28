@@ -15,6 +15,7 @@ with lib; {
       "video"
       "audio"
       "input"
+      "jackaudio"
     ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEdpdbTOz0h9tVvkn13k1e8X7MnctH3zHRFmYWTbz9T kari@torque"
@@ -23,7 +24,6 @@ with lib; {
   };
   users.groups.kari = {};
   environment.shells = [pkgs.fish];
-  security.pam.services = {swaylock = {};};
 
   # Creating some directories
   systemd.tmpfiles.rules = [
@@ -37,7 +37,30 @@ with lib; {
     font-awesome
   ];
 
-  # Window manager
+  # services.user.mounts = [
+  #   {
+  #     enable = true;
+  #     description = "Backup disk";
+
+  #     what = "/dev/disk/by-id/60c4a67d-166b-48d2-a1c2-e457850a87df";
+  #     where = "/mnt/3TB";
+  #     type = "ext4";
+  #     options = "defaults";
+  #     wantedBy = [ "multi-user.target" ];
+  #   }
+  #   {
+  #     enable = true;
+  #     description = "SFTP mount";
+
+  #     what = "sftp_user@vladof:/root";
+  #     where = "/mnt/SFTP";
+  #     type = "fuse.sshfs";
+  #     options = "identityfile=/home/kari/.ssh/id_ed25519,allow_other,ssh_command=kari@vladof";
+  #     wantedBy = [ "multi-user.target" ];
+  #   }
+  # ];
+
+  # Hyprland / Waybar
   home-manager.sharedModules = [
     inputs.hyprland.homeManagerModules.default
   ];
@@ -52,19 +75,6 @@ with lib; {
         mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
       });
     };
-    fish = {
-      enable = true;
-      vendor = {
-        completions.enable = true;
-        config.enable = true;
-        functions.enable = true;
-      };
-      loginShellInit = ''
-        if test (tty) = "/dev/tty1"
-          exec Hyprland &> /dev/null
-        end
-      '';
-    };
   };
   environment.sessionVariables = {
     MOZ_ENABLE_WAYLAND = "1";
@@ -72,10 +82,20 @@ with lib; {
     LIBSEAT_BACKEND = "logind";
     WLR_NO_HARDWARE_CURSORS = "1";
     WLR_RENDERER_ALLOW_SOFTWARE = "1";
+  };
 
-    BROWSER = "librewolf";
-    TERMINAL = "alacritty";
-    EDITOR = "nvim";
+  programs.fish = {
+    enable = true;
+    vendor = {
+      completions.enable = true;
+      config.enable = true;
+      functions.enable = true;
+    };
+    loginShellInit = ''
+      if test (tty) = "/dev/tty1"
+        exec Hyprland &> /dev/null
+      end
+    '';
   };
 
   # Home-manager
@@ -84,83 +104,61 @@ with lib; {
       # GUI Apps
       ./config/librewolf
       ./config/alacritty
+      ./config/vscode
 
       # CLI Apps
       ./config/fish
       ./config/neovim
 
       # WM Apps
+      ./config/hyprland
       ./config/waybar
       ./config/dunst
       ./config/swaylock
       ./config/swayidle
       ./config/wofi
+      ./config/gtk
     ];
 
-    # Hyprland
-    home.file = {
-      ".config/hypr/audio-volume-high-panel.svg".source = ./assets/audio-volume-high-panel.svg;
-      ".config/hypr/volume_notify.sh".source = ./config/hyprland/scripts/volume_notify.sh;
-      ".config/hypr/hyprprop_notify.sh".source = ./config/hyprland/scripts/hyprprop_notify.sh;
-      ".config/hypr/screenshot_notify.sh".source = ./config/hyprland/scripts/screenshot_notify.sh;
-      "Pictures/wallpaper.jpg".source = ./assets/wallpaper.jpg;
-    };
-    wayland.windowManager.hyprland = {
-      enable = true;
-      package = inputs.hyprland.packages.${pkgs.system}.default;
-      extraConfig = import ./config/hyprland/extraConfig.nix {inherit config;};
+    home.sessionVariables = {
+      BROWSER = "librewolf";
+      TERMINAL = "alacritty";
+      EDITOR = "nvim";
     };
 
-    gtk = {
-      enable = true;
-      iconTheme = {
-        name = "oomox-gruvbox-dark";
-        package = pkgs.gruvbox-dark-icons-gtk;
-      };
-      font = {
-        name = "JetBrains Mono";
-        package = pkgs.jetbrains-mono;
-        size = 10;
-      };
-      cursorTheme = {
-        name = "Bibata-Modern-Ice";
-        package = pkgs.bibata-cursors;
-      };
-      theme = {
-        name = "gruvbox-dark";
-        package = pkgs.gruvbox-dark-gtk;
-      };
+    # Qjackctl presets
+    home.file = {
+      "focusrite-guitarix.xml".source = ./config/qjackctl/focusrite-guitarix.xml;
+      "focusrite-guitarix-ardour-2tracks.xml".source = ./config/qjackctl/focusrite-guitarix-ardour-2tracks.xml;
     };
 
     home.packages = with pkgs; [
       # GUI Apps
       discord
       ferdium
-      guitarix
       plex-media-player
       plexamp
-      qjackctl
       solaar
       ventoy
       rpi-imager
       openrgb
-      ardour
-      blueberry
-      pavucontrol
-      mpv
+      xfce.thunar
+      xfce.thunar-archive-plugin
       sxiv
+
+      # Music stuff
+      guitarix
+      qjackctl
+      ardour
 
       # High quality games
       osu-lazer
       runelite
 
       # CLI Apps
-      killall
-      pamixer
       exa
       gnupg
       htop
-      jq
       kexec-tools
       lshw
       nix
@@ -172,20 +170,29 @@ with lib; {
       wget
       wireguard-tools
       yt-dlp
-      playerctl
+      sshfs
 
-      # WM Apps
+      # Wofi / Waybar / Hyrpland deps
+      blueberry
       grim
-      swaybg
-      swayidle
-      wl-clipboard
+      gummy
       hyprpicker
-      xfce.thunar
-      xfce.thunar-archive-plugin
-      slurp
-      grim
       inputs.hyprwm-contrib.packages.${system}.hyprprop
+      jq
+      mpv
+      pamixer
+      pavucontrol
+      playerctl
+      pulseaudio
+      slurp
+      swaybg
+      wl-clipboard
     ];
+
+    programs.direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
 
     programs.git = {
       enable = true;
@@ -200,23 +207,6 @@ with lib; {
           postBuffer = "524288000";
         };
       };
-    };
-
-    programs.vscode = {
-      enable = true;
-      package = pkgs.vscode;
-      extensions = with pkgs.vscode-extensions; [
-        bbenoist.nix
-      ];
-      userSettings = {
-        "terminal.integrated.fontFamily" = "JetBrains Mono";
-        "editor.tabSize" = 2;
-      };
-    };
-
-    programs.direnv = {
-      enable = true;
-      nix-direnv.enable = true;
     };
 
     programs.home-manager.enable = true;

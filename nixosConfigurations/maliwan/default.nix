@@ -11,7 +11,6 @@ with lib; {
 
   imports = [
     ./hardware-configuration.nix
-    ../../home-manager/kari
   ];
 
   # Use stable kernel
@@ -40,13 +39,7 @@ with lib; {
     settings.KbdInteractiveAuthentication = false;
   };
 
-  # Host spesific packages
-  environment.systemPackages = with pkgs; [
-    gummy # backlight control
-    pulseaudio # has pactl
-  ];
-
-  # Sound
+  # Audio
   services.pipewire = {
     enable = true;
     alsa.enable = true;

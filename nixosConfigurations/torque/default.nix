@@ -16,7 +16,6 @@ in
 
     imports = [
       ./hardware-configuration.nix
-      ../../home-manager/kari
     ];
 
     # AMD GPU
@@ -34,11 +33,6 @@ in
       firewall.enable = false;
     };
     hardware.bluetooth.enable = true;
-
-    # Host spesific packages
-    environment.systemPackages = with pkgs; [
-      pulseaudio # has pactl
-    ];
 
     # RGB
     systemd.services.openrgb = {
@@ -101,12 +95,25 @@ in
     hardware.steam-hardware.enable = true;
     hardware.xpadneo.enable = true;
 
-    # Sound
+    # Audio
     services.pipewire = {
       enable = true;
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
+    };
+    # Make pipewire realtime-capable
+    security.rtkit.enable = true;
+
+    services.jack = {
+      jackd.enable = true;
+      alsa.enable = false;
+      loopback = {
+        enable = true;
+        dmixConfig = ''
+          period_size 2048
+        '';
+      };
     };
 
     # Firmware blobs

@@ -23,6 +23,8 @@
     timeout ${toString time} '${isLocked} && ${start}' ${lib.optionalString (resume != null) "resume '${isLocked} && ${resume}'"}
   '';
 in {
+  home.packages = with pkgs; [swayidle];
+
   xdg.configFile."swayidle/config".text =
     ''
       timeout ${toString lockTime} '${actionLock}'

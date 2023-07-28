@@ -1,0 +1,131 @@
+<!DOCTYPE patchbay>
+<patchbay version="0.9.10" name="focusrite-guitarix-ardour-2tracks">
+ <output-sockets>
+  <socket type="jack-audio" client="system" exclusive="off" name="system">
+   <plug>capture_1</plug>
+   <plug>capture_2</plug>
+  </socket>
+  <socket type="jack-audio" client="PulseAudio\ JACK\ Sink" exclusive="off" name="PulseAudio JACK Sink">
+   <plug>front\-left</plug>
+   <plug>front\-right</plug>
+  </socket>
+  <socket type="jack-audio" client="gx_head_amp" exclusive="off" name="gx_head_amp">
+   <plug>out_0</plug>
+  </socket>
+  <socket type="jack-audio" client="gx_head_fx" exclusive="off" name="gx_head_fx">
+   <plug>out_0</plug>
+   <plug>out_1</plug>
+  </socket>
+  <socket type="jack-audio" client="ardour" exclusive="off" name="ardour">
+   <plug>LTC\-Out</plug>
+   <plug>Click\/audio_out\ 1</plug>
+   <plug>Click\/audio_out\ 2</plug>
+   <plug>Master\/audio_out\ 1</plug>
+   <plug>Master\/audio_out\ 2</plug>
+   <plug>Master\/audio_out\ 3</plug>
+   <plug>Audio\ 1\/audio_out\ 1</plug>
+   <plug>Audio\ 1\/audio_out\ 2</plug>
+   <plug>Audio\ 2\/audio_out\ 1</plug>
+   <plug>Audio\ 2\/audio_out\ 2</plug>
+   <plug>Audio\ 1\/audio_out\ 3</plug>
+   <plug>Audio\ 2\/audio_out\ 3</plug>
+   <plug>auditioner\/audio_out\ 1</plug>
+   <plug>auditioner\/audio_out\ 2</plug>
+  </socket>
+  <socket type="jack-audio" client="gx_head_fx" exclusive="off" name="gx_head_fx 2">
+   <plug>out_0</plug>
+   <plug>out_0</plug>
+  </socket>
+  <socket type="jack-audio" client="ardour" exclusive="off" name="ardour 2">
+   <plug>Audio\ 1\/audio_out\ 1</plug>
+   <plug>Audio\ 1\/audio_out\ 2</plug>
+   <plug>Audio\ 2\/audio_out\ 1</plug>
+   <plug>Audio\ 2\/audio_out\ 2</plug>
+  </socket>
+  <socket type="jack-audio" client="system" exclusive="off" name="system 2">
+   <plug>capture_2</plug>
+  </socket>
+  <socket type="jack-audio" client="ardour" exclusive="off" name="ardour 3">
+   <plug>Master\/audio_out\ 1</plug>
+   <plug>Master\/audio_out\ 2</plug>
+  </socket>
+  <socket type="jack-midi" client="gx_head_amp" exclusive="off" name="gx_head_amp">
+   <plug>midi_out_1</plug>
+  </socket>
+  <socket type="jack-midi" client="ardour" exclusive="off" name="ardour">
+   <plug>MMC\ out</plug>
+   <plug>Scene\ out</plug>
+   <plug>x\-virtual\-keyboard</plug>
+   <plug>MTC\ out</plug>
+   <plug>MIDI\ Clock\ out</plug>
+  </socket>
+  <socket type="alsa-midi" client="Midi\ Through" exclusive="off" name="Midi Through">
+   <plug>Midi\ Through\ Port\-0</plug>
+  </socket>
+ </output-sockets>
+ <input-sockets>
+  <socket type="jack-audio" client="system" exclusive="off" name="system">
+   <plug>playback_1</plug>
+   <plug>playback_2</plug>
+  </socket>
+  <socket type="jack-audio" client="PulseAudio\ JACK\ Source" exclusive="off" name="PulseAudio JACK Source">
+   <plug>front\-left</plug>
+   <plug>front\-right</plug>
+  </socket>
+  <socket type="jack-audio" client="gx_head_amp" exclusive="off" name="gx_head_amp">
+   <plug>in_0</plug>
+  </socket>
+  <socket type="jack-audio" client="gx_head_fx" exclusive="off" name="gx_head_fx">
+   <plug>in_0</plug>
+  </socket>
+  <socket type="jack-audio" client="ardour" exclusive="off" name="ardour">
+   <plug>physical_audio_input_monitor_enable</plug>
+   <plug>LTC\ in</plug>
+   <plug>Master\/audio_in\ 1</plug>
+   <plug>Master\/audio_in\ 2</plug>
+   <plug>Master\/audio_in\ 3</plug>
+   <plug>Audio\ 1\/audio_in\ 1</plug>
+   <plug>Audio\ 1\/audio_in\ 2</plug>
+   <plug>Audio\ 2\/audio_in\ 1</plug>
+   <plug>Audio\ 2\/audio_in\ 2</plug>
+  </socket>
+  <socket type="jack-audio" client="ardour" exclusive="off" name="ardour 2">
+   <plug>Audio\ 1\/audio_in\ 1</plug>
+   <plug>Audio\ 1\/audio_in\ 2</plug>
+  </socket>
+  <socket type="jack-audio" client="ardour" exclusive="off" name="ardour 3">
+   <plug>Audio\ 2\/audio_in\ 1</plug>
+   <plug>Audio\ 2\/audio_in\ 2</plug>
+  </socket>
+  <socket type="jack-audio" client="ardour" exclusive="off" name="ardour 4">
+   <plug>Master\/audio_in\ 1</plug>
+   <plug>Master\/audio_in\ 2</plug>
+   <plug>Master\/audio_in\ 1</plug>
+   <plug>Master\/audio_in\ 2</plug>
+  </socket>
+  <socket type="jack-midi" client="gx_head_amp" exclusive="off" name="gx_head_amp">
+   <plug>midi_in_1</plug>
+  </socket>
+  <socket type="jack-midi" client="ardour" exclusive="off" name="ardour">
+   <plug>physical_midi_input_monitor_enable</plug>
+   <plug>MTC\ in</plug>
+   <plug>MIDI\ Clock\ in</plug>
+   <plug>MMC\ in</plug>
+   <plug>Scene\ in</plug>
+   <plug>Cue\ Control\ in</plug>
+  </socket>
+  <socket type="alsa-midi" client="Midi\ Through" exclusive="off" name="Midi Through">
+   <plug>Midi\ Through\ Port\-0</plug>
+  </socket>
+ </input-sockets>
+ <slots/>
+ <cables>
+  <cable type="jack-audio" input="ardour 3" output="PulseAudio JACK Sink"/>
+  <cable type="jack-audio" input="gx_head_fx" output="gx_head_amp"/>
+  <cable type="jack-audio" input="ardour 2" output="gx_head_fx 2"/>
+  <cable type="jack-audio" input="ardour 4" output="ardour 2"/>
+  <cable type="jack-audio" input="gx_head_amp" output="system 2"/>
+  <cable type="jack-audio" input="system" output="ardour 3"/>
+ </cables>
+</patchbay>
+

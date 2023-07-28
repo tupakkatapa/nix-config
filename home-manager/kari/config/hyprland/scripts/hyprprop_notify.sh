@@ -1,13 +1,25 @@
-#!/bin/bash
+#!/bin/sh
+# https://askubuntu.com/a/871207/307523
+# deps: jq
+
+notify-send " Select a window " \
+  -h string:x-canonical-private-synchronous:anything
+
 hyprprop_output=$(hyprprop)
-classname=$(echo "$hyprprop_output" | jq -r '.class')
-title=$(echo "$hyprprop_output" | jq -r '.title')
-pid=$(echo "$hyprprop_output" | jq -r '.pid')
 
-at=$(echo "$hyprprop_output" | jq -r '.at')
-at=$(echo $at | sed 's/\[\s*\([0-9]\+\)\s*,\s*\([0-9]\+\)\s*\]/x=\1 y=\2/')
+classname=$(jq -r '.class' <<< "$hyprprop_output")
+title=$(jq -r '.title' <<< "$hyprprop_output")
+pid=$(jq -r '.pid' <<< "$hyprprop_output")
 
-size=$(echo "$hyprprop_output" | jq -r '.size')
-size=$(echo $size | sed 's/\[\s*\([0-9]\+\)\s*,\s*\([0-9]\+\)\s*\]/\1x\2/')
+# Extract 'at' and format it as "x=<value> y=<value>"
+at=$(jq -r '.at | "x=\(.[0]) y=\(.[1])"' <<< "$hyprprop_output")
 
-notify-send -a "my-app" "Hyprprop" "Classname: $classname<br>Size: $size<br>Position: $at<br>Pid: $pid"
+# Extract 'size' and format it as "<value>x<value>"
+size=$(jq -r '.size | "\(.[0])x\(.[1])"' <<< "$hyprprop_output")
+
+notify-send -t 8000 -a "my-app" "Hyprprop" \
+"<br>Title: $title
+Classname: $classname
+Size: $size
+Position: $at
+Pid: $pid"

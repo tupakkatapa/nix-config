@@ -3,13 +3,7 @@
   lib,
   config,
   ...
-}: let
-  inherit (lib) mkIf;
-  inherit config;
-  hasPackage = pname: lib.any (p: p ? pname && p.pname == pname) config.home.packages;
-  hasNeovim = config.programs.neovim.enable;
-  hasExa = hasPackage "exa";
-in {
+}: {
   programs.fish = {
     enable = true;
     shellAbbrs = rec {
@@ -24,8 +18,8 @@ in {
       bios = "systemctl reboot --firmware-setup";
 
       # Changing 'ls' to 'exa'
-      ls = mkIf hasExa "exa -al --color=always --group-directories-first";
-      tree = mkIf hasExa "exa -T";
+      ls = "exa -al --color=always --group-directories-first";
+      tree = "exa -T";
 
       # Rsync
       rcp = "rsync -PaL";
@@ -43,8 +37,8 @@ in {
       rm = "rm -i";
 
       # Misc
-      vim = mkIf hasNeovim "nvim";
-      rebuidl = "sudo nixos-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
+      vim = "nvim";
+      buidl = "sudo nixos-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
     };
     functions = {
       fish_greeting = "";
@@ -88,18 +82,5 @@ in {
         set -U fish_pager_color_prefix        'white' '--bold' '--underline'
         set -U fish_pager_color_progress      'brwhite' '--background=cyan'
       '';
-    #loginShellInit = ''
-    #  set -x PATH '${lib.concatStringsSep ":" [
-    #    "/home/kari/.nix-profile/bin"
-    #    "/run/wrappers/bin"
-    #    "/etc/profiles/per-user/kari/bin"
-    #    "/run/current-system/sw/bin"
-    #    "/nix/var/nix/profiles/default/bin"
-    #    "/opt/homebrew/bin"
-    #    "/usr/bin"
-    #    "/sbin"
-    #    "/bin"
-    #  ]}'
-    #'';
   };
 }

@@ -1,3 +1,5 @@
+# https://github.com/Misterio77/nix-config
+# https://github.com/jhvst/nix-config
 {
   description = "Tupakkatapa's flake";
 
@@ -90,6 +92,7 @@
           specialArgs = {inherit inputs outputs;};
           modules = [
             ./nixosConfigurations/torque
+            ./home-manager/kari
             ./system
             ./system/bootloaders/default.nix
             home-manager.nixosModules.home-manager
@@ -101,6 +104,7 @@
           specialArgs = {inherit inputs outputs;};
           modules = [
             ./nixosConfigurations/maliwan
+            ./home-manager/kari
             ./system
             ./system/bootloaders/default.nix
             home-manager.nixosModules.home-manager
