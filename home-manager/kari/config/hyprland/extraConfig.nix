@@ -232,8 +232,7 @@ in ''
   bind = SUPER, V,            exec, ${TERMINAL} -e ${EDITOR} -c 'Telescope find_files find_command=rg,--hidden,--files'
 
   # Screenshot
-  #bind = , Print, exec, grim $(xdg-user-dir PICTURES)/$(date +'%s.png') && exec ~/.config/hypr/screenshot_notify.sh
-  bind = , Print, exec, grim  -g "$(slurp)" ~/Pictures/Screenshots/$(date +"Screenshot_%Y-%m-%d_%H-%M-%S.png") && exec sh ~/.config/hypr/screenshot_notify.sh
+  bind = , Print, exec, sh ~/.config/hypr/screenshot_notify.sh
 
   # Submaps
   bind = SUPER, p, submap, scripts

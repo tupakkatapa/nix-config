@@ -181,6 +181,8 @@ with lib; {
       hyprpicker
       xfce.thunar
       xfce.thunar-archive-plugin
+      slurp
+      grim
       inputs.hyprwm-contrib.packages.${system}.hyprprop
     ];
 
