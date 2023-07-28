@@ -172,6 +172,7 @@ with lib; {
       wget
       wireguard-tools
       yt-dlp
+      playerctl
 
       # WM Apps
       grim
