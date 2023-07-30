@@ -106,11 +106,6 @@
     vim
   ];
 
-  # Plymouth boot splash screen
-  # Module https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/system/boot/plymouth.nix
-  # Reference https://blog.sidhartharya.com/using-custom-plymouth-theme-on-nixos/
-  boot.plymouth.enable = true;
-
   # Enable podman with DNS
   virtualisation.podman = {
     enable = true;
