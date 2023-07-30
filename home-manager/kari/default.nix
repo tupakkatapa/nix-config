@@ -97,6 +97,8 @@ with lib; {
       end
     '';
   };
+  security.pam.services = {swaylock = {};};
+
 
   # Home-manager
   home-manager.users.kari = {
