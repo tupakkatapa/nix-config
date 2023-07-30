@@ -101,20 +101,21 @@ in
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
+      jack.enable = true;
     };
     # Make pipewire realtime-capable
     security.rtkit.enable = true;
 
-    services.jack = {
-      jackd.enable = true;
-      alsa.enable = false;
-      loopback = {
-        enable = true;
-        dmixConfig = ''
-          period_size 2048
-        '';
-      };
-    };
+    # services.jack = {
+    #   jackd.enable = true;
+    #   alsa.enable = false;
+    #   loopback = {
+    #     enable = true;
+    #     dmixConfig = ''
+    #       period_size 2048
+    #     '';
+    #   };
+    # };
 
     # Firmware blobs
     hardware.enableRedistributableFirmware = true;
