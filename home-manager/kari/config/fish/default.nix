@@ -9,7 +9,7 @@
     shellAbbrs = rec {
       q = "exit";
       c = "clear";
-      ka = "killall";
+      ka = "pkill";
 
       # Powerstate
       sdn = "shutdown -h now";

@@ -241,7 +241,7 @@ in {
 
       ### Key binds ################################ -->
       bind = SUPER SHIFT, R,      exec, hyprctl reload && notify-send "Hyprland reloaded"
-      bind = SUPER SHIFT, W,      exec, killall waybar; waybar & notify-send "Waybar reloaded"
+      bind = SUPER SHIFT, W,      exec, pkill waybar; waybar & notify-send "Waybar reloaded"
       bind = SUPER SHIFT, Return, exec, sh ~/.config/wofi/fullmenu.sh
       bind = SUPER, Return,       exec, [tile]${TERMINAL}
       bind = SUPER, Backspace,    exec, ${TERMINAL}
