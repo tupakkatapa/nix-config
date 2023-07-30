@@ -7,6 +7,10 @@
   pkgs,
   ...
 }: {
+  home.sessionVariables = {
+    EDITOR = lib.mkDefault "nvim";
+  };
+
   programs.neovim = {
     enable = true;
     coc.enable = true;

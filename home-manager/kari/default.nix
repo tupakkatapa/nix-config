@@ -120,12 +120,6 @@ with lib; {
       ./config/gtk
     ];
 
-    home.sessionVariables = {
-      BROWSER = "librewolf";
-      TERMINAL = "alacritty";
-      EDITOR = "nvim";
-    };
-
     # Qjackctl presets
     home.file = {
       "focusrite-guitarix.xml".source = ./config/qjackctl/focusrite-guitarix.xml;

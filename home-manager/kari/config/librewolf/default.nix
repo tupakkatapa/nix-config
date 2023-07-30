@@ -4,6 +4,10 @@
   inputs,
   ...
 }: {
+  home.sessionVariables = {
+    BROWSER = lib.mkDefault "librewolf";
+  };
+  
   programs.librewolf = {
     enable = true;
     settings = {
@@ -22,10 +26,6 @@
       "font.name.serif.x-western" = "JetBrains Mono";
       "extensions.activeThemeID" = "{eb8c4a94-e603-49ef-8e81-73d3c4cc04ff}";
     };
-  };
-
-  home.sessionVariables = {
-    BROWSER = lib.mkDefault "librewolf";
   };
 
   xdg.mimeApps.enable = true;
