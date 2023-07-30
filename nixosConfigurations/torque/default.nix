@@ -49,7 +49,7 @@ in
     # This is usually i2c-piix4 for AMD systems and i2c-i801 for Intel systems.
     boot.kernelModules = ["v4l2loopback" "i2c-dev" "i2c-piix4"];
 
-    # Gaming
+    # Steam
     nixpkgs.config.allowUnfree = true;
     programs.steam = {
       enable = true;
@@ -70,6 +70,9 @@ in
           ];
       };
     };
+    hardware.steam-hardware.enable = true;
+
+    # Gaming
     programs.gamemode = {
       enable = true;
       settings = {
@@ -92,7 +95,6 @@ in
       extraPackages = [pkgs.amdvlk];
       extraPackages32 = [pkgs.driversi686Linux.amdvlk];
     };
-    hardware.steam-hardware.enable = true;
     hardware.xpadneo.enable = true;
 
     # Audio

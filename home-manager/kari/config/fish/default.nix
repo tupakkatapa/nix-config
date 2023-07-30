@@ -82,5 +82,10 @@
         set -U fish_pager_color_prefix        'white' '--bold' '--underline'
         set -U fish_pager_color_progress      'brwhite' '--background=cyan'
       '';
+    loginShellInit = ''
+      if test (tty) = "/dev/tty1"
+        exec Hyprland &> /dev/null
+      end
+    '';
   };
 }

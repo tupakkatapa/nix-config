@@ -7,7 +7,7 @@
   home.sessionVariables = {
     BROWSER = lib.mkDefault "librewolf";
   };
-  
+
   programs.librewolf = {
     enable = true;
     settings = {

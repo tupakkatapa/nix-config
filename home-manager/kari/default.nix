@@ -1,3 +1,4 @@
+# https://github.com/hyper-dot/Arch-Hyprland
 {
   pkgs,
   inputs,
@@ -60,7 +61,7 @@ with lib; {
   #   }
   # ];
 
-  # Hyprland / Waybar
+  # Hyprland
   home-manager.sharedModules = [
     inputs.hyprland.homeManagerModules.default
   ];
@@ -68,12 +69,6 @@ with lib; {
     hyprland = {
       enable = true;
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-    };
-    waybar = {
-      enable = true;
-      package = pkgs.waybar.overrideAttrs (oa: {
-        mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
-      });
     };
   };
   environment.sessionVariables = {
@@ -84,21 +79,18 @@ with lib; {
     WLR_RENDERER_ALLOW_SOFTWARE = "1";
   };
 
-  programs.fish = {
+  # Waybar
+  programs.waybar = {
     enable = true;
-    vendor = {
-      completions.enable = true;
-      config.enable = true;
-      functions.enable = true;
-    };
-    loginShellInit = ''
-      if test (tty) = "/dev/tty1"
-        exec Hyprland &> /dev/null
-      end
-    '';
+    package = pkgs.waybar.overrideAttrs (oa: {
+      mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
+    });
   };
+
   security.pam.services = {swaylock = {};};
 
+  # Fish
+  programs.fish.enable = true;
 
   # Home-manager
   home-manager.users.kari = {
@@ -196,12 +188,10 @@ with lib; {
       signing.key = "773DC99EDAF29D356155DC91269CF32D790D1789";
       signing.signByDefault = true;
       userEmail = "jesse@ponkila.com";
-      userName = "Jesse Karjalainen";
-      extraConfig = {
-        http = {
-          # https://stackoverflow.com/questions/22369200/git-pull-push-error-rpc-failed-result-22-http-code-408
-          postBuffer = "524288000";
-        };
+      userName = "tupakkatapa";
+      extraConfig.http = {
+        # https://stackoverflow.com/questions/22369200/git-pull-push-error-rpc-failed-result-22-http-code-408
+        postBuffer = "524288000";
       };
     };
 

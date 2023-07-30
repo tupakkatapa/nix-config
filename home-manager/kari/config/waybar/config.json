@@ -41,7 +41,6 @@
         "on-click": "playerctl -p Plexamp play-pause"
     },
 
-
     "wlr/workspaces": {
       "format": "{icon}",
       "on-click": "activate",
@@ -120,8 +119,7 @@
     "backlight": {
         "device": "DP-1",
         "format": "{icon} {percent}%",
-        "format-icons": ["", "", "", "", "", "", "", "", ""],
-        "on-click": ""
+        "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
 
     "hyprland/window": {
