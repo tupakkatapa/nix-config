@@ -134,6 +134,7 @@ with lib; {
       xfce.thunar
       xfce.thunar-archive-plugin
       sxiv
+      qemu
 
       # Music stuff
       guitarix
@@ -160,6 +161,8 @@ with lib; {
       wireguard-tools
       yt-dlp
       sshfs
+      tmux
+      iputils
 
       # Wofi / Waybar / Hyrpland deps
       blueberry
