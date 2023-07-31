@@ -26,6 +26,7 @@ in {
       ### Exec ##################################### -->
       exec-once = wl-clipboard-history -t
       exec-once = swayidle -w
+      exec-once = waybar
       exec-once = dunst
 
       # Wallpaper
