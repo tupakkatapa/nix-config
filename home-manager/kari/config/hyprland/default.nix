@@ -199,7 +199,6 @@ in {
       windowrule = float, splash
       windowrule = float, thunar
       windowrule = float, title:^(Media viewer)$
-      windowrule = float, title:^(Volume Control)$
       windowrule = float, title:branchdialog
       windowrule = float, title:Confirm to replace files
       windowrule = float, title:File Operation Progress
@@ -208,22 +207,17 @@ in {
       windowrule = float, viewnior
       windowrule = float, Viewnior
 
-      # Plexamp
-      windowrule = float,        Plexamp # Float
-      #windowrule = move 79% 6%,  Plexamp # Move
-      windowrule = size 700 400, Plexamp # Resize
-
-      # Moves a floating window
-      #windowrule = move 2% 5%, guitarix
-      #windowrule = move 5% 50%, qjackctl
-
-      # Resizes a floating window
+      # Floats a window and resizes
+      windowrule = float, title:RuneLite
+      windowrule = size 800 500, title:RuneLite
+      windowrule = float, title:QEMU
+      windowrule = size 1280 828, title:QEMU
+      windowrule = float, Plexamp
+      windowrule = size 700 400, Plexamp
+      windowrule = float, title:^(Volume Control)$
       windowrule = size 700 400, title:^(Volume Control)$
-
-      # Picture-in-Picture
-      windowrule = float,       title:^(Picture-in-Picture)$  # Float
-      #windowrule = move 79% 6%, title:^(Picture-in-Picture)$  # Move
-      windowrule = pin,         title:^(Picture-in-Picture)$  # Pin
+      windowrule = float, title:^(Picture-in-Picture)$
+      windowrule = pin, title:^(Picture-in-Picture)$
 
       # Sets an idle inhibit rule for the window
       windowrule = idleinhibit focus, mpv
