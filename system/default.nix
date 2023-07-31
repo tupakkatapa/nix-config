@@ -46,7 +46,7 @@
         systems = ["aarch64-linux" "i686-linux" "x86_64-linux"];
         supportedFeatures = ["benchmark" "big-parallel" "kvm" "nixos-test"];
         sshUser = "kari";
-        protocol = "ssh-ng";
+        protocol = "ssh";
         sshKey = "/root/.ssh/id_ed25519";
         hostName = "buidl0.ponkila.com";
         maxJobs = 20;
@@ -55,7 +55,7 @@
         systems = ["aarch64-linux" "armv7l-linux"];
         supportedFeatures = ["benchmark" "big-parallel" "gccarch-armv8-a" "kvm" "nixos-test"];
         sshUser = "kari";
-        protocol = "ssh-ng";
+        protocol = "ssh";
         sshKey = "/root/.ssh/id_ed25519";
         hostName = "buidl1.ponkila.com";
         maxJobs = 16;
