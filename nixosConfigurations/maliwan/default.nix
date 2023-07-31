@@ -13,7 +13,7 @@ with lib; {
     ./hardware-configuration.nix
   ];
 
-  # Use stable kernel
+  # Use latest kernel
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
 
   # Connectivity

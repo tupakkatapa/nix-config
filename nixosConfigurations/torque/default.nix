@@ -23,7 +23,7 @@ in
       "amdgpu.ppfeaturemask=0xffffffff"
     ];
 
-    # Use stable kernel
+    # Use latest kernel
     boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
 
     # Connectivity

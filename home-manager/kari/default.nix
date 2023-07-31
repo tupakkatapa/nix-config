@@ -7,6 +7,7 @@
   ...
 }:
 with lib; {
+  # User config, setting password manually
   users.users.kari = {
     isNormalUser = true;
     group = "kari";
@@ -26,7 +27,7 @@ with lib; {
   users.groups.kari = {};
   environment.shells = [pkgs.fish];
 
-  # Creating some directories
+  # Creating some directories, these are persistent
   systemd.tmpfiles.rules = [
     "d /home/kari/.ssh 755 kari kari -"
     "d /home/kari/Workspace 755 kari kari -"
