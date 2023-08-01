@@ -1,14 +1,99 @@
-{pkgs, ...}: {
-  home.packages = [pkgs.wofi];
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   home.file = {
-    ".config/wofi/colors".source = ./colors;
-    ".config/wofi/config_drun".source = ./config_drun;
-    ".config/wofi/config_dmenu".source = ./config_dmenu;
-    ".config/wofi/style.css".source = ./style.css;
-    # Scripts
-    ".config/wofi/fullmenu.sh".source = ./scripts/fullmenu.sh;
     ".config/wofi/pipewire-out-switcher.sh".source = ./scripts/pipewire-out-switcher.sh;
     ".config/wofi/radio.sh".source = ./scripts/radio.sh;
+  };
+
+  programs.wofi = {
+    enable = true;
+    settings = {
+      # General
+      columns = 5;
+      show = "drun";
+      layer = "overlay";
+      normal_window = true;
+      prompt = " Search ... ";
+      term = "alacritty";
+
+      # Geometry
+      dynamic_lines = true;
+      location = 0;
+
+      # Images
+      allow_images = true;
+      allow_markup = true;
+      image_size = 24;
+
+      # Other
+      gtk_dark = true;
+      hide_scroll = true;
+      no_actions = true;
+      sort_order = "default";
+
+      # Search
+      parse_search = true;
+    };
+
+    style = ''
+      * {
+        font-family: "JetBrains Mono";
+        font-size: 14px;
+      }
+
+      #wofi-window {
+        background-color: #282828;
+        color: #d9e0ee;
+        border: 2px solid #2E2D2C;
+        border-radius: 0px;
+      }
+
+      #outer-box {
+        padding: 20px;
+      }
+
+      #input {
+        background-color: #2E2D2C;
+        border: 0px solid #FFCE8A;
+        padding: 8px 12px;
+        border-radius: 4px;
+      }
+
+      #scroll {
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      #img {
+        padding-right: 8px;
+      }
+
+      #img:selected {
+        background-color: #FFCE8A;
+      }
+
+      #text {
+        color: #d9e0ee;
+      }
+
+      #text:selected {
+        background-color: #FFCE8A;
+        color: #282828;
+      }
+
+      #entry {
+        padding: 6px;
+      }
+
+      #entry:selected {
+        background-color: #FFCE8A;
+        border-radius: 4px;
+        color: #282828;
+      }
+    '';
   };
 }

@@ -79,14 +79,6 @@ with lib; {
     WLR_RENDERER_ALLOW_SOFTWARE = "1";
   };
 
-  # Waybar
-  programs.waybar = {
-    enable = true;
-    package = pkgs.waybar.overrideAttrs (oa: {
-      mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
-    });
-  };
-
   security.pam.services = {swaylock = {};};
 
   # Fish

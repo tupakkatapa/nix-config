@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 # https://gitlab.com/dwt1/dmscripts/-/blob/master/scripts/dm-pipewire-out-switcher
+# deps: pactl
 
 set -euo pipefail
 
 # Config
-CONFIG="$HOME/.config/wofi/config_dmenu"
-STYLE="$HOME/.config/wofi/style.css"
-COLORS="$HOME/.config/wofi/colors"
-DMENU="wofi -p Search... --conf ${CONFIG} --style ${STYLE} --color ${COLORS}"
+DMENU="wofi --dmenu -w 1"
 
 # Script
 get_default_sink() {

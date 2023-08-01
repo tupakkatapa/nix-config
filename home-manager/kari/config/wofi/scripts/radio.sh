@@ -5,10 +5,7 @@
 set -euo pipefail
 
 # Config
-CONFIG="$HOME/.config/wofi/config_dmenu"
-STYLE="$HOME/.config/wofi/style.css"
-COLORS="$HOME/.config/wofi/colors"
-DMENU="wofi -p Search... --conf ${CONFIG} --style ${STYLE} --color ${COLORS}"
+DMENU="wofi --dmenu -w 1"
 
 DMRADIOVOLUME="100"
 declare -A radio_stations
@@ -21,8 +18,6 @@ radio_stations[PaulinPelivideot 🎮]="https://www.twitch.tv/paulinpelivideot"
 # Script
 menu() {
     printf '%s\n' "quit"
-    # As this is loaded from other file it is technically not defined.
-    # shellcheck disable=SC2154
     printf '%s\n' "${!radio_stations[@]}" | sort
 }
 
@@ -37,7 +32,7 @@ end_radio() {
 
 main() {
     # Choosing a radio station from array sourced in 'config'.
-    choice=$(menu | ${MENU} 'Choose radio station:' "$@") || exit 1
+    choice=$(menu | ${DMENU} 'Choose radio station:' "$@") || exit 1
 
     case $choice in
     Quit)
@@ -55,29 +50,4 @@ main() {
 
 }
 
-noOpt=1
-# If script is run with '-d', it will use 'dmenu'
-# If script is run with '-f', it will use 'fzf'
-# If script is run with '-d', it will use 'rofi'
-while getopts "dfrh" arg 2>/dev/null; do
-    case "${arg}" in
-    d) # shellcheck disable=SC2153
-        MENU=${DMENU}
-        [[ "${BASH_SOURCE[0]}" == "${0}" ]] && main
-        ;;
-    f) # shellcheck disable=SC2153
-        MENU=${FMENU}
-        [[ "${BASH_SOURCE[0]}" == "${0}" ]] && main
-        ;;
-    r) # shellcheck disable=SC2153
-        MENU=${RMENU}
-        [[ "${BASH_SOURCE[0]}" == "${0}" ]] && main "@"
-        ;;
-    h) help ;;
-    *) printf '%s\n' "Error: invalid option" "Type $(basename "$0") -h for help" ;;
-    esac
-    noOpt=0
-done
-
-# If script is run with NO argument, it will use 'dmenu'
-[ $noOpt = 1 ] && MENU=${DMENU} && [[ "${BASH_SOURCE[0]}" == "${0}" ]] && main "$@"
+main "$@"
