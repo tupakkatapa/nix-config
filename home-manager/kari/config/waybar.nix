@@ -1,6 +1,7 @@
 {pkgs, ...}: let
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
+  blueberry = "${pkgs.blueberry}/bin/blueberry";
 in {
   programs.waybar = {
     enable = true;
@@ -110,7 +111,7 @@ in {
         format-disabled = " off";
         format-connected = " {device_alias}";
         format-connected_battery = " {device_alias} {device_battery_percentage}%";
-        on-click = "blueberry";
+        on-click = blueberry;
       };
 
       network = {

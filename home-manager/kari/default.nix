@@ -96,22 +96,22 @@ with lib; {
   home-manager.users.kari = {
     imports = [
       # GUI Apps
-      ./config/librewolf
-      ./config/alacritty
-      ./config/vscode
+      ./config/librewolf.nix
+      ./config/alacritty.nix
+      ./config/vscode.nix
 
       # CLI Apps
-      ./config/fish
-      ./config/neovim
+      ./config/fish.nix
+      ./config/neovim.nix
 
       # WM Apps
       ./config/hyprland
-      ./config/waybar
-      ./config/dunst
-      ./config/swaylock
-      ./config/swayidle
+      ./config/waybar.nix
+      ./config/dunst.nix
+      ./config/swaylock.nix
+      ./config/swayidle.nix
       ./config/wofi
-      ./config/gtk
+      ./config/gtk.nix
     ];
 
     # Qjackctl presets
