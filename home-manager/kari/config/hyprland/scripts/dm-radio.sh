@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # https://gitlab.com/dwt1/dmscripts/-/blob/master/scripts/dm-radio
-# deps: mpv
+# deps: wofi, mpv
 
 set -euo pipefail
 

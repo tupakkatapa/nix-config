@@ -102,7 +102,7 @@ with lib; {
       ./config/dunst.nix
       ./config/swaylock.nix
       ./config/swayidle.nix
-      ./config/wofi
+      ./config/wofi.nix
       ./config/gtk.nix
     ];
 

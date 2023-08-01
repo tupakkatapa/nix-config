@@ -4,11 +4,6 @@
   pkgs,
   ...
 }: {
-  home.file = {
-    ".config/wofi/pipewire-out-switcher.sh".source = ./scripts/pipewire-out-switcher.sh;
-    ".config/wofi/radio.sh".source = ./scripts/radio.sh;
-  };
-
   programs.wofi = {
     enable = true;
     settings = {

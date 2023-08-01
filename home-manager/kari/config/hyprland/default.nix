@@ -2,11 +2,16 @@
   inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR;
 in {
   home.file = {
+    # Notify
+    ".config/hypr/notify-volume.sh".source = ./scripts/notify-volume.sh;
+    ".config/hypr/notify-hyprprop.sh".source = ./scripts/notify-hyprprop.sh;
+    ".config/hypr/notify-screenshot.sh".source = ./scripts/notify-screenshot.sh;
+    # Assets
     ".config/hypr/audio-volume-high-panel.svg".source = ./assets/audio-volume-high-panel.svg;
-    ".config/hypr/volume_notify.sh".source = ./scripts/volume_notify.sh;
-    ".config/hypr/hyprprop_notify.sh".source = ./scripts/hyprprop_notify.sh;
-    ".config/hypr/screenshot_notify.sh".source = ./scripts/screenshot_notify.sh;
     "Pictures/wallpaper.jpg".source = ./assets/wallpaper.jpg;
+    # Wofi
+    ".config/hypr/dm-pipewire-out-switcher.sh".source = ./scripts/dm-pipewire-out-switcher.sh;
+    ".config/hypr/dm-radio.sh".source = ./scripts/dm-radio.sh;
   };
   wayland.windowManager.hyprland = {
     enable = true;
@@ -239,14 +244,14 @@ in {
       bind = SUPER, V,            exec, ${TERMINAL} -e ${EDITOR} -c 'Telescope find_files find_command=rg,--hidden,--files'
 
       # Screenshot
-      bind = , Print, exec, sh ~/.config/hypr/screenshot_notify.sh
+      bind = , Print, exec, sh ~/.config/hypr/notify-screenshot.sh
 
       # Submaps
       bind = SUPER, p, submap, scripts
       submap = scripts
 
       # Pipewire switcher
-      bind = , p, exec, sh ~/.config/wofi/pipewire-out-switcher.sh
+      bind = , p, exec, sh ~/.config/hypr/dm-pipewire-out-switcher.sh
       bind = , p, submap, reset
 
       # Colorpicker
@@ -254,11 +259,11 @@ in {
       bind = , c, submap, reset
 
       # Window props
-      bind = , w, exec, sh ~/.config/hypr/hyprprop_notify.sh
+      bind = , w, exec, sh ~/.config/hypr/notify-hyprprop.sh
       bind = , w, submap, reset
 
       # Radio
-      bind = , r, exec, sh ~/.config/wofi/radio.sh
+      bind = , r, exec, sh ~/.config/hypr/dm-radio.sh
       bind = , r, submap, reset
 
       # Reset submaps
@@ -268,8 +273,8 @@ in {
       ## Fn keys
 
       # Volume
-      bind = ,XF86AudioRaiseVolume, exec, pamixer -i 5 && exec sh ~/.config/hypr/volume_notify.sh
-      bind = ,XF86AudioLowerVolume, exec, pamixer -d 5 && exec sh ~/.config/hypr/volume_notify.sh
+      bind = ,XF86AudioRaiseVolume, exec, pamixer -i 5 && exec sh ~/.config/hypr/notify-volume.sh
+      bind = ,XF86AudioLowerVolume, exec, pamixer -d 5 && exec sh ~/.config/hypr/notify-volume.sh
       bind = ,XF86AudioMute,        exec, pamixer -t
 
       # Media

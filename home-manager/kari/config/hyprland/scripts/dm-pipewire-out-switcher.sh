@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # https://gitlab.com/dwt1/dmscripts/-/blob/master/scripts/dm-pipewire-out-switcher
-# deps: pactl
+# deps: wofi, pactl
 
 set -euo pipefail
 
