@@ -132,7 +132,7 @@ with lib; {
       openrgb
       xfce.thunar
       xfce.thunar-archive-plugin
-      sxiv
+      nsxiv
       qemu
 
       # Music stuff
@@ -162,6 +162,7 @@ with lib; {
       sshfs
       tmux
       iputils
+      neofetch
 
       # Wofi / Waybar / Hyrpland deps
       blueberry
