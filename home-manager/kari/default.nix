@@ -34,6 +34,9 @@ with lib; {
   fonts.packages = with pkgs; [
     jetbrains-mono
     font-awesome
+    noto-fonts
+    fira-code
+    fira-code-symbols
   ];
 
   # Creating some directories, these are persistent
