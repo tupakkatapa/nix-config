@@ -28,6 +28,8 @@ with lib; {
 
   security.pam.services = {swaylock = {};};
   programs.fish.enable = true;
+  # https://github.com/nix-community/home-manager/issues/3113
+  programs.dconf.enable = true;
 
   fonts.packages = with pkgs; [
     jetbrains-mono
