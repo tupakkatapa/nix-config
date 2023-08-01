@@ -12,7 +12,6 @@
     home-manager.url = "github:nix-community/home-manager";
     hyprwm-contrib.url = "github:hyprwm/contrib";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
-    hyprland.url = "github:hyprwm/Hyprland";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     pre-commit-hooks-nix.url = "github:hercules-ci/pre-commit-hooks.nix/flakeModule";
@@ -24,7 +23,6 @@
     darwin,
     flake-parts,
     home-manager,
-    hyprland,
     nixpkgs,
     nixpkgs-stable,
     ...

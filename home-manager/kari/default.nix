@@ -34,15 +34,6 @@ with lib; {
     font-awesome
   ];
 
-  # Hyprland
-  home-manager.sharedModules = [
-    inputs.hyprland.homeManagerModules.default
-  ];
-  programs.hyprland = {
-    enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-  };
-
   # Creating some directories, these are persistent
   systemd.tmpfiles.rules = [
     "d /home/kari/.ssh 755 kari kari -"
