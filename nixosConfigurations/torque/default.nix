@@ -45,7 +45,7 @@ in
     services.udev.extraRules = builtins.readFile openrgb-rules;
     # You must load the i2c-dev module along with the correct i2c driver for your motherboard.
     # This is usually i2c-piix4 for AMD systems and i2c-i801 for Intel systems.
-    boot.kernelModules = ["v4l2loopback" "i2c-dev" "i2c-piix4"];
+    boot.kernelModules = ["i2c-dev" "i2c-piix4"];
 
     # Steam
     nixpkgs.config.allowUnfree = true;
@@ -105,17 +105,6 @@ in
     };
     # Make pipewire realtime-capable
     security.rtkit.enable = true;
-
-    # services.jack = {
-    #   jackd.enable = true;
-    #   alsa.enable = false;
-    #   loopback = {
-    #     enable = true;
-    #     dmixConfig = ''
-    #       period_size 2048
-    #     '';
-    #   };
-    # };
 
     # Firmware blobs
     hardware.enableRedistributableFirmware = true;
