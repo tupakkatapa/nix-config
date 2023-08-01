@@ -1,6 +1,14 @@
 {config, ...}: let
   inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR;
 in {
+  home.sessionVariables = {
+    MOZ_ENABLE_WAYLAND = "1";
+    QT_QPA_PLATFORM = "wayland";
+    LIBSEAT_BACKEND = "logind";
+    WLR_NO_HARDWARE_CURSORS = "1";
+    WLR_RENDERER_ALLOW_SOFTWARE = "1";
+  };
+
   home.file = {
     # Notify
     ".config/hypr/notify-volume.sh".source = ./scripts/notify-volume.sh;
@@ -13,6 +21,7 @@ in {
     ".config/hypr/dm-pipewire-out-switcher.sh".source = ./scripts/dm-pipewire-out-switcher.sh;
     ".config/hypr/dm-radio.sh".source = ./scripts/dm-radio.sh;
   };
+
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = ''
