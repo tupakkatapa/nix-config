@@ -71,6 +71,7 @@ with lib; {
     # Qjackctl presets
     home.file = {
       "focusrite_guitarix_v2.xml".source = ./config/qjackctl/focusrite_guitarix_v2.xml;
+      "focusrite_guitarix_ardour_v2.xml".source = ./config/qjackctl/focusrite_guitarix_ardour_v2.xml;
     };
 
     home.packages = with pkgs; [
