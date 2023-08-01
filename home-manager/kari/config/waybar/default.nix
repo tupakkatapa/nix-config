@@ -1,15 +1,6 @@
-{
-  inputs,
-  outputs,
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+{pkgs, ...}: let
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
-  systemctl = "${pkgs.systemd}/bin/systemctl";
-  journalctl = "${pkgs.systemd}/bin/journalctl";
 in {
   programs.waybar = {
     enable = true;

@@ -29,7 +29,7 @@
     nixpkgs-stable,
     ...
   } @ inputs:
-    flake-parts.lib.mkFlake {inherit inputs;} rec {
+    flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
         inputs.flake-root.flakeModule
         inputs.pre-commit-hooks-nix.flakeModule
@@ -80,9 +80,9 @@
 
         # Custom packages and aliases for building hosts
         # Accessible through 'nix build', 'nix run', etc
-        packages = with flake.nixosConfigurations; {
-          #"hostname" = hostname.config.system.build.kexecTree;
-        };
+        # packages = with flake.nixosConfigurations; {
+        #   "hostname" = hostname.config.system.build.kexecTree;
+        # };
       };
       flake = let
         inherit (self) outputs;
@@ -115,15 +115,16 @@
         overlays = import ./overlays {inherit inputs;};
 
         # NixOS configuration entrypoints
-        nixosConfigurations = with nixpkgs.lib;
-          {
+        nixosConfigurations =
+          with nixpkgs.lib; {
             "torque" = nixosSystem torque;
             "maliwan" = nixosSystem maliwan;
           }
-          // (with nixpkgs-stable.lib; {});
+          # // (with nixpkgs-stable.lib; {})
+          ;
 
         # Darwin configuration entrypoints
-        darwinConfigurations = with darwin.lib; {};
+        # darwinConfigurations = with darwin.lib; {};
       };
     };
 }

@@ -1,8 +1,4 @@
 {
-  inputs,
-  outputs,
-  nixpkgs,
-  config,
   lib,
   pkgs,
   ...

@@ -1,9 +1,4 @@
-{
-  pkgs,
-  lib,
-  inputs,
-  ...
-}: {
+{lib, ...}: {
   home.sessionVariables = {
     BROWSER = lib.mkDefault "librewolf";
   };

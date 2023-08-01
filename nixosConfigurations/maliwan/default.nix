@@ -1,11 +1,4 @@
-{
-  pkgs,
-  config,
-  inputs,
-  lib,
-  ...
-}:
-with lib; {
+{pkgs, ...}: {
   time.timeZone = "Europe/Helsinki";
   system.stateVersion = "23.11";
 

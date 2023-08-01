@@ -1,11 +1,4 @@
-{
-  inputs,
-  outputs,
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
+{pkgs, ...}: {
   home.packages = [pkgs.libnotify];
   services.dunst = {
     enable = true;

@@ -1,10 +1,4 @@
-{
-  pkgs,
-  inputs,
-  config,
-  lib,
-  ...
-}: let
+{config, ...}: let
   inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR;
 in {
   home.file = {

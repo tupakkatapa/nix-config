@@ -1,12 +1,7 @@
 {
-  pkgs,
-  lib,
-  config,
-  ...
-}: {
   programs.fish = {
     enable = true;
-    shellAbbrs = rec {
+    shellAbbrs = {
       q = "exit";
       c = "clear";
       ka = "pkill";
