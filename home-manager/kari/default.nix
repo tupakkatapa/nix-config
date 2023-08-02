@@ -32,11 +32,13 @@ with lib; {
   programs.dconf.enable = true;
 
   fonts.packages = with pkgs; [
-    jetbrains-mono
-    font-awesome
-    noto-fonts
     fira-code
     fira-code-symbols
+    font-awesome
+    jetbrains-mono
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
   ];
 
   # Creating some directories, these are persistent
