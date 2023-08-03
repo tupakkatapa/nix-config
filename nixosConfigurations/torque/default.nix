@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: let
   openrgb-rules = builtins.fetchurl {
@@ -21,6 +22,32 @@ in
       "amdgpu.ppfeaturemask=0xffffffff"
     ];
 
+    fonts.packages = with pkgs; [
+      fira-code
+      fira-code-symbols
+      font-awesome
+      jetbrains-mono
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+    ];
+
+    # Creating some directories, these are persistent
+    systemd.tmpfiles = builtins.listToAttrs (map (user: {
+      name = "rules";
+      value = [
+        "d /home/${user}/.ssh 755 ${user} ${user} -"
+        "d /home/${user}/Pictures/Screenshots 755 ${user} ${user} -"
+        "d /home/${user}/Workspace 755 ${user} ${user} -"
+      ];
+    }) (builtins.attrNames config.home-manager.users));
+
+    # https://github.com/NixOS/nixpkgs/issues/143365
+    security.pam.services = {swaylock = {};};
+
+    # https://github.com/nix-community/home-manager/issues/3113
+    programs.dconf.enable = true;
+
     # Use latest kernel
     boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
 
@@ -33,6 +60,7 @@ in
     hardware.bluetooth.enable = true;
 
     # RGB
+    environment.systemPackages = [pkgs.openrgb];
     systemd.services.openrgb = {
       description = "OpenRGB Daemon";
       wantedBy = ["multi-user.target"];

@@ -90,7 +90,7 @@
           specialArgs = {inherit inputs outputs;};
           modules = [
             ./nixosConfigurations/torque
-            ./home-manager/kari
+            ./home-manager/users/kari
             ./system
             ./system/bootloaders/default.nix
             home-manager.nixosModules.home-manager
@@ -102,7 +102,7 @@
           specialArgs = {inherit inputs outputs;};
           modules = [
             ./nixosConfigurations/maliwan
-            ./home-manager/kari
+            ./home-manager/users/kari
             ./system
             ./system/bootloaders/default.nix
             home-manager.nixosModules.home-manager
