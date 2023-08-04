@@ -16,11 +16,17 @@ in
     imports = [
       ./hardware-configuration.nix
     ];
+  # Add support for NTFS file system for Windows drives
+  # https://nixos.wiki/wiki/NTFS
+  boot.supportedFilesystems = ["ntfs"];
 
     # AMD GPU
     boot.kernelParams = [
       "amdgpu.ppfeaturemask=0xffffffff"
     ];
+  # Enable sshfs package for SSH file system mounting
+  # https://nixos.org/manual/nixos/stable/#sec-sshfs-non-interactive
+  system.fsPackages = [pkgs.sshfs];
 
     fonts.packages = with pkgs; [
       fira-code

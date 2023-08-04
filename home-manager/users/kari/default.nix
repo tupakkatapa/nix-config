@@ -37,6 +37,30 @@ in {
   environment.shells = [pkgs.fish];
   programs.fish.enable = true;
 
+  # Mount drives as user
+  fileSystems = lib.mkIf (config.networking.hostName == "torque") {
+    "/mnt/3TB" = {
+      device = "/dev/disk/by-uuid/60c4a67d-166b-48d2-a1c2-e457850a87df";
+      fsType = "ext4";
+    };
+    "/mnt/WIN" = {
+      device = "/dev/disk/by-uuid/74D4CED9D4CE9CAC";
+      fsType = "ntfs-3g";
+      options = ["rw"];
+    };
+    "/mnt/SFTP" = {
+      device = "sftp_user@vladof:/root/";
+      fsType = "sshfs";
+      options = [
+        "allow_other"
+        "_netdev"
+        "x-systemd.automount"
+        "reconnect"
+        "ServerAliveInterval=15"
+        "IdentityFile=/home/kari/.ssh/id_ed25519"
+      ];
+    };
+  };
   # Home-manager config
   home-manager.users."${user}" = {
     imports =
