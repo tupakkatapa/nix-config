@@ -61,6 +61,7 @@ in {
       ];
     };
   };
+
   # Home-manager config
   home-manager.users."${user}" = {
     imports =
@@ -95,6 +96,8 @@ in {
       rpi-imager
       #solaar
       ventoy
+      obsidian
+      sublime-merge
 
       # Music stuff
       ardour
