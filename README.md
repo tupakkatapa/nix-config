@@ -2,7 +2,7 @@
 | Hostname | System  | Format       | Users | Info                    
 | :-:       |  :-:    | :-:          | :-:   | :-:
 [torque](nixosConfigurations/torque/default.nix)  | x86_64  | persistent   | [kari](home-manager/kari/default.nix)  | AMD Desktop, Hyprland
-[maliwan](nixosConfigurations/maliwan/default.nix) | x86_64  | persistent   | [kari](home-manager/kari/default.nix)  | Intel Laptop, Hyprland
+[maliwan](nixosConfigurations/maliwan/default.nix) | x86_64  | netboot-kexec   | [kari](home-manager/kari/default.nix)  | Intel Laptop, Hyprland
 
 ## Resources
 Here are some useful resources to learn about Nix and NixOS:
