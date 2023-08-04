@@ -1,12 +1,9 @@
 {pkgs, ...}: {
+  # Timezone and system version
   time.timeZone = "Europe/Helsinki";
   system.stateVersion = "23.11";
 
-  imports = [
-    ./hardware-configuration.nix
-  ];
-
-  # Use latest kernel
+  # Use the latest kernel
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
 
   # Connectivity
@@ -17,7 +14,6 @@
   };
   hardware.bluetooth.enable = true;
 
-  # SSH
   services.openssh = {
     enable = true;
     allowSFTP = false;
@@ -32,7 +28,7 @@
     settings.KbdInteractiveAuthentication = false;
   };
 
-  # Audio
+  # Audio settings
   services.pipewire = {
     enable = true;
     alsa.enable = true;

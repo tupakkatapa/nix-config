@@ -27,7 +27,7 @@
     nixpkgs-stable,
     ...
   } @ inputs:
-    flake-parts.lib.mkFlake {inherit inputs;} {
+    flake-parts.lib.mkFlake {inherit inputs;} rec {
       imports = [
         inputs.flake-root.flakeModule
         inputs.pre-commit-hooks-nix.flakeModule
@@ -78,9 +78,9 @@
 
         # Custom packages and aliases for building hosts
         # Accessible through 'nix build', 'nix run', etc
-        # packages = with flake.nixosConfigurations; {
-        #   "hostname" = hostname.config.system.build.kexecTree;
-        # };
+        packages = with flake.nixosConfigurations; {
+          "maliwan" = maliwan.config.system.build.kexecTree;
+        };
       };
       flake = let
         inherit (self) outputs;
@@ -105,6 +105,7 @@
             ./home-manager/users/kari
             ./system
             ./system/bootloaders/default.nix
+            ./system/formats/netboot-kexec.nix
             home-manager.nixosModules.home-manager
           ];
         };
