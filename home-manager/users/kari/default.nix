@@ -93,7 +93,7 @@ in {
       plexamp
       qemu
       rpi-imager
-      solaar
+      #solaar
       ventoy
 
       # Music stuff
