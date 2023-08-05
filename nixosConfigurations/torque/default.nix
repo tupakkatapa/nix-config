@@ -14,7 +14,7 @@
   ];
 
   # https://github.com/NixOS/nixpkgs/issues/143365
-  security.pam.services.swaylock = {};
+  security.pam.services = {swaylock = {};};
 
   # https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;
