@@ -114,7 +114,7 @@
           specialArgs = {inherit inputs outputs;};
           modules = [
             ./nixosConfigurations/hyperion
-            ./home-manager/users/kari
+            ./home-manager/users/kari/darwin.nix
             ./system/nix-settings.nix
             home-manager.darwinModules.home-manager
           ];
