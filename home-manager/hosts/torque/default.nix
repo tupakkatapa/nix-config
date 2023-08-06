@@ -22,10 +22,6 @@ in {
   home.packages = with pkgs; [
     # GUI Apps
     nsxiv
-    xfce.thunar
-    xfce.thunar-volman
-    xfce.thunar-media-tags-plugin
-    xfce.thunar-archive-plugin
 
     # WM Apps
     blueberry
