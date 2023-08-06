@@ -37,7 +37,6 @@
       "signal"
       "discord"
       "mpv"
-      "qemu"
     ];
     masApps = {};
   };
