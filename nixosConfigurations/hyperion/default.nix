@@ -8,7 +8,7 @@
 }: {
   # Timezone and system version
   time.timeZone = "Europe/Helsinki";
-  system.stateVersion = "23.11";
+  system.stateVersion = 4;
 
   services.nix-daemon.enable = true;
   networking.hostName = "hyperion";
