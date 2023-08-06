@@ -109,6 +109,7 @@ in {
       runelite
 
       # CLI Apps
+      android-tools
       jq
       exa
       gnupg
