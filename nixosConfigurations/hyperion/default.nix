@@ -29,14 +29,15 @@
     casks = [
       "android-commandlinetools"
       "android-platform-tools"
-      #"whatsapp"
-      #"plexamp"
-      #"plex"
+      "whatsapp"
+      "plexamp"
+      "plex"
+      "runelite"
+      "sublime-merge"
       "font-iosevka"
-      #"obsidian"
-      #"visual-studio-code"
-      #"element"
-      #"signal"
+      "obsidian"
+      "element"
+      "signal"
     ];
     masApps = {};
   };
