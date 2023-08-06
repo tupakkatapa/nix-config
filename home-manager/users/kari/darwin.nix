@@ -21,7 +21,6 @@ in {
       [
         # GUI Apps
         ./config/alacritty.nix
-        ./config/librewolf.nix
         ./config/vscode.nix
 
         # CLI Apps
@@ -36,33 +35,15 @@ in {
     home.packages = with pkgs; [
       # GUI Apps
       discord
-      ferdium
-      plex-media-player
-      plexamp
       qemu
       mpv
-      rpi-imager
-      ventoy
       obsidian
-      sublime-merge
-
-      # Music stuff
-      ardour
-      guitarix
-      qjackctl
-
-      # High quality games
-      osu-lazer
-      runelite
 
       # CLI Apps
       jq
       exa
       gnupg
       htop
-      iputils
-      kexec-tools
-      lshw
       neofetch
       nix
       nix-tree
