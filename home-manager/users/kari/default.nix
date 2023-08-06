@@ -93,8 +93,8 @@ in {
       plex-media-player
       plexamp
       qemu
+      mpv
       rpi-imager
-      #solaar
       ventoy
       obsidian
       sublime-merge
@@ -109,6 +109,7 @@ in {
       runelite
 
       # CLI Apps
+      jq
       exa
       gnupg
       htop
