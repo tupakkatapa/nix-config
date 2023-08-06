@@ -66,15 +66,15 @@
   # This is usually i2c-piix4 for AMD systems and i2c-i801 for Intel systems.
   boot.kernelModules = ["i2c-dev" "i2c-piix4"];
 
-  # Add support for NTFS file system for Windows drives
+  # Add support for NTFS file system for mounting Windows drives
   # https://nixos.wiki/wiki/NTFS
   boot.supportedFilesystems = ["ntfs"];
 
-  # Enable sshfs package for SSH file system mounting
+  # Enable sshfs package for mounting SSH drives
   # https://nixos.org/manual/nixos/stable/#sec-sshfs-non-interactive
   system.fsPackages = [pkgs.sshfs];
 
-  # Create custom user directories
+  # Create directories, these are persistent
   systemd.tmpfiles = builtins.listToAttrs (map (user: {
     name = "rules";
     value = [

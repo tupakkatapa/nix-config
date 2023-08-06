@@ -37,7 +37,7 @@ in {
   environment.shells = [pkgs.fish];
   programs.fish.enable = true;
 
-  # Mount drives as user
+  # Mount drives
   fileSystems = lib.mkIf (config.networking.hostName == "torque") {
     "/mnt/3TB" = {
       device = "/dev/disk/by-uuid/60c4a67d-166b-48d2-a1c2-e457850a87df";
@@ -77,7 +77,7 @@ in {
         ./config/git.nix
         ./config/direnv.nix
       ]
-      # Importing host spesific home-manager config if it exists
+      # Importing host-spesific home-manager config if it exists
       ++ optionalPaths [../../hosts/${config.networking.hostName}];
 
     # Qjackctl presets
