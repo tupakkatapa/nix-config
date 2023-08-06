@@ -26,8 +26,6 @@
     ];
     brews = [];
     casks = [
-      "android-commandlinetools"
-      "android-platform-tools"
       "whatsapp"
       "plexamp"
       "plex"
@@ -37,6 +35,9 @@
       "obsidian"
       "element"
       "signal"
+      "discord"
+      "mpv"
+      "qemu"
     ];
     masApps = {};
   };

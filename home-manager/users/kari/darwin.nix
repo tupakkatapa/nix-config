@@ -33,13 +33,7 @@ in {
       ++ optionalPaths [../../hosts/${config.networking.hostName}];
 
     home.packages = with pkgs; [
-      # GUI Apps
-      discord
-      qemu
-      mpv
-      obsidian
-
-      # CLI Apps
+      android-tools
       jq
       exa
       gnupg
