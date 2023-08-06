@@ -1,14 +1,13 @@
-{
-  inputs,
-  outputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   # Timezone and system version
   time.timeZone = "Europe/Helsinki";
   system.stateVersion = 4;
+
+  # Font packages
+  fonts.fontDir.enable = true;
+  fonts.fonts = with pkgs; [
+    jetbrains-mono
+  ];
 
   services.nix-daemon.enable = true;
   networking.hostName = "hyperion";
