@@ -109,6 +109,17 @@
             home-manager.nixosModules.home-manager
           ];
         };
+
+        hyperion = {
+          system = "aarch64-darwin";
+          specialArgs = {inherit inputs outputs;};
+          modules = [
+            ./nixosConfigurations/hyperion
+            ./home-manager/users/kari
+            ./system/nix-settings.nix
+            home-manager.darwinModules.home-manager
+          ];
+        };
       in {
         # Patches and version overrides for some packages
         overlays = import ./overlays {inherit inputs;};
@@ -123,7 +134,9 @@
           ;
 
         # Darwin configuration entrypoints
-        # darwinConfigurations = with darwin.lib; {};
+        darwinConfigurations = with darwin.lib; {
+          "hyperion" = darwinSystem hyperion;
+        };
       };
     };
 }
