@@ -11,12 +11,15 @@
   home.file = {
     ".local/share/applications/librewolf.desktop".source = "${pkgs.librewolf}/share/applications/librewolf.desktop";
   };
-  xdg.mimeApps.enable = true;
-  xdg.mimeApps.defaultApplications = {
-    "text/html" = ["librewolf.desktop"];
-    "text/xml" = ["librewolf.desktop"];
-    "x-scheme-handler/http" = ["librewolf.desktop"];
-    "x-scheme-handler/https" = ["librewolf.desktop"];
+
+  xdg.mimeApps = lib.mkIf (pkgs.system != "aarch64-darwin" && pkgs.system != "x86_64-darwin") {
+    enable = true;
+    defaultApplications = {
+      "text/html" = ["librewolf.desktop"];
+      "text/xml" = ["librewolf.desktop"];
+      "x-scheme-handler/http" = ["librewolf.desktop"];
+      "x-scheme-handler/https" = ["librewolf.desktop"];
+    };
   };
 
   programs.librewolf = {
