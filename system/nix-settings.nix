@@ -37,6 +37,7 @@
       trusted-users = [
         "root"
         "@wheel"
+        "kari"
       ];
     };
 
