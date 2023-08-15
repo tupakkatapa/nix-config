@@ -127,6 +127,7 @@ in {
       tmux
       vim
       wget
+      wireguard-go
       wireguard-tools
       yt-dlp
     ];
