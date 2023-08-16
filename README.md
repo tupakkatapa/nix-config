@@ -3,7 +3,7 @@
 | :-:       |  :-:    | :-:          | :-:   | :-:
 [torque](nixosConfigurations/torque/default.nix)  | x86_64  | persistent   | [kari](home-manager/kari/default.nix)  | AMD Desktop, Hyprland
 [maliwan](nixosConfigurations/maliwan/default.nix) | x86_64  | persistent   | [kari](home-manager/kari/default.nix)  | Intel Laptop, Hyprland
-[hyperion](nixosConfigurations/hyperion/default.nix) | aarch64  | nix-darwin | [kari](home-manager/kari/default.nix)  | M2 Laptop, macOS Ventura
+[hyperion](nixosConfigurations/hyperion/default.nix) | aarch64  | nix-darwin | [kari](home-manager/kari/darwin.nix)  | M2 Laptop, macOS Ventura
 
 ## Resources
 Here are some useful resources to learn about Nix and NixOS:
