@@ -5,44 +5,68 @@
   ...
 }: let
   swaylock = "${config.programs.swaylock.package}/bin/swaylock";
-  pactl = "${pkgs.pulseaudio}/bin/pactl";
   pgrep = "${pkgs.procps}/bin/pgrep";
+  pactl = "${pkgs.pulseaudio}/bin/pactl";
+  hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+  swaymsg = "${config.wayland.windowManager.sway.package}/bin/swaymsg";
   openrgb = "${pkgs.openrgb}/bin/openrgb";
 
   isLocked = "${pgrep} -x ${swaylock}";
-  actionLock = "${swaylock} -S --daemonize";
-
   lockTime = 4 * 60; # TODO: configurable desktop (10 min)/laptop (4 min)
 
-  mkEvent = time: start: resume: ''
-    timeout ${toString (lockTime + time)} '${start}' ${lib.optionalString (resume != null) "resume '${resume}'"}
-    timeout ${toString time} '${isLocked} && ${start}' ${lib.optionalString (resume != null) "resume '${isLocked} && ${resume}'"}
-  '';
+  # Makes two timeouts: one for when the screen is not locked (lockTime+timeout) and one for when it is.
+  afterLockTimeout = {
+    timeout,
+    command,
+    resumeCommand ? null,
+  }: [
+    {
+      timeout = lockTime + timeout;
+      inherit command resumeCommand;
+    }
+    {
+      command = "${isLocked} && ${command}";
+      inherit resumeCommand timeout;
+    }
+  ];
 in {
-  home.packages = with pkgs; [swayidle];
-
-  xdg.configFile."swayidle/config".text =
-    ''
-      timeout ${toString lockTime} '${actionLock}'
-    ''
-    +
-    # After 10 seconds of locked, mute mic
-    (mkEvent 10 "${pactl} set-source-mute @DEFAULT_SOURCE@ yes" "${pactl} set-source-mute @DEFAULT_SOURCE@ no")
-    +
-    # If has RGB, turn it off 20 seconds after locked
-    (mkEvent 20 "${openrgb} --device 1 --client --color \"000000\" --mode direct" "${openrgb} --device 1 --client --color \"330099\" --mode direct")
-    +
-    # Hyprland - Turn off screen (DPMS)
-    lib.optionalString config.wayland.windowManager.hyprland.enable
-    (let
-      hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
-    in
-      mkEvent 40 "${hyprctl} dispatch dpms off" "${hyprctl} dispatch dpms on")
-    +
-    # Sway - Turn off screen (DPMS)
-    lib.optionalString config.wayland.windowManager.sway.enable
-    (let
-      swaymsg = "${config.wayland.windowManager.sway.package}/bin/swaymsg";
-    in
-      mkEvent 40 "${swaymsg} 'output * dpms off'" "${swaymsg} 'output * dpms on'");
+  services.swayidle = {
+    enable = true;
+    systemdTarget = "graphical-session.target";
+    timeouts =
+      # Lock screen
+      [
+        {
+          timeout = lockTime;
+          command = "${swaylock} -S --daemonize";
+        }
+      ]
+      ++
+      # Mute mic
+      (afterLockTimeout {
+        timeout = 10;
+        command = "${pactl} set-source-mute @DEFAULT_SOURCE@ yes";
+        resumeCommand = "${pactl} set-source-mute @DEFAULT_SOURCE@ no";
+      })
+      ++
+      # TODO: Turn off RGB
+      # (lib.optionals config.systemd.services.openrgb.enable (afterLockTimeout {
+      #   timeout = 20;
+      #   command = "${openrgb} --device 1 --client --color \"000000\" --mode direct";
+      #   resumeCommand = "${openrgb} --device 1 --client --color \"330099\" --mode direct";
+      # })) ++
+      # Turn off displays (hyprland)
+      (lib.optionals config.wayland.windowManager.hyprland.enable (afterLockTimeout {
+        timeout = 40;
+        command = "${hyprctl} dispatch dpms off";
+        resumeCommand = "${hyprctl} dispatch dpms on";
+      }))
+      ++
+      # Turn off displays (sway)
+      (lib.optionals config.wayland.windowManager.sway.enable (afterLockTimeout {
+        timeout = 40;
+        command = "${swaymsg} 'output * dpms off'";
+        resumeCommand = "${swaymsg} 'output * dpms on'";
+      }));
+  };
 }
