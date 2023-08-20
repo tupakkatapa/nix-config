@@ -250,15 +250,16 @@ in {
       bind = $MOD SHIFT, Return, exec, wofi
       bind = $MOD, Return,       exec, [tile]${TERMINAL}
       bind = $MOD, Backspace,    exec, ${TERMINAL}
-      bind = $MOD, C,            exec, code
-      bind = $MOD, F,            exec, thunar
-      bind = $MOD, B,            exec, ${BROWSER}
-      bind = $MOD, V,            exec, ${TERMINAL} -e ${EDITOR} -c 'Telescope find_files find_command=rg,--hidden,--files'
+
+      # Programs
+      bind = SUPER, C,            exec, code
+      bind = SUPER, F,            exec, thunar
+      bind = SUPER, B,            exec, ${BROWSER}
 
       # Screenshot
       bind = , Print, exec, sh ~/.config/hypr/notify-screenshot.sh
 
-      # Submaps
+      ## Submaps
       bind = $MOD, p, submap, scripts
       submap = scripts
 
