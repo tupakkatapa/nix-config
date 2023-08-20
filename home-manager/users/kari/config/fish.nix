@@ -7,10 +7,11 @@
       ka = "pkill";
 
       # Powerstate
-      sdn = "shutdown -h now";
-      rbt = "reboot";
-      sus = "systemctl suspend";
       bios = "systemctl reboot --firmware-setup";
+      rbt = "reboot";
+      sdn = "shutdown -h now";
+      sus = "systemctl suspend";
+      win = "systemctl reboot --boot-loader-entry=auto-windows";
 
       # Changing 'ls' to 'exa'
       ls = "exa -al --color=always --group-directories-first";
@@ -34,7 +35,7 @@
       # Misc
       vim = "nvim";
       buidl = "sudo nixos-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
-      buidl-darwin = "nix build path:$HOME/Workspace/nix-config#darwinConfigurations.$(hostname).system --show-trace && ./result/sw/bin/darwin-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";    
+      buidl-darwin = "nix build path:$HOME/Workspace/nix-config#darwinConfigurations.$(hostname).system --show-trace && ./result/sw/bin/darwin-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
     };
     functions = {
       fish_greeting = "";
