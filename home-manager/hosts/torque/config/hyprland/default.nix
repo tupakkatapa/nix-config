@@ -31,6 +31,9 @@ in {
       #
       ##
 
+      ### Variables ################################ -->
+      $MOD = ALT
+
       ### Exec ##################################### -->
       exec-once = wl-clipboard-history -t
       exec-once = swayidle -w
@@ -242,21 +245,21 @@ in {
       windowrule = opacity 0.9 override 0.9 override, ^(Plexamp)$
 
       ### Key binds ################################ -->
-      bind = SUPER SHIFT, R,      exec, hyprctl reload && notify-send "Hyprland reloaded"
-      bind = SUPER SHIFT, W,      exec, pkill waybar; waybar & notify-send "Waybar reloaded"
-      bind = SUPER SHIFT, Return, exec, wofi
-      bind = SUPER, Return,       exec, [tile]${TERMINAL}
-      bind = SUPER, Backspace,    exec, ${TERMINAL}
-      bind = SUPER, C,            exec, code
-      bind = SUPER, F,            exec, thunar
-      bind = SUPER, B,            exec, ${BROWSER}
-      bind = SUPER, V,            exec, ${TERMINAL} -e ${EDITOR} -c 'Telescope find_files find_command=rg,--hidden,--files'
+      bind = $MOD SHIFT, R,      exec, hyprctl reload && notify-send "Hyprland reloaded"
+      bind = $MOD SHIFT, W,      exec, pkill waybar; waybar & notify-send "Waybar reloaded"
+      bind = $MOD SHIFT, Return, exec, wofi
+      bind = $MOD, Return,       exec, [tile]${TERMINAL}
+      bind = $MOD, Backspace,    exec, ${TERMINAL}
+      bind = $MOD, C,            exec, code
+      bind = $MOD, F,            exec, thunar
+      bind = $MOD, B,            exec, ${BROWSER}
+      bind = $MOD, V,            exec, ${TERMINAL} -e ${EDITOR} -c 'Telescope find_files find_command=rg,--hidden,--files'
 
       # Screenshot
       bind = , Print, exec, sh ~/.config/hypr/notify-screenshot.sh
 
       # Submaps
-      bind = SUPER, p, submap, scripts
+      bind = $MOD, p, submap, scripts
       submap = scripts
 
       # Pipewire switcher
@@ -292,111 +295,111 @@ in {
       bind = ,XF86AudioPrev, exec, playerctl -p Plexamp previous
 
       ### Window management ################ -->
-      bind = SUPER SHIFT, F, togglefloating,
-      bind = SUPER SHIFT, P, pin # Pin a window
-      bind = SUPER, P,       pseudo, # dwindle
-      bind = SUPER, Q,       killactive,
-      bind = SUPER, Space,   fullscreen,
+      bind = $MOD SHIFT, F, togglefloating,
+      bind = $MOD SHIFT, P, pin # Pin a window
+      bind = $MOD, P,       pseudo, # dwindle
+      bind = $MOD, Q,       killactive,
+      bind = $MOD, Space,   fullscreen,
 
       ## Focus
 
       # Moves the focus in a direction
-      bind = SUPER, H, movefocus, l
-      bind = SUPER, L, movefocus, r
-      bind = SUPER, K, movefocus, u
-      bind = SUPER, J, movefocus, d
+      bind = $MOD, H, movefocus, l
+      bind = $MOD, L, movefocus, r
+      bind = $MOD, K, movefocus, u
+      bind = $MOD, J, movefocus, d
 
-      bind = SUPER, right, movefocus, l
-      bind = SUPER, left,  movefocus, r
-      bind = SUPER, up,    movefocus, u
-      bind = SUPER, down,  movefocus, d
+      bind = $MOD, right, movefocus, l
+      bind = $MOD, left,  movefocus, r
+      bind = $MOD, up,    movefocus, u
+      bind = $MOD, down,  movefocus, d
 
       # Focuses the next window on a workspace
-      bind = SUPER, comma, cyclenext, prev
+      bind = $MOD, comma, cyclenext, prev
 
       # Focuses the master window
-      bind = SUPER, M, layoutmsg, focusmaster auto
+      bind = $MOD, M, layoutmsg, focusmaster auto
 
       ## Move
 
       # Moves the active window in a direction
-      bind = SUPER SHIFT, H, movewindow, l
-      bind = SUPER SHIFT, J, movewindow, d
-      bind = SUPER SHIFT, K, movewindow, u
-      bind = SUPER SHIFT, L, movewindow, r
+      bind = $MOD SHIFT, H, movewindow, l
+      bind = $MOD SHIFT, J, movewindow, d
+      bind = $MOD SHIFT, K, movewindow, u
+      bind = $MOD SHIFT, L, movewindow, r
 
-      bind = SUPER SHIFT, down,  movewindow, d
-      bind = SUPER SHIFT, left,  movewindow, l
-      bind = SUPER SHIFT, right, movewindow, r
-      bind = SUPER SHIFT, up,    movewindow, u
+      bind = $MOD SHIFT, down,  movewindow, d
+      bind = $MOD SHIFT, left,  movewindow, l
+      bind = $MOD SHIFT, right, movewindow, r
+      bind = $MOD SHIFT, up,    movewindow, u
 
       # Swaps the focused window with the next one
-      bind = SUPER SHIFT, comma, swapnext, prev
+      bind = $MOD SHIFT, comma, swapnext, prev
 
       # Swaps the current window with master
-      bind = SUPER SHIFT, M, layoutmsg, swapwithmaster auto
+      bind = $MOD SHIFT, M, layoutmsg, swapwithmaster auto
 
       ## Resize
 
       # Resizes the active window
-      bind = SUPER CTRL, h, resizeactive, -50 0
-      bind = SUPER CTRL, j, resizeactive, 0 50
-      bind = SUPER CTRL, k, resizeactive, 0 -50
-      bind = SUPER CTRL, l, resizeactive, 50 0
+      bind = $MOD CTRL, h, resizeactive, -50 0
+      bind = $MOD CTRL, j, resizeactive, 0 50
+      bind = $MOD CTRL, k, resizeactive, 0 -50
+      bind = $MOD CTRL, l, resizeactive, 50 0
 
-      bind = SUPER CTRL, left, resizeactive, -50 0
-      bind = SUPER CTRL, down, resizeactive, 0 50
-      bind = SUPER CTRL, up, resizeactive, 0 -50
-      bind = SUPER CTRL, right, resizeactive, 50 0
+      bind = $MOD CTRL, left, resizeactive, -50 0
+      bind = $MOD CTRL, down, resizeactive, 0 50
+      bind = $MOD CTRL, up, resizeactive, 0 -50
+      bind = $MOD CTRL, right, resizeactive, 50 0
 
       ### Grouped windows ######
-      bind= SUPER, g, togglegroup
-      bind= SUPER, tab, changegroupactive
+      bind= $MOD, g, togglegroup
+      bind= $MOD, tab, changegroupactive
 
       ### Workspaces ######
-      bind = SUPER, x, togglespecialworkspace
-      bind = SUPERSHIFT, x, movetoworkspace, special
+      bind = $MOD, x, togglespecialworkspace
+      bind = $MODSHIFT, x, movetoworkspace, special
 
       # Change the workspace
-      bind = SUPER, 1, workspace, 1
-      bind = SUPER, 2, workspace, 2
-      bind = SUPER, 3, workspace, 3
-      bind = SUPER, 4, workspace, 4
-      bind = SUPER, 5, workspace, 5
-      bind = SUPER, 6, workspace, 6
-      bind = SUPER, 7, workspace, 7
-      bind = SUPER, 8, workspace, 8
-      bind = SUPER, 9, workspace, 9
+      bind = $MOD, 1, workspace, 1
+      bind = $MOD, 2, workspace, 2
+      bind = $MOD, 3, workspace, 3
+      bind = $MOD, 4, workspace, 4
+      bind = $MOD, 5, workspace, 5
+      bind = $MOD, 6, workspace, 6
+      bind = $MOD, 7, workspace, 7
+      bind = $MOD, 8, workspace, 8
+      bind = $MOD, 9, workspace, 9
 
       # Move focused window to a workspace
-      bind = SUPER SHIFT, 1, movetoworkspacesilent, 1
-      bind = SUPER SHIFT, 2, movetoworkspacesilent, 2
-      bind = SUPER SHIFT, 3, movetoworkspacesilent, 3
-      bind = SUPER SHIFT, 4, movetoworkspacesilent, 4
-      bind = SUPER SHIFT, 5, movetoworkspacesilent, 5
-      bind = SUPER SHIFT, 6, movetoworkspacesilent, 6
-      bind = SUPER SHIFT, 7, movetoworkspacesilent, 7
-      bind = SUPER SHIFT, 8, movetoworkspacesilent, 8
-      bind = SUPER SHIFT, 9, movetoworkspacesilent, 9
+      bind = $MOD SHIFT, 1, movetoworkspacesilent, 1
+      bind = $MOD SHIFT, 2, movetoworkspacesilent, 2
+      bind = $MOD SHIFT, 3, movetoworkspacesilent, 3
+      bind = $MOD SHIFT, 4, movetoworkspacesilent, 4
+      bind = $MOD SHIFT, 5, movetoworkspacesilent, 5
+      bind = $MOD SHIFT, 6, movetoworkspacesilent, 6
+      bind = $MOD SHIFT, 7, movetoworkspacesilent, 7
+      bind = $MOD SHIFT, 8, movetoworkspacesilent, 8
+      bind = $MOD SHIFT, 9, movetoworkspacesilent, 9
 
       # Move focused window to a workspace and switch to that workspace
-      bind = SUPER CTRL, 1, movetoworkspace, 1
-      bind = SUPER CTRL, 2, movetoworkspace, 2
-      bind = SUPER CTRL, 3, movetoworkspace, 3
-      bind = SUPER CTRL, 4, movetoworkspace, 4
-      bind = SUPER CTRL, 5, movetoworkspace, 5
+      bind = $MOD CTRL, 1, movetoworkspace, 1
+      bind = $MOD CTRL, 2, movetoworkspace, 2
+      bind = $MOD CTRL, 3, movetoworkspace, 3
+      bind = $MOD CTRL, 4, movetoworkspace, 4
+      bind = $MOD CTRL, 5, movetoworkspace, 5
 
-      bind = SUPER CTRL, 6, movetoworkspace, 6
-      bind = SUPER CTRL, 7, movetoworkspace, 7
-      bind = SUPER CTRL, 8, movetoworkspace, 8
-      bind = SUPER CTRL, 9, movetoworkspace, 9
+      bind = $MOD CTRL, 6, movetoworkspace, 6
+      bind = $MOD CTRL, 7, movetoworkspace, 7
+      bind = $MOD CTRL, 8, movetoworkspace, 8
+      bind = $MOD CTRL, 9, movetoworkspace, 9
 
 
       ### Mouse binds ############################## -->
-      bindm = SUPER, mouse:272,  movewindow
-      bindm = SUPER, mouse:273,  resizewindow
-      bind  = SUPER, mouse_down, workspace, e+1
-      bind  = SUPER, mouse_up,   workspace, e-1
+      bindm = $MOD, mouse:272,  movewindow
+      bindm = $MOD, mouse:273,  resizewindow
+      bind  = $MOD, mouse_down, workspace, e+1
+      bind  = $MOD, mouse_up,   workspace, e-1
     '';
   };
 }
