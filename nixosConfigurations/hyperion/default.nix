@@ -32,6 +32,8 @@
       "runelite"
       "sublime-merge"
       "font-iosevka"
+      "firefox"
+      "logitech-options"
       "obsidian"
       "element"
       "signal"
