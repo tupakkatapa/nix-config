@@ -13,6 +13,23 @@
     ./hardware-configuration.nix
   ];
 
+  # Greetd
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = builtins.concatStringsSep " " [
+          "${pkgs.greetd.tuigreet}/bin/tuigreet"
+          "--asterisks"
+          "--remember"
+          "--time"
+          "--cmd Hyprland"
+        ];
+        user = "greeter";
+      };
+    };
+  };
+
   # https://github.com/NixOS/nixpkgs/issues/143365
   security.pam.services = {swaylock = {};};
 
@@ -113,6 +130,7 @@
   environment.systemPackages = with pkgs; [
     oversteer
     openrgb
+    xow_dongle-firmware
   ];
 
   # Steam and gaming settings
