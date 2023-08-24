@@ -123,6 +123,9 @@
         # Patches and version overrides for some packages
         overlays = import ./overlays {inherit inputs;};
 
+        # Not upstreamed NixOS modules
+        #nixosModules = import ./modules;
+
         # NixOS configuration entrypoints
         nixosConfigurations =
           with nixpkgs.lib; {
