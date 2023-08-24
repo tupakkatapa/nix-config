@@ -8,6 +8,8 @@
 
       # Powerstate
       bios = "systemctl reboot --firmware-setup";
+      lock = "swaylock -S --daemonize";
+      logout = "hyprctl dispatch exit";
       rbt = "reboot";
       sdn = "shutdown -h now";
       sus = "systemctl suspend";
