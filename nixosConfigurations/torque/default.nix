@@ -44,6 +44,9 @@
   # Thumbnail support for images
   services.tumbler.enable = true;
 
+  # Enable ADB for android development
+  programs.adb.enable = true;
+
   # Enable clock and voltage adjustment for AMD GPU
   boot.kernelParams = [
     "amdgpu.ppfeaturemask=0xffffffff"

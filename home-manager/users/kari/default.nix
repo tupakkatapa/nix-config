@@ -27,6 +27,7 @@ in {
         "i2c"
         "podman"
         "libvirtd"
+        "adbusers"
       ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEdpdbTOz0h9tVvkn13k1e8X7MnctH3zHRFmYWTbz9T kari@torque"
@@ -98,6 +99,8 @@ in {
       ventoy
       obsidian
       sublime-merge
+      chromium
+      element
 
       # Music stuff
       ardour
@@ -108,8 +111,13 @@ in {
       osu-lazer
       runelite
 
-      # CLI Apps
+      # Android dev
       android-tools
+
+      # CLI Apps
+      zip
+      unzip
+      p7zip
       jq
       exa
       gnupg
