@@ -13,8 +13,8 @@ in {
     ./config/dunst.nix
     ./config/gtk.nix
     ./config/hyprland
-    ./config/swayidle.nix
-    ./config/swaylock.nix
+    #./config/swayidle.nix
+    #./config/swaylock.nix
     ./config/waybar.nix
     ./config/wofi.nix
   ];
