@@ -252,7 +252,7 @@ in {
       bind = $MOD, Backspace,    exec, ${TERMINAL}
 
       # Programs
-      bind = SUPER, C,            exec, code
+      bind = SUPER, C,            exec, codium ~/Workspace
       bind = SUPER, F,            exec, thunar
       bind = SUPER, B,            exec, ${BROWSER}
 
