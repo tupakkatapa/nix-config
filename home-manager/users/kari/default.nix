@@ -64,7 +64,7 @@ in {
   };
 
   # Home-manager config
-  home-manager.users."${user}" = {
+  home-manager.users."${user}" = rec {
     imports =
       [
         # GUI Apps
@@ -81,11 +81,27 @@ in {
       # Importing host-spesific home-manager config if it exists
       ++ optionalPaths [../../hosts/${config.networking.hostName}];
 
-    # Qjackctl presets
-    home.file = {
-      "focusrite_guitarix_v2.xml".source = ./config/qjackctl/focusrite_guitarix_v2.xml;
-      "focusrite_guitarix_ardour_v2.xml".source = ./config/qjackctl/focusrite_guitarix_ardour_v2.xml;
-    };
+    # Scripts and files
+    home.sessionPath = ["$HOME/.local/bin"];
+    home.file = let
+      scriptDir = ./scripts;
+      scriptFiles = builtins.readDir scriptDir;
+
+      # Places scripts in '~/.local/bin/', create it with systemd.tmpfiles
+      scriptAttrs =
+        builtins.mapAttrs (name: _: {
+          executable = true;
+          target = ".local/bin/${name}";
+          source = "${scriptDir}/${name}";
+        })
+        scriptFiles;
+
+      # Qjackctl presets
+      qjackctlPresets = {
+        "focusrite_guitarix_v2.xml".source = ./config/qjackctl/focusrite_guitarix_v2.xml;
+        "focusrite_guitarix_ardour_v2.xml".source = ./config/qjackctl/focusrite_guitarix_ardour_v2.xml;
+      };
+    in (scriptAttrs // qjackctlPresets);
 
     home.packages = with pkgs; [
       # GUI Apps
