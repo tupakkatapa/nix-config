@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Get the addresses
+public_ipv4=$(dig +short mike.homeunix.com)
+local_ip=$(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')
+
+# Display
+echo "IPv4: $public_ipv4"
+echo "Local: $local_ip"
