@@ -1,27 +1,45 @@
 #!/usr/bin/env bash
-# LSD - List and Summarize Directories
+# Script to list and summarize directories
 
 # Colors
-DIR_COLOR='\e[93;1m'    # Bright Magenta
-FILE_COLOR='\e[96;1m'   # Bright Cyan
-TOTAL_COLOR='\e[95;1m'  # Bright Yellow
+DIR_COLOR='\e[93;1m'
+FILE_COLOR='\e[96;1m'
+TOTAL_COLOR='\e[95;1m' 
 RESET_COLOR='\e[0m'
+
+print_listings() {
+    local type="$1"
+    sudo find . -maxdepth 1 -not -name '.' -type "$type" -exec sh -c 'du -sh "${1#./}"' _ {} \;
+}
+
+get_count() {
+    local type="$1"
+    sudo find . -maxdepth 1 -not -name '.' -type "$type" | wc -l
+}
 
 # Directories
 echo -en "${DIR_COLOR}"
-du -sh ./*/ | sed 's:/$::' | sort -hr 
+total_dirs=$(get_count d)
+if [ "$total_dirs" -gt 0 ]; then
+    print_listings d | sort -hr
+else
+    echo "No directories found."
+fi
 echo -en "${RESET_COLOR}"
 
 # Files
 echo "~~~"
 echo -en "${FILE_COLOR}"
-find . -maxdepth 1 -type f -exec sh -c 'du -sh "${1#./}"' _ {} \; | sort -hr
+total_files=$(get_count f)
+if [ "$total_files" -gt 0 ]; then
+    print_listings f  | sort -hr
+else
+    echo "No files found."
+fi
 echo -en "${RESET_COLOR}"
 
 # Totals
-total_files=$(find . -maxdepth 1 -type f | wc -l)
-total_dirs=$(find . -maxdepth 1 -type d | wc -l)
-total_size=$(du -shc | awk 'NR>1 {print $1}')
+total_size=$(sudo du -shc | awk 'NR>1 {print $1}')
 
 echo "~~~"
 echo -en "${TOTAL_COLOR}"
