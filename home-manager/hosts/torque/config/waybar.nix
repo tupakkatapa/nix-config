@@ -2,6 +2,18 @@
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
   blueberry = "${pkgs.blueberry}/bin/blueberry";
+
+  # Colors
+  background = "1e1e1e";
+  foreground = "e5e5e5";
+  accent = "ffce8a";
+  inactive = "444444";
+  blue = "7d9bba";
+  cyan = "8be9fd";
+  green = "66cc99";
+  orange = "ebcb8b";
+  red = "fb958b";
+  yellow = "ebcb8b";
 in {
   programs.waybar = {
     enable = true;
@@ -10,7 +22,6 @@ in {
       mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
     });
     settings.primary = {
-      mode = "dock";
       height = 20;
       margin-top = 3;
       margin-left = 10;
@@ -32,11 +43,12 @@ in {
       ];
 
       modules-right = [
+        "tray"
         "pulseaudio"
         "bluetooth"
         "network"
-        "tray"
-        "clock"
+        "clock#date"
+        "clock#time"
       ];
 
       cpu = {
@@ -120,10 +132,27 @@ in {
         format-disconnected = "";
       };
 
-      clock = {
-        format = "<span color='#bf616a'> </span>{:%I:%M %p}";
-        format-alt = "<span color='#bf616a'> </span>{:%d.%m.%Y}";
-        tooltip-format = "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>";
+      "clock#time" = {
+        format = "{:%I:%M %p}";
+      };
+
+      "clock#date" = {
+        format = "{:%d.%m.%Y}";
+        tooltip-format = "<tt><small>{calendar}</small></tt>";
+        calendar = {
+          mode = "year";
+          "mode-mon-col" = 3;
+          "weeks-pos" = "right";
+          "on-scroll" = 1;
+          "on-click-right" = "mode";
+          format = {
+            months = "<span color='#${red}'><b>{}</b></span>";
+            days = "<span color='#${foreground}'><b>{}</b></span>";
+            weeks = "<span color='#${inactive}'><b>W{}</b></span>";
+            weekdays = "<span color='#${yellow}'><b>{}</b></span>";
+            today = "<span color='#${green}'><b><u>{}</u></b></span>";
+          };
+        };
       };
 
       battery = {
@@ -152,7 +181,7 @@ in {
       /* Waybar Styles */
       window#waybar {
         background-color: transparent;
-        color: #ffffff;
+        color: #${foreground};
         transition-property: background-color;
         transition-duration: 0.5s;
         border-radius: 0;
@@ -163,13 +192,13 @@ in {
       #workspaces {
         border-radius: 20px;
         padding: 0 10px;
-        background-color: #1e1e1e;
+        background-color: #${background};
       }
 
       /* Workspace Button Styles */
       #workspaces button {
         padding: 0 0;
-        color: #7984a4;
+        color: #${inactive};
         background-color: transparent;
         box-shadow: inset 0 -3px transparent;
         border: none;
@@ -177,7 +206,7 @@ in {
       }
 
       #workspaces button.active {
-        color: #fff;
+        color: #${foreground};
       }
 
       /* Global Item Styles */
@@ -193,59 +222,56 @@ in {
       #custom-hostname,
       #bluetooth {
         padding: 0 15px;
-        color: #e5e5e5;
+        color: #${foreground};
         border-radius: 20px;
-        background-color: #1e1e1e;
+        background-color: #${background};
       }
 
       /* Item Styles */
       #cpu {
-        color: #fb958b;
-        background-color: #1e1e1e;
+        color: #${red};
       }
 
       #memory {
-        color: #ebcb8b;
-        background-color: #1e1e1e;
-      }
-
-      #pulseaudio {
-        color: #7d9bba;
+        color: #${yellow};
       }
 
       #disk {
-        color: #66cc99;
-        background-color: #1e1e1e;
+        color: #${green};
+      }
+
+      #pulseaudio {
+        color: #${cyan};
       }
 
       #bluetooth {
-        color: #8be9fd;
+        color: #${cyan};
       }
 
       #bluetooth.disconnected {
-        color: #f53c3c;
+        color: #${cyan};
       }
 
       #network {
-        color: #ebcb8b;
+        color: #${yellow};
       }
 
       #network.disconnected {
-        color: #f53c3c;
+        color: #${yellow};
       }
 
       #battery {
-        color: #c0caf5;
+        color: #${green};
       }
 
       #battery.charging,
       #battery.full,
       #battery.plugged {
-        color: #26a65b;
+        color: #${green};
       }
 
       #battery.critical:not(.charging) {
-        color: #f53c3c;
+        color: #${red};
         animation-name: blink;
         animation-duration: 0.5s;
         animation-timing-function: linear;
@@ -259,7 +285,7 @@ in {
 
       #tray > .needs-attention {
         -gtk-icon-effect: highlight;
-        background-color: #eb4d4b;
+        background-color: #${background};
       }
     '';
   };
