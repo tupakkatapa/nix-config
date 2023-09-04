@@ -1,5 +1,15 @@
 {config, ...}: let
   inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR;
+
+  # Colors
+  accent = "ffce8a";
+  inactive = "444444";
+  blue = "7d9bba";
+  cyan = "8be9fd";
+  green = "66cc99";
+  orange = "ebcb8b";
+  red = "fb958b";
+  yellow = "ebcb8b";
 in {
   home.sessionVariables = {
     MOZ_ENABLE_WAYLAND = "1";
@@ -83,8 +93,8 @@ in {
       ### General ################################## -->
       general {
         border_size           = 2
-        col.active_border     = 0xffffce8a
-        col.inactive_border   = 0xff444444
+        col.active_border     = rgb(${accent})
+        col.inactive_border   = rgb(${inactive})
         gaps_in               = 5
         gaps_out              = 5
         layout                = master
