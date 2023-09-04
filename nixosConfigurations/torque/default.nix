@@ -4,9 +4,14 @@
   config,
   ...
 }: {
-  # Timezone and system version
+  # Timezone, system version and locale
   time.timeZone = "Europe/Helsinki";
   system.stateVersion = "23.11";
+  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.extraLocaleSettings = {
+    LC_MESSAGES = "en_US.UTF-8";
+    LC_TIME = "fi_FI.UTF-8";
+  };
 
   # Import hardware configuration
   imports = [
