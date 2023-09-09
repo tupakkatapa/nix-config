@@ -18,6 +18,35 @@
     ./hardware-configuration.nix
   ];
 
+  # Greetd
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = builtins.concatStringsSep " " [
+          "${pkgs.greetd.tuigreet}/bin/tuigreet"
+          "--asterisks"
+          "--remember"
+          "--time"
+          "--cmd Hyprland"
+        ];
+        user = "greeter";
+      };
+    };
+  };
+  # https://www.reddit.com/r/NixOS/comments/u0cdpi/tuigreet_with_xmonad_how/
+  systemd.services.greetd.serviceConfig = {
+    Type = "idle";
+    StandardInput = "tty";
+    StandardOutput = "tty";
+    # Without this errors will spam on screen
+    StandardError = "journal";
+    # Without these bootlogs will spam on screen
+    TTYReset = true;
+    TTYVHangup = true;
+    TTYVTDisallocate = true;
+  };
+
   # https://github.com/NixOS/nixpkgs/issues/143365
   security.pam.services = {swaylock = {};};
 
@@ -48,6 +77,9 @@
   services.gvfs.enable = true;
   # Thumbnail support for images
   services.tumbler.enable = true;
+
+  # Enable ADB for android development
+  programs.adb.enable = true;
 
   # Use the latest kernel
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
@@ -94,7 +126,10 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    jack.enable = true;
   };
+  # Make pipewire realtime-capable
+  security.rtkit.enable = true;
 
   # Firmware blobs
   hardware.enableRedistributableFirmware = true;
