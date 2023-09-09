@@ -116,7 +116,6 @@ in {
       obsidian
       sublime-merge
       chromium
-      element
       libreoffice-qt
 
       # Music stuff
