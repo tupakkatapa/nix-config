@@ -44,6 +44,18 @@
       fish_greeting = "";
     };
     interactiveShellInit =
+      # Banner
+      ''
+        if test -e ~/.local/bin/print-quote
+          ~/.local/bin/print-quote
+        end
+      ''
+      +
+      # Manpager
+      ''
+        set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+      ''
+      +
       # Use vim bindings and cursors
       ''
         fish_vi_key_bindings
