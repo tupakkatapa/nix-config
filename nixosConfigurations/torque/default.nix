@@ -64,19 +64,8 @@
     noto-fonts-emoji
   ];
 
-  # Thunar
-  programs.thunar.enable = true;
-  programs.thunar.plugins = with pkgs.xfce; [
-    thunar-media-tags-plugin
-    thunar-archive-plugin
-    thunar-volman
-  ];
-  # Archive manager
-  programs.file-roller.enable = true;
-  # Mount, trash, and other functionalities
+  # Enable GVfs service for file managers to work properly
   services.gvfs.enable = true;
-  # Thumbnail support for images
-  services.tumbler.enable = true;
 
   # Enable ADB for android development
   programs.adb.enable = true;

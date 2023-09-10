@@ -19,9 +19,16 @@ in {
     ./config/wofi.nix
   ];
 
+  home.sessionVariables = {
+    FILEMANAGER = lib.mkDefault "nautilus";
+  };
+
   home.packages = with pkgs; [
-    # GUI Apps
-    nsxiv
+    # File manager
+    gnome3.nautilus
+    gnome3.file-roller
+    zathura
+    imv
 
     # WM Apps
     blueberry
