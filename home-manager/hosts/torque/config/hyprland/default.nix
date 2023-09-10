@@ -226,6 +226,9 @@ in {
       windowrule = float, title:wlogout
       windowrule = float, viewnior
       windowrule = float, Viewnior
+      windowrule = float, Nautilus
+      windowrule = float, imv
+      windowrule = float, org.pwmt.zathura
 
       # Floats a window and resizes
       windowrule = float, title:RuneLite
