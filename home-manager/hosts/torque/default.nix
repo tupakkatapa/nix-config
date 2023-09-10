@@ -5,7 +5,7 @@
   lib,
   ...
 }: let
-  # TODO: inputs not in scope, hence commented out hyprprop
+  # Allow access to flake inputs with 'home-manager.extraSpecialArgs = { inherit inputs; };'
   hyprprop = inputs.hyprwm-contrib.packages.${pkgs.system}.hyprprop;
 in {
   # Just a reminder that this file should be imported under 'home-manager.users.<username>'
@@ -35,7 +35,7 @@ in {
     grim
     gummy
     hyprpicker
-    #hyprprop
+    hyprprop
     jq
     mpv
     pamixer

@@ -63,6 +63,9 @@ in {
     };
   };
 
+  # Allows access to flake inputs
+  home-manager.extraSpecialArgs = {inherit inputs;};
+
   # Home-manager config
   home-manager.users."${user}" = rec {
     imports =
