@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Simple script for printing random movie quote
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+JSON="${SCRIPT_DIR}/movie-quotes.json"
+MAX_LENGTH=83
+URL="https://raw.githubusercontent.com/prasertcbs/basic-dataset/master/movie_quotes.json"
+
+if [ ! -f "$JSON" ]; then
+  # Download JSON if it doesn't exist
+  echo "[+] Downloading movie-quotes.json..."
+  curl -sL "$URL" -o "$JSON"
+fi
+
+if [ -f "$JSON" ]; then
+  ITEM=$(grep -oP '(?<="quote": )(.*)(?=,)' "${JSON}" | grep -x ".\{,${MAX_LENGTH}\}" | shuf -n 1)
+  echo -e "  ${ITEM}\n"
+else
+  echo "[-] movie-quotes.json doesn't exist and couldn't be downloaded." && exit 1
+fi
