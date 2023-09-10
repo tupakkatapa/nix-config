@@ -106,6 +106,16 @@ in {
       };
     in (scriptAttrs // qjackctlPresets);
 
+    # Default apps
+    xdg.mimeApps.enable = true;
+    xdg.mimeApps.defaultApplications = {
+      "application/msword" = ["writer.desktop"];
+      "application/vnd.oasis.opendocument.spreadsheet" = ["impress.desktop"];
+      "application/vnd.oasis.opendocument.text" = ["writer.desktop"];
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = ["writer.desktop"];
+      "text/csv" = ["impress.desktop"];
+    };
+
     home.packages = with pkgs; [
       # GUI Apps
       discord
@@ -118,7 +128,6 @@ in {
       ventoy
       obsidian
       sublime-merge
-      chromium
       libreoffice-qt
 
       # Music stuff

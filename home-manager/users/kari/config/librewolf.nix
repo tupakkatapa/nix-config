@@ -7,16 +7,14 @@
     BROWSER = lib.mkDefault "librewolf";
   };
 
-  # https://librewolf.net/docs/faq/#cant-open-links-with-librewolf-when-using-wayland
-  home.file = {
-    ".local/share/applications/librewolf.desktop".source = "${pkgs.librewolf}/share/applications/librewolf.desktop";
-  };
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = {
     "text/html" = ["librewolf.desktop"];
     "text/xml" = ["librewolf.desktop"];
     "x-scheme-handler/http" = ["librewolf.desktop"];
     "x-scheme-handler/https" = ["librewolf.desktop"];
+    "x-scheme-handler/about" = ["librewolf.desktop"];
+    "x-scheme-handler/unknown" = ["librewolf.desktop"];
   };
 
   programs.librewolf = {

@@ -1,5 +1,8 @@
 {pkgs, ...}: {
-  nixpkgs.config.allowUnfree = true;
+  xdg.mimeApps.defaultApplications = {
+    "text/plain" = ["codium.desktop"];
+  };
+
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;
