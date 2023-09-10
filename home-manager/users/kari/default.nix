@@ -143,6 +143,7 @@ in {
       android-tools
 
       # CLI Apps
+      bat
       zip
       unzip
       p7zip
