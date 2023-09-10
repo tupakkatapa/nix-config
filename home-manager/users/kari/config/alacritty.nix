@@ -11,8 +11,8 @@
     enable = true;
     settings = {
       window.padding = {
-        x = 10;
-        y = 10;
+        x = 20;
+        y = 20;
       };
       font = {
         normal = {
