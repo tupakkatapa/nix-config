@@ -120,7 +120,6 @@ in {
       # GUI Apps
       discord
       ferdium
-      plex-media-player
       plexamp
       qemu
       mpv
