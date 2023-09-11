@@ -13,7 +13,9 @@
         timonwong.shellcheck
         dart-code.flutter
         rust-lang.rust-analyzer
+        tyriar.sort-lines
       ]
+      # Example for adding extensions from a marketplace
       # ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       #   {
       #     name = "rainbow-brackets-2";
@@ -32,6 +34,7 @@
       "editor.insertSpaces" = true;
       "editor.tabSize" = 2;
       "terminal.integrated.fontFamily" = "JetBrains Mono";
+      "window.menuBarVisibility" = "toggle";
     };
   };
 }

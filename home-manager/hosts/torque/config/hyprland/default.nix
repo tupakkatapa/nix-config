@@ -213,7 +213,7 @@ in {
       windowrule = float, pavucontrol-qt
       windowrule = float, putty
       windowrule = float, qemu
-      windowrule = float, qjackctl
+      windowrule = float, QjackCtl
       windowrule = float, Rofi
       windowrule = float, solaar
       windowrule = float, splash

@@ -21,6 +21,7 @@ in {
         "wheel"
       ]
       ++ optionalGroups [
+        "rtkit"
         "input"
         "jackaudio"
         "users"
@@ -142,6 +143,7 @@ in {
       android-tools
 
       # CLI Apps
+      webcat
       bat
       zip
       unzip
