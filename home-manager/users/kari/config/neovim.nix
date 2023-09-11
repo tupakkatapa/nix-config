@@ -7,22 +7,80 @@
     EDITOR = lib.mkDefault "nvim";
   };
 
-  programs.neovim = {
+  programs.nixvim = {
     enable = true;
-    coc.enable = true;
-    coc.settings = {
-      "languageserver" = {
-        nix = {
-          command = "nil";
-          filetypes = ["nix"];
-          rootPatterns = ["flake.nix"];
+    clipboard.providers.wl-copy.enable = true;
+    globals = {
+      mapleader = " ";
+    };
+    maps = {
+      normalVisualOp = {
+        "<C-s>" = {
+          action = "<cmd>w<cr><esc>";
+          desc = "Save File";
+        };
+      };
+      normal = {
+        "<leader>ff" = {
+          action = "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>";
+          desc = "Find Files";
         };
       };
     };
-    defaultEditor = true;
-    extraPackages = with pkgs; [
-      nil
-    ];
+    options = {
+      cursorline = true;
+      swapfile = false;
+      relativenumber = true;
+    };
+    plugins = {
+      indent-blankline = {
+        enable = true;
+        #showCurrentContext = true;
+        #showCurrentContextStart = true;
+      };
+      nix.enable = true;
+      gitsigns.enable = true;
+      lsp = {
+        enable = true;
+        servers = {
+          bashls.enable = true;
+          nixd.enable = true;
+          yamlls.enable = true;
+        };
+      };
+      telescope = {
+        enable = true;
+        extensions.fzf-native.enable = true;
+      };
+      treesitter = {
+        enable = true;
+        nixvimInjections = true;
+        indent = true;
+        grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+          bash
+          c # c is implicit dependency, not specifying it will lead to healtcheck errors
+          diff
+          fish
+          git_config
+          git_rebase
+          gitattributes
+          gitcommit
+          gitignore
+          json
+          lua
+          luadoc
+          make
+          markdown
+          nix
+          query # implicit
+          regex
+          toml
+          vim
+          vimdoc
+          yaml
+        ];
+      };
+    };
   };
 
   editorconfig = {

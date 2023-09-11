@@ -15,6 +15,8 @@
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     pre-commit-hooks-nix.url = "github:hercules-ci/pre-commit-hooks.nix/flakeModule";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    nixvim.url = "github:nix-community/nixvim";
   };
 
   # Add the inputs declared above to the argument attribute set
@@ -23,6 +25,7 @@
     darwin,
     flake-parts,
     home-manager,
+    nixvim,
     nixpkgs,
     nixpkgs-stable,
     ...
@@ -94,6 +97,11 @@
             ./system
             ./system/bootloaders/default.nix
             home-manager.nixosModules.home-manager
+            {
+              home-manager.sharedModules = [
+                nixvim.homeManagerModules.nixvim
+              ];
+            }
           ];
         };
 
@@ -106,6 +114,11 @@
             ./system
             ./system/bootloaders/default.nix
             home-manager.nixosModules.home-manager
+            {
+              home-manager.sharedModules = [
+                nixvim.homeManagerModules.nixvim
+              ];
+            }
           ];
         };
 
