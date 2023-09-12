@@ -143,6 +143,8 @@ in {
       android-tools
 
       # CLI Apps
+      parallel
+      fd
       webcat
       bat
       zip
