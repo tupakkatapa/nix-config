@@ -109,6 +109,7 @@ in {
         format = "{icon} {volume}%";
         format-muted = " 0%";
         format-icons = {
+          "bluez_output.80_7B_1E_02_53_95.1" = ""; # CORSAIR VIRTUOSO XT Bluetooth
           "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo" = "";
           "alsa_output.pci-0000_0a_00.1.hdmi-stereo" = "";
           headphone = "";
@@ -122,8 +123,14 @@ in {
         format = " on";
         format-disabled = " off";
         format-connected = " {device_alias}";
-        format-connected_battery = " {device_alias} {device_battery_percentage}%";
+        format-connected-battery = " {device_alias} {device_battery_percentage}%";
         on-click = blueberry;
+        tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
+        tooltip-format-connected = "{controller_alias}\t\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
+        tooltip-format-enumerate-connected = "{device_alias}\t\t{device_address}";
+        tooltip-format-enumerate-connected-battery = "{device_alias}\t\t{device_address}\t{device_battery_percentage}%";
+        # Display order preference, since only one device is shown
+        format-device-preference = ["CORSAIR VIRTUOSO XT Bluetooth" "MX Keys" "MX Master 2S"];
       };
 
       network = {
