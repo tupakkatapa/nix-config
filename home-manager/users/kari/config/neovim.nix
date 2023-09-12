@@ -15,6 +15,10 @@
     globals = {
       mapleader = " ";
     };
+    colorschemes.gruvbox = {
+      enable = true;
+      contrastDark = "medium";
+    };
     maps = {
       normalVisualOp = {
         "<C-s>" = {
@@ -42,6 +46,8 @@
       };
       nix.enable = true;
       gitsigns.enable = true;
+      todo-comments.enable = true;
+      comment-nvim.enable = true;
       lsp = {
         enable = true;
         servers = {
