@@ -266,7 +266,7 @@ in {
 
       # Programs
       bind = SUPER, C,            exec, codium ~/Workspace
-      bind = SUPER, V,            exec, [tile]${TERMINAL} -e sh -c 'cd ~/Workspace && tmux new-session "${EDITOR} ~/Workspace" \; split-window -v -p 10 \; select-pane -t 0'
+      bind = SUPER, V,            exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~/Workspace'
       bind = SUPER, F,            exec, ${FILEMANAGER}
       bind = SUPER, B,            exec, ${BROWSER}
 
