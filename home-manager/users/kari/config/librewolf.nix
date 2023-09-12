@@ -33,6 +33,7 @@
       "privacy.trackingprotection.enabled" = true;
       "signon.rememberSignons" = false;
       "font.name.serif.x-western" = "JetBrains Mono";
+      # https://gitlab.com/calvinchd/gruvbox-dark-firefox-theme
       "extensions.activeThemeID" = "{eb8c4a94-e603-49ef-8e81-73d3c4cc04ff}";
     };
   };

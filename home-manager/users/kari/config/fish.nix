@@ -44,14 +44,14 @@
       fish_greeting = "";
     };
     interactiveShellInit =
-      # Banner
+      # Print banner
       ''
         if test -e ~/.local/bin/print-quote
           ~/.local/bin/print-quote
         end
       ''
       +
-      # Manpager
+      # Set pager
       ''
         set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
       ''

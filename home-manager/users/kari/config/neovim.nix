@@ -1,3 +1,5 @@
+# https://github.com/hmajid2301/dotfiles/tree/46c58a86d2118e0e2f8df224cd2ebe1c0e1ab51e/home-manager/editors/nvim
+# https://github.com/jhvst/nix-config/blob/main/nixosModules/neovim/default.nix
 {
   lib,
   pkgs,

@@ -7,6 +7,8 @@
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;
+    # If the extensions don't load correctly, you probably have installed some extensions ad hoc
+    # In that case, comment these out, rebuild and uninstall any extensions if there are any
     extensions =
       with pkgs.vscode-extensions; [
         bbenoist.nix
