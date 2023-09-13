@@ -19,6 +19,7 @@ in {
         "audio"
         "video"
         "wheel"
+        "users"
       ]
       ++ optionalGroups [
         "rtkit"
