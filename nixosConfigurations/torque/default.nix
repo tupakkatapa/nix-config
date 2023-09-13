@@ -4,6 +4,13 @@
   config,
   ...
 }: {
+  # Bootloader for x86_64-linux / aarch64-linux
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # Use the latest kernel
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
+
   # Timezone, system version and locale
   time.timeZone = "Europe/Helsinki";
   system.stateVersion = "23.11";
@@ -74,9 +81,6 @@
   boot.kernelParams = [
     "amdgpu.ppfeaturemask=0xffffffff"
   ];
-
-  # Use the latest kernel
-  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
 
   # RGB
   systemd.services.openrgb = {

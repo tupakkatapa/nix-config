@@ -95,7 +95,6 @@
             ./nixosConfigurations/torque
             ./home-manager/users/kari
             ./system
-            ./system/bootloaders/default.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.sharedModules = [
@@ -112,7 +111,6 @@
             ./nixosConfigurations/maliwan
             ./home-manager/users/kari
             ./system
-            ./system/bootloaders/default.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.sharedModules = [
