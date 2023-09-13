@@ -129,6 +129,7 @@ in {
       obsidian
       sublime-merge
       libreoffice-qt
+      czkawka
 
       # Music stuff
       ardour
