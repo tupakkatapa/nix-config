@@ -140,7 +140,7 @@ in {
       };
 
       "clock#time" = {
-        format = "{:%I:%M %p}";
+        format = "{:%H:%M}";
       };
 
       "clock#date" = {
