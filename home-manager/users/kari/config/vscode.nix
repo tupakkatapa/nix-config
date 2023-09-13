@@ -9,24 +9,23 @@
     package = pkgs.vscodium;
     # If the extensions don't load correctly, you probably have installed some extensions ad hoc
     # In that case, comment these out, rebuild and uninstall any extensions if there are any
-    extensions =
-      with pkgs.vscode-extensions; [
+    extensions = with pkgs.vscode-extensions;
+      [
         bbenoist.nix
         timonwong.shellcheck
         dart-code.flutter
         rust-lang.rust-analyzer
         tyriar.sort-lines
+        jdinhlife.gruvbox
       ]
-      # Example for adding extensions from a marketplace
-      # ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-      #   {
-      #     name = "rainbow-brackets-2";
-      #     publisher = "tejasvi";
-      #     version = "1.1.0";
-      #     sha256 = "sha256-07ZIZD8Bt1Z1hhs+AM2LYSEFMNRqjZFog6H0bGqblLs=";
-      #   }
-      # ]
-      ;
+      ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+        {
+          name = "markdown-preview-github-styles";
+          publisher = "bierner";
+          version = "2.0.2";
+          sha256 = "sha256-GiSS9gCCmOfsBrzahJe89DfyFyJJhQ8tkXVJbfibHQY=";
+        }
+      ];
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
     userSettings = {
@@ -37,6 +36,7 @@
       "editor.tabSize" = 2;
       "terminal.integrated.fontFamily" = "JetBrains Mono";
       "window.menuBarVisibility" = "toggle";
+      "workbench.colorTheme" = "Gruvbox Dark Medium";
     };
   };
 }
