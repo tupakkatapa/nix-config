@@ -15,9 +15,9 @@
       sus = "systemctl suspend";
       win = "systemctl reboot --boot-loader-entry=auto-windows";
 
-      # Changing 'ls' to 'exa'
-      ls = "exa -al --color=always --group-directories-first";
-      tree = "exa -T";
+      # Changing 'ls' to 'eza'
+      ls = "eza -al --color=always --group-directories-first";
+      tree = "eza -T";
 
       # Rsync
       rcp = "rsync -PaL";

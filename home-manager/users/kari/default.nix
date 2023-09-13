@@ -152,7 +152,7 @@ in {
       unzip
       p7zip
       jq
-      exa
+      eza
       gnupg
       htop
       iputils
