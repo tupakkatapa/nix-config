@@ -145,6 +145,7 @@ in {
       android-tools
 
       # CLI Apps
+      nmap
       parallel
       fd
       webcat
