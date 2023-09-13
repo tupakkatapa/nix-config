@@ -81,9 +81,9 @@
 
         # Custom packages and aliases for building hosts
         # Accessible through 'nix build', 'nix run', etc
-        # packages = with flake.nixosConfigurations; {
-        #   "hostname" = hostname.config.system.build.kexecTree;
-        # };
+        packages = with flake.nixosConfigurations; {
+          "jakobs" = jakobs.config.system.build.kexecTree;
+        };
       };
       flake = let
         inherit (self) outputs;
@@ -135,6 +135,17 @@
             }
           ];
         };
+
+        jakobs = {
+          system = "aarch64-linux";
+          specialArgs = {inherit inputs outputs;};
+          modules = [
+            ./nixosConfigurations/jakobs
+            ./home-manager/users/kari/minimal.nix
+            ./system
+            ./system/formats/netboot-kexec.nix
+          ];
+        };
       in {
         # Patches and version overrides for some packages
         overlays = import ./overlays {inherit inputs;};
@@ -143,13 +154,14 @@
         #nixosModules = import ./modules;
 
         # NixOS configuration entrypoints
-        nixosConfigurations =
-          with nixpkgs.lib; {
+        nixosConfigurations = with nixpkgs.lib;
+          {
             "torque" = nixosSystem torque;
             "maliwan" = nixosSystem maliwan;
           }
-          # // (with nixpkgs-stable.lib; {})
-          ;
+          // (with nixpkgs-stable.lib; {
+            "jakobs" = nixosSystem jakobs;
+          });
 
         # Darwin configuration entrypoints
         darwinConfigurations = with darwin.lib; {
