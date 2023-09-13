@@ -130,6 +130,11 @@
             ./home-manager/users/kari/darwin.nix
             ./system/nix-settings.nix
             home-manager.darwinModules.home-manager
+            {
+              home-manager.sharedModules = [
+                nixvim.homeManagerModules.nixvim
+              ];
+            }
           ];
         };
       in {
