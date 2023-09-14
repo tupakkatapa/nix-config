@@ -1,5 +1,5 @@
 ## My NixOS Configurations
-| &nbsp; &nbsp; Hostname  &nbsp; &nbsp; | &nbsp; &nbsp; System &nbsp; &nbsp; | &nbsp; &nbsp; Format &nbsp; &nbsp; | &nbsp; &nbsp; Users &nbsp; &nbsp; |  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Info  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+| &nbsp; &nbsp; Hostname  &nbsp; &nbsp; | &nbsp; &nbsp; System &nbsp; &nbsp; | &nbsp; &nbsp; Format &nbsp; &nbsp; | &nbsp; &nbsp; Users &nbsp; &nbsp; |  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Info  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 | :-: | :-: | :-: | :-: | :-:
 [torque](nixosConfigurations/torque/default.nix)  | x86_64  | persistent   | [kari](home-manager/users/kari/default.nix)  | AMD Desktop, Hyprland
 [maliwan](nixosConfigurations/maliwan/default.nix) | x86_64  | persistent   | [kari](home-manager/users/kari/default.nix)  | Intel Laptop, Hyprland
