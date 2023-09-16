@@ -123,6 +123,10 @@
   };
   hardware.bluetooth.enable = true;
 
+  # Logitech Unifying Receiver
+  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless.enableGraphical = true;
+
   # Audio settings
   services.pipewire = {
     enable = true;
@@ -141,6 +145,7 @@
   environment.systemPackages = with pkgs; [
     oversteer
     openrgb
+    solaar
     xow_dongle-firmware
   ];
 
