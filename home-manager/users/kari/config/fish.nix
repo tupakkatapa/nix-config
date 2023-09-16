@@ -1,4 +1,14 @@
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
+  inherit (lib) mkIf;
+  hasPackage = pname: lib.any (p: p ? pname && p.pname == pname) config.home.packages;
+  hasNeovim = config.programs.neovim.enable || config.programs.nixvim.enable;
+  hasEza = hasPackage "eza";
+in {
   programs.fish = {
     enable = true;
     shellAbbrs = {
@@ -16,12 +26,12 @@
       win = "systemctl reboot --boot-loader-entry=auto-windows";
 
       # Changing 'ls' to 'eza'
-      ls = "eza -al --color=always --group-directories-first";
-      tree = "eza -T";
+      ls = mkIf hasEza "eza -al --color=always --group-directories-first";
+      tree = mkIf hasEza "eza -T";
 
       # Rsync
-      rcp = "rsync -PaL";
-      rmv = "rsync -PaL --remove-source-files";
+      rcp = "rsync -IPaL";
+      rmv = "rsync -IPaL --remove-source-files";
 
       # Adding flags
       df = "df -h";
@@ -35,7 +45,7 @@
       rm = "rm -i";
 
       # Misc
-      vim = "nvim";
+      vim = mkIf hasNeovim "nvim";
       code = "codium";
       buidl = "sudo nixos-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
       buidl-darwin = "nix build path:$HOME/Workspace/nix-config#darwinConfigurations.$(hostname).system --show-trace && ./result/sw/bin/darwin-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
