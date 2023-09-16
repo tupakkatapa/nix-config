@@ -123,12 +123,6 @@ in {
         active_opacity   = 1.0
         inactive_opacity = 1.0
 
-        # Blur
-        blur                   = true
-        blur_new_optimizations = true
-        blur_passes            = 3
-        blur_size              = 3
-
         # Blurls
         blurls = gtk-layer-shell
         blurls = lockscreen
