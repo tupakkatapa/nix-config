@@ -8,6 +8,7 @@
     darwin.url = "github:lnl7/nix-darwin";
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-root.url = "github:srid/flake-root";
+    mission-control.url = "github:Platonic-Systems/mission-control";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     hyprwm-contrib.url = "github:hyprwm/contrib";
@@ -33,6 +34,7 @@
     flake-parts.lib.mkFlake {inherit inputs;} rec {
       imports = [
         inputs.flake-root.flakeModule
+        inputs.mission-control.flakeModule
         inputs.pre-commit-hooks-nix.flakeModule
       ];
       systems = [
@@ -59,6 +61,19 @@
           };
         };
 
+        # Development tools for devshell
+        mission-control.scripts = {
+          jakobs-update = {
+            description = "Build jakobs, update netboot files and reboot it.";
+            exec = ''
+              nix build --no-warn-dirty path:.#jakobs \
+              && rsync -PaLI result/* kari@vladof:/srv/sftp/root/netboot \
+              && ssh kari@jakobs "sudo reboot"
+            '';
+            category = "Development Tools";
+          };
+        };
+
         # Devshells for bootstrapping
         # Accessible through 'nix develop' or 'nix-shell' (legacy)
         devShells.default = pkgs.mkShell {
@@ -73,6 +88,7 @@
           ];
           inputsFrom = [
             config.flake-root.devShell
+            config.mission-control.devShell
           ];
           shellHook = ''
             ${config.pre-commit.installationScript}
@@ -148,14 +164,15 @@
         };
       in {
         # NixOS configuration entrypoints
-        nixosConfigurations = with nixpkgs.lib;
-          {
+        nixosConfigurations =
+          with nixpkgs.lib; {
             "torque" = nixosSystem torque;
             "maliwan" = nixosSystem maliwan;
-          }
-          // (with nixpkgs-stable.lib; {
             "jakobs" = nixosSystem jakobs;
-          });
+          }
+          # // (with nixpkgs-stable.lib; {
+          # })
+          ;
 
         # Darwin configuration entrypoints
         darwinConfigurations = with darwin.lib; {
