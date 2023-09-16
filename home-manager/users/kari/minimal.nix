@@ -25,4 +25,13 @@ in {
   users.groups.${user} = {};
   environment.shells = [pkgs.fish];
   programs.fish.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    rsync
+    nix
+    git
+    tmux
+    vim
+    wget
+  ];
 }
