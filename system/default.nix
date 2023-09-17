@@ -34,11 +34,11 @@
 
   environment.systemPackages = with pkgs; [
     btrfs-progs
-    kexec-tools
     fuse-overlayfs
     bind
     file
     vim
+    nix
   ];
 
   # Enable podman with DNS

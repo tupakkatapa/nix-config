@@ -119,60 +119,66 @@ in {
     };
 
     home.packages = with pkgs; [
-      # GUI Apps
+      #### GUI
+      czkawka
       discord
       ferdium
+      libreoffice-qt
+      mpv
+      obsidian
       plexamp
       qemu
-      mpv
       rpi-imager
-      ventoy
-      obsidian
       sublime-merge
-      libreoffice-qt
-      czkawka
+      ventoy
 
-      # Music stuff
+      # Music Production
       ardour
       guitarix
       qjackctl
 
-      # High quality games
+      # High Quality Games
       osu-lazer
       runelite
 
-      # Android dev
+      #### CLI
       android-tools
-
-      # CLI Apps
-      nmap
-      parallel
-      fd
-      webcat
-      bat
-      zip
-      unzip
-      p7zip
-      jq
-      eza
+      ffmpeg
       gnupg
+      jq
+      parallel
+      ssh-to-age
+      tmux
+      wget
+      yt-dlp
+
+      # System Utilities
       htop
-      iputils
       kexec-tools
       lshw
       neofetch
-      nix
       nix-tree
-      ripgrep
+
+      # Networking
+      iputils
+      nmap
       rsync
-      ssh-to-age
       sshfs
-      tmux
-      vim
-      wget
+      webcat
       wireguard-go
       wireguard-tools
-      yt-dlp
+
+      # Alternatives
+      bat
+      eza
+      fd
+      ripgrep
+
+      # Archive
+      p7zip
+      unrar
+      unzip
+      zip
     ];
 
     programs.home-manager.enable = true;
