@@ -83,13 +83,15 @@ in {
 
       ### General ################################## -->
       general {
-        border_size           = 2
-        col.active_border     = rgb(${accent})
-        col.inactive_border   = rgb(${inactive})
-        gaps_in               = 5
-        gaps_out              = 5
-        layout                = master
-        no_border_on_floating = false
+        border_size             = 2
+        col.active_border       = rgb(${accent})
+        col.inactive_border     = rgb(${inactive})
+        col.group_border_active = rgb(${accent})
+        col.group_border        = rgb(${inactive})
+        gaps_in                 = 5
+        gaps_out                = 5
+        layout                  = dwindle
+        no_border_on_floating   = false
       }
 
 
@@ -100,6 +102,8 @@ in {
         enable_swallow           = true
         mouse_move_enables_dpms  = true
         swallow_regex            = ^(wezterm)$
+        groupbar_gradients       = false
+        groupbar_text_color      = rgb(${foreground})
       }
 
 
@@ -120,7 +124,7 @@ in {
 
         # Shadow
         col.shadow           = 0x66000000
-        drop_shadow          = true
+        drop_shadow          = false
         shadow_ignore_window = true
         shadow_offset        = 0 0
         shadow_range         = 0
@@ -150,10 +154,11 @@ in {
 
       ### Layouts ################################## -->
       dwindle {
-        force_split       = 2 # always split to the right
-        no_gaps_when_only = false
-        pseudotile        = true
-        preserve_split    = true
+        force_split            = 2 # always split to the right
+        no_gaps_when_only      = false
+        pseudotile             = true
+        preserve_split         = true
+        split_width_multiplier = 2.0
       }
 
       master {
@@ -250,16 +255,16 @@ in {
       bind = $MOD, Backspace,    exec, ${TERMINAL}
 
       # Programs
-      bind = SUPER, C,            exec, codium ~/Workspace
-      bind = SUPER, V,            exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~/Workspace'
-      bind = SUPER, F,            exec, ${FILEMANAGER}
-      bind = SUPER, B,            exec, ${BROWSER}
+      bind = SUPER, C,           exec, codium ~/Workspace
+      bind = SUPER, V,           exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~/Workspace'
+      bind = SUPER, F,           exec, ${FILEMANAGER}
+      bind = SUPER, B,           exec, ${BROWSER}
 
       # Screenshot
       bind = , Print, exec, sh ~/.config/hypr/notify-screenshot.sh
 
       ## Submaps
-      bind = $MOD, p, submap, scripts
+      bind = $MOD, S, submap, scripts
       submap = scripts
 
       # Pipewire switcher
@@ -295,11 +300,11 @@ in {
       bind = ,XF86AudioPrev, exec, playerctl -p Plexamp previous
 
       ### Window management ################ -->
-      bind = $MOD SHIFT, F, togglefloating,
-      bind = $MOD SHIFT, P, pin # Pin a window
-      bind = $MOD, P,       pseudo, # dwindle
-      bind = $MOD, Q,       killactive,
-      bind = $MOD, Space,   fullscreen,
+      bind = $MOD, F,     togglefloating
+      bind = $MOD, P,     pin
+      bind = $MOD, D,     pseudo
+      bind = $MOD, Q,     killactive
+      bind = $MOD, Space, fullscreen
 
       ## Focus
 
@@ -338,12 +343,12 @@ in {
       bind = $MOD CTRL, l, resizeactive, 50 0
 
       ### Grouped windows ######
-      bind= $MOD, g, togglegroup
-      bind= $MOD, tab, changegroupactive
+      bind = $MOD, g,   togglegroup
+      bind = $MOD, tab, changegroupactive
 
       ### Workspaces ######
-      bind = $MOD, x, togglespecialworkspace
-      bind = $MODSHIFT, x, movetoworkspace, special
+      bind = $MOD, x,       togglespecialworkspace
+      bind = $MOD SHIFT, x, movetoworkspace, special
 
       # Change the workspace
       bind = $MOD, 1, workspace, 1
@@ -373,7 +378,6 @@ in {
       bind = $MOD CTRL, 3, movetoworkspace, 3
       bind = $MOD CTRL, 4, movetoworkspace, 4
       bind = $MOD CTRL, 5, movetoworkspace, 5
-
       bind = $MOD CTRL, 6, movetoworkspace, 6
       bind = $MOD CTRL, 7, movetoworkspace, 7
       bind = $MOD CTRL, 8, movetoworkspace, 8
