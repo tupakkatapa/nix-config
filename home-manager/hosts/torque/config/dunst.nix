@@ -1,4 +1,6 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  inherit (import ./colors.nix) background foreground accent inactive blue cyan green orange pink purple red yellow;
+in {
   home.packages = [pkgs.libnotify];
   services.dunst = {
     enable = true;
@@ -25,7 +27,7 @@
         text_icon_padding = 0;
         frame_width = 2;
 
-        frame_color = "#ffce8a";
+        frame_color = "#${accent}";
         separator_color = "frame";
 
         sort = "yes";
@@ -52,17 +54,16 @@
         timeout = 5;
       };
       urgency_low = {
-        background = "#1e1e1e";
-        foreground = "#fffee3";
+        background = "#${background}";
+        foreground = "#${foreground}";
       };
       urgency_normal = {
-        background = "#1e1e1e";
-        foreground = "#fffee3";
+        background = "#${background}";
+        foreground = "#${foreground}";
       };
       urgency_critical = {
-        background = "#1E1E2E";
-        foreground = "#CDD6F4";
-        frame_color = "#FAB387";
+        background = "#${background}";
+        foreground = "#${red}";
       };
     };
   };

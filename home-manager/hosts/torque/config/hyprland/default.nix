@@ -1,15 +1,6 @@
 {config, ...}: let
   inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR FILEMANAGER;
-
-  # Colors
-  accent = "ffce8a";
-  inactive = "444444";
-  blue = "7d9bba";
-  cyan = "8be9fd";
-  green = "66cc99";
-  orange = "ebcb8b";
-  red = "fb958b";
-  yellow = "ebcb8b";
+  inherit (import ../colors.nix) background foreground accent inactive blue cyan green orange pink purple red yellow;
 in {
   home.sessionVariables = {
     MOZ_ENABLE_WAYLAND = "1";

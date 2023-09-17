@@ -1,20 +1,9 @@
 {pkgs, ...}: let
+  inherit (import ./colors.nix) background foreground accent inactive blue cyan green orange pink purple red yellow;
+
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
   blueberry = "${pkgs.blueberry}/bin/blueberry";
-
-  # Colors
-  background = "1e1e1e";
-  foreground = "e5e5e5";
-  accent = "ffce8a";
-  inactive = "444444";
-  blue = "7d9bba";
-  cyan = "8be9fd";
-  green = "66cc99";
-  orange = "ebcb8b";
-  red = "fb958b";
-  yellow = "ebcb8b";
-  purple = "c9b4ff";
 in {
   programs.waybar = {
     enable = true;
@@ -262,11 +251,11 @@ in {
       }
 
       #network {
-        color: #${yellow};
+        color: #${orange};
       }
 
       #network.disconnected {
-        color: #${yellow};
+        color: #${orange};
       }
 
       #battery {
