@@ -7,9 +7,17 @@
     TERMINAL = lib.mkDefault "alacritty";
   };
 
-  programs.alacritty = {
+  programs.alacritty = let
+    disableKeys = keysList:
+      map (keyName: {
+        key = keyName;
+        action = "None";
+      })
+      keysList;
+  in {
     enable = true;
     settings = {
+      key_bindings = disableKeys ["Up" "Down" "Right" "Left"];
       window.padding = {
         x = 20;
         y = 20;

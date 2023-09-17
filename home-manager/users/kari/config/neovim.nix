@@ -9,7 +9,16 @@
     EDITOR = lib.mkDefault "nvim";
   };
 
-  programs.nixvim = {
+  programs.nixvim = let
+    disableKeys = keysList:
+      builtins.listToAttrs (map (keyName: {
+          name = "<${keyName}>";
+          value = {
+            action = "<Nop>";
+          };
+        })
+        keysList);
+  in {
     enable = true;
     clipboard.providers.wl-copy.enable = true;
     globals = {
@@ -20,12 +29,14 @@
       contrastDark = "medium";
     };
     maps = {
-      normalVisualOp = {
-        "<C-s>" = {
-          action = "<cmd>w<cr><esc>";
-          desc = "Save File";
-        };
-      };
+      normalVisualOp =
+        {
+          "<C-s>" = {
+            action = "<cmd>w<cr><esc>";
+            desc = "Save File";
+          };
+        }
+        // (disableKeys ["Up" "Down" "Left" "Right"]);
       normal = {
         "<leader>ff" = {
           action = "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>";

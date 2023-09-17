@@ -4,7 +4,14 @@
     "text/plain" = ["codium.desktop"];
   };
 
-  programs.vscode = {
+  programs.vscode = let
+    disableKeys = keysList:
+      map (keyName: {
+        key = keyName;
+        command = "";
+      })
+      keysList;
+  in {
     enable = true;
     package = pkgs.vscodium;
     # If the extensions don't load correctly, you probably have installed some extensions ad hoc
@@ -15,8 +22,8 @@
         timonwong.shellcheck
         dart-code.flutter
         rust-lang.rust-analyzer
-        tyriar.sort-lines
         jdinhlife.gruvbox
+        vscodevim.vim
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
@@ -37,6 +44,8 @@
       "terminal.integrated.fontFamily" = "JetBrains Mono";
       "window.menuBarVisibility" = "toggle";
       "workbench.colorTheme" = "Gruvbox Dark Medium";
+      "editor.lineNumbers" = "relative";
     };
+    keybindings = disableKeys ["Up" "Down" "Right" "Left"];
   };
 }

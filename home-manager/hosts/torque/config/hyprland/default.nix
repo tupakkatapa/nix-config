@@ -309,11 +309,6 @@ in {
       bind = $MOD, K, movefocus, u
       bind = $MOD, J, movefocus, d
 
-      bind = $MOD, right, movefocus, l
-      bind = $MOD, left,  movefocus, r
-      bind = $MOD, up,    movefocus, u
-      bind = $MOD, down,  movefocus, d
-
       # Focuses the next window on a workspace
       bind = $MOD, comma, cyclenext, prev
 
@@ -328,11 +323,6 @@ in {
       bind = $MOD SHIFT, K, movewindow, u
       bind = $MOD SHIFT, L, movewindow, r
 
-      bind = $MOD SHIFT, down,  movewindow, d
-      bind = $MOD SHIFT, left,  movewindow, l
-      bind = $MOD SHIFT, right, movewindow, r
-      bind = $MOD SHIFT, up,    movewindow, u
-
       # Swaps the focused window with the next one
       bind = $MOD SHIFT, comma, swapnext, prev
 
@@ -346,11 +336,6 @@ in {
       bind = $MOD CTRL, j, resizeactive, 0 50
       bind = $MOD CTRL, k, resizeactive, 0 -50
       bind = $MOD CTRL, l, resizeactive, 50 0
-
-      bind = $MOD CTRL, left, resizeactive, -50 0
-      bind = $MOD CTRL, down, resizeactive, 0 50
-      bind = $MOD CTRL, up, resizeactive, 0 -50
-      bind = $MOD CTRL, right, resizeactive, 50 0
 
       ### Grouped windows ######
       bind= $MOD, g, togglegroup
