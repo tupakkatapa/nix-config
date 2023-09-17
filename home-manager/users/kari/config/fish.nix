@@ -11,7 +11,7 @@
 in {
   programs.fish = {
     enable = true;
-    shellAbbrs = {
+    shellAbbrs = rec {
       q = "exit";
       c = "clear";
       ka = "pkill";
@@ -43,6 +43,12 @@ in {
       cp = "cp -i";
       mv = "mv -i";
       rm = "rm -i";
+
+      # YouTube-DL
+      yt = "yt-dlp --embed-metadata --sponsorblock-remove all -i --format mp4";
+      yta = yt + " -x --audio-format mp3 -f 'ba'";
+      yta-chapters = yta + " --embed-thumbnail -o '%(channel)s/%(title)s.%(ext)s'";
+      yta-playlist = yta + " -o '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'";
 
       # Misc
       vim = mkIf hasNeovim "nvim";
