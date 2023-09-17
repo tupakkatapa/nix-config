@@ -14,6 +14,7 @@
   orange = "ebcb8b";
   red = "fb958b";
   yellow = "ebcb8b";
+  purple = "c9b4ff";
 in {
   programs.waybar = {
     enable = true;
@@ -47,6 +48,7 @@ in {
         "pulseaudio"
         "bluetooth"
         "network"
+        "battery"
         "clock#date"
         "clock#time"
       ];
@@ -165,7 +167,7 @@ in {
       battery = {
         bat = "BAT0";
         interval = 10;
-        format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+        format-icons = ["" "" "" "" ""];
         format = "{icon} {capacity}%";
         format-charging = "󰂄 {capacity}%";
         onclick = "";
@@ -248,7 +250,7 @@ in {
       }
 
       #pulseaudio {
-        color: #${cyan};
+        color: #${blue};
       }
 
       #bluetooth {
@@ -268,7 +270,7 @@ in {
       }
 
       #battery {
-        color: #${green};
+        color: #${purple};
       }
 
       #battery.charging,

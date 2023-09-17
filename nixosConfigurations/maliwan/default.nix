@@ -71,19 +71,8 @@
     noto-fonts-emoji
   ];
 
-  # Thunar
-  programs.thunar.enable = true;
-  programs.thunar.plugins = with pkgs.xfce; [
-    thunar-media-tags-plugin
-    thunar-archive-plugin
-    thunar-volman
-  ];
-  # Archive manager
-  programs.file-roller.enable = true;
-  # Mount, trash, and other functionalities
+  # Enable GVfs service for file managers to work properly
   services.gvfs.enable = true;
-  # Thumbnail support for images
-  services.tumbler.enable = true;
 
   # Enable ADB for android development
   programs.adb.enable = true;
@@ -99,6 +88,7 @@
       "d /home/${user}/.ssh 755 ${user} ${user} -"
       "d /home/${user}/Pictures/Screenshots 755 ${user} ${user} -"
       "d /home/${user}/Workspace 755 ${user} ${user} -"
+      "d /home/${user}/.local/bin 755 ${user} ${user} -"
     ];
   }) (builtins.attrNames config.home-manager.users));
 
@@ -137,4 +127,7 @@
 
   # Firmware blobs
   hardware.enableRedistributableFirmware = true;
+
+  # Enable OpenGL drivers
+  hardware.opengl.enable = true;
 }
