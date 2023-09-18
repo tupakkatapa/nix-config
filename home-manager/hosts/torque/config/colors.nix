@@ -1,7 +1,7 @@
 {
   # Colors (gruvbox)
   background = "282828";
-  foreground = "f9f5d7";
+  foreground = "f8f8f2";
   accent = "ebdbb2";
   inactive = "504945";
 
