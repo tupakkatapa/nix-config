@@ -131,6 +131,7 @@ in {
       rpi-imager
       sublime-merge
       ventoy
+      gimp-with-plugins
 
       # Music Production
       ardour
