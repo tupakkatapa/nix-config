@@ -191,7 +191,6 @@ in {
       windowrule = float, feh
       windowrule = float, file_progress
       windowrule = float, file-roller
-      windowrule = float, guitarix
       windowrule = float, LosslessCut
       windowrule = float, Lxappearance
       windowrule = float, moe.launcher.an-anime-game-launcher # Genshin Impact
@@ -203,7 +202,6 @@ in {
       windowrule = float, pavucontrol-qt
       windowrule = float, putty
       windowrule = float, qemu
-      windowrule = float, QjackCtl
       windowrule = float, Rofi
       windowrule = float, solaar
       windowrule = float, splash
@@ -220,13 +218,15 @@ in {
       windowrule = float, imv
       windowrule = float, org.pwmt.zathura
 
-      # Floats a window and resizes
+      # Pseudo
+      windowrule = pseudo, guitarix
+      windowrule = pseudo, QjackCtl
+
+      # Floats a window, position and resize
       windowrule = float, title:RuneLite
       windowrule = size 800 500, title:RuneLite
       windowrule = float, title:QEMU
       windowrule = size 1280 828, title:QEMU
-      windowrule = float, Plexamp
-      windowrule = size 700 400, Plexamp
       windowrule = float, title:^(Volume Control)$
       windowrule = size 700 400, title:^(Volume Control)$
       windowrule = float, title:^(Picture-in-Picture)$
