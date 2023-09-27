@@ -45,6 +45,7 @@
       "window.menuBarVisibility" = "toggle";
       "workbench.colorTheme" = "Gruvbox Dark Medium";
       "editor.lineNumbers" = "relative";
+      "vim.useSystemClipboard" = true;
     };
     keybindings = disableKeys ["Up" "Down" "Right" "Left"];
   };
