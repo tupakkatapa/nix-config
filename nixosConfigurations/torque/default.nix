@@ -123,9 +123,12 @@
   };
   hardware.bluetooth.enable = true;
 
-  # Logitech Unifying Receiver
+  # Logitech unifying receiver
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
+
+  # Logitech steering wheel
+  hardware.new-lg4ff.enable = true;
 
   # Audio settings
   services.pipewire = {
