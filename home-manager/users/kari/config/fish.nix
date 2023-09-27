@@ -46,9 +46,14 @@ in {
 
       # YouTube-DL
       yt = "yt-dlp --embed-metadata --sponsorblock-remove all -i --format mp4";
-      yta = yt + " -x --audio-format mp3 -f 'ba'";
-      yta-chapters = yta + " --embed-thumbnail -o '%(channel)s/%(title)s.%(ext)s'";
+      yta = yt + " -x --embed-thumbnail --audio-format mp3 -f 'ba'";
+      yta-channel = yta + " -o '%(channel)s/%(title)s.%(ext)s'";
       yta-playlist = yta + " -o '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'";
+      yta-chapters =
+        yta
+        + ''
+          -o '%(title)s.%(ext)s' -o 'chapter:%(title)s/%(section_number)s - %(section_title)s.%(ext)s' --split-chapters --exec 'rm "%(title)s.%(ext)s"'
+        '';
 
       # Misc
       vim = mkIf hasNeovim "nvim";
