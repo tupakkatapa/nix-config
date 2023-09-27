@@ -132,6 +132,9 @@ in {
       sublime-merge
       ventoy
       gimp-with-plugins
+      video-trimmer
+      firefox
+      picard
 
       # Music Production
       ardour
