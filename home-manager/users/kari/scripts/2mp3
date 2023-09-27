@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Function to convert audio files to MP3
+convert_to_mp3() {
+  find . -type f -name "*.$1" -exec sh -c 'ffmpeg -i "$0" -b:a 320k -map_metadata 0 -id3v2_version 3 "${0%.$1}.mp3"' {} \;
+}
+
+# Array of file extensions to convert
+extensions=("flac" "m4a")
+
+# Loop through the array and convert each extension to MP3
+for ext in "${extensions[@]}"; do
+  convert_to_mp3 "$ext"
+done
+
+# Remove non-MP3 files
+find . -type f ! -name "*.mp3" -exec rm {} \;
+
+# Remove empty directories
+find . -type d -empty -delete
