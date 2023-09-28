@@ -76,6 +76,7 @@ in {
         ./config/alacritty.nix
         ./config/librewolf.nix
         ./config/vscode.nix
+        ./config/mpv.nix
 
         # CLI Apps
         ./config/fish.nix
@@ -124,7 +125,6 @@ in {
       discord
       ferdium
       libreoffice-qt
-      mpv
       obsidian
       plexamp
       qemu
