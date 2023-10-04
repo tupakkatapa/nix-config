@@ -140,6 +140,9 @@ in {
       ardour
       guitarix
       qjackctl
+      lmms
+      tuxguitar
+      reaper
 
       # High Quality Games
       osu-lazer
