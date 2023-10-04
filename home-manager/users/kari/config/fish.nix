@@ -44,6 +44,14 @@ in {
       mv = "mv -i";
       rm = "rm -i";
 
+      # Nix
+      nd = "nix develop --impure .#";
+      nb = "nix build .#";
+      nr = "nix run .#";
+      nfc = "nix flake check --impure";
+      buidl = "sudo nixos-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
+      buidl-darwin = "nix build path:$HOME/Workspace/nix-config#darwinConfigurations.$(hostname).system --show-trace && ./result/sw/bin/darwin-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
+
       # YouTube-DL
       yt = "yt-dlp --embed-metadata --sponsorblock-remove all -i --format mp4";
       yta = yt + " -x --embed-thumbnail --audio-format mp3 -f 'ba'";
@@ -58,8 +66,6 @@ in {
       # Misc
       vim = mkIf hasNeovim "nvim";
       code = "codium";
-      buidl = "sudo nixos-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
-      buidl-darwin = "nix build path:$HOME/Workspace/nix-config#darwinConfigurations.$(hostname).system --show-trace && ./result/sw/bin/darwin-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
     };
     functions = {
       fish_greeting = "";
