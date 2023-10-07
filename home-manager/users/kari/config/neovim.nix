@@ -11,57 +11,61 @@
 
   programs.nixvim = let
     disableKeys = keysList:
-      builtins.listToAttrs (map (keyName: {
-          name = "<${keyName}>";
-          value = {
-            action = "<Nop>";
-          };
-        })
-        keysList);
+      map (keyName: {
+        key = "<${keyName}>";
+        action = "<Nop>";
+      })
+      keysList;
   in {
     enable = true;
+
     clipboard = {
       register = "unnamedplus";
       providers.wl-copy.enable = true;
     };
+
     globals = {
       mapleader = " ";
     };
+
     colorschemes.gruvbox = {
       enable = true;
       contrastDark = "medium";
     };
-    maps = {
-      normalVisualOp =
+
+    keymaps =
+      [
         {
-          "<C-s>" = {
-            action = "<cmd>w<cr><esc>";
-            desc = "Save File";
-          };
+          # Default mode is normal-visual-op
+          key = "<C-s>";
+          action = "<cmd>w<cr><esc>";
         }
-        // (disableKeys ["Up" "Down" "Left" "Right"]);
-      normal = {
-        "<leader>ff" = {
+        {
+          mode = "n";
+          key = "<leader>ff";
           action = "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>";
-          desc = "Find Files";
-        };
-      };
-    };
+        }
+      ]
+      ++ (disableKeys ["Up" "Down" "Left" "Right"]);
+
     options = {
       cursorline = true;
       swapfile = false;
       relativenumber = true;
     };
+
     plugins = {
+      nix.enable = true;
+      gitsigns.enable = true;
+      todo-comments.enable = true;
+      comment-nvim.enable = true;
+
       indent-blankline = {
         enable = true;
         #showCurrentContext = true;
         #showCurrentContextStart = true;
       };
-      nix.enable = true;
-      gitsigns.enable = true;
-      todo-comments.enable = true;
-      comment-nvim.enable = true;
+
       lsp = {
         enable = true;
         servers = {
@@ -70,10 +74,12 @@
           yamlls.enable = true;
         };
       };
+
       telescope = {
         enable = true;
         extensions.fzf-native.enable = true;
       };
+
       treesitter = {
         enable = true;
         nixvimInjections = true;
