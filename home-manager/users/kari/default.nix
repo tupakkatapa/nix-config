@@ -137,12 +137,8 @@ in {
       picard
 
       # Music Production
-      ardour
-      guitarix
       qjackctl
-      lmms
       tuxguitar
-      reaper
 
       # High Quality Games
       osu-lazer
