@@ -146,10 +146,15 @@
 
   # Host-spesific system packages
   environment.systemPackages = with pkgs; [
+    # Hardware
     oversteer
     openrgb
     solaar
     xow_dongle-firmware
+
+    # Wine
+    wineWowPackages.staging
+    winetricks
   ];
 
   # Steam and gaming settings
