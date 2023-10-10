@@ -29,7 +29,7 @@ in {
       ];
 
       modules-center = [
-        "wlr/workspaces"
+        "hyprland/workspaces"
       ];
 
       modules-right = [
@@ -76,10 +76,10 @@ in {
         on-click = "${playerctl} play-pause";
       };
 
-      "wlr/workspaces" = {
+      "hyprland/workspaces" = {
         format = "{icon}";
-        on-click = "activate";
-        format_icons = {
+        on_click = "activate";
+        format-icons = {
           "1" = "1";
           "2" = "2";
           "3" = "3";
