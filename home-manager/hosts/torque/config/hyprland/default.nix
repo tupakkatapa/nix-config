@@ -225,12 +225,22 @@ in {
       # Floats a window, position and resize
       windowrule = float, title:RuneLite
       windowrule = size 800 500, title:RuneLite
+      windowrule = center, title:Runelite
       windowrule = float, title:QEMU
-      windowrule = size 1280 828, title:QEMU
+      windowrule = size 1400 800, title:QEMU
+      windowrule = center, title:QEMU
       windowrule = float, title:^(Volume Control)$
-      windowrule = size 700 400, title:^(Volume Control)$
+      windowrule = size 1400 800, title:^(Volume Control)$
+      windowrule = center, title:^(Volume Control)$
       windowrule = float, title:^(Picture-in-Picture)$
       windowrule = pin, title:^(Picture-in-Picture)$
+      windowrule = center, title:^(Picture-in-Picture)$
+      windowrule = size 480 648, title:^(Properties)$
+      windowrule = center, title:^(Properties)$
+      windowrule = size 1400 800, org.gnome.Nautilus
+      windowrule = center, org.gnome.Nautilus
+      windowrule = size 1400 800, Alacritty
+      windowrule = center, Alacritty
 
       # Sets an idle inhibit rule for the window
       windowrule = idleinhibit focus, mpv
