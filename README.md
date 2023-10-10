@@ -13,3 +13,10 @@ Here are some useful resources to learn about Nix and NixOS:
 - [Zero to Nix - Declarative programming](https://zero-to-nix.com/concepts/declarative)
 - [NixOS Manual - Manual Installation](https://nixos.org/manual/nixos/stable/index.html#sec-installation-manual)
 - [Misterio77 - Nix Starter Config](https://github.com/Misterio77/nix-starter-configs)
+
+God tier blog posts:
+
+- [Shell Scripts with Nix](https://ertt.ca/nix/shell-scripts/)
+- [Paranoid NixOS Setup](https://xeiaso.net/blog/paranoid-nixos-2021-07-18/)
+- [Using NixOS as a router](https://francis.begyn.be/blog/nixos-home-router)
+- [HomestakerOS - The Workflow](https://github.com/ponkila/HomestakerOS/blob/main/docs/workflow.md)
