@@ -98,6 +98,7 @@
         # Custom packages and aliases for building hosts
         # Accessible through 'nix build', 'nix run', etc
         packages = with flake.nixosConfigurations; {
+          "bandit" = bandit.config.system.build.kexecTree;
           "jakobs" = jakobs.config.system.build.kexecTree;
         };
       };
@@ -136,6 +137,17 @@
           ];
         };
 
+        bandit = {
+          system = "x86_64-linux";
+          specialArgs = {inherit inputs outputs;};
+          modules = [
+            ./nixosConfigurations/bandit
+            ./home-manager/users/kari/minimal.nix
+            ./system
+            ./system/formats/netboot-kexec.nix
+          ];
+        };
+
         hyperion = {
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
@@ -169,6 +181,7 @@
             "torque" = nixosSystem torque;
             "maliwan" = nixosSystem maliwan;
             "jakobs" = nixosSystem jakobs;
+            "bandit" = nixosSystem bandit;
           }
           # // (with nixpkgs-stable.lib; {
           # })
