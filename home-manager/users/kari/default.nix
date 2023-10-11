@@ -22,6 +22,7 @@ in {
         "users"
       ]
       ++ optionalGroups [
+        "vboxusers"
         "rtkit"
         "input"
         "jackaudio"

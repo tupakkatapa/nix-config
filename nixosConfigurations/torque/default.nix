@@ -157,6 +157,10 @@
     winetricks
   ];
 
+  # VirtualBox
+  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enableExtensionPack = true;
+
   # Steam and gaming settings
   nixpkgs.config.allowUnfree = true;
   programs.steam = {
