@@ -78,11 +78,6 @@ in {
         end
       ''
       +
-      # Set pager
-      ''
-        set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
-      ''
-      +
       # Use vim bindings and cursors
       ''
         fish_vi_key_bindings

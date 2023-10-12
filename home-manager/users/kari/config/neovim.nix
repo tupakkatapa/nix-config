@@ -7,6 +7,7 @@
 }: {
   home.sessionVariables = {
     EDITOR = lib.mkDefault "nvim";
+    MANPAGER = lib.mkDefault "nvim +Man!";
   };
 
   programs.nixvim = let
