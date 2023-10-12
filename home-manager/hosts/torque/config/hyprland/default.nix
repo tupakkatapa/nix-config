@@ -179,7 +179,6 @@ in {
       windowrule = workspace 5, qjackctl
 
       # Floats a window
-      windowrule = float, Alacritty
       windowrule = float, yad
       windowrule = float, blueberry
       windowrule = float, blueman
@@ -198,14 +197,10 @@ in {
       windowrule = float, notification
       windowrule = float, org.kde.polkit-kde-authentication-agent-1
       windowrule = float, org.raspberrypi.rpi-imager
-      windowrule = float, pavucontrol
-      windowrule = float, pavucontrol-qt
       windowrule = float, putty
-      windowrule = float, qemu
       windowrule = float, Rofi
       windowrule = float, solaar
       windowrule = float, splash
-      windowrule = float, thunar
       windowrule = float, title:^(Media viewer)$
       windowrule = float, title:branchdialog
       windowrule = float, title:Confirm to replace files
@@ -214,7 +209,6 @@ in {
       windowrule = float, title:wlogout
       windowrule = float, viewnior
       windowrule = float, Viewnior
-      windowrule = float, Nautilus
       windowrule = float, imv
       windowrule = float, org.pwmt.zathura
 
@@ -222,25 +216,37 @@ in {
       windowrule = pseudo, guitarix
       windowrule = pseudo, QjackCtl
 
-      # Floats a window, position and resize
+      # Program spesific (float, position and size etc.)
       windowrule = float, title:RuneLite
       windowrule = size 800 500, title:RuneLite
       windowrule = center, title:Runelite
+
       windowrule = float, title:QEMU
       windowrule = size 1400 800, title:QEMU
       windowrule = center, title:QEMU
-      windowrule = float, title:^(Volume Control)$
-      windowrule = size 1400 800, title:^(Volume Control)$
-      windowrule = center, title:^(Volume Control)$
+
+      windowrule = float, pavucontrol
+      windowrule = size 1400 800, pavucontrol
+      windowrule = center, pavucontrol
+
       windowrule = float, title:^(Picture-in-Picture)$
       windowrule = pin, title:^(Picture-in-Picture)$
       windowrule = center, title:^(Picture-in-Picture)$
+
       windowrule = size 480 648, title:^(Properties)$
       windowrule = center, title:^(Properties)$
+
+      windowrule = float, Nautilus
       windowrule = size 1400 800, org.gnome.Nautilus
       windowrule = center, org.gnome.Nautilus
+
+      windowrule = float, Alacritty
       windowrule = size 1400 800, Alacritty
       windowrule = center, Alacritty
+
+      windowrule = float, Plexamp
+      windowrule = size 1400 800, Plexamp
+      windowrule = center, Plexamp
 
       # Sets an idle inhibit rule for the window
       windowrule = idleinhibit focus, mpv
