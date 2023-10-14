@@ -15,6 +15,7 @@ in {
     ".config/hypr/notify-volume.sh".source = ./scripts/notify-volume.sh;
     ".config/hypr/notify-hyprprop.sh".source = ./scripts/notify-hyprprop.sh;
     ".config/hypr/notify-screenshot.sh".source = ./scripts/notify-screenshot.sh;
+    ".config/hypr/notify-audio-switch.sh".source = ./scripts/notify-audio-switch.sh;
     # Assets
     ".config/hypr/audio-volume-high-panel.svg".source = ./assets/audio-volume-high-panel.svg;
     "Pictures/wallpaper.jpg".source = ./assets/wallpaper.jpg;
@@ -236,6 +237,8 @@ in {
       windowrule = size 480 648, title:^(Properties)$
       windowrule = center, title:^(Properties)$
 
+      windowrule = center, title:^(Close Virtual Machine)$
+
       windowrule = float, Nautilus
       windowrule = size 1400 800, org.gnome.Nautilus
       windowrule = center, org.gnome.Nautilus
@@ -275,6 +278,9 @@ in {
       bind = SUPER, V,           exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~/Workspace'
       bind = SUPER, F,           exec, ${FILEMANAGER}
       bind = SUPER, B,           exec, ${BROWSER}
+
+      # Pipewire out switcher
+      bind = $MOD, XF86AudioRaiseVolume, exec, sh ~/.config/hypr/notify-audio-switch.sh
 
       # Screenshot
       bind = , Print, exec, sh ~/.config/hypr/notify-screenshot.sh
