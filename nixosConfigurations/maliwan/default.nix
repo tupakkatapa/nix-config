@@ -19,6 +19,7 @@
     LC_MESSAGES = "en_US.UTF-8";
     LC_TIME = "fi_FI.UTF-8";
   };
+  console.keyMap = "fi";
 
   # Import hardware configuration
   imports = [
