@@ -57,7 +57,6 @@ in {
     hyprpicker
     hyprprop
     jq
-    mpv
     pamixer
     pavucontrol
     playerctl
