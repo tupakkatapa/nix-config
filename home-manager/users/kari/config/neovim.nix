@@ -82,10 +82,49 @@
       todo-comments.enable = true;
       comment-nvim.enable = true;
 
+      barbar = {
+        enable = true;
+        animation = true;
+        clickable = true;
+        semanticLetters = true;
+        sidebarFiletypes = {
+          "neo-tree" = {
+            event = "BufWipeout";
+          };
+        };
+        keymaps = {
+          silent = true;
+          close = "<leader>q";
+          goTo1 = "<leader>1";
+          goTo2 = "<leader>2";
+          goTo3 = "<leader>3";
+          goTo4 = "<leader>4";
+          goTo5 = "<leader>5";
+          goTo6 = "<leader>6";
+          goTo7 = "<leader>7";
+          goTo8 = "<leader>8";
+          goTo9 = "<leader>9";
+          next = "<leader>.";
+          previous = "<leader>,";
+        };
+      };
+
+      neo-tree = {
+        enable = true;
+        addBlankLineAtTop = true;
+        enableDiagnostics = true;
+        enableGitStatus = true;
+        closeIfLastWindow = true;
+        window = {
+          width = 35;
+          autoExpandWidth = true;
+        };
+      };
+
       indent-blankline = {
         enable = true;
-        #showCurrentContext = true;
-        #showCurrentContextStart = true;
+        showCurrentContext = true;
+        showCurrentContextStart = true;
       };
 
       lsp = {
@@ -93,7 +132,28 @@
         servers = {
           bashls.enable = true;
           nixd.enable = true;
-          yamlls.enable = true;
+        };
+      };
+
+      null-ls = {
+        enable = true;
+        sources = {
+          code_actions.shellcheck.enable = true;
+
+          diagnostics = {
+            deadnix.enable = true;
+            gitlint.enable = true;
+            shellcheck.enable = true;
+            #statix.enable = true;
+          };
+
+          formatting = {
+            alejandra.enable = true;
+            cbfmt.enable = true;
+            prettier.enable = true;
+            shfmt.enable = true;
+            rustfmt.enable = true;
+          };
         };
       };
 
@@ -104,31 +164,7 @@
 
       treesitter = {
         enable = true;
-        nixvimInjections = true;
         indent = true;
-        grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
-          bash
-          c # c is implicit dependency, not specifying it will lead to healtcheck errors
-          diff
-          fish
-          git_config
-          git_rebase
-          gitattributes
-          gitcommit
-          gitignore
-          json
-          lua
-          luadoc
-          make
-          markdown
-          nix
-          query # implicit
-          regex
-          toml
-          vim
-          vimdoc
-          yaml
-        ];
       };
     };
   };
