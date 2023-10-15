@@ -14,7 +14,7 @@
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
 
   # Timezone and system version
-  hostName = "jakobs";
+  networking.hostName = "jakobs";
   time.timeZone = "Europe/Helsinki";
   system.stateVersion = "23.11";
   console.keyMap = "fi";
