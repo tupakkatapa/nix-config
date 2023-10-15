@@ -46,6 +46,27 @@
           key = "<leader>ff";
           action = "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>";
         }
+        # Easier buffer switching
+        {
+          mode = "n";
+          key = "<leader>h";
+          action = "<C-w>h";
+        }
+        {
+          mode = "n";
+          key = "<leader>j";
+          action = "<C-w>j";
+        }
+        {
+          mode = "n";
+          key = "<leader>k";
+          action = "<C-w>k";
+        }
+        {
+          mode = "n";
+          key = "<leader>l";
+          action = "<C-w>l";
+        }
       ]
       ++ (disableKeys ["Up" "Down" "Left" "Right"]);
 
