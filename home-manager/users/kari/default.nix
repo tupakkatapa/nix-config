@@ -75,7 +75,7 @@ in {
       [
         # GUI Apps
         ./config/alacritty.nix
-        ./config/librewolf.nix
+        ./config/firefox.nix
         ./config/vscode.nix
         ./config/mpv.nix
 
@@ -134,7 +134,6 @@ in {
       ventoy
       gimp-with-plugins
       video-trimmer
-      firefox
       picard
 
       # Music Production
