@@ -30,12 +30,25 @@ in {
     "image/*" = ["imv.desktop"];
   };
 
+  # Allow fonts trough home.packages
+  fonts.fontconfig.enable = true;
+
   home.packages = with pkgs; [
     # File manager
     gnome3.nautilus
     gnome3.file-roller
     zathura
     imv
+
+    # Fonts
+    jetbrains-mono
+    font-awesome
+    nerdfonts
+    fira-code
+    fira-code-symbols
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
 
     # WM Apps
     blueberry
