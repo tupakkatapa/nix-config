@@ -61,6 +61,15 @@
   # https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;
 
+  # Basic font packages
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    fira-code
+    fira-code-symbols
+  ];
+
   # Enable GVfs service for file managers to work properly
   services.gvfs.enable = true;
 

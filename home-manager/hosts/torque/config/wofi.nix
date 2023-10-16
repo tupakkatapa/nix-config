@@ -3,7 +3,9 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  inherit (config.home.sessionVariables) FONT;
+in {
   programs.wofi = {
     enable = true;
     settings = {
@@ -36,7 +38,7 @@
 
     style = ''
       * {
-        font-family: "JetBrains Mono";
+        font-family: "${FONT}";
         font-size: 14px;
       }
 

@@ -1,4 +1,10 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: let
+  inherit (config.home.sessionVariables) FONT;
+in {
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = {
     "text/plain" = ["codium.desktop"];
@@ -41,7 +47,7 @@
       "editor.cursorSurroundingLines" = 15;
       "editor.insertSpaces" = true;
       "editor.tabSize" = 2;
-      "terminal.integrated.fontFamily" = "JetBrains Mono";
+      "terminal.integrated.fontFamily" = "${FONT}";
       "window.menuBarVisibility" = "toggle";
       "workbench.colorTheme" = "Gruvbox Dark Medium";
       "editor.lineNumbers" = "relative";

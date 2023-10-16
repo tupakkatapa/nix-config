@@ -1,4 +1,9 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  config,
+  ...
+}: let
+  inherit (config.home.sessionVariables) FONT;
   inherit (import ./colors.nix) background foreground accent inactive blue cyan green orange pink purple red yellow;
 in {
   home.packages = [pkgs.libnotify];
@@ -32,7 +37,7 @@ in {
 
         sort = "yes";
         idle_threshold = 120;
-        font = "JetBrains Mono NL SemiBold 10";
+        font = "${FONT} 10";
         line_height = 0;
         markup = "full";
         alignment = "left";

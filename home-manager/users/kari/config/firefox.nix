@@ -5,6 +5,7 @@
   config,
   ...
 }: let
+  inherit (config.home.sessionVariables) FONT;
   # Allow access to flake inputs with 'home-manager.extraSpecialArgs = { inherit inputs; };'
   addons = inputs.firefox-addons.packages.${pkgs.system};
 in {
@@ -56,7 +57,9 @@ in {
         "browser.toolbars.bookmarks.visibility" = "always";
         "browser.uidensity" = 1;
         "extensions.activeThemeID" = "{eb8c4a94-e603-49ef-8e81-73d3c4cc04ff}";
-        "font.name.serif.x-western" = "JetBrains Mono";
+        "font.name.serif.x-western" = "${FONT}";
+        "font.name.monospace.x-western" = "${FONT}";
+        "font.name.sans-serif.x-western" = "${FONT}";
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
       };
     };

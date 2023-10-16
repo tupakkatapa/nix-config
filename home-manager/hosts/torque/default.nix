@@ -19,11 +19,11 @@ in {
     ./config/wofi.nix
   ];
 
-  home.sessionVariables = {
-    FILEMANAGER = lib.mkDefault "nautilus";
-  };
-
   # Default apps
+  home.sessionVariables = {
+    FILEMANAGER = "nautilus";
+    FONT = "JetBrainsMono Nerd Font";
+  };
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = {
     "application/pdf" = ["org.pwmt.zathura.desktop"];
@@ -41,14 +41,12 @@ in {
     imv
 
     # Fonts
-    jetbrains-mono
-    font-awesome
-    nerdfonts
-    fira-code
-    fira-code-symbols
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
+    (pkgs.nerdfonts.override {
+      fonts = [
+        "JetBrainsMono"
+      ];
+    })
+    font-awesome # for waybar
 
     # WM Apps
     blueberry

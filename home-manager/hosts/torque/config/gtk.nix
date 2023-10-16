@@ -1,4 +1,10 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: let
+  inherit (config.home.sessionVariables) FONT;
+in {
   gtk = {
     enable = true;
     iconTheme = {
@@ -6,8 +12,7 @@
       package = pkgs.gruvbox-dark-icons-gtk;
     };
     font = {
-      name = "JetBrains Mono";
-      package = pkgs.jetbrains-mono;
+      name = "${FONT}";
       size = 10;
     };
     cursorTheme = {

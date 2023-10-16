@@ -1,4 +1,9 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  config,
+  ...
+}: let
+  inherit (config.home.sessionVariables) FONT;
   inherit (import ./colors.nix) background foreground accent inactive blue cyan green orange pink purple red yellow;
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
@@ -57,8 +62,8 @@ in {
 
       disk = {
         interval = 30;
-        format = " {percentage_free}% free";
-        format-alt = " {free} free";
+        format = " {percentage_free}% free";
+        format-alt = " {free} free";
       };
 
       "custom/player" = {
@@ -100,11 +105,11 @@ in {
         format = "{icon} {volume}%";
         format-muted = " 0%";
         format-icons = {
-          "bluez_output.80_7B_1E_02_53_95.1" = ""; # CORSAIR VIRTUOSO XT Bluetooth
-          "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo" = "";
+          "bluez_output.80_7B_1E_02_53_95.1" = ""; # CORSAIR VIRTUOSO XT Bluetooth
+          "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo" = "";
           "alsa_output.pci-0000_0a_00.1.hdmi-stereo" = "";
-          headphone = "";
-          headset = "";
+          headphone = "";
+          headset = "";
           default = ["" "" ""];
         };
         on-click = pavucontrol;
@@ -169,7 +174,7 @@ in {
     style = ''
       /* Global Styles */
       * {
-        font-family: JetBrains Mono;
+        font-family: ${FONT};
         font-size: 11px;
         font-weight: 900;
         margin: 0;

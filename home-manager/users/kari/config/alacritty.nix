@@ -1,20 +1,24 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: {
   home.sessionVariables = {
     TERMINAL = lib.mkDefault "alacritty";
   };
+}: let
+  inherit (config.home.sessionVariables) FONT;
 
-  programs.alacritty = let
-    disableKeys = keysList:
-      map (keyName: {
-        key = keyName;
-        action = "None";
-      })
-      keysList;
-  in {
+  # Function to disable keys
+  disableKeys = keysList:
+    map (keyName: {
+      key = keyName;
+      action = "None";
+    })
+    keysList;
+in {
+  programs.alacritty = {
     enable = true;
     settings = {
       key_bindings = disableKeys ["Up" "Down" "Right" "Left"];
@@ -24,19 +28,19 @@
       };
       font = {
         normal = {
-          family = "JetBrains Mono";
+          family = "${FONT}";
           style = "Bold";
         };
         bold = {
-          family = "JetBrains Mono";
+          family = "${FONT}";
           style = "Bold";
         };
         italic = {
-          family = "JetBrains Mono";
+          family = "${FONT}";
           style = "MediumItalic";
         };
         bold_italic = {
-          family = "JetBrains Mono";
+          family = "${FONT}";
           style = "BoldItalic";
         };
         size = 10;

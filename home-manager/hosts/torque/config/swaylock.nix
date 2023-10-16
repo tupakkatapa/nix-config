@@ -1,4 +1,6 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  inherit (config.home.sessionVariables) FONT;
+in {
   programs.swaylock = {
     enable = true;
     package = pkgs.swaylock-effects;
@@ -6,7 +8,7 @@
       effect-blur = "20x3";
       fade-in = 0.1;
 
-      font = "JetBrains Mono NL SemiBold";
+      font = "${FONT}";
       font-size = 15;
 
       line-uses-inside = true;
