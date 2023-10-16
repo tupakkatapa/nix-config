@@ -9,10 +9,6 @@
   # Allow access to flake inputs with 'home-manager.extraSpecialArgs = { inherit inputs; };'
   addons = inputs.firefox-addons.packages.${pkgs.system};
 in {
-  home.sessionVariables = {
-    BROWSER = lib.mkDefault "firefox";
-  };
-
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = {
     "text/html" = ["firefox.desktop"];

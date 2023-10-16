@@ -3,10 +3,6 @@
   lib,
   config,
   ...
-}: {
-  home.sessionVariables = {
-    TERMINAL = lib.mkDefault "alacritty";
-  };
 }: let
   inherit (config.home.sessionVariables) FONT;
 

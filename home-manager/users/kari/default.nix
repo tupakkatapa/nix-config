@@ -88,6 +88,22 @@ in {
       # Importing host-spesific home-manager config if it exists
       ++ optionalPaths [../../hosts/${config.networking.hostName}];
 
+    # Default apps
+    home.sessionVariables = {
+      EDITOR = "nvim";
+      MANPAGER = "nvim +Man!";
+      BROWSER = "firefox";
+      TERMINAL = "alacritty";
+    };
+    xdg.mimeApps.enable = true;
+    xdg.mimeApps.defaultApplications = {
+      "application/msword" = ["writer.desktop"];
+      "application/vnd.oasis.opendocument.spreadsheet" = ["impress.desktop"];
+      "application/vnd.oasis.opendocument.text" = ["writer.desktop"];
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = ["writer.desktop"];
+      "text/csv" = ["impress.desktop"];
+    };
+
     # Scripts and files
     home.sessionPath = ["$HOME/.local/bin"];
     home.file = let
@@ -109,16 +125,6 @@ in {
         "focusrite_guitarix_ardour_v2.xml".source = ./config/qjackctl/focusrite_guitarix_ardour_v2.xml;
       };
     in (scriptAttrs // qjackctlPresets);
-
-    # Default apps
-    xdg.mimeApps.enable = true;
-    xdg.mimeApps.defaultApplications = {
-      "application/msword" = ["writer.desktop"];
-      "application/vnd.oasis.opendocument.spreadsheet" = ["impress.desktop"];
-      "application/vnd.oasis.opendocument.text" = ["writer.desktop"];
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = ["writer.desktop"];
-      "text/csv" = ["impress.desktop"];
-    };
 
     home.packages = with pkgs; [
       #### GUI
