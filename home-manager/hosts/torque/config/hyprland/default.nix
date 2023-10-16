@@ -18,7 +18,7 @@ in {
     ".config/hypr/notify-audio-switch.sh".source = ./scripts/notify-audio-switch.sh;
     # Assets
     ".config/hypr/audio-volume-high-panel.svg".source = ./assets/audio-volume-high-panel.svg;
-    "Pictures/wallpaper.jpg".source = ./assets/wallpaper.jpg;
+    "Pictures/wallpaper".source = ./assets/wallpaper.png;
     # Wofi
     ".config/hypr/dm-pipewire-out-switcher.sh".source = ./scripts/dm-pipewire-out-switcher.sh;
     ".config/hypr/dm-radio.sh".source = ./scripts/dm-radio.sh;
