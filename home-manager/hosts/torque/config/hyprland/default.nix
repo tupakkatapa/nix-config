@@ -42,7 +42,7 @@ in {
       exec-once = dunst
 
       # Wallpaper
-      exec-once = swaybg -i ~/Pictures/wallpaper.jpg --mode fill
+      exec-once = swaybg -i ~/Pictures/wallpaper --mode fill
 
       # RGB
       exec-once = openrgb --client --device 1 --mode direct --color "330099"
@@ -263,7 +263,7 @@ in {
       windowrule = animation none, Rofi
 
       # Additional opacity multiplier
-      windowrule = opacity 0.9 override 0.9 override, ^(Alacritty)$
+      #windowrule = opacity 0.9 override 0.9 override, ^(Alacritty)$
       windowrule = opacity 0.9 override 0.9 override, ^(Plexamp)$
 
       ### Key binds ################################ -->
@@ -274,7 +274,6 @@ in {
       bind = $MOD, Backspace,    exec, ${TERMINAL}
 
       # Programs
-      bind = SUPER, C,           exec, codium ~/Workspace
       bind = SUPER, V,           exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~/Workspace'
       bind = SUPER, F,           exec, ${FILEMANAGER}
       bind = SUPER, B,           exec, ${BROWSER}

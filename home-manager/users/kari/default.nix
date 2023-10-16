@@ -76,7 +76,6 @@ in {
         # GUI Apps
         ./config/alacritty.nix
         ./config/firefox.nix
-        ./config/vscode.nix
         ./config/mpv.nix
 
         # CLI Apps
