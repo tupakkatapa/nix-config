@@ -103,6 +103,24 @@ in {
       "text/csv" = ["impress.desktop"];
     };
 
+    # Extra SSH config
+    programs.ssh = {
+      enable = true;
+      matchBlocks = {
+        "ponkila" = {
+          hostname = "192.168.100.10";
+          user = "core";
+        };
+        "pxe-server" = {
+          hostname = "192.168.1.169";
+          user = "core";
+          extraOptions = {
+            "StrictHostKeyChecking" = "no";
+          };
+        };
+      };
+    };
+
     # Scripts and files
     home.sessionPath = ["$HOME/.local/bin"];
     home.file = let
