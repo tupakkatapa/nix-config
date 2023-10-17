@@ -73,7 +73,7 @@ in {
     interactiveShellInit =
       # Print banner
       ''
-        if test -e ~/.local/bin/print-quote
+        if test -z "$VIMRUNTIME" -a -e ~/.local/bin/print-quote
           ~/.local/bin/print-quote
         end
       ''

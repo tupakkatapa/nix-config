@@ -17,7 +17,7 @@ in {
   programs.alacritty = {
     enable = true;
     settings = {
-      key_bindings = disableKeys ["Up" "Down" "Right" "Left"];
+      #key_bindings = disableKeys ["Up" "Down" "Right" "Left"];
       window.padding = {
         x = 20;
         y = 20;
