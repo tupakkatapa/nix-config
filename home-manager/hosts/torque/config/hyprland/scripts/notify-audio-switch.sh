@@ -2,11 +2,11 @@
 # deps: pactl
 
 declare -A device_aliases
-#device_aliases["speakers"]="alsa_output.pci-0000_0c_00.4.analog-stereo"
+device_aliases["speakers"]="alsa_output.pci-0000_0c_00.4.analog-stereo"
 #device_aliases["speakers+headset"]="alsa_output.pci-0000_0c_00.4.analog-stereo,alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo"
 device_aliases["headset"]="alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo"
-#device_aliases["monitor"]="alsa_output.pci-0000_0a_00.1.hdmi-stereo"
-device_aliases["speakers+monitor"]="alsa_output.pci-0000_0c_00.4.analog-stereo,alsa_output.pci-0000_0a_00.1.hdmi-stereo"
+device_aliases["monitor"]="alsa_output.pci-0000_0a_00.1.hdmi-stereo"
+#device_aliases["speakers+monitor"]="alsa_output.pci-0000_0c_00.4.analog-stereo,alsa_output.pci-0000_0a_00.1.hdmi-stereo"
 
 # Get available devices
 # pactl list sinks | awk '/Name: /{print $2}'
@@ -79,7 +79,7 @@ else
   IFS=',' read -ra current_sink_array <<< "$current_device"
   [[ "${#current_sink_array[@]}" -gt 1 ]] && pactl unload-module module-combine-sink
 
-  # Set 
+  # Set
   pactl set-default-sink "$next_device"
 fi
 
