@@ -111,7 +111,11 @@
             "h".command = "close_node";
           };
         };
-        filesystem.filteredItems.visible = true;
+        filesystem = {
+          useLibuvFileWatcher = true;
+          filteredItems.visible = true;
+          followCurrentFile.enabled = true;
+        };
       };
 
       # Status line
