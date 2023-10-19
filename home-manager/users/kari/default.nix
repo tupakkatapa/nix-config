@@ -158,6 +158,7 @@ in {
       gimp-with-plugins
       video-trimmer
       picard
+      brave
 
       # Music Production
       qjackctl

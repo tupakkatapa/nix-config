@@ -39,11 +39,13 @@
     file
     vim
     nix
+    podman-compose
   ];
 
   # Enable podman with DNS
   virtualisation.podman = {
     enable = true;
+    dockerCompat = true;
     # dnsname allows containers to use ${name}.dns.podman to reach each other
     # on the same host instead of using hard-coded IPs.
     # NOTE: --net must be the same on the containers, and not eq "host"

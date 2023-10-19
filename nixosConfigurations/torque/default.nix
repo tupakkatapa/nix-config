@@ -121,6 +121,7 @@
     firewall.enable = false;
   };
   hardware.bluetooth.enable = true;
+  services.resolved.enable = true;
 
   # Logitech unifying receiver
   hardware.logitech.wireless.enable = true;
