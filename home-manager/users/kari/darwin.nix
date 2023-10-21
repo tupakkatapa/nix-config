@@ -21,7 +21,6 @@ in {
       [
         # GUI Apps
         ./config/alacritty.nix
-        ./config/vscode.nix
 
         # CLI Apps
         ./config/fish.nix
@@ -32,10 +31,15 @@ in {
       # Importing host-spesific home-manager config if it exists
       ++ optionalPaths [../../hosts/${config.networking.hostName}];
 
+    # Default apps
+    home.sessionVariables = {
+      FONT = "JetBrainsMono Nerd Font";
+    };
+
     home.packages = with pkgs; [
       android-tools
       jq
-      exa
+      eza
       gnupg
       htop
       neofetch

@@ -6,7 +6,11 @@
   # Font packages
   fonts.fontDir.enable = true;
   fonts.fonts = with pkgs; [
-    jetbrains-mono
+    (nerdfonts.override {
+      fonts = [
+        "JetBrainsMono"
+      ];
+    })
   ];
 
   services.nix-daemon.enable = true;
