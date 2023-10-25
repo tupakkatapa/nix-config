@@ -52,15 +52,11 @@ in {
       # background
       exec-once = solaar -w=hide
 
-      # social (ws4)
-      exec-once = discord
-      exec-once = ferdium
-      #exec-once = signal-desktop
+      # autostart
+      exec-once = [workspace 4 silent] discord
+      exec-once = [workspace 4 silent] ferdium
+      exec-once = [workspace 5 silent] plexamp
 
-      # audio (ws5)
-      exec-once = plexamp
-      #exec-once = qjackctl
-      #exec-once = guitarix
 
       ### Monitors ################################# -->
       monitor = ,preferred,auto,1
@@ -170,14 +166,7 @@ in {
       ### Window Rules ############################# -->
 
       # Sets the workspace on which a window should open
-      windowrule = workspace 4, discord
-      windowrule = workspace 4, org.telegram.desktop
-      windowrule = workspace 4, Ferdium
-      windowrule = workspace 4, Signal
-      windowrule = workspace 4, whatsapp-for-linux
-      windowrule = workspace 5, guitarix
-      windowrule = workspace 5, Plexamp
-      windowrule = workspace 5, qjackctl
+      windowrule = workspace 4 silent, discord
 
       # Floats a window
       windowrule = float, yad
