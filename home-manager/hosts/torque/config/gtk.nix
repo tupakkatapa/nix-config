@@ -18,10 +18,25 @@ in {
     cursorTheme = {
       name = "Bibata-Modern-Ice";
       package = pkgs.bibata-cursors;
+      size = 16;
     };
     theme = {
       name = "gruvbox-dark";
       package = pkgs.gruvbox-dark-gtk;
     };
+  };
+
+  qt = {
+    enable = true;
+    platformTheme = "gtk";
+    style.name = "gtk2";
+  };
+
+  home.pointerCursor = {
+    name = "Bibata-Modern-Ice";
+    package = pkgs.bibata-cursors;
+    size = 16;
+    gtk.enable = true;
+    x11.enable = true;
   };
 }
