@@ -155,11 +155,20 @@
     # Wine
     wineWowPackages.staging
     winetricks
+
+    # Podman-compose
+    podman-compose
   ];
 
   # VirtualBox
   virtualisation.virtualbox.host.enable = true;
   virtualisation.virtualbox.host.enableExtensionPack = true;
+  # Podman
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+    defaultNetwork.settings = {dns_enabled = true;};
+  };
 
   # Steam and gaming settings
   nixpkgs.config.allowUnfree = true;
