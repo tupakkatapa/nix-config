@@ -252,8 +252,9 @@ in {
       windowrule = animation none, Rofi
 
       # Additional opacity multiplier
-      #windowrule = opacity 0.9 override 0.9 override, ^(Alacritty)$
+      windowrule = opacity 0.9 override 0.9 override, ^(Alacritty)$
       windowrule = opacity 0.9 override 0.9 override, ^(Plexamp)$
+      windowrule = opacity 0.9 override 0.9 override, ^(org.gnome.Nautilus)$
 
       ### Key binds ################################ -->
       bind = $MOD SHIFT, R,      exec, hyprctl reload && notify-send "Hyprland reloaded"
