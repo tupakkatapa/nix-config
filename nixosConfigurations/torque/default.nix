@@ -4,9 +4,33 @@
   config,
   ...
 }: {
-  # Bootloader for x86_64-linux / aarch64-linux
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # EFI Bootloader with dualboot
+  boot.loader = {
+    efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot";
+    };
+    grub = {
+      enable = true;
+      device = "nodev";
+      efiSupport = true;
+      useOSProber = true;
+      # Text mode
+      gfxmodeEfi = "text";
+      gfxmodeBios = "text";
+      splashImage = null;
+    };
+    timeout = 10;
+  };
+  time.hardwareClockInLocalTime = true;
+
+  # Set the font for GRUB
+  boot.loader.grub.font = "${pkgs.terminus_font}/share/fonts/terminus/ter-x24n.pcf.gz";
+  boot.loader.grub.fontSize = 24;
+
+  # Set the console keymap and font
+  console.keyMap = "fi";
+  console.font = "${pkgs.terminus_font}/share/consolefonts/ter-c24n.psf.gz";
 
   # Use the latest kernel
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
@@ -19,7 +43,6 @@
     LC_MESSAGES = "en_US.UTF-8";
     LC_TIME = "fi_FI.UTF-8";
   };
-  console.keyMap = "fi";
 
   # Import hardware configuration
   imports = [
@@ -161,8 +184,11 @@
   ];
 
   # VirtualBox
-  virtualisation.virtualbox.host.enable = true;
-  virtualisation.virtualbox.host.enableExtensionPack = true;
+  virtualisation.virtualbox.host = {
+    enable = true;
+    enableExtensionPack = true;
+  };
+
   # Podman
   virtualisation.podman = {
     enable = true;
