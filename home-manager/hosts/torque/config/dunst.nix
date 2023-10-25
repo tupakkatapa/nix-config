@@ -21,7 +21,7 @@ in {
         monitor = 0;
         indicate_hidden = "yes";
 
-        offset = "10x10";
+        offset = "15x15";
 
         notification_height = 0;
 
