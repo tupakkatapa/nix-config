@@ -83,8 +83,6 @@ in {
         border_size             = 2
         col.active_border       = rgb(${accent})
         col.inactive_border     = rgb(${inactive})
-        col.group_border_active = rgb(${accent})
-        col.group_border        = rgb(${inactive})
         gaps_in                 = 5
         gaps_out                = 5
         layout                  = dwindle
@@ -99,8 +97,6 @@ in {
         enable_swallow           = true
         mouse_move_enables_dpms  = true
         swallow_regex            = ^(wezterm)$
-        groupbar_gradients       = false
-        groupbar_text_color      = rgb(${foreground})
       }
 
 
@@ -109,15 +105,10 @@ in {
 
         # Rounded corners
         rounding = 8
-        multisample_edges = true
 
         # Opacity
         active_opacity   = 1.0
         inactive_opacity = 1.0
-
-        # Blurls
-        blurls = gtk-layer-shell
-        blurls = lockscreen
 
         # Shadow
         col.shadow           = 0x66000000

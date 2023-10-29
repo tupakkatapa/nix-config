@@ -32,12 +32,12 @@
   };
 
   environment.systemPackages = with pkgs; [
-    btrfs-progs
-    fuse-overlayfs
     bind
+    btrfs-progs
     file
-    vim
+    fuse-overlayfs
     nix
+    vim
   ];
 
   # Reboots hanged system

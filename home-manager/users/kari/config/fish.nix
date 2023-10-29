@@ -23,7 +23,6 @@ in {
       rbt = "reboot";
       sdn = "shutdown -h now";
       sus = "systemctl suspend";
-      win = "grub-reboot 3";
 
       # Changing 'ls' to 'eza'
       ls = mkIf hasEza "eza -al --color=always --group-directories-first";

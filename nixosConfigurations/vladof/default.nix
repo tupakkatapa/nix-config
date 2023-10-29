@@ -45,7 +45,7 @@ in {
     options = ["noatime"];
   };
 
-  # Strict SSH settings
+  # Strict SSH/SFTP settings
   services.openssh = {
     enable = true;
     allowSFTP = true;
@@ -74,11 +74,7 @@ in {
       banner = {
         color = "yellow";
         command = ''
-          echo "  _____ __    _____ ____  _____ _____   "
-          echo " |  |  |  |  |  _  |    \|     |   __|  "
-          echo " |  |  |  |__|     |  |  |  |  |   __|  "
-          echo "  \___/|_____|__|__|____/|_____|__|     "
-          echo "                                        "
+          ${pkgs.inetutils}/bin/hostname | tr 'a-z' 'A-Z' | ${pkgs.figlet}/bin/figlet -f rectangles
           systemctl --failed --quiet
         '';
       };

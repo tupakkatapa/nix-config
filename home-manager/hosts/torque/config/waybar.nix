@@ -38,7 +38,6 @@ in {
       ];
 
       modules-right = [
-        "custom/notebook"
         "tray"
         "pulseaudio"
         "bluetooth"
@@ -100,11 +99,6 @@ in {
 
       "custom/hostname" = {
         exec = "echo $USER@$HOSTNAME";
-      };
-
-      "custom/notebook" = {
-        format = "notebook";
-        on-click = "${TERMINAL} -e ${EDITOR} ~/Workspace/notebook";
       };
 
       pulseaudio = {
@@ -229,7 +223,6 @@ in {
       #tray,
       #custom-player,
       #custom-hostname,
-      #custom-notebook,
       #bluetooth {
         padding: 0 15px;
         color: #${foreground};

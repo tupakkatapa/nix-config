@@ -49,7 +49,7 @@ in {
         ./config/neovim.nix
       ]
       # Importing host-spesific home-manager config if it exists
-      ++ optionalPaths [../../hosts/${config.networking.hostName}];
+      ++ optionalPaths [../../hosts/${config.networking.hostName}/default.nix];
 
     # Default apps
     home.sessionVariables = {

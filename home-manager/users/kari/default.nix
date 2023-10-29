@@ -13,11 +13,6 @@ in {
     ./minimal.nix
   ];
 
-  # Set password
-  users.users.${user} = {
-    password = config.sops.secrets."kari-password".path;
-  };
-
   # Mount drives
   fileSystems = lib.mkIf (config.networking.hostName == "torque") {
     "/mnt/3TB" = {
@@ -63,9 +58,17 @@ in {
     age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
   };
 
+  # Set password
+  users.users.${user} = {
+    password = config.sops.secrets."kari-password".path;
+  };
+
   # Wireguard
   networking.wg-quick.interfaces = {
-    "wg0".configFile = config.sops.secrets."wireguard/dinar".path;
+    "wg0" = {
+      autostart = false;
+      configFile = config.sops.secrets."wireguard/dinar".path;
+    };
   };
 
   # Home-manager config
@@ -134,17 +137,12 @@ in {
       gimp-with-plugins
       libreoffice-qt
       obsidian
-      picard
       plexamp
       qemu
       rpi-imager
       sublime-merge
       ventoy
       video-trimmer
-
-      # Music Production
-      qjackctl
-      tuxguitar
 
       # High Quality Games
       osu-lazer
@@ -154,6 +152,7 @@ in {
       android-tools
       ffmpeg
       gnupg
+      grub2
       jq
       kalker
       parallel
