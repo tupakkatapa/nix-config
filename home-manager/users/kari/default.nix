@@ -13,6 +13,11 @@ in {
     ./minimal.nix
   ];
 
+  # Set password
+  users.users.${user} = {
+    password = config.sops.secrets."kari-password".path;
+  };
+
   # Mount drives
   fileSystems = lib.mkIf (config.networking.hostName == "torque") {
     "/mnt/3TB" = {

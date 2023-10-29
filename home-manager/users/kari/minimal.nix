@@ -12,7 +12,6 @@ in {
   # User config
   users.users.${user} = {
     isNormalUser = true;
-    password = config.sops.secrets."kari-password".path;
     group = "${user}";
     extraGroups = optionalGroups [
       "adbusers"
@@ -37,18 +36,6 @@ in {
   users.groups.${user} = {};
   environment.shells = [pkgs.fish];
   programs.fish.enable = true;
-  services.getty.autologinUser = user;
-
-  # Secrets
-  sops = {
-    secrets = {
-      "kari-password" = {
-        sopsFile = ../../secrets.yaml;
-        neededForUsers = true;
-      };
-    };
-    age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
-  };
 
   # Allows access to flake inputs
   home-manager.extraSpecialArgs = {inherit inputs;};
