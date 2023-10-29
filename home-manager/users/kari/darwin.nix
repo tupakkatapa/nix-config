@@ -23,10 +23,10 @@ in {
         ./config/alacritty.nix
 
         # CLI Apps
-        ./config/fish.nix
-        ./config/neovim.nix
-        ./config/git.nix
         ./config/direnv.nix
+        ./config/fish.nix
+        ./config/git.nix
+        ./config/neovim.nix
       ]
       # Importing host-spesific home-manager config if it exists
       ++ optionalPaths [../../hosts/${config.networking.hostName}];
@@ -38,10 +38,10 @@ in {
 
     home.packages = with pkgs; [
       android-tools
-      jq
       eza
       gnupg
       htop
+      jq
       neofetch
       nix
       nix-tree

@@ -27,11 +27,11 @@
     enable = true;
     allowSFTP = false;
     extraConfig = ''
-      AllowTcpForwarding yes
-      X11Forwarding no
       AllowAgentForwarding no
       AllowStreamLocalForwarding no
+      AllowTcpForwarding yes
       AuthenticationMethods publickey
+      X11Forwarding no
     '';
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;

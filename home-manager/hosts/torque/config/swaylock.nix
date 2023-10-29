@@ -1,4 +1,8 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  config,
+  ...
+}: let
   inherit (config.home.sessionVariables) FONT;
 in {
   programs.swaylock = {

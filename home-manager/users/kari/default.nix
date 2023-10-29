@@ -7,39 +7,11 @@
   ...
 }: let
   user = "kari";
-  optionalGroups = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
-  optionalPaths = paths: builtins.filter (path: builtins.pathExists path) paths;
 in {
-  # User config, setting password manually
-  users.users.${user} = {
-    isNormalUser = true;
-    group = "${user}";
-    extraGroups =
-      [
-        "audio"
-        "video"
-        "wheel"
-        "users"
-      ]
-      ++ optionalGroups [
-        "vboxusers"
-        "rtkit"
-        "input"
-        "jackaudio"
-        "users"
-        "i2c"
-        "podman"
-        "libvirtd"
-        "adbusers"
-      ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEdpdbTOz0h9tVvkn13k1e8X7MnctH3zHRFmYWTbz9T kari@torque"
-    ];
-    shell = pkgs.fish;
-  };
-  users.groups.${user} = {};
-  environment.shells = [pkgs.fish];
-  programs.fish.enable = true;
+  # This configuration extends the minimal version
+  imports = [
+    ./minimal.nix
+  ];
 
   # Mount drives
   fileSystems = lib.mkIf (config.networking.hostName == "torque") {
@@ -56,41 +28,51 @@ in {
       device = "sftp_user@vladof:/root/";
       fsType = "sshfs";
       options = [
-        "allow_other"
-        "_netdev"
-        "x-systemd.automount"
-        "reconnect"
-        "ServerAliveInterval=15"
         "IdentityFile=/home/kari/.ssh/id_ed25519"
+        "ServerAliveInterval=15"
+        "_netdev"
+        "allow_other"
+        "reconnect"
+        "x-systemd.automount"
       ];
     };
   };
 
-  # Allows access to flake inputs
-  home-manager.extraSpecialArgs = {inherit inputs;};
+  # Create directories, these are persistent
+  systemd.tmpfiles.rules = [
+    "d /home/${user}/.local/bin 755 ${user} ${user} -"
+    "d /home/${user}/.ssh 755 ${user} ${user} -"
+    "d /home/${user}/Pictures/Screenshots 755 ${user} ${user} -"
+    "d /home/${user}/Workspace 755 ${user} ${user} -"
+  ];
+
+  # Secrets
+  sops = {
+    secrets = {
+      "wireguard/dinar".sopsFile = ../../secrets.yaml;
+      "kari-password" = {
+        sopsFile = ../../secrets.yaml;
+        neededForUsers = true;
+      };
+    };
+    age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+  };
+
+  # Wireguard
+  networking.wg-quick.interfaces = {
+    "wg0".configFile = config.sops.secrets."wireguard/dinar".path;
+  };
 
   # Home-manager config
   home-manager.users."${user}" = rec {
-    imports =
-      [
-        # GUI Apps
-        ./config/alacritty.nix
-        ./config/firefox.nix
-        ./config/mpv.nix
-
-        # CLI Apps
-        ./config/fish.nix
-        ./config/neovim.nix
-        ./config/git.nix
-        ./config/direnv.nix
-      ]
-      # Importing host-spesific home-manager config if it exists
-      ++ optionalPaths [../../hosts/${config.networking.hostName}];
+    imports = [
+      ./config/alacritty.nix
+      ./config/firefox.nix
+      ./config/mpv.nix
+    ];
 
     # Default apps
     home.sessionVariables = {
-      EDITOR = "nvim";
-      MANPAGER = "nvim +Man!";
       BROWSER = "firefox";
       TERMINAL = "alacritty";
     };
@@ -114,6 +96,8 @@ in {
         "pxe-server" = {
           hostname = "192.168.1.169";
           user = "core";
+        };
+        "192.168.1.*" = {
           extraOptions = {
             "StrictHostKeyChecking" = "no";
           };
@@ -126,39 +110,32 @@ in {
     home.file = let
       scriptDir = ./scripts;
       scriptFiles = builtins.readDir scriptDir;
-
+    in
       # Places scripts in '~/.local/bin/', create it with systemd.tmpfiles
-      scriptAttrs =
-        builtins.mapAttrs (name: _: {
-          executable = true;
-          target = ".local/bin/${name}";
-          source = "${scriptDir}/${name}";
-        })
-        scriptFiles;
-
-      # Qjackctl presets
-      qjackctlPresets = {
-        "focusrite_guitarix_v2.xml".source = ./config/qjackctl/focusrite_guitarix_v2.xml;
-        "focusrite_guitarix_ardour_v2.xml".source = ./config/qjackctl/focusrite_guitarix_ardour_v2.xml;
-      };
-    in (scriptAttrs // qjackctlPresets);
+      builtins.mapAttrs (name: _: {
+        executable = true;
+        target = ".local/bin/${name}";
+        source = "${scriptDir}/${name}";
+      })
+      scriptFiles;
 
     home.packages = with pkgs; [
       #### GUI
+      brave
       czkawka
       discord
+      element-desktop
       ferdium
+      gimp-with-plugins
       libreoffice-qt
       obsidian
+      picard
       plexamp
       qemu
       rpi-imager
       sublime-merge
       ventoy
-      gimp-with-plugins
       video-trimmer
-      picard
-      brave
 
       # Music Production
       qjackctl
@@ -173,23 +150,18 @@ in {
       ffmpeg
       gnupg
       jq
+      kalker
       parallel
       ssh-to-age
-      tmux
-      wget
       yt-dlp
 
       # System Utilities
-      htop
-      kexec-tools
-      lshw
       neofetch
       nix-tree
 
       # Networking
       iputils
       nmap
-      rsync
       sshfs
       webcat
       wireguard-go
@@ -197,7 +169,6 @@ in {
 
       # Alternatives
       bat
-      eza
       fd
       ripgrep
 
@@ -207,8 +178,5 @@ in {
       unzip
       zip
     ];
-
-    programs.home-manager.enable = true;
-    home.stateVersion = "23.05";
   };
 }

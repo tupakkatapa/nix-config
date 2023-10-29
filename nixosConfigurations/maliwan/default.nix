@@ -63,11 +63,11 @@
 
   # Basic font packages
   fonts.packages = with pkgs; [
+    fira-code
+    fira-code-symbols
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
-    fira-code
-    fira-code-symbols
   ];
 
   # Enable GVfs service for file managers to work properly
@@ -79,17 +79,6 @@
   # Enable sshfs package for mounting SSH drives
   # https://nixos.org/manual/nixos/stable/#sec-sshfs-non-interactive
   system.fsPackages = [pkgs.sshfs];
-
-  # Create directories, these are persistent
-  systemd.tmpfiles = builtins.listToAttrs (map (user: {
-    name = "rules";
-    value = [
-      "d /home/${user}/.ssh 755 ${user} ${user} -"
-      "d /home/${user}/Pictures/Screenshots 755 ${user} ${user} -"
-      "d /home/${user}/Workspace 755 ${user} ${user} -"
-      "d /home/${user}/.local/bin 755 ${user} ${user} -"
-    ];
-  }) (builtins.attrNames config.home-manager.users));
 
   # Connectivity
   networking = {
@@ -103,11 +92,11 @@
     enable = true;
     allowSFTP = false;
     extraConfig = ''
-      AllowTcpForwarding yes
-      X11Forwarding no
       AllowAgentForwarding no
       AllowStreamLocalForwarding no
+      AllowTcpForwarding yes
       AuthenticationMethods publickey
+      X11Forwarding no
     '';
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;

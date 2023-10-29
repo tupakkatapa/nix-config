@@ -20,7 +20,7 @@
       gfxmodeBios = "text";
       splashImage = null;
     };
-    timeout = 10;
+    timeout = 1;
   };
   time.hardwareClockInLocalTime = true;
 
@@ -125,17 +125,6 @@
   # Enable sshfs package for mounting SSH drives
   # https://nixos.org/manual/nixos/stable/#sec-sshfs-non-interactive
   system.fsPackages = [pkgs.sshfs];
-
-  # Create directories, these are persistent
-  systemd.tmpfiles = builtins.listToAttrs (map (user: {
-    name = "rules";
-    value = [
-      "d /home/${user}/.ssh 755 ${user} ${user} -"
-      "d /home/${user}/Pictures/Screenshots 755 ${user} ${user} -"
-      "d /home/${user}/Workspace 755 ${user} ${user} -"
-      "d /home/${user}/.local/bin 755 ${user} ${user} -"
-    ];
-  }) (builtins.attrNames config.home-manager.users));
 
   # Connectivity
   networking = {

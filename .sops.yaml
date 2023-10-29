@@ -1,0 +1,14 @@
+keys:
+  - &kari 773DC99EDAF29D356155DC91269CF32D790D1789
+  - &vladof age14rttypf6gr6jjcclhlvqd8flhndjpq6my0k8rv5zkrz54xzgtq5sf84d79
+  - &torque age1nmsswns8lenxqd20mfsfa9ja3twqc45u5y6h2p52tsjka9302upsfhuf3n
+  - &bandit age1acwrcnsydv78tcea92gqu3rm3my5fxy5sydae9mrgn8rzqvkj5us4gut7f
+creation_rules:
+  - path_regex: home-manager/secrets.ya?ml$
+    key_groups:
+    - pgp:
+      - *kari
+      age:
+      - *torque
+      - *vladof
+      - *bandit

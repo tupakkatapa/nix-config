@@ -62,7 +62,7 @@ in {
 
     package = with pkgs;
       wrapFirefox firefox-unwrapped {
-        extraNativeMessagingHosts = lib.optional config.programs.mpv.enable pkgs.ff2mpv;
+        nativeMessagingHosts = lib.optional config.programs.mpv.enable pkgs.ff2mpv;
         extraPolicies = {
           AppAutoUpdate = false;
           CaptivePortal = false;

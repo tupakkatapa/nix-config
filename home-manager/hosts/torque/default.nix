@@ -10,11 +10,11 @@
 in {
   # Just a reminder that this file should be imported under 'home-manager.users.<username>'
   imports = [
+    #./config/swayidle.nix
+    #./config/swaylock.nix
     ./config/dunst.nix
     ./config/gtk.nix
     ./config/hyprland
-    #./config/swayidle.nix
-    #./config/swaylock.nix
     ./config/waybar.nix
     ./config/wofi.nix
   ];

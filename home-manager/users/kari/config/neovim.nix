@@ -152,8 +152,8 @@
       # Indentation guides
       indent-blankline = {
         enable = true;
-        showCurrentContext = true;
-        showCurrentContextStart = true;
+        scope.showStart = true;
+        scope.enabled = true;
       };
 
       # Language server protocols

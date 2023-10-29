@@ -30,19 +30,19 @@
     ];
     brews = [];
     casks = [
-      "whatsapp"
-      "plexamp"
-      "plex"
-      "runelite"
-      "sublime-merge"
-      "font-iosevka"
-      "firefox"
-      "logitech-options"
-      "obsidian"
-      "element"
-      "signal"
       "discord"
+      "element"
+      "firefox"
+      "font-iosevka"
+      "logitech-options"
       "mpv"
+      "obsidian"
+      "plex"
+      "plexamp"
+      "runelite"
+      "signal"
+      "sublime-merge"
+      "whatsapp"
     ];
     masApps = {};
   };

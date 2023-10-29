@@ -41,6 +41,8 @@
 
     buildMachines = [
       {
+        # For this to work, the host should be listed in the known hosts for the root user
+        # To do this, run: sudo su -c 'ssh kari@buidl0.ponkila.com -i /root/.ssh/id_ed25519'
         systems = ["aarch64-linux" "i686-linux" "x86_64-linux"];
         supportedFeatures = ["benchmark" "big-parallel" "kvm" "nixos-test"];
         sshUser = "kari";
