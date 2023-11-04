@@ -4,6 +4,8 @@
   description = "Tupakkatapa's flake";
 
   inputs = {
+    aagl.inputs.nixpkgs.follows = "nixpkgs";
+    aagl.url = "github:ezKEa/aagl-gtk-on-nix";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
     devenv.url = "github:cachix/devenv";
@@ -25,6 +27,7 @@
   # Add the inputs declared above to the argument attribute set
   outputs = {
     self,
+    aagl,
     darwin,
     flake-parts,
     home-manager,
@@ -124,6 +127,7 @@
             [
               ./home-manager/users/kari
               ./nixosConfigurations/torque
+              aagl.nixosModules.default
             ]
             ++ defaultModules;
         };

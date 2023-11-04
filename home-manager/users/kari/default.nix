@@ -71,6 +71,8 @@ in {
     };
   };
 
+  programs.anime-game-launcher.enable = true;
+
   # Home-manager config
   home-manager.users."${user}" = rec {
     imports = [
