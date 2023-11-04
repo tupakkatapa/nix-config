@@ -106,6 +106,9 @@ in {
         "pxe-server" = {
           hostname = "192.168.1.169";
           user = "core";
+          extraOptions = {
+            "StrictHostKeyChecking" = "no";
+          };
         };
         "192.168.1.*" = {
           extraOptions = {
@@ -160,6 +163,7 @@ in {
       parallel
       ssh-to-age
       yt-dlp
+      cava
 
       # System Utilities
       neofetch
