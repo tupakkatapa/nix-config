@@ -164,6 +164,7 @@
             [
               ./home-manager/users/kari
               ./nixosConfigurations/maliwan
+              aagl.nixosModules.default
             ]
             ++ defaultModules;
         };
