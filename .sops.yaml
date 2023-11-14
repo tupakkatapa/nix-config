@@ -2,6 +2,7 @@ keys:
   - &kari 773DC99EDAF29D356155DC91269CF32D790D1789
   - &vladof age14rttypf6gr6jjcclhlvqd8flhndjpq6my0k8rv5zkrz54xzgtq5sf84d79
   - &torque age1nmsswns8lenxqd20mfsfa9ja3twqc45u5y6h2p52tsjka9302upsfhuf3n
+  - &maliwan age1mk84uvv4hetdnhs40sk8ufvve5cqym9nclwat4dv9ul9njhq5qkskdwame
 creation_rules:
   - path_regex: home-manager/secrets.ya?ml$
     key_groups:
@@ -10,3 +11,4 @@ creation_rules:
       age:
       - *torque
       - *vladof
+      - *maliwan
