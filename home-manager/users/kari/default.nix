@@ -168,6 +168,14 @@ in {
       yt-dlp
       cava
 
+      (pkgs.rstudioWrapper.override {
+        packages = with rPackages; [
+          wordcloud
+          tm
+          SnowballC
+        ];
+      })
+
       # System Utilities
       neofetch
       nix-tree
