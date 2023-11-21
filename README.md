@@ -14,7 +14,7 @@ Here are some useful resources to learn about Nix and NixOS:
 
 - [Nix Pills - Why You Should Give it a Try](https://nixos.org/guides/nix-pills/why-you-should-give-it-a-try.html)
 - [Zero to Nix - Declarative programming](https://zero-to-nix.com/concepts/declarative)
-- [NixOS Manual - Manual Installation](https://nixos.org/manual/nixos/stable/index.html#sec-installation-manual)
+- [NixOS Wiki - Btrfs Installation](https://nixos.wiki/wiki/Btrfs)
 - [Misterio77 - Nix Starter Config](https://github.com/Misterio77/nix-starter-configs)
 
 Must-read blog posts:

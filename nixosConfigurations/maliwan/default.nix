@@ -26,11 +26,6 @@
     ./hardware-configuration.nix
   ];
 
-  # Create directories, these are persistent
-  systemd.tmpfiles.rules = [
-    "d /nix/persist/etc/ssh 755 root root -"
-  ];
-
   # Greetd
   services.greetd = {
     enable = true;

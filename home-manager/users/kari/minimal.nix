@@ -55,6 +55,9 @@ in {
     home.sessionVariables = {
       EDITOR = "nvim";
       MANPAGER = "nvim +Man!";
+      TERMINAL = lib.mkDefault "none";
+      BROWSER = lib.mkDefault "none";
+      FILEMANAGER = lib.mkDefault "none";
     };
 
     home.packages = with pkgs; [

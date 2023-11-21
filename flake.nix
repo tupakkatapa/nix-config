@@ -87,8 +87,8 @@
             scripts.init-qemu.exec = ''
               nix run github:ponkila/homestaking-infra?dir=scripts/init-qemu#init-qemu -- "$@"
             '';
-            scripts.pxe-serve.exec = ''
-              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE#pxe-serve -- "$@"
+            scripts.pxe-generate.exec = ''
+              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE\?ref=develop#pxe-generate
             '';
             enterShell = ''
               cat <<INFO
@@ -97,7 +97,7 @@
 
               Available commands:
 
-                pxe-serve       : Serves NixOS configurations from a flake as netboot images
+                pxe-generate    : Generates netboot images and iPXE menu from a flake
                 init-qemu       : Boot up a host using QEMU
 
               INFO

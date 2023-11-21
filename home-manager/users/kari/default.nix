@@ -56,7 +56,6 @@ in {
       };
     };
     age.sshKeyPaths = [
-      "/nix/persist/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_ed25519_key"
     ];
   };
@@ -74,6 +73,7 @@ in {
     };
   };
 
+  # Misc
   programs.anime-game-launcher.enable = true;
 
   # Home-manager config

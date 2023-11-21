@@ -41,9 +41,7 @@ in {
       jctl = "journalctl -p 3 -xb";
 
       # Nix
-      nd = "nix develop --impure .#";
-      nb = "nix build .#";
-      nr = "nix run .#";
+      ngd = "nix fmt && git add . && direnv reload";
       nfc = "nix flake check --impure";
       buidl = "rm -f ~/.config/mimeapps.list && sudo nixos-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
       buidl-darwin = "nix build path:$HOME/Workspace/nix-config#darwinConfigurations.$(hostname).system --show-trace && ./result/sw/bin/darwin-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
