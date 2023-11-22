@@ -42,6 +42,7 @@ in {
   systemd.tmpfiles.rules = [
     "d /home/${user}/.local/bin 755 ${user} ${user} -"
     "d /home/${user}/.ssh 755 ${user} ${user} -"
+    "d /home/${user}/Pictures 755 ${user} ${user} -"
     "d /home/${user}/Pictures/Screenshots 755 ${user} ${user} -"
     "d /home/${user}/Workspace 755 ${user} ${user} -"
   ];
