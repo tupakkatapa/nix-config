@@ -27,6 +27,7 @@ in {
 
       # Changing 'ls' to 'eza'
       ls = mkIf hasEza "eza -al --color=always --group-directories-first";
+      lsd = "sudo du -hc --max-depth=0 *";
       tree = mkIf hasEza "eza -T";
 
       # Rsync
