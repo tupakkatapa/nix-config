@@ -63,7 +63,7 @@ in {
 
   # Set password
   users.users.${user} = {
-    hashedPasswordFile = config.sops.secrets."kari-password".path;
+    password = config.sops.secrets."kari-password".path;
   };
 
   # Wireguard
