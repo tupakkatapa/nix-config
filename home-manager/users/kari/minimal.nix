@@ -37,6 +37,20 @@ in {
   environment.shells = [pkgs.fish];
   programs.fish.enable = true;
 
+  # Autologin if no password is set
+  services.getty.autologinUser = let
+    userCfg = config.users.users."${user}";
+  in
+    lib.mkIf (
+      userCfg.password
+      == null
+      && userCfg.initialPassword == null
+      && userCfg.hashedPasswordFile == null
+      && userCfg.hashedPassword == null
+      && userCfg.initialHashedPassword == null
+    )
+    user;
+
   # Allows access to flake inputs
   home-manager.extraSpecialArgs = {inherit inputs;};
 
