@@ -15,10 +15,10 @@ in {
 
   # Mount drives
   fileSystems = lib.mkIf (config.networking.hostName == "torque") {
-    "/mnt/3TB" = {
-      device = "/dev/disk/by-uuid/60c4a67d-166b-48d2-a1c2-e457850a87df";
-      fsType = "ext4";
-    };
+    #"/mnt/3TB" = {
+    #  device = "/dev/disk/by-uuid/60c4a67d-166b-48d2-a1c2-e457850a87df";
+    #  fsType = "ext4";
+    #};
     "/mnt/WIN" = {
       device = "/dev/disk/by-uuid/74D4CED9D4CE9CAC";
       fsType = "ntfs-3g";
