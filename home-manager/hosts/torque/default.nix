@@ -29,7 +29,9 @@ in {
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = {
     "application/pdf" = ["org.pwmt.zathura.desktop"];
-    "image/*" = ["imv.desktop"];
+    "all/text" = ["org.gnome.TextEditor"];
+    "image/jpeg" = ["imv.desktop"];
+    "image/png" = ["imv.desktop"];
   };
 
   # Allow fonts trough home.packages
@@ -39,6 +41,7 @@ in {
     # File manager
     gnome3.nautilus
     gnome3.file-roller
+    gnome-text-editor
     zathura
     imv
 
