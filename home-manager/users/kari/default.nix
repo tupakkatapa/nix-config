@@ -51,19 +51,15 @@ in {
   sops = {
     secrets = {
       "wireguard/dinar".sopsFile = ../../secrets.yaml;
-      "kari-password" = {
-        sopsFile = ../../secrets.yaml;
-        neededForUsers = true;
-      };
     };
     age.sshKeyPaths = [
       "/etc/ssh/ssh_host_ed25519_key"
     ];
   };
 
-  # Set password
+  # Set initial password
   users.users.${user} = {
-    hashedPasswordFile = config.sops.secrets."kari-password".path;
+    initialPassword = "${user}";
   };
 
   # Wireguard
