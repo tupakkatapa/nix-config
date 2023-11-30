@@ -12,3 +12,11 @@ creation_rules:
       - *torque
       - *vladof
       - *maliwan
+  - path_regex: nixosConfigurations/secrets.ya?ml$
+    key_groups:
+    - pgp:
+      - *kari
+      age:
+      - *torque
+      - *vladof
+      - *maliwan

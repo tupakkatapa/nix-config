@@ -25,7 +25,7 @@ in {
       options = ["rw"];
     };
     "/mnt/SFTP" = {
-      device = "sftp_user@vladof:/root/";
+      device = "sftp@192.168.1.8";
       fsType = "sshfs";
       options = [
         "IdentityFile=/home/kari/.ssh/id_ed25519"

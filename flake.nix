@@ -29,6 +29,7 @@
     home-manager.url = "github:nix-community/home-manager";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
     hyprwm-contrib.url = "github:hyprwm/contrib";
+    nixpkgs-stable-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
@@ -46,6 +47,7 @@
     home-manager,
     nixpkgs,
     nixpkgs-stable,
+    nixpkgs-stable-patched,
     nixvim,
     sops-nix,
     ...
@@ -88,7 +90,10 @@
               nix run github:ponkila/homestaking-infra?dir=scripts/init-qemu#init-qemu -- "$@"
             '';
             scripts.pxe-generate.exec = ''
-              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE\?ref=develop#pxe-generate
+              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE\?ref=stage1net#pxe-generate -- "$@"
+            '';
+            scripts.lkddb-filter.exec = ''
+              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE\?ref=stage1net#lkddb-filter -- "$@"
             '';
             enterShell = ''
               cat <<INFO
@@ -116,11 +121,13 @@
         packages = with flake.nixosConfigurations; {
           "bandit" = bandit.config.system.build.kexecTree;
           "jakobs" = jakobs.config.system.build.kexecTree;
-          "vladof" = vladof.config.system.build.kexecTree;
+          "vladof" = vladof.config.system.build.squashfs;
         };
       };
       flake = let
         inherit (self) outputs;
+
+        specialArgs = {inherit self inputs outputs;};
 
         defaultModules = [
           sops-nix.nixosModules.sops
@@ -134,8 +141,8 @@
         ];
 
         torque = {
+          inherit specialArgs;
           system = "x86_64-linux";
-          specialArgs = {inherit inputs outputs;};
           modules =
             [
               ./home-manager/users/kari
@@ -146,20 +153,21 @@
         };
 
         vladof = {
+          inherit specialArgs;
           system = "x86_64-linux";
-          specialArgs = {inherit inputs outputs;};
           modules =
             [
               ./home-manager/users/kari/minimal.nix
               ./nixosConfigurations/vladof
-              ./system/formats/netboot-kexec.nix
+              ./system/formats/netboot-squashfs.nix
+              ./system/patches/init1-network-base.nix
             ]
             ++ defaultModules;
         };
 
         maliwan = {
+          inherit specialArgs;
           system = "x86_64-linux";
-          specialArgs = {inherit inputs outputs;};
           modules =
             [
               ./home-manager/users/kari
@@ -170,8 +178,8 @@
         };
 
         bandit = {
+          inherit specialArgs;
           system = "x86_64-linux";
-          specialArgs = {inherit inputs outputs;};
           modules =
             [
               ./home-manager/users/kari/minimal.nix
@@ -182,8 +190,8 @@
         };
 
         hyperion = {
+          inherit specialArgs;
           system = "aarch64-darwin";
-          specialArgs = {inherit inputs outputs;};
           modules = [
             ./home-manager/users/kari/darwin.nix
             ./nixosConfigurations/hyperion
@@ -198,8 +206,8 @@
         };
 
         jakobs = {
+          inherit specialArgs;
           system = "aarch64-linux";
-          specialArgs = {inherit inputs outputs;};
           modules =
             [
               ./home-manager/users/kari/minimal.nix
@@ -210,17 +218,16 @@
         };
       in {
         # NixOS configuration entrypoints
-        nixosConfigurations =
-          with nixpkgs.lib; {
+        nixosConfigurations = with nixpkgs.lib;
+          {
             "bandit" = nixosSystem bandit;
             "jakobs" = nixosSystem jakobs;
             "maliwan" = nixosSystem maliwan;
             "torque" = nixosSystem torque;
-            "vladof" = nixosSystem vladof;
           }
-          # // (with nixpkgs-stable.lib; {
-          # })
-          ;
+          // (with nixpkgs-stable-patched.lib; {
+            "vladof" = nixosSystem vladof;
+          });
 
         # Darwin configuration entrypoints
         darwinConfigurations = with darwin.lib; {
