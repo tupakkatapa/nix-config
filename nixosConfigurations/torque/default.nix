@@ -135,6 +135,14 @@
   hardware.bluetooth.enable = true;
   services.resolved.enable = true;
 
+  # Binary cache
+  services.nix-serve = {
+    enable = true;
+    secretKeyFile = "/var/cache-priv-key.pem";
+    port = 5000;
+    openFirewall = true;
+  };
+
   # Logitech unifying receiver
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
