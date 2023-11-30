@@ -26,8 +26,8 @@ in {
       win = "sudo grub-reboot 2 && reboot";
 
       # Changing 'ls' to 'eza'
-      ls = mkIf hasEza "eza -al --color=always --group-directories-first";
-      lsd = "sudo du -hc --max-depth=0 *";
+      ls = mkIf hasEza "eza -agl --color=always --group-directories-first";
+      lsd = "sudo du -Lhc --max-depth=0 *";
       tree = mkIf hasEza "eza -T";
 
       # Rsync
