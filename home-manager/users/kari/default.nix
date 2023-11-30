@@ -146,7 +146,6 @@ in {
       qemu
       rpi-imager
       sublime-merge
-      ventoy
       video-trimmer
 
       # High Quality Games
@@ -163,18 +162,9 @@ in {
       parallel
       ssh-to-age
       yt-dlp
-      cava
-
-      (pkgs.rstudioWrapper.override {
-        packages = with rPackages; [
-          wordcloud
-          tm
-          SnowballC
-        ];
-      })
+      ventoy
 
       # System Utilities
-      neofetch
       nix-tree
 
       # Networking
