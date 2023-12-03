@@ -19,13 +19,13 @@ in {
     #  device = "/dev/disk/by-uuid/60c4a67d-166b-48d2-a1c2-e457850a87df";
     #  fsType = "ext4";
     #};
-    "/mnt/WIN" = {
+    "/mnt/win" = {
       device = "/dev/disk/by-uuid/74D4CED9D4CE9CAC";
       fsType = "ntfs-3g";
       options = ["rw"];
     };
-    "/mnt/SFTP" = {
-      device = "sftp@192.168.1.8";
+    "/mnt/sftp" = {
+      device = "sftp@192.168.1.8:/";
       fsType = "sshfs";
       options = [
         "IdentityFile=/home/kari/.ssh/id_ed25519"
