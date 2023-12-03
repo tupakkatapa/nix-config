@@ -27,20 +27,18 @@ in {
       "vboxusers"
       "video"
       "wheel"
+      "cups"
     ];
     openssh.authorizedKeys.keys = [
       # kari@torque
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEdpdbTOz0h9tVvkn13k1e8X7MnctH3zHRFmYWTbz9T kari@torque"
 
-      # kari@android
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKk3kgeXBMsnpL0/uFLMYwBez1SXU92GyvyjAtmFZkSt kari@phone"
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCqcpV951HXpC4Fe8KY3VYKTkWIcwJ1KSXA6xub2gOKbsOzerCFf7AaAJluprpi5YuV9n84RZatjF9E7tk+wjCsgDbfqO9AFWtJtCmyFWfs1cMzmhhxRt8A8KkK56FpJLmLjxEbkeMd8EpLS4HmwWLk+hd5c+1Cz/KgLfIA6WeLt72jArBGjpKFFcW4tLTR+U0I/uW7+YyTIyF8UmINlAHXsOdTptcfHmKIiRek+ySYyGLId3GGtZ0k2Dgh1E3/sHpi3x1GSztXmmn1QFUOeSDe62TRW6Wg78jDXiTUl0HwlIFuvtQ26UTdteC83nHvf70GGh5jH14o1uWhWN0WaE046Sm7aZGOIZ1OX5bfVE6m+taPohF+4Pw1NMV76l6zpRz2X6tSbcG3NSL1Zfx7q/v97M05VsAxMger4mI0h25fdaZSFUh+cNKrRXG12tjr+DZHOCUI2UdSuNp1A8JcKh5k9hL/WR17ZcQDY1Siau1ea/pqzqU6GHFMRLM1w+84jcKOVKFLMSAxl7vbb5dP3OU9CDXWf/fkXl9b2oci/DKNHhZ7G2kLTq6+pE8rPs8A0o48yUkQkYeYoeqNRediAKvcBju4xtdbFidzctV7GgqkH1CL56LbakV8GqsxBH12MK0F36U8PV1xeDYkklVVjX/380OQJD3Yq/hrOV70rcYJMQ== kari@android"
-
-      # kari@macbook
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIZlujrZ4ng+IMfiFPKxpMEC5CAcuLN+Xo5zahtHYxy/ kari@macbook"
+      # kari@phone
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPFKfmSYqFE+hXp/P1X8oqcpnUG9cx9ILzk4dqQzlEOC kari@phone"
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCzhUITs3FB3ND6KMOjBwT04FD0jN+fuY8TIpO3U0Imdkhr++NgkHH8C8tXkKS+XJOUx6kHt9/DkLLmRJLe3qTwwarElgR1bVVIlOHx3Z1AY88b5CjcQV0ZruvZgasKKTfMx3TN5Zl3OBgGckHgAGozM8dZqUEMTE/U/hR/jatCaCEADgBCLM3rM2hCIcjTJ+Rk1rPBjOZzTdNogYWr9puyWu8kTaS/1gALI1bcJ235yKCrAr/fmzZDfBrPM9A9Y8B09rtOEE53GmpEXNyYsllOFA6nurSIIBxQNrUnOoKbCIgAjyttcA1aAxGIB+uZ1Sxnj4bZpHS1+GOqANY1ukeKkga02k2UVwtvMvCqLZHPQ9hUsg8H96V9PwvSUI68E3wEfoc7bV34Srh7TuBkDOcMv0kY5X1WmkgfS4n3CnPBIXoStw49RoMMoorhvazt9p2WIDlygmMWhESF0hYexRrpdVmvpRLjPlCR611PAhxIhn1aquvrr/WTKzWficSUbWbql6+ZYpwZUAaLb6qK35ohS//5gqH9MJCFJZTjfyWBSA2hAxA8hUGPxbGLOg53VDy03vxXCa21FnOWJVMv9bosBfGYPYyBhxTqmN9PJQ2msM1kb2u17E+ZHPt6JZbD4uDweOoPXWF0Bq4JNeA9LYdMgeoQ5hZt3hKuKao9MOF6zw== kari@phone"
 
       # kari@maliwan
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB/n5+r2xsdwwIqpnfSQwle9k2G1vTr5pKnIW7Gv4dM1 kari@maliwan"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxmP58tAQ7oN1OT4nZ/pZtrb8vGvuh/l33lxiq3ngIU kari@maliwan"
     ];
     shell = pkgs.fish;
   };
