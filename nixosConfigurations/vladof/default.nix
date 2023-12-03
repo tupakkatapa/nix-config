@@ -181,8 +181,12 @@ in {
       "share.${domain}" = {
         useACMEHost = config.networking.fqdn;
         extraConfig = ''
-          reverse_proxy http://localhost:4001
-          file_server /mnt/wd-red/share
+          encode zstd gzip
+          root * /mnt/wd-red/sftp/share
+          file_server {
+            browse
+            hide .* _*
+          }
         '';
       };
       "vault.${domain}" = {
