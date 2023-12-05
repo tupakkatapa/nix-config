@@ -22,3 +22,5 @@ Must-read blog posts:
 - [Shell Scripts with Nix](https://ertt.ca/nix/shell-scripts/)
 - [Paranoid NixOS Setup](https://xeiaso.net/blog/paranoid-nixos-2021-07-18/)
 - [Using NixOS as a router](https://francis.begyn.be/blog/nixos-home-router)
+- [NixOS Wireguard VPN setup](https://alberand.com/nixos-wireguard-vpn.html)
+
