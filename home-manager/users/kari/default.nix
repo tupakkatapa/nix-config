@@ -8,9 +8,9 @@
 }: let
   user = "kari";
 in {
-  # This configuration extends the minimal version
+  # This configuration extends the minimal-gui version
   imports = [
-    ./minimal.nix
+    ./minimal-gui.nix
   ];
 
   # Mount drives
@@ -75,17 +75,7 @@ in {
 
   # Home-manager config
   home-manager.users."${user}" = rec {
-    imports = [
-      ./config/alacritty.nix
-      ./config/firefox.nix
-      ./config/mpv.nix
-    ];
-
     # Default apps
-    home.sessionVariables = {
-      BROWSER = "firefox";
-      TERMINAL = "alacritty";
-    };
     xdg.mimeApps.enable = true;
     xdg.mimeApps.defaultApplications = {
       "application/msword" = ["writer.desktop"];
@@ -166,6 +156,7 @@ in {
 
       # System Utilities
       nix-tree
+      pciutils
 
       # Networking
       iputils
@@ -174,6 +165,7 @@ in {
       webcat
       wireguard-go
       wireguard-tools
+      dhcpdump
 
       # Alternatives
       bat
