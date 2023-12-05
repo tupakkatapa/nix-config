@@ -17,25 +17,31 @@
   };
 
   inputs = {
-    aagl.inputs.nixpkgs.follows = "nixpkgs";
-    aagl.url = "github:ezKEa/aagl-gtk-on-nix";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
     devenv.url = "github:cachix/devenv";
-    firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
-    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
     hyprwm-contrib.url = "github:hyprwm/contrib";
-    nixpkgs-stable-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:mic92/sops-nix";
+    firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
+    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+
+    # Genshin Impact
+    aagl.inputs.nixpkgs.follows = "nixpkgs";
+    aagl.url = "github:ezKEa/aagl-gtk-on-nix";
+
+    # Netboot stuff
+    nixpkgs-stable-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh";
+    nix-pxe.url = "git+ssh://git@github.com/majbacka-labs/Nix-PXE\?ref=refactor";
+    nixobolus.url = "github:ponkila/nixobolus";
   };
 
   # Add the inputs declared above to the argument attribute set
@@ -45,6 +51,8 @@
     darwin,
     flake-parts,
     home-manager,
+    nix-pxe,
+    nixobolus,
     nixpkgs,
     nixpkgs-stable,
     nixpkgs-stable-patched,
@@ -157,10 +165,9 @@
           system = "x86_64-linux";
           modules =
             [
-              ./home-manager/users/kari/minimal.nix
+              ./home-manager/users/kari/minimal-gui.nix
               ./nixosConfigurations/vladof
-              ./system/formats/netboot-squashfs.nix
-              ./system/patches/init1-network-base.nix
+              nix-pxe.nixosModules.squashfs
             ]
             ++ defaultModules;
         };
@@ -184,7 +191,7 @@
             [
               ./home-manager/users/kari/minimal.nix
               ./nixosConfigurations/bandit
-              ./system/formats/netboot-kexec.nix
+              nixobolus.nixosModules.kexecTree
             ]
             ++ defaultModules;
         };
@@ -212,7 +219,7 @@
             [
               ./home-manager/users/kari/minimal.nix
               ./nixosConfigurations/jakobs
-              ./system/formats/netboot-kexec.nix
+              nixobolus.nixosModules.kexecTree
             ]
             ++ defaultModules;
         };
