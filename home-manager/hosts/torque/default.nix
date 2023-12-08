@@ -67,5 +67,6 @@ in {
     slurp
     swaybg
     wl-clipboard
+    xdg-utils
   ];
 }

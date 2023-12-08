@@ -22,6 +22,7 @@ in {
     # Wofi
     ".config/hypr/dm-pipewire-out-switcher.sh".source = ./scripts/dm-pipewire-out-switcher.sh;
     ".config/hypr/dm-radio.sh".source = ./scripts/dm-radio.sh;
+    ".config/hypr/dm-quickfile.sh".source = ./scripts/dm-quickfile.sh;
   };
 
   wayland.windowManager.hyprland = {
@@ -284,6 +285,10 @@ in {
       # Radio
       bind = , r, exec, sh ~/.config/hypr/dm-radio.sh
       bind = , r, submap, reset
+
+      # Quickfile
+      bind = , f, exec, sh ~/.config/hypr/dm-quickfile.sh
+      bind = , f, submap, reset
 
       # Reset submaps
       bind = , escape, submap, reset
