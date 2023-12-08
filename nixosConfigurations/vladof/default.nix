@@ -7,10 +7,6 @@
   domain = "coditon.com";
   serviceDataDir = "/mnt/wd-red/appdata";
 in {
-  imports = [
-    ./plasma-bigscreen.nix
-  ];
-
   # Bootloader for x86_64-linux / aarch64-linux
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -32,6 +28,38 @@ in {
   ];
 
   # Localization and basic stuff
+  # Plasma big screen
+  services.xserver = {
+    enable = true;
+    displayManager = {
+      defaultSession = "plasma-bigscreen-wayland";
+      autoLogin = {
+        enable = true;
+        user = "kari";
+      };
+      sddm.enable = true;
+      sddm.wayland.enable = true;
+      sddm.autoLogin.relogin = true;
+    };
+    xkb.layout = "fi";
+
+    desktopManager.plasma5 = {
+      kdeglobals = {
+        KDE = {
+          LookAndFeelPackage = lib.mkDefault "org.kde.plasma.mycroft.bigscreen";
+        };
+      };
+      kwinrc = {
+        Windows = {
+          BorderlessMaximizedWindows = true;
+        };
+      };
+      bigscreen.enable = true;
+      useQtScaling = true;
+    };
+  };
+  programs.dconf.enable = true;
+  programs.kdeconnect.enable = true;
   time.timeZone = "Europe/Helsinki";
   system.stateVersion = "23.11";
   console.keyMap = "fi";
