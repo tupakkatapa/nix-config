@@ -57,7 +57,7 @@ in {
           "font.name.sans-serif.x-western" = "${FONT}";
           "extensions.activeThemeID" = "{eb8c4a94-e603-49ef-8e81-73d3c4cc04ff}";
           "browser.uidensity" = 1;
-          "browser.toolbars.bookmarks.visibility" = "never";
+          "browser.toolbars.bookmarks.visibility" = "newtab";
           "browser.translations.neverTranslateLanguages" = "english finnish";
           "browser.shell.checkDefaultBrowser" = false;
           "identity.fxaccounts.enabled" = false;
