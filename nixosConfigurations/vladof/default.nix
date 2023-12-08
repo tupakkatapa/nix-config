@@ -27,7 +27,6 @@ in {
     }
   ];
 
-  # Localization and basic stuff
   # Plasma big screen
   services.xserver = {
     enable = true;
@@ -60,8 +59,26 @@ in {
   };
   programs.dconf.enable = true;
   programs.kdeconnect.enable = true;
+
+  # Audio settings
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
+  # Make pipewire realtime-capable
+  security.rtkit.enable = true;
+
+  # Timezone, system version and locale
   time.timeZone = "Europe/Helsinki";
   system.stateVersion = "23.11";
+  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.extraLocaleSettings = {
+    LC_MESSAGES = "en_US.UTF-8";
+    LC_TIME = "fi_FI.UTF-8";
+  };
   console.keyMap = "fi";
 
   # Networking
