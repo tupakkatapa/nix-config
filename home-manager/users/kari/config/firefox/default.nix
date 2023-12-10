@@ -254,7 +254,7 @@ in {
           "privacy.sanitize.timeSpan" = 0;
 
           # Fingerprinting (RFP)
-          "privacy.resistFingerprinting" = true;
+          "privacy.resistFingerprinting" = false; # changes this
           "privacy.window.maxInnerWidth" = 1600;
           "privacy.window.maxInnerHeight" = 900;
           "privacy.resistFingerprinting.block_mozAddonManager" = true;
