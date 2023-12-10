@@ -113,7 +113,7 @@
       Restart = "on-failure";
     };
   };
-  services.udev.packages = [pkgs.openrgb];
+  services.udev.packages = [pkgs.openrgb-with-all-plugins];
   # You must load the i2c-dev module along with the correct i2c driver for your motherboard.
   # This is usually i2c-piix4 for AMD systems and i2c-i801 for Intel systems.
   boot.kernelModules = ["i2c-dev" "i2c-piix4"];
@@ -168,7 +168,7 @@
   environment.systemPackages = with pkgs; [
     # Hardware
     oversteer
-    openrgb
+    openrgb-with-all-plugins
     solaar
     xow_dongle-firmware
 

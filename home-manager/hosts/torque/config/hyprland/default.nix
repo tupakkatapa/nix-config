@@ -46,7 +46,8 @@ in {
       exec-once = swaybg -i ~/Pictures/wallpaper --mode fill
 
       # RGB
-      exec-once = openrgb --client --device 1 --mode direct --color "330099"
+      #exec-once = openrgb --client --device 1 --mode direct --color "330099"
+      exec-once = openrgb --startminimized
 
       ### My programs
 
