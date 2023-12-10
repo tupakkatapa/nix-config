@@ -39,6 +39,14 @@
             name = "rutracker";
             url = "https://rutracker.org/forum/index.php";
           }
+          {
+            name = "YIFY";
+            url = "https://yts.mx/";
+          }
+          {
+            name = "BTDigg";
+            url = "https://btdig.com/index.htm";
+          }
         ];
       }
       {
