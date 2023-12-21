@@ -5,6 +5,8 @@
   ...
 }: let
   domain = "coditon.com";
+  siaddr = "192.168.1.8";
+  gateway = "192.168.1.1";
   serviceDataDir = "/mnt/wd-red/appdata";
 in {
   # Bootloader for x86_64-linux / aarch64-linux
@@ -14,7 +16,7 @@ in {
   # Use the latest kernel
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
 
-  # Extends 'system/patches/init1-network-base.nix'
+  # Enable NIC driver for stage-1
   boot.kernelPatches = [
     {
       name = "kernel nic config (vladof)";
@@ -86,6 +88,19 @@ in {
     hostName = "vladof";
     domain = "${domain}";
     useNetworkd = true;
+
+    interfaces."enp0s31f6".ipv4.addresses = [
+      {
+        address = siaddr; # static IP
+        prefixLength = 24;
+      }
+    ];
+    defaultGateway = {
+      address = gateway;
+      interface = "enp0s31f6";
+    };
+    nameservers = [gateway];
+
     firewall = {
       allowedTCPPorts = [
         80 # HTTP
@@ -150,66 +165,68 @@ in {
   };
   services.sshguard.enable = true;
 
-  # Secrets
-  sops = {
-    secrets = {
-      "wireguard/mullvad".sopsFile = ../secrets.yaml;
-    };
-    age.sshKeyPaths = [
-      "/mnt/wd-red/secrets/ssh/ssh_host_ed25519_key"
-    ];
-  };
-
   # VPN
   # https://alberand.com/nixos-wireguard-vpn.html
-  networking.wg-quick.interfaces = {
-    wg0 = {
-      address = ["10.66.219.228/32"];
-      listenPort = 51820;
-      privateKeyFile = "/mnt/wd-red/secrets/mullvad-vpn.key";
-      dns = [
-        "192.168.1.1"
-        "10.64.0.1"
-      ];
-      peers = [
-        {
-          publicKey = "C3jAgPirUZG6sNYe4VuAgDEYunENUyG34X42y+SBngQ=";
-          allowedIPs = ["0.0.0.0/0"];
-          endpoint = "193.32.127.69:51820";
-          persistentKeepalive = 25;
-        }
-      ];
-      postUp = ''
-        # Mark packets on the wg0 interface
-        wg set wg0 fwmark 51820
+  networking.wireguard.interfaces.wg0 = let
+    mullvadAddr = "193.32.127.69";
+    splitTunnel = "172.16.16.2"; # phone via vpn
+  in {
+    ips = ["10.66.219.228/32"];
+    listenPort = 51820;
+    privateKeyFile = "/mnt/wd-red/secrets/mullvad-vpn.key";
+    peers = [
+      {
+        publicKey = "C3jAgPirUZG6sNYe4VuAgDEYunENUyG34X42y+SBngQ=";
+        allowedIPs = ["0.0.0.0/0"];
+        endpoint = "${mullvadAddr}:51820";
+        persistentKeepalive = 25;
+      }
+    ];
 
-        # Forbid anything else which doesn't go through wireguard VPN on
-        # ipV4 and ipV6
-        ${pkgs.iptables}/bin/iptables -A OUTPUT \
-          ! -d 192.168.0.0/16 \
-          ! -o wg0 \
-          -m mark ! --mark $(wg show wg0 fwmark) \
-          -m addrtype ! --dst-type LOCAL \
-          -j REJECT
-        ${pkgs.iptables}/bin/ip6tables -A OUTPUT \
-          ! -o wg0 \
-          -m mark ! --mark $(wg show wg0 fwmark) \
-          -m addrtype ! --dst-type LOCAL \
-          -j REJECT
-      '';
-      postDown = ''
-        ${pkgs.iptables}/bin/iptables -D OUTPUT \
-          ! -o wg0 \
-          -m mark ! --mark $(wg show wg0 fwmark) \
-          -m addrtype ! --dst-type LOCAL \
-          -j REJECT
-        ${pkgs.iptables}/bin/ip6tables -D OUTPUT \
-          ! -o wg0 -m mark \
-          ! --mark $(wg show wg0 fwmark) \
-          -m addrtype ! --dst-type LOCAL \
-          -j REJECT
-      '';
-    };
+    # TODO: nothing is open to WAN
+
+    postSetup = ''
+      # Split tunneling
+      ${pkgs.iptables}/bin/iptables -A INPUT -s ${splitTunnel} -d ${siaddr} \
+        -m state --state NEW,ESTABLISHED -j ACCEPT
+      ${pkgs.iptables}/bin/iptables -I OUTPUT -s ${siaddr} -d ${splitTunnel} \
+        -m state --state NEW,ESTABLISHED -j ACCEPT
+      ${pkgs.iproute2}/bin/ip route add ${splitTunnel} via ${gateway}
+
+      # https://discourse.nixos.org/t/route-all-traffic-through-wireguard-interface/1480/18
+      ${pkgs.iproute2}/bin/ip route add ${mullvadAddr} via ${gateway}
+
+      # Mark packets on the wg0 interface
+      wg set wg0 fwmark 51820
+
+      # Forbid anything else which doesn't go through wireguard VPN on ipV4 and ipV6
+      ${pkgs.iptables}/bin/iptables -A OUTPUT \
+        ! -d 192.168.0.0/16 \
+        ! -o wg0 \
+        -m mark ! --mark $(wg show wg0 fwmark) \
+        -m addrtype ! --dst-type LOCAL \
+        -j REJECT
+      ${pkgs.iptables}/bin/ip6tables -A OUTPUT \
+        ! -o wg0 \
+        -m mark ! --mark $(wg show wg0 fwmark) \
+        -m addrtype ! --dst-type LOCAL \
+        -j REJECT
+    '';
+    postShutdown = ''
+      ${pkgs.iproute2}/bin/ip route del ${mullvadAddr} via ${gateway}
+      ${pkgs.iproute2}/bin/ip route del ${splitTunnel} via ${gateway}
+
+      ${pkgs.iptables}/bin/iptables -D OUTPUT \
+        ! -o wg0 \
+        -m mark ! --mark $(wg show wg0 fwmark) \
+        -m addrtype ! --dst-type LOCAL \
+        -j REJECT
+      ${pkgs.iptables}/bin/ip6tables -D OUTPUT \
+        ! -o wg0 -m mark \
+        ! --mark $(wg show wg0 fwmark) \
+        -m addrtype ! --dst-type LOCAL \
+        -j REJECT
+    '';
   };
 
   # Message of the day

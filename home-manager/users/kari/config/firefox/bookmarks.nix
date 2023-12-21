@@ -117,7 +117,7 @@
           }
           {
             name = "Kea DHCP";
-            url = "https://kea.readthedocs.io/en/kea-2.4.1/";
+            url = "https://kea.readthedocs.io/en/kea-2.2.0/arm/dhcp4-srv.html";
           }
           {
             name = "Hyprland";
@@ -155,6 +155,15 @@
               {
                 name = "Data Types";
                 url = "https://nixos.org/manual/nix/unstable/language/values.html";
+              }
+            ];
+          }
+          {
+            name = "Nixpkgs Manual";
+            bookmarks = [
+              {
+                name = "lib.attrsets";
+                url = "https://nixos.org/manual/nixpkgs/unstable/#sec-functions-library-attrsets";
               }
             ];
           }
@@ -198,7 +207,7 @@
       }
       {
         name = "ChatGPT";
-        url = "https://chat.openai.com/";
+        url = "https://chat.openai.com/?model=gpt-4";
       }
       {
         name = "Hacker News";
