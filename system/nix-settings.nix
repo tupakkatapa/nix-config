@@ -20,9 +20,6 @@
       # Deduplicate and optimize nix store
       auto-optimise-store = true;
 
-      connection-timeout = 5;
-      fallback = true;
-
       extra-substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
