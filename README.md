@@ -6,7 +6,6 @@
 [bandit](nixosConfigurations/bandit/default.nix) | "  | netboot | [kari (minimal)](home-manager/users/kari/minimal.nix)  | Minimal Configuration
 [vladof](nixosConfigurations/vladof/default.nix) | "  | "  | "  | Home Lab (**WIP**)
 [jakobs](nixosConfigurations/jakobs/default.nix) | aarch64  | "  | "  | Rasberry Pi 4 Model B
-[hyperion](nixosConfigurations/hyperion/default.nix) | "  | nix-darwin | [kari (darwin)](home-manager/users/kari/darwin.nix)  | M2 Laptop, macOS Ventura (**retired**)
 
 
 ## Resources

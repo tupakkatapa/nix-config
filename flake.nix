@@ -17,8 +17,6 @@
   };
 
   inputs = {
-    darwin.inputs.nixpkgs.follows = "nixpkgs";
-    darwin.url = "github:lnl7/nix-darwin";
     devenv.url = "github:cachix/devenv";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -48,7 +46,6 @@
   outputs = {
     self,
     aagl,
-    darwin,
     flake-parts,
     home-manager,
     nix-pxe,
@@ -65,9 +62,7 @@
         inputs.devenv.flakeModule
       ];
       systems = [
-        "aarch64-darwin"
         "aarch64-linux"
-        "x86_64-darwin"
         "x86_64-linux"
       ];
       perSystem = {
@@ -196,22 +191,6 @@
             ++ defaultModules;
         };
 
-        hyperion = {
-          inherit specialArgs;
-          system = "aarch64-darwin";
-          modules = [
-            ./home-manager/users/kari/darwin.nix
-            ./nixosConfigurations/hyperion
-            ./system/nix-settings.nix
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.sharedModules = [
-                nixvim.homeManagerModules.nixvim
-              ];
-            }
-          ];
-        };
-
         jakobs = {
           inherit specialArgs;
           system = "aarch64-linux";
@@ -235,11 +214,6 @@
           // (with nixpkgs-stable-patched.lib; {
             "vladof" = nixosSystem vladof;
           });
-
-        # Darwin configuration entrypoints
-        darwinConfigurations = with darwin.lib; {
-          "hyperion" = darwinSystem hyperion;
-        };
       };
     };
 }
