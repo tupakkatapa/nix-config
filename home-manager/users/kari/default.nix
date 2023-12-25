@@ -159,6 +159,12 @@ in {
       yt-dlp
       ventoy
 
+      # Lang
+      rustc
+      cargo
+      rustfmt
+      gcc
+
       # System Utilities
       nix-tree
       pciutils
