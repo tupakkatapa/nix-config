@@ -61,13 +61,11 @@
       imports = [
         inputs.devenv.flakeModule
       ];
-      systems = [
-        "aarch64-linux"
-        "x86_64-linux"
-      ];
+
+      systems = nixpkgs.lib.systems.flakeExposed;
+
       perSystem = {
-        config,
-        lib,
+        self',
         pkgs,
         system,
         ...

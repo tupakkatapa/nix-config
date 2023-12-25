@@ -50,7 +50,8 @@ in {
   services.getty.autologinUser = let
     userCfg = config.users.users."${user}";
   in
-    lib.mkIf (
+    lib.mkIf
+    (
       userCfg.password
       == null
       && userCfg.initialPassword == null
