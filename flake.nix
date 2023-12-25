@@ -121,11 +121,16 @@
 
         # Custom packages and aliases for building hosts
         # Accessible through 'nix build', 'nix run', etc
-        packages = with flake.nixosConfigurations; {
-          "bandit" = bandit.config.system.build.kexecTree;
-          "jakobs" = jakobs.config.system.build.kexecTree;
-          "vladof" = vladof.config.system.build.squashfs;
-        };
+        packages =
+          rec {
+            "ping-sweep" = pkgs.callPackage ./packages/ping-sweep {};
+            "print-quote" = pkgs.callPackage ./packages/print-quote {};
+          }
+          // (with flake.nixosConfigurations; {
+            "bandit" = bandit.config.system.build.kexecTree;
+            "jakobs" = jakobs.config.system.build.kexecTree;
+            "vladof" = vladof.config.system.build.squashfs;
+          });
       };
       flake = let
         inherit (self) outputs;

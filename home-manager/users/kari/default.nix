@@ -1,5 +1,6 @@
 # https://github.com/hyper-dot/Arch-Hyprland
 {
+  self,
   pkgs,
   config,
   inputs,
@@ -123,6 +124,10 @@ in {
       scriptFiles;
 
     home.packages = with pkgs; [
+      #### SELF
+      self.packages.${system}.ping-sweep
+      self.packages.${system}.print-quote
+
       #### GUI
       brave
       czkawka
