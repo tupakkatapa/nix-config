@@ -13,8 +13,6 @@ fn main() {
 
     // Fetch and parse the JSON data
     let data = include_str!("movie-quotes.json");
-
-    // Parse JSON data
     let parsed_data = serde_json::from_str::<Value>(data).unwrap_or_else(|e| {
         eprintln!("[-] Failed to parse the included JSON data: {}", e);
         std::process::exit(1);
@@ -50,8 +48,8 @@ fn cli() -> Command {
                 .long("max")
                 .value_name("MAX_LENGTH")
                 .help("Set a maximum length for the quote")
-                .default_value("256")
-                .value_parser(clap::value_parser!(usize)) // Parse as usize
+                .default_value("512")
+                .value_parser(clap::value_parser!(usize)) // Parses as usize
         )
         .arg(
             Arg::new("min_length")
@@ -60,7 +58,7 @@ fn cli() -> Command {
                 .value_name("MIN_LENGTH")
                 .help("Set a minimum length for the quote")
                 .default_value("0")
-                .value_parser(clap::value_parser!(usize)) // Parse as usize
+                .value_parser(clap::value_parser!(usize)) // Parses as usize
         )
         .arg(
             Arg::new("prefix")
