@@ -23,7 +23,6 @@
     home-manager.url = "github:nix-community/home-manager";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
     hyprwm-contrib.url = "github:hyprwm/contrib";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
@@ -37,7 +36,7 @@
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
 
     # Netboot stuff
-    nixpkgs-stable-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh";
+    nixpkgs-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh"; # stable
     nix-pxe.url = "git+ssh://git@github.com/majbacka-labs/Nix-PXE";
     nixobolus.url = "github:ponkila/nixobolus";
   };
@@ -51,8 +50,7 @@
     nix-pxe,
     nixobolus,
     nixpkgs,
-    nixpkgs-stable,
-    nixpkgs-stable-patched,
+    nixpkgs-patched,
     nixvim,
     sops-nix,
     ...
@@ -226,7 +224,7 @@
             "maliwan" = nixosSystem maliwan;
             "torque" = nixosSystem torque;
           }
-          // (with nixpkgs-stable-patched.lib; {
+          // (with nixpkgs-patched.lib; {
             "vladof" = nixosSystem vladof;
           });
       };
