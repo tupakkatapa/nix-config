@@ -142,6 +142,9 @@
             home-manager.sharedModules = [
               nixvim.homeManagerModules.nixvim
             ];
+            nixpkgs.overlays = [
+              self.overlays.default
+            ];
           }
           ./system
         ];
@@ -206,6 +209,13 @@
             ++ defaultModules;
         };
       in {
+        # Overlays
+        overlays.default = final: prev: {
+          discord = final.discord.overrideAttrs (_: {
+            src = builtins.fetchTarball "https://discord.com/api/download/stable?platform=linux&format=tar.gz";
+          });
+        };
+
         # NixOS configuration entrypoints
         nixosConfigurations = with nixpkgs.lib;
           {
