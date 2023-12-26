@@ -168,7 +168,9 @@ in {
   # https://alberand.com/nixos-wireguard-vpn.html
   networking.wireguard.interfaces.wg0 = let
     mullvadAddr = "193.32.127.69";
-    splitTunnel = "172.16.16.2"; # phone via vpn
+    splitTunnels = [
+      "172.16.16.2" # phone
+    ];
   in {
     ips = ["10.66.219.228/32"];
     listenPort = 51820;
@@ -186,11 +188,14 @@ in {
 
     postSetup = ''
       # Split tunneling
-      ${pkgs.iptables}/bin/iptables -A INPUT -s ${splitTunnel} -d ${siaddr} \
-        -m state --state NEW,ESTABLISHED -j ACCEPT
-      ${pkgs.iptables}/bin/iptables -I OUTPUT -s ${siaddr} -d ${splitTunnel} \
-        -m state --state NEW,ESTABLISHED -j ACCEPT
-      ${pkgs.iproute2}/bin/ip route add ${splitTunnel} via ${gateway}
+      ${lib.concatStringsSep "\n" (map (splitTunnel: ''
+          ${pkgs.iptables}/bin/iptables -A INPUT -s ${splitTunnel} -d ${siaddr} \
+            -m state --state NEW,ESTABLISHED -j ACCEPT
+          ${pkgs.iptables}/bin/iptables -I OUTPUT -s ${siaddr} -d ${splitTunnel} \
+            -m state --state NEW,ESTABLISHED -j ACCEPT
+          ${pkgs.iproute2}/bin/ip route add ${splitTunnel} via ${gateway}
+        '')
+        splitTunnels)}
 
       # https://discourse.nixos.org/t/route-all-traffic-through-wireguard-interface/1480/18
       ${pkgs.iproute2}/bin/ip route add ${mullvadAddr} via ${gateway}
@@ -212,8 +217,12 @@ in {
         -j REJECT
     '';
     postShutdown = ''
+      ${lib.concatStringsSep "\n" (map (splitTunnel: ''
+          ${pkgs.iproute2}/bin/ip route del ${splitTunnel} via ${gateway}
+        '')
+        splitTunnels)}
+
       ${pkgs.iproute2}/bin/ip route del ${mullvadAddr} via ${gateway}
-      ${pkgs.iproute2}/bin/ip route del ${splitTunnel} via ${gateway}
 
       ${pkgs.iptables}/bin/iptables -D OUTPUT \
         ! -o wg0 \
