@@ -91,10 +91,10 @@
               nix run github:ponkila/homestaking-infra?dir=scripts/init-qemu#init-qemu -- "$@"
             '';
             scripts.pxe-generate.exec = ''
-              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE\?ref=develop#pxe-generate -- "$@"
+              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE#pxe-generate -- "$@"
             '';
             scripts.lkddb-filter.exec = ''
-              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE\?ref=develop#lkddb-filter -- "$@"
+              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE#lkddb-filter -- "$@"
             '';
             enterShell = ''
               cat <<INFO
