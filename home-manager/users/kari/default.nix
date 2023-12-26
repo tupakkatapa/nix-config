@@ -136,7 +136,7 @@ in {
       ferdium
       gimp-with-plugins
       libreoffice-qt
-      obsidian
+      #obsidian
       plexamp
       qemu
       rpi-imager

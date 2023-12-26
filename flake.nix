@@ -23,7 +23,7 @@
     home-manager.url = "github:nix-community/home-manager";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
     hyprwm-contrib.url = "github:hyprwm/contrib";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
@@ -145,6 +145,7 @@
             nixpkgs.overlays = [
               self.overlays.default
             ];
+            system.stateVersion = "23.11";
           }
           ./system
         ];

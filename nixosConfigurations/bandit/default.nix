@@ -14,7 +14,6 @@
   # Localization and basic stuff
   networking.hostName = "bandit";
   time.timeZone = "Europe/Helsinki";
-  system.stateVersion = "23.11";
   console.keyMap = "fi";
 
   # Strict SSH settings

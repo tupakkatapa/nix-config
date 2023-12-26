@@ -16,7 +16,6 @@
   # Timezone and system version
   networking.hostName = "jakobs";
   time.timeZone = "Europe/Helsinki";
-  system.stateVersion = "23.11";
   console.keyMap = "fi";
 
   # Connectivity
