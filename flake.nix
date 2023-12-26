@@ -111,6 +111,7 @@
             pre-commit.hooks = {
               alejandra.enable = true;
               shellcheck.enable = true;
+              rustfmt.enable = true;
             };
             # Workaround for https://github.com/cachix/devenv/issues/760
             containers = pkgs.lib.mkForce {};
