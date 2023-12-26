@@ -162,6 +162,11 @@
         servers = {
           bashls.enable = true;
           nixd.enable = true;
+          rust-analyzer = {
+            enable = true;
+            installRustc = true;
+            installCargo = true;
+          };
         };
       };
       lsp-format.enable = true;
