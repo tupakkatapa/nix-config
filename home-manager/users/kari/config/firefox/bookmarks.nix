@@ -47,6 +47,10 @@
             name = "BTDigg";
             url = "https://btdig.com/index.htm";
           }
+          {
+            name = "FitGirl Repacks";
+            url = "https://fitgirl-repacks.site";
+          }
         ];
       }
       {
@@ -127,6 +131,10 @@
             name = "iPXE";
             url = "https://ipxe.org/docs";
           }
+          {
+            name = "The Rust community’s crate registry";
+            url = "https://crates.io/";
+          }
         ];
       }
       {
@@ -190,10 +198,6 @@
         ];
       }
       {
-        name = "..";
-        bookmarks = [];
-      }
-      {
         name = "YouTube";
         url = "https://www.youtube.com/feed/subscriptions";
       }
@@ -212,6 +216,10 @@
       {
         name = "Hacker News";
         url = "https://news.ycombinator.com/news";
+      }
+      {
+        name = "Ylilauta";
+        url = "https://ylilauta.org";
       }
     ];
   }
