@@ -5,7 +5,10 @@
   ...
 }: {
   # Bootloader for x86_64-linux / aarch64-linux
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot = {
+    enable = true;
+    configurationLimit = 10;
+  };
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Use the latest kernel
