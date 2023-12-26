@@ -314,6 +314,9 @@ in {
     isSystemUser = true;
     useDefaultShell = false;
     group = "sftp";
+    extraGroups = [
+      "transmission"
+    ];
     home = "/mnt/wd-red/sftp";
     openssh.authorizedKeys.keys = [
       # kari@torque
