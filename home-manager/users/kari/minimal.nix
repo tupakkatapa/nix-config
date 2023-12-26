@@ -22,12 +22,22 @@ in {
       "libvirtd"
       "podman"
       "rtkit"
-      "sftp"
       "users"
       "vboxusers"
       "video"
       "wheel"
       "cups"
+      # Homelab groups
+      "acme"
+      "appdata"
+      "caddy"
+      "jackett"
+      "lanraragi"
+      "plex"
+      "radarr"
+      "sftp"
+      "transmission"
+      "vaultwarden"
     ];
     openssh.authorizedKeys.keys = [
       # kari@torque
