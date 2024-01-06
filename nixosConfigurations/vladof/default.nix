@@ -58,9 +58,13 @@ in {
   services.cage = {
     enable = true;
     user = "kari";
-    program = ''
-      ${pkgs.firefox}/bin/firefox --kiosk https://www.youtube.com/feed/subscriptions
-    '';
+    program = lib.concatStringsSep " \\\n\t" [
+      "${pkgs.firefox}/bin/firefox --kiosk"
+      "https://www.youtube.com"
+      "https://plex.coditon.com"
+      "https://www.twitch.tv"
+      "https://kick.com"
+    ];
     environment.XKB_DEFAULT_LAYOUT = "fi";
   };
   systemd.services.cage-tty1 = {
