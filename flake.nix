@@ -28,8 +28,6 @@
     nixvim.url = "github:nix-community/nixvim";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:mic92/sops-nix";
-    firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
-    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
 
     # Genshin Impact
     aagl.inputs.nixpkgs.follows = "nixpkgs";

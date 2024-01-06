@@ -6,8 +6,6 @@
   ...
 }: let
   inherit (config.home.sessionVariables) FONT;
-  # Allow access to flake inputs with 'home-manager.extraSpecialArgs = { inherit inputs; };'
-  addons = inputs.firefox-addons.packages.${pkgs.system};
 in {
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = {
@@ -21,21 +19,22 @@ in {
 
   programs.firefox = {
     enable = true;
+
+    policies.ExtensionSettings =
+      {
+        # Block non-declarative installing
+        "*".installation_mode = "blocked";
+      }
+      // lib.listToAttrs (map (extension: {
+        name = extension.uuid;
+        value = {
+          install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${extension.shortId}/latest.xpi";
+          installation_mode = "force_installed";
+        };
+      }) (import ./extensions.nix));
+
     profiles.personal = {
       isDefault = true;
-
-      extensions = with addons; [
-        ublock-origin
-        bitwarden
-        sponsorblock
-        torrent-control
-        darkreader
-        youtube-shorts-block
-        ff2mpv
-        privacy-badger
-        i-dont-care-about-cookies
-        clearurls
-      ];
 
       search = {
         default = "DuckDuckGo";
@@ -55,12 +54,15 @@ in {
           "font.name.serif.x-western" = "${FONT}";
           "font.name.monospace.x-western" = "${FONT}";
           "font.name.sans-serif.x-western" = "${FONT}";
+          # "https://addons.mozilla.org/firefox/downloads/file/3595905/gruvbox_dark_theme-1.1.xpi";
           "extensions.activeThemeID" = "{eb8c4a94-e603-49ef-8e81-73d3c4cc04ff}";
           "browser.uidensity" = 1;
           "browser.toolbars.bookmarks.visibility" = "always";
           "browser.translations.neverTranslateLanguages" = "english finnish";
           "browser.shell.checkDefaultBrowser" = false;
           "identity.fxaccounts.enabled" = false;
+          "browser.tabs.firefox-view" = false;
+          "layout.spellcheckDefault" = 0;
         }
         # derived from https://brainfucksec.github.io/firefox-hardening-guide
         // {

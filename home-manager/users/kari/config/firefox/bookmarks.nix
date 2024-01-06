@@ -7,6 +7,10 @@
         name = "home";
         bookmarks = [
           {
+            name = "Pfsense";
+            url = "https://192.168.1.1:10443";
+          }
+          {
             name = "Plex";
             url = "https://plex.coditon.com";
           }
@@ -210,6 +214,10 @@
         url = "https://github.com/";
       }
       {
+        name = "Cloudflare";
+        url = "https://dash.cloudflare.com/";
+      }
+      {
         name = "ChatGPT";
         url = "https://chat.openai.com/?model=gpt-4";
       }
@@ -220,6 +228,10 @@
       {
         name = "Ylilauta";
         url = "https://ylilauta.org";
+      }
+      {
+        name = "Hauki";
+        url = "https://www.youtube.com/watch?v=lrKZ-5xLZWI";
       }
     ];
   }
