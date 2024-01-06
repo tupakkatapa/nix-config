@@ -1,14 +1,19 @@
 {
+  inputs,
   pkgs,
   lib,
   config,
   ...
 }: let
   domain = "coditon.com";
-  siaddr = "192.168.1.8";
+  address = "192.168.1.8";
   gateway = "192.168.1.1";
-  serviceDataDir = "/mnt/wd-red/appdata";
+  interface = "enp0s31f6";
 in {
+  imports = [
+    ./containers
+  ];
+
   # Bootloader for x86_64-linux / aarch64-linux
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -71,42 +76,25 @@ in {
     domain = "${domain}";
     useNetworkd = true;
 
-    interfaces."enp0s31f6".ipv4.addresses = [
+    interfaces.${interface}.ipv4.addresses = [
       {
-        address = siaddr; # static IP
+        address = address; # static IP
         prefixLength = 24;
       }
     ];
     defaultGateway = {
       address = gateway;
-      interface = "enp0s31f6";
+      interface = interface;
     };
     nameservers = [gateway];
-
-    firewall = {
-      allowedTCPPorts = [
-        80 # HTTP
-        443 # HTTPS
-      ];
-      allowedUDPPorts = [
-        #67 # DHCP
-        #69 # TFTP
-        #514 # Syslog
-        51820 # WG
-      ];
-    };
+    firewall.enable = true;
   };
   systemd.network.enable = true;
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
-    # Root
     "d /mnt/wd-red            755 root root -"
     "d /mnt/wd-red/sftp       755 root root -"
-    "d /mnt/wd-red/sftp/share 755 caddy sftp -"
-    # AppData
-    "d ${serviceDataDir}                770 kari appdata -"
-    "d ${serviceDataDir}/vaultwarden    700 vaultwarden vaultwarden -"
   ];
 
   # Mounts
@@ -147,79 +135,6 @@ in {
   };
   services.sshguard.enable = true;
 
-  # VPN
-  # https://alberand.com/nixos-wireguard-vpn.html
-  networking.wireguard.interfaces.wg0 = let
-    mullvadAddr = "193.32.127.69";
-    splitTunnels = [
-      "172.16.16.2" # phone
-    ];
-  in {
-    ips = ["10.66.219.228/32"];
-    listenPort = 51820;
-    privateKeyFile = "/mnt/wd-red/secrets/mullvad-vpn.key";
-    peers = [
-      {
-        publicKey = "C3jAgPirUZG6sNYe4VuAgDEYunENUyG34X42y+SBngQ=";
-        allowedIPs = ["0.0.0.0/0"];
-        endpoint = "${mullvadAddr}:51820";
-        persistentKeepalive = 25;
-      }
-    ];
-
-    # TODO: nothing is open to WAN
-
-    postSetup = ''
-      # Split tunneling
-      ${lib.concatStringsSep "\n" (map (splitTunnel: ''
-          ${pkgs.iptables}/bin/iptables -A INPUT -s ${splitTunnel} -d ${siaddr} \
-            -m state --state NEW,ESTABLISHED -j ACCEPT
-          ${pkgs.iptables}/bin/iptables -I OUTPUT -s ${siaddr} -d ${splitTunnel} \
-            -m state --state NEW,ESTABLISHED -j ACCEPT
-          ${pkgs.iproute2}/bin/ip route add ${splitTunnel} via ${gateway}
-        '')
-        splitTunnels)}
-
-      # https://discourse.nixos.org/t/route-all-traffic-through-wireguard-interface/1480/18
-      ${pkgs.iproute2}/bin/ip route add ${mullvadAddr} via ${gateway}
-
-      # Mark packets on the wg0 interface
-      wg set wg0 fwmark 51820
-
-      # Forbid anything else which doesn't go through wireguard VPN on ipV4 and ipV6
-      ${pkgs.iptables}/bin/iptables -A OUTPUT \
-        ! -d 192.168.0.0/16 \
-        ! -o wg0 \
-        -m mark ! --mark $(wg show wg0 fwmark) \
-        -m addrtype ! --dst-type LOCAL \
-        -j REJECT
-      ${pkgs.iptables}/bin/ip6tables -A OUTPUT \
-        ! -o wg0 \
-        -m mark ! --mark $(wg show wg0 fwmark) \
-        -m addrtype ! --dst-type LOCAL \
-        -j REJECT
-    '';
-    postShutdown = ''
-      ${lib.concatStringsSep "\n" (map (splitTunnel: ''
-          ${pkgs.iproute2}/bin/ip route del ${splitTunnel} via ${gateway}
-        '')
-        splitTunnels)}
-
-      ${pkgs.iproute2}/bin/ip route del ${mullvadAddr} via ${gateway}
-
-      ${pkgs.iptables}/bin/iptables -D OUTPUT \
-        ! -o wg0 \
-        -m mark ! --mark $(wg show wg0 fwmark) \
-        -m addrtype ! --dst-type LOCAL \
-        -j REJECT
-      ${pkgs.iptables}/bin/ip6tables -D OUTPUT \
-        ! -o wg0 -m mark \
-        ! --mark $(wg show wg0 fwmark) \
-        -m addrtype ! --dst-type LOCAL \
-        -j REJECT
-    '';
-  };
-
   # Message of the day
   programs.rust-motd = {
     enable = true;
@@ -241,64 +156,6 @@ in {
         (builtins.attrNames config.home-manager.users));
     };
   };
-
-  # ACME
-  fileSystems."/var/lib/acme" = {
-    device = "${serviceDataDir}/acme";
-    options = ["bind"];
-  };
-  security.acme.acceptTerms = true;
-  security.acme.defaults.email = "jesse@ponkila.com";
-  security.acme.defaults.webroot = "${serviceDataDir}/acme";
-
-  # Reverse proxy
-  services.caddy = {
-    enable = true;
-    virtualHosts = {
-      "plex.${domain}" = {
-        useACMEHost = config.networking.fqdn;
-        extraConfig = ''
-          reverse_proxy http://127.0.0.1:32400
-        '';
-      };
-      "torrent.${domain}" = {
-        useACMEHost = config.networking.fqdn;
-        extraConfig = ''
-          reverse_proxy http://127.0.0.1:9091
-        '';
-      };
-      "radarr.${domain}" = {
-        useACMEHost = config.networking.fqdn;
-        extraConfig = ''
-          reverse_proxy http://127.0.0.1:7878
-        '';
-      };
-      "jackett.${domain}" = {
-        useACMEHost = config.networking.fqdn;
-        extraConfig = ''
-          reverse_proxy http://127.0.0.1:9117
-        '';
-      };
-      "share.${domain}" = {
-        useACMEHost = config.networking.fqdn;
-        extraConfig = ''
-          encode zstd gzip
-          root * /mnt/wd-red/sftp/share
-          file_server {
-            browse
-            hide .* _*
-          }
-        '';
-      };
-      "vault.${domain}" = {
-        useACMEHost = config.networking.fqdn;
-        extraConfig = ''
-          reverse_proxy http://127.0.0.1:8177
-        '';
-      };
-    };
-  };
-  users.users.caddy.extraGroups = ["appdata" "sftp"];
 
   # Sftp user/group
   users.users."sftp" = {
@@ -323,51 +180,6 @@ in {
     ];
   };
   users.groups."sftp" = {};
-  users.groups."appdata" = {};
-
-  # Plex
-  services.plex = {
-    enable = true;
-    dataDir = "${serviceDataDir}/plex";
-    openFirewall = true;
-  };
-  users.users.plex.extraGroups = ["sftp" "appdata"];
-
-  # Radarr
-  services.radarr = {
-    enable = true;
-    dataDir = "${serviceDataDir}/radarr";
-    openFirewall = true;
-  };
-  users.users.radarr.extraGroups = ["sftp" "appdata"];
-
-  # Jackett
-  services.jackett = {
-    enable = true;
-    dataDir = "${serviceDataDir}/jackett";
-    openFirewall = true;
-  };
-  users.users.jackett.extraGroups = ["appdata"];
-
-  # Torrent
-  services.transmission = {
-    enable = true;
-    openFirewall = true;
-    downloadDirPermissions = "0777";
-    openRPCPort = true;
-    home = "${serviceDataDir}/transmission";
-    settings = rec {
-      download-dir = "/mnt/wd-red/sftp/dnld";
-      incomplete-dir = "/mnt/wd-red/sftp/dnld/.incomplete";
-      download-queue-enabled = false;
-      rpc-authentication-required = false;
-      rpc-bind-address = "0.0.0.0";
-      rpc-port = 9091;
-      rpc-host-whitelist-enabled = false;
-      rpc-whitelist-enabled = false;
-    };
-  };
-  users.users.transmission.extraGroups = ["appdata" "sftp"];
 
   # Security
   services.fail2ban = {
@@ -401,34 +213,4 @@ in {
       '';
     };
   };
-
-  # Vaultwarden
-  fileSystems."/var/lib/bitwarden_rs" = {
-    device = "${serviceDataDir}/vaultwarden";
-    options = ["bind"];
-  };
-  services.vaultwarden = {
-    enable = true;
-    dbBackend = "sqlite";
-    config = {
-      rocketAddress = "127.0.0.1";
-      rocketPort = 8177;
-      domain = "http://vault.${domain}";
-
-      # ROCKET_ADDRESS = "127.0.0.1";
-      # ROCKET_PORT = 8177;
-      # DOMAIN = "http://vault.${domain}";
-      # SIGNUPS_ALLOWED = false;
-      # INVITATIONS_ALLOWED = false;
-      # SHOW_PASSWORD_HINT = false;
-      # PASSWORD_HINTS_ALLOWED = false;
-      # LOGIN_RATELIMIT_SECONDS=30;
-      # LOGIN_RATELIMIT_MAX_BURST=3;
-      # ADMIN_SESSION_LIFETIME=20;
-      # ADMIN_RATELIMIT_MAX_BURST=3;
-      # LOG_FILE="/var/lib/bitwarden_rd/extented.log";
-      # EXTENDED_LOGGING=true;
-    };
-  };
-  users.users.vaultwarden.extraGroups = ["appdata"];
 }

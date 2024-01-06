@@ -43,6 +43,7 @@
   outputs = {
     self,
     aagl,
+    coditon-blog,
     flake-parts,
     home-manager,
     nix-pxe,
@@ -168,6 +169,7 @@
               ./home-manager/users/kari/minimal-gui.nix
               ./nixosConfigurations/vladof
               nix-pxe.nixosModules.squashfs
+              coditon-blog.nixosModules.default
             ]
             ++ defaultModules;
         };
