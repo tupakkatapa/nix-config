@@ -35,6 +35,15 @@
 
     keymaps =
       [
+        # Do not yank when pasting or deleting
+        {
+          key = "p";
+          action = "P";
+        }
+        {
+          key = "x";
+          action = "\"_x";
+        }
         {
           # Default mode is normal-visual-op
           key = "<C-s>";
