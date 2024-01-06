@@ -23,15 +23,6 @@ for alias in "${!device_aliases[@]}"; do
   fi
 done
 
-# Get alias of the current device
-current_alias=""
-for alias in "${!device_aliases[@]}"; do
-  if [ "${device_aliases[$alias]}" == "$current_device" ]; then
-    current_alias=$alias
-    break
-  fi
-done
-
 # Aliases array
 aliases=("${!device_aliases[@]}")
 
