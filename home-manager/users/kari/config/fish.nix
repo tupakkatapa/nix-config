@@ -45,6 +45,7 @@ in {
       ngd = "nix fmt && git add . && direnv reload";
       nfc = "nix flake check --impure";
       buidl = "rm -f ~/.config/mimeapps.list && sudo nixos-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
+      gc = "nix-collect-garbage -d";
 
       # YouTube-DL
       yt = "yt-dlp --embed-metadata --sponsorblock-remove all -i --format mp4";
@@ -78,10 +79,8 @@ in {
         set fish_cursor_visual      block
       '';
     loginShellInit = ''
-      if test (tty) = "/dev/tty1"
-        if command -q Hyprland
-          exec Hyprland &> /dev/null
-        end
+      if command -q Hyprland
+        exec Hyprland &> /dev/null
       end
     '';
   };

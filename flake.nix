@@ -58,7 +58,10 @@
         inputs.devenv.flakeModule
       ];
 
-      systems = nixpkgs.lib.systems.flakeExposed;
+      systems = [
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
 
       perSystem = {
         self',
@@ -100,6 +103,7 @@
               Available commands:
 
                 pxe-generate    : Generates netboot images and iPXE menu from a flake
+                lkddb-filter    : Filter LKDDb with PCI data
                 init-qemu       : Boot up a host using QEMU
 
               INFO
