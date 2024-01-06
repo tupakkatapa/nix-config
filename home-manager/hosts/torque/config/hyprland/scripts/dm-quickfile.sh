@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Script to select and open files or directories
-# deps: wofi, xdg-open
+# deps: wofi, xdg-open, alacritty, neovim
 
 set -euo pipefail
 
@@ -8,7 +8,7 @@ set -euo pipefail
 DMENU="wofi --dmenu -w 1 --insensitive"
 ITEMS=(
   "/mnt/sftp/docs/tabs"
-  #"/home/kari/Workspace/nix-config"
+  "/home/kari/Workspace/nix-config"
 )
 
 # Function to list files and directories
@@ -30,10 +30,16 @@ main() {
         ${DMENU} 'Select file or directory: ' "$@") || exit 1
 
     if [ -n "$choice" ]; then
-        xdg-open "$choice" &> /dev/null
+        # Check if the file is a text file
+        if file -b --mime-type "$choice" | grep -qE '^text/'; then
+            alacritty -e nvim "$choice" &> /dev/null
+        else
+            xdg-open "$choice" &> /dev/null
+        fi
     else
         echo "Program terminated." && exit 0
     fi
 }
 
 [[ "${BASH_SOURCE[0]}" == "${0}" ]] && main "$@"
+
