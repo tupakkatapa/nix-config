@@ -29,39 +29,6 @@ in {
     }
   ];
 
-  # Plasma big screen
-  services.xserver = {
-    enable = true;
-    displayManager = {
-      defaultSession = "plasma-bigscreen-wayland";
-      autoLogin = {
-        enable = true;
-        user = "kari";
-      };
-      sddm.enable = true;
-      sddm.wayland.enable = true;
-      sddm.autoLogin.relogin = true;
-    };
-    xkb.layout = "fi";
-
-    desktopManager.plasma5 = {
-      kdeglobals = {
-        KDE = {
-          LookAndFeelPackage = lib.mkDefault "org.kde.plasma.mycroft.bigscreen";
-        };
-      };
-      kwinrc = {
-        Windows = {
-          BorderlessMaximizedWindows = true;
-        };
-      };
-      bigscreen.enable = true;
-      useQtScaling = true;
-    };
-  };
-  programs.dconf.enable = true;
-  programs.kdeconnect.enable = true;
-
   # Audio settings
   services.pipewire = {
     enable = true;
@@ -81,6 +48,22 @@ in {
     LC_TIME = "fi_FI.UTF-8";
   };
   console.keyMap = "fi";
+
+  # Cage-kiosk (firefox)
+  services.cage = {
+    enable = true;
+    user = "kari";
+    program = ''
+      ${pkgs.firefox}/bin/firefox --kiosk https://www.youtube.com/feed/subscriptions
+    '';
+    environment.XKB_DEFAULT_LAYOUT = "fi";
+  };
+  systemd.services.cage-tty1 = {
+    serviceConfig = {
+      Restart = "always";
+    };
+  };
+  hardware.opengl.enable = true;
 
   # Networking
   networking = {
