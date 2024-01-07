@@ -71,8 +71,8 @@ in {
     )
     user;
 
-  # Allows access to flake inputs
-  home-manager.extraSpecialArgs = {inherit inputs;};
+  # Allows access to flake inputs and custom packages
+  home-manager.extraSpecialArgs = {inherit inputs pkgs;};
 
   home-manager.users."${user}" = {
     imports =

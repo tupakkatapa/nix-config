@@ -63,11 +63,7 @@ in {
     interactiveShellInit =
       # Print banner
       ''
-        if test -z "$VIMRUNTIME"
-            if type print-quote &>/dev/null
-                print-quote -m 152 -p "  " -s "\n"
-            end
-        end
+        ${pkgs.print-quote}/bin/print-quote -m 152 -p "  " -s "\n"
       ''
       +
       # Use vim bindings and cursors

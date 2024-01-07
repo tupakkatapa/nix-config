@@ -1,6 +1,5 @@
 # https://github.com/hyper-dot/Arch-Hyprland
 {
-  self,
   pkgs,
   config,
   inputs,
@@ -112,7 +111,8 @@ in {
       scriptFiles = builtins.readDir scriptDir;
     in
       # Places scripts in '~/.local/bin/', create it with systemd.tmpfiles
-      builtins.mapAttrs (name: _: {
+      builtins.mapAttrs
+      (name: _: {
         executable = true;
         target = ".local/bin/${name}";
         source = "${scriptDir}/${name}";
@@ -121,14 +121,10 @@ in {
 
     home.packages = with pkgs; [
       #### SELF
-      self.packages.${system}.ping-sweep
-      self.packages.${system}.print-quote
+      ping-sweep
 
       #### GUI
-      brave
       czkawka
-      discord
-      element-desktop
       ferdium
       gimp-with-plugins
       libreoffice-qt

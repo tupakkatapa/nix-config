@@ -19,19 +19,22 @@ in {
 
   programs.firefox = {
     enable = true;
-
-    policies.ExtensionSettings =
-      {
-        # Block non-declarative installing
-        "*".installation_mode = "blocked";
-      }
-      // lib.listToAttrs (map (extension: {
-        name = extension.uuid;
-        value = {
-          install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${extension.shortId}/latest.xpi";
-          installation_mode = "force_installed";
-        };
-      }) (import ./extensions.nix));
+    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+      extraPolicies.ExtensionSettings =
+        {
+          # Block non-declarative installing
+          "*".installation_mode = "blocked";
+        }
+        // lib.listToAttrs (map
+          (extension: {
+            name = extension.uuid;
+            value = {
+              install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${extension.shortId}/latest.xpi";
+              installation_mode = "force_installed";
+            };
+          })
+          (import ./extensions.nix));
+    };
 
     profiles.personal = {
       isDefault = true;
@@ -51,6 +54,7 @@ in {
         {
           "browser.compactmode.show" = true;
           "browser.fullscreen.autohide" = false;
+          "browser.in-content.dark-mode" = true;
           "font.name.serif.x-western" = "${FONT}";
           "font.name.monospace.x-western" = "${FONT}";
           "font.name.sans-serif.x-western" = "${FONT}";

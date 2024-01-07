@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
-# https://gitlab.com/dwt1/dmscripts/-/blob/master/scripts/dm-pipewire-out-switcher
-# deps: wofi, pactl
+# Derived from https://gitlab.com/dwt1/dmscripts/-/blob/master/scripts/dm-pipewire-out-switcher
 
-set -euo pipefail
-
-# Config
 DMENU="wofi --dmenu -w 1"
 
-# Script
 get_default_sink() {
   pactl --format=json info | jq -r .default_sink_name
 }

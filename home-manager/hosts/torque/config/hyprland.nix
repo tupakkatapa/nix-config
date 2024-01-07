@@ -1,6 +1,33 @@
-{config, ...}: let
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
   inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR FILEMANAGER;
-  inherit (import ../colors.nix) background foreground accent inactive blue cyan green orange pink purple red yellow;
+  inherit (import ./colors.nix) background foreground accent inactive blue cyan green orange pink purple red yellow;
+
+  # Notify Scripts
+  notify = {
+    not-hyprprop = "${pkgs.notify-not-hyprprop}/bin/notify-not-hyprprop";
+    pipewire-out-switcher = "${pkgs.notify-pipewire-out-switcher}/bin/notify-pipewire-out-switcher-wrapper";
+    screenshot = "${pkgs.notify-screenshot}/bin/notify-screenshot";
+    volume = "${pkgs.notify-volume}/bin/notify-volume";
+  };
+
+  # Wofi scripts
+  dm = {
+    pipewire-out-switcher = "${pkgs.dm-pipewire-out-switcher}/bin/dm-pipewire-out-switcher";
+    quickfile = "${pkgs.dm-quickfile}/bin/dm-quickfile";
+    radio = "${pkgs.dm-radio}/bin/dm-radio-wrapper";
+  };
+
+  # Other
+  hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
+  playerctl = "${pkgs.playerctl}/bin/playerctl";
+  pamixer = "${pkgs.pamixer}/bin/pamixer";
+  gummy = "${pkgs.gummy}/bin/gummy";
+  swaybg = "${pkgs.swaybg}/bin/swaybg";
 in {
   home.sessionVariables = {
     MOZ_ENABLE_WAYLAND = "1";
@@ -10,40 +37,23 @@ in {
     WLR_RENDERER_ALLOW_SOFTWARE = "1";
   };
 
-  home.file = {
-    # Notify
-    ".config/hypr/notify-volume.sh".source = ./scripts/notify-volume.sh;
-    ".config/hypr/notify-hyprprop.sh".source = ./scripts/notify-hyprprop.sh;
-    ".config/hypr/notify-screenshot.sh".source = ./scripts/notify-screenshot.sh;
-    ".config/hypr/notify-audio-switch.sh".source = ./scripts/notify-audio-switch.sh;
-    # Assets
-    ".config/hypr/audio-volume-high-panel.svg".source = ./assets/audio-volume-high-panel.svg;
-    "Pictures/wallpaper".source = ./assets/wallpaper.png;
-    # Wofi
-    ".config/hypr/dm-pipewire-out-switcher.sh".source = ./scripts/dm-pipewire-out-switcher.sh;
-    ".config/hypr/dm-radio.sh".source = ./scripts/dm-radio.sh;
-    ".config/hypr/dm-quickfile.sh".source = ./scripts/dm-quickfile.sh;
-  };
+  home.file."Pictures/wallpaper".source = ./wallpaper.png;
 
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = ''
-      ### Tupakkatapa ############################## -->
-      #
-      #       ~/.config/hypr/hyprland.conf
-      #
-      ##
-
       ### Variables ################################ -->
       $MOD = ALT
+
 
       ### Exec ##################################### -->
       exec-once = wl-clipboard-history -t
       exec-once = swayidle -w
       exec-once = dunst
+      exec-once = ${gummy} start
 
       # Wallpaper
-      exec-once = swaybg -i ~/Pictures/wallpaper --mode fill
+      exec-once = ${swaybg} -i ~/Pictures/wallpaper --mode fill
 
       # RGB
       #exec-once = openrgb --client --device 1 --mode direct --color "330099"
@@ -65,8 +75,8 @@ in {
 
 
       ### Brightness (gummy)
-      bind = ,XF86MonBrightnessDown, exec, gummy -b -5
-      bind = ,XF86MonBrightnessUp, exec, gummy -b +5
+      bind = ,XF86MonBrightnessDown, exec, ${gummy} -b -5
+      bind = ,XF86MonBrightnessUp, exec, ${gummy} -b +5
 
 
       ### Input #################################### -->
@@ -241,6 +251,11 @@ in {
       windowrule = fullscreen, wlogout
       windowrule = fullscreen, title:wlogout
 
+      # Fake fullscreens a window
+      windowrule = fakefullscreen, firefox
+      windowrule = fakefullscreen, discord
+      windowrule = fakefullscreen, Ferdium
+
       # Forces an animation onto a window
       windowrule = animation none, Rofi
 
@@ -248,6 +263,7 @@ in {
       windowrule = opacity 0.9 override 0.9 override, ^(Alacritty)$
       windowrule = opacity 0.9 override 0.9 override, ^(Plexamp)$
       windowrule = opacity 0.9 override 0.9 override, ^(org.gnome.Nautilus)$
+
 
       ### Key binds ################################ -->
       bind = $MOD SHIFT, R,      exec, hyprctl reload && notify-send "Hyprland reloaded"
@@ -262,33 +278,33 @@ in {
       bind = SUPER, B,           exec, ${BROWSER}
 
       # Pipewire out switcher
-      bind = $MOD, XF86AudioRaiseVolume, exec, sh ~/.config/hypr/notify-audio-switch.sh
+      bind = $MOD, XF86AudioRaiseVolume, exec, ${notify.pipewire-out-switcher}
 
       # Screenshot
-      bind = , Print, exec, sh ~/.config/hypr/notify-screenshot.sh
+      bind = , Print, exec, ${notify.screenshot} "$HOME/Pictures/Screenshots"
 
       ## Submaps
       bind = $MOD, S, submap, scripts
       submap = scripts
 
       # Pipewire switcher
-      bind = , p, exec, sh ~/.config/hypr/dm-pipewire-out-switcher.sh
+      bind = , p, exec, ${dm.pipewire-out-switcher}
       bind = , p, submap, reset
 
       # Colorpicker
-      bind = , c, exec, hyprpicker -a -n
+      bind = , c, exec, ${hyprpicker} -a -n
       bind = , c, submap, reset
 
       # Window props
-      bind = , w, exec, sh ~/.config/hypr/notify-hyprprop.sh
+      bind = , w, exec, ${notify.not-hyprprop}
       bind = , w, submap, reset
 
       # Radio
-      bind = , r, exec, sh ~/.config/hypr/dm-radio.sh
+      bind = , r, exec, ${dm.radio}
       bind = , r, submap, reset
 
       # Quickfile
-      bind = , f, exec, sh ~/.config/hypr/dm-quickfile.sh
+      bind = , f, exec, ${dm.quickfile} "/mnt/sftp/docs/tabs" "$HOME/Workspace/nix-config"
       bind = , f, submap, reset
 
       # Reset submaps
@@ -298,14 +314,15 @@ in {
       ## Fn keys
 
       # Volume
-      bind = ,XF86AudioRaiseVolume, exec, pamixer -i 5 && exec sh ~/.config/hypr/notify-volume.sh
-      bind = ,XF86AudioLowerVolume, exec, pamixer -d 5 && exec sh ~/.config/hypr/notify-volume.sh
-      bind = ,XF86AudioMute,        exec, pamixer -t
+      bind = ,XF86AudioRaiseVolume, exec, ${notify.volume} -i 5
+      bind = ,XF86AudioLowerVolume, exec, ${notify.volume} -d 5
+      bind = ,XF86AudioMute,        exec, ${pamixer} -t
 
       # Media
-      bind = ,XF86AudioNext, exec, playerctl -p Plexamp next
-      bind = ,XF86AudioPlay, exec, playerctl -p Plexamp play-pause
-      bind = ,XF86AudioPrev, exec, playerctl -p Plexamp previous
+      bind = ,XF86AudioNext, exec, ${playerctl} -p Plexamp next
+      bind = ,XF86AudioPlay, exec, ${playerctl} -p Plexamp play-pause
+      bind = ,XF86AudioPrev, exec, ${playerctl} -p Plexamp previous
+
 
       ### Window management ################ -->
       bind = $MOD, F,     togglefloating

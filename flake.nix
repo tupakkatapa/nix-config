@@ -17,17 +17,13 @@
   };
 
   inputs = {
-    devenv.url = "github:cachix/devenv";
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
-    hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
-    hyprwm-contrib.url = "github:hyprwm/contrib";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
-    nixvim.url = "github:nix-community/nixvim";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:mic92/sops-nix";
+    nixvim.url = "github:nix-community/nixvim";
+    coditon-blog.url = "github:tupakkatapa/blog.coditon.com";
 
     # Genshin Impact
     aagl.inputs.nixpkgs.follows = "nixpkgs";
@@ -50,177 +46,125 @@
     nixobolus,
     nixpkgs,
     nixpkgs-patched,
-    nixvim,
     sops-nix,
+    nixvim,
     ...
-  } @ inputs:
-    flake-parts.lib.mkFlake {inherit inputs;} rec {
-      imports = [
-        inputs.devenv.flakeModule
-      ];
+  } @ inputs: let
+    inherit (self) outputs;
+    lib = nixpkgs.lib // home-manager.lib;
+    systems = ["x86_64-linux" "aarch64-linux"];
+    forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
+    pkgsFor = lib.genAttrs systems (system:
+      import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      });
 
-      systems = [
-        "aarch64-linux"
-        "x86_64-linux"
-      ];
+    specialArgs = {inherit inputs outputs;};
 
-      perSystem = {
-        self',
-        pkgs,
-        system,
-        ...
-      }: {
-        # Nix code formatter, accessible through 'nix fmt'
-        formatter = nixpkgs.legacyPackages.${system}.alejandra;
-
-        # Development shell, accessible trough 'nix develop' or 'direnv allow'
-        devenv.shells = {
-          default = {
-            packages = with pkgs; [
-              sops
-              ssh-to-age
-            ];
-            env = {
-              NIX_CONFIG = ''
-                accept-flake-config = true
-                extra-experimental-features = flakes nix-command
-                warn-dirty = false
-              '';
-            };
-            scripts.init-qemu.exec = ''
-              nix run github:ponkila/homestaking-infra?dir=scripts/init-qemu#init-qemu -- "$@"
-            '';
-            scripts.pxe-generate.exec = ''
-              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE#pxe-generate -- "$@"
-            '';
-            scripts.lkddb-filter.exec = ''
-              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE#lkddb-filter -- "$@"
-            '';
-            enterShell = ''
-              cat <<INFO
-
-              ### Tupakkatapa's flake ###
-
-              Available commands:
-
-                pxe-generate    : Generates netboot images and iPXE menu from a flake
-                lkddb-filter    : Filter LKDDb with PCI data
-                init-qemu       : Boot up a host using QEMU
-
-              INFO
-            '';
-            pre-commit.hooks = {
-              alejandra.enable = true;
-              shellcheck.enable = true;
-              rustfmt.enable = true;
-            };
-            # Workaround for https://github.com/cachix/devenv/issues/760
-            containers = pkgs.lib.mkForce {};
-          };
-        };
-
-        # Custom packages and aliases for building hosts
-        # Accessible through 'nix build', 'nix run', etc
-        packages =
-          rec {
-            "ping-sweep" = pkgs.callPackage ./packages/ping-sweep {};
-            "print-quote" = pkgs.callPackage ./packages/print-quote {};
-          }
-          // (with flake.nixosConfigurations; {
-            "bandit" = bandit.config.system.build.kexecTree;
-            "jakobs" = jakobs.config.system.build.kexecTree;
-            "vladof" = vladof.config.system.build.squashfs;
-          });
-      };
-      flake = let
-        inherit (self) outputs;
-
-        specialArgs = {inherit self inputs outputs;};
-
-        defaultModules = [
-          sops-nix.nixosModules.sops
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.sharedModules = [
-              nixvim.homeManagerModules.nixvim
-            ];
-            system.stateVersion = "23.11";
-          }
-          ./system
+    defaultModules = [
+      sops-nix.nixosModules.sops
+      home-manager.nixosModules.home-manager
+      {
+        home-manager.sharedModules = [
+          nixvim.homeManagerModules.nixvim
         ];
+        nixpkgs.overlays = builtins.attrValues outputs.overlays;
+        system.stateVersion = "23.11";
+      }
+      ./system
+    ];
 
-        torque = {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          modules =
-            [
-              ./home-manager/users/kari
-              ./nixosConfigurations/torque
-              aagl.nixosModules.default
-            ]
-            ++ defaultModules;
-        };
-
-        vladof = {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          modules =
-            [
-              ./home-manager/users/kari/minimal-gui.nix
-              ./nixosConfigurations/vladof
-              nix-pxe.nixosModules.squashfs
-              coditon-blog.nixosModules.default
-            ]
-            ++ defaultModules;
-        };
-
-        maliwan = {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          modules =
-            [
-              ./home-manager/users/kari
-              ./nixosConfigurations/maliwan
-              aagl.nixosModules.default
-            ]
-            ++ defaultModules;
-        };
-
-        bandit = {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          modules =
-            [
-              ./home-manager/users/kari/minimal.nix
-              ./nixosConfigurations/bandit
-              nixobolus.nixosModules.kexecTree
-            ]
-            ++ defaultModules;
-        };
-
-        jakobs = {
-          inherit specialArgs;
-          system = "aarch64-linux";
-          modules =
-            [
-              ./home-manager/users/kari/minimal.nix
-              ./nixosConfigurations/jakobs
-              nixobolus.nixosModules.kexecTree
-            ]
-            ++ defaultModules;
-        };
-      in {
-        # NixOS configuration entrypoints
-        nixosConfigurations = with nixpkgs.lib;
-          {
-            "bandit" = nixosSystem bandit;
-            "jakobs" = nixosSystem jakobs;
-            "maliwan" = nixosSystem maliwan;
-            "torque" = nixosSystem torque;
-          }
-          // (with nixpkgs-patched.lib; {
-            "vladof" = nixosSystem vladof;
-          });
-      };
+    torque = {
+      inherit specialArgs;
+      system = "x86_64-linux";
+      modules =
+        [
+          ./home-manager/users/kari
+          ./nixosConfigurations/torque
+          aagl.nixosModules.default
+        ]
+        ++ defaultModules;
     };
+
+    vladof = {
+      inherit specialArgs;
+      system = "x86_64-linux";
+      modules =
+        [
+          ./home-manager/users/kari/minimal-gui.nix
+          ./nixosConfigurations/vladof
+          nix-pxe.nixosModules.squashfs
+          coditon-blog.nixosModules.default
+        ]
+        ++ defaultModules;
+    };
+
+    maliwan = {
+      inherit specialArgs;
+      system = "x86_64-linux";
+      modules =
+        [
+          ./home-manager/users/kari
+          ./nixosConfigurations/maliwan
+          aagl.nixosModules.default
+        ]
+        ++ defaultModules;
+    };
+
+    bandit = {
+      inherit specialArgs;
+      system = "x86_64-linux";
+      modules =
+        [
+          ./home-manager/users/kari/minimal.nix
+          ./nixosConfigurations/bandit
+          nixobolus.nixosModules.kexecTree
+        ]
+        ++ defaultModules;
+    };
+
+    jakobs = {
+      inherit specialArgs;
+      system = "aarch64-linux";
+      modules =
+        [
+          ./home-manager/users/kari/minimal.nix
+          ./nixosConfigurations/jakobs
+          nixobolus.nixosModules.kexecTree
+        ]
+        ++ defaultModules;
+    };
+  in {
+    # Overlays for modifying or extending packages
+    overlays = import ./overlays.nix {inherit inputs outputs;};
+
+    # Nix code formatter, accessible through 'nix fmt'
+    formatter = forEachSystem (pkgs: pkgs.alejandra);
+
+    # Development shell, accessible trough 'nix develop' or 'direnv allow'
+    devShells = forEachSystem (pkgs: import ./shell.nix {inherit inputs pkgs;});
+
+    # Custom packages and aliases for building hosts
+    # Accessible through 'nix build', 'nix run', etc
+    packages = forEachSystem (pkgs:
+      (import ./packages {inherit pkgs;})
+      // {
+        "bandit" = self.nixosConfigurations.bandit.config.system.build.kexecTree;
+        "jakobs" = self.nixosConfigurations.jakobs.config.system.build.kexecTree;
+        "vladof" = self.nixosConfigurations.vladof.config.system.build.squashfs;
+      });
+
+    # NixOS configuration entrypoints
+    nixosConfigurations = with lib;
+      {
+        "bandit" = nixosSystem bandit;
+        "jakobs" = nixosSystem jakobs;
+        "maliwan" = nixosSystem maliwan;
+        "torque" = nixosSystem torque;
+      }
+      // (with nixpkgs-patched.lib; {
+        "vladof" = nixosSystem vladof;
+      });
+  };
 }

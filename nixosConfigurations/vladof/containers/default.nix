@@ -13,14 +13,21 @@
   # Functions for container configs
   helpers = {
     bindPorts = protocols:
-      lib.concatMap (protocol:
-        map (port: {
-          inherit protocol;
-          hostPort = port;
-        }) (protocols.${protocol})) (builtins.attrNames protocols);
+      lib.concatMap
+      (
+        protocol:
+          map
+          (port: {
+            inherit protocol;
+            hostPort = port;
+          })
+          (protocols.${protocol})
+      )
+      (builtins.attrNames protocols);
 
     bindMounts = paths:
-      lib.listToAttrs (map (path: {
+      lib.listToAttrs (map
+        (path: {
           name = path;
           value = {
             hostPath = path;

@@ -6,7 +6,8 @@
 }: {
   programs.nixvim = let
     disableKeys = keysList:
-      map (keyName: {
+      map
+      (keyName: {
         key = "<${keyName}>";
         action = "<Nop>";
       })
@@ -33,8 +34,15 @@
       contrastDark = "medium";
     };
 
+    # NOTE: Default mode is normal-visual-op
     keymaps =
       [
+        # Map :W to :w
+        {
+          mode = "c";
+          key = ":W";
+          action = "<cmd>w<cr>";
+        }
         # Do not yank when pasting or deleting
         {
           key = "p";
@@ -44,8 +52,8 @@
           key = "x";
           action = "\"_x";
         }
+        # Ctrl+s
         {
-          # Default mode is normal-visual-op
           key = "<C-s>";
           action = "<cmd>w<cr><esc>";
         }
@@ -114,7 +122,7 @@
         closeIfLastWindow = true;
         window = {
           width = 35;
-          #autoExpandWidth = true;
+          autoExpandWidth = true;
           mappings = {
             "l".command = "open";
             "h".command = "close_node";

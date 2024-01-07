@@ -4,10 +4,7 @@
   inputs,
   lib,
   ...
-}: let
-  # Allow access to flake inputs with 'home-manager.extraSpecialArgs = { inherit inputs; };'
-  hyprprop = inputs.hyprwm-contrib.packages.${pkgs.system}.hyprprop;
-in {
+}: {
   # This file should be imported under 'home-manager.users.<username>'
   # See 'home-manager/users/kari/minimal.nix' for an example how to do this conditionally
 
@@ -16,7 +13,7 @@ in {
     #./config/swaylock.nix
     ./config/dunst.nix
     ./config/gtk.nix
-    ./config/hyprland
+    ./config/hyprland.nix
     ./config/waybar.nix
     ./config/wofi.nix
   ];
@@ -54,19 +51,8 @@ in {
     font-awesome # for waybar
 
     # WM Apps
-    blueberry
-    grim
-    gummy
-    hyprpicker
-    hyprprop
-    jq
-    pamixer
-    pavucontrol
-    playerctl
-    pulseaudio
-    slurp
     swaybg
     wl-clipboard
-    xdg-utils
+    pavucontrol
   ];
 }

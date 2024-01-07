@@ -1,5 +1,10 @@
-result
+.devenv
 .direnv
 .pre-commit-config.yaml
-.devenv
+.wip
 netboot
+node_modules
+pipe
+private
+result
+target

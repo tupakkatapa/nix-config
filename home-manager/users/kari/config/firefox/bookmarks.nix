@@ -26,6 +26,14 @@
             name = "Torrent";
             url = "https://torrent.coditon.com";
           }
+          {
+            name = "Blog";
+            url = "https://blog.coditon.com";
+          }
+          {
+            name = "Jackett";
+            url = "https://jackett.coditon.com";
+          }
         ];
       }
       {
@@ -207,7 +215,11 @@
       }
       {
         name = "Twitch";
-        url = "https://www.twitch.tv/directory";
+        url = "https://www.twitch.tv/";
+      }
+      {
+        name = "Kick";
+        url = "https://kick.com/";
       }
       {
         name = "GitHub";

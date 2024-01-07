@@ -8,7 +8,8 @@
 
   # Function to disable keys
   disableKeys = keysList:
-    map (keyName: {
+    map
+    (keyName: {
       key = keyName;
       action = "None";
     })

@@ -40,10 +40,10 @@ in {
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    jack.enable = true;
+    #jack.enable = true;
   };
   # Make pipewire realtime-capable
-  security.rtkit.enable = true;
+  #security.rtkit.enable = true;
 
   # Timezone, system version and locale
   time.timeZone = "Europe/Helsinki";
@@ -59,7 +59,7 @@ in {
     enable = true;
     user = "kari";
     program = lib.concatStringsSep " \\\n\t" [
-      "${pkgs.firefox}/bin/firefox --kiosk"
+      "${config.home-manager.users."kari".programs.firefox.package}/bin/firefox"
       "https://www.youtube.com"
       "https://plex.coditon.com"
       "https://www.twitch.tv"
