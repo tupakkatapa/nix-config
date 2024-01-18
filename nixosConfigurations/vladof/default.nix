@@ -8,7 +8,7 @@
   domain = "coditon.com";
   address = "192.168.1.8";
   gateway = "192.168.1.1";
-  interface = "enp0s31f6";
+  interface = "enp4s0";
 in {
   imports = [
     ./containers
@@ -27,9 +27,9 @@ in {
       name = "kernel nic config (vladof)";
       patch = null;
       extraConfig = ''
-        E1000E y
+        R8169 y
         ETHERNET y
-        NET_VENDOR_INTEL y
+        NET_VENDOR_REALTEK y
       '';
     }
   ];

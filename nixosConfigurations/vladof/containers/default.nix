@@ -6,7 +6,7 @@
   ...
 } @ args: let
   serviceDataDir = "/mnt/wd-red/appdata";
-  interface = "enp0s31f6";
+  interface = "enp4s0";
   domain = "coditon.com";
   gateway = "10.11.10.1"; # Host interface
 
