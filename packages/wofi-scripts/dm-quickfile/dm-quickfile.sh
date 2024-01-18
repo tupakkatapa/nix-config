@@ -3,7 +3,7 @@
 
 DMENU="wofi --dmenu -w 1 --insensitive"
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -eq 0 ]; then
     echo "Usage: $0 <paths>"
     exit 1
 fi

@@ -19,9 +19,6 @@ pkgs.stdenv.mkDerivation rec {
     cp $src/${name}.sh $out/bin/${name}
     chmod +x $out/bin/${name}
 
-    wrapProgram $out/bin/${name} \
-      --prefix PATH : ${lib.makeBinPath buildInputs}
-
     # Assets
     mkdir -p $out/share/icons
     cp $src/audio-volume-high-panel.svg $out/share/icons

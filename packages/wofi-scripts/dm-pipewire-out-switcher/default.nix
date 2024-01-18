@@ -9,7 +9,7 @@ pkgs.stdenv.mkDerivation rec {
   buildInputs = with pkgs; [
     wofi
     notify
-    pipewire
+    pulseaudio
     jq
   ];
 
