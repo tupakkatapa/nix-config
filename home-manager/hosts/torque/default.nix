@@ -54,5 +54,6 @@
     swaybg
     wl-clipboard
     pavucontrol
+    pulseaudio
   ];
 }
