@@ -95,7 +95,9 @@ in {
       eza
       htop
       kexec-tools
+      lkddb-filter
       lshw
+      pciutils
       rsync
       tmux
       wget

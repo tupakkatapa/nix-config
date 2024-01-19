@@ -88,6 +88,7 @@
             notify-volume
             notify-pipewire-out-switcher
             notify-not-hyprprop
+            lkddb-filter
             ;
         };
 
@@ -154,6 +155,8 @@
             "notify-volume" = pkgs.callPackage ./packages/notify-scripts/notify-volume {};
             "notify-pipewire-out-switcher" = pkgs.callPackage ./packages/notify-scripts/notify-pipewire-out-switcher {};
             "notify-not-hyprprop" = pkgs.callPackage ./packages/notify-scripts/notify-not-hyprprop {};
+            # From other projects
+            "lkddb-filter" = inputs.nix-pxe.packages.${system}.lkddb-filter;
           }
           # Entrypoint aliases, accessible trough 'nix build'
           // (with flake.nixosConfigurations; {

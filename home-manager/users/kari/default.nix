@@ -159,7 +159,6 @@ in {
 
       # System Utilities
       nix-tree
-      pciutils
 
       # Networking
       iputils
