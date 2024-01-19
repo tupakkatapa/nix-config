@@ -63,7 +63,7 @@ in {
     interactiveShellInit =
       # Print banner
       ''
-        ${pkgs.print-quote}/bin/print-quote -m 152 -p "  " -s "\n"
+        ${pkgs.print-banner}/bin/print-banner -o manpage -p "  " -s "\n"
       ''
       +
       # Use vim bindings and cursors

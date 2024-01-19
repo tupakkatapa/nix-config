@@ -1,7 +1,7 @@
 use clap::{Arg, Command};
 use ipnetwork::Ipv4Network;
-use threadpool::ThreadPool;
 use std::process::Command as SystemCommand;
+use threadpool::ThreadPool;
 
 fn main() {
     let args = cli().get_matches();
@@ -40,7 +40,7 @@ fn cli() -> Command {
                 .value_name("SUBNET")
                 .help("Set the subnet to ping in CIDR notation (e.g., 192.168.1.0/24)")
                 .default_value("192.168.1.0/24")
-                .value_parser(clap::value_parser!(Ipv4Network)) // Parse as Ipv4Network
+                .value_parser(clap::value_parser!(Ipv4Network)), // Parse as Ipv4Network
         )
         .arg(
             Arg::new("threads")
@@ -49,7 +49,7 @@ fn cli() -> Command {
                 .value_name("THREADS")
                 .help("Number of concurrent threads")
                 .default_value("64")
-                .value_parser(clap::value_parser!(usize)) // Parse as usize
+                .value_parser(clap::value_parser!(usize)), // Parse as usize
         )
 }
 
@@ -68,4 +68,3 @@ fn ping(ip_addr: &str) -> bool {
         }
     }
 }
-

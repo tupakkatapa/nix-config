@@ -76,12 +76,11 @@
           ];
           config = {};
         };
-
         overlayAttrs = {
           inherit
             (config.packages)
             ping-sweep
-            print-quote
+            print-banner
             dm-pipewire-out-switcher
             dm-quickfile
             dm-radio
@@ -145,7 +144,7 @@
         packages =
           rec {
             "ping-sweep" = pkgs.callPackage ./packages/ping-sweep {};
-            "print-quote" = pkgs.callPackage ./packages/print-quote {};
+            "print-banner" = pkgs.callPackage ./packages/print-banner {};
             # Wofi scripts
             "dm-pipewire-out-switcher" = pkgs.callPackage ./packages/wofi-scripts/dm-pipewire-out-switcher {};
             "dm-quickfile" = pkgs.callPackage ./packages/wofi-scripts/dm-quickfile {};
