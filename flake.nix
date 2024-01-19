@@ -101,6 +101,7 @@
             packages = with pkgs; [
               sops
               ssh-to-age
+              inputs.nix-pxe.packages.${system}.pxe-generate
             ];
             env = {
               NIX_CONFIG = ''
@@ -109,32 +110,10 @@
                 warn-dirty = false
               '';
             };
-            scripts.init-qemu.exec = ''
-              nix run github:ponkila/homestaking-infra?dir=scripts/init-qemu#init-qemu -- "$@"
-            '';
-            scripts.pxe-generate.exec = ''
-              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE#pxe-generate -- "$@"
-            '';
-            scripts.lkddb-filter.exec = ''
-              nix run git+ssh://git@github.com/majbacka-labs/Nix-PXE#lkddb-filter -- "$@"
-            '';
-            enterShell = ''
-              cat <<INFO
-
-              ### Tupakkatapa's flake ###
-
-              Available commands:
-
-                pxe-generate    : Generates netboot images and iPXE menu from a flake
-                lkddb-filter    : Filter LKDDb with PCI data
-                init-qemu       : Boot up a host using QEMU
-
-              INFO
-            '';
             pre-commit.hooks = {
               alejandra.enable = true;
               shellcheck.enable = true;
-              rustfmt.enable = true;
+              rustfmt.enable = false;
             };
             # Workaround for https://github.com/cachix/devenv/issues/760
             containers = pkgs.lib.mkForce {};
