@@ -24,12 +24,21 @@ in {
   # Enable NIC driver for stage-1
   boot.kernelPatches = [
     {
-      name = "kernel nic config (vladof)";
+      name = "kernel nic config (vladof-mb)";
       patch = null;
       extraConfig = ''
         E1000E y
         ETHERNET y
         NET_VENDOR_INTEL y
+      '';
+    }
+    {
+      name = "kernel nic config (vladof-pci)";
+      patch = null;
+      extraConfig = ''
+        R8169 y
+        ETHERNET y
+        NET_VENDOR_REALTEK y
       '';
     }
   ];
