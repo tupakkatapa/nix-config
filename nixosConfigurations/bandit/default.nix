@@ -4,17 +4,10 @@
   config,
   ...
 }: {
-  # Bootloader for x86_64-linux / aarch64-linux
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Use the latest kernel
-  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
-
-  # Localization and basic stuff
   networking.hostName = "bandit";
-  time.timeZone = "Europe/Helsinki";
-  console.keyMap = "fi";
+
+  # No bootloader
+  boot.loader.grub.enable = false;
 
   # Strict SSH settings
   services.openssh = {

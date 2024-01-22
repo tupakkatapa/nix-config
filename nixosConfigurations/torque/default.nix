@@ -29,21 +29,6 @@
   boot.loader.grub.font = "${pkgs.terminus_font}/share/fonts/terminus/ter-x24n.pcf.gz";
   boot.loader.grub.fontSize = 24;
 
-  # Set the console keymap and font
-  console.keyMap = "fi";
-  console.font = "${pkgs.terminus_font}/share/consolefonts/ter-c24n.psf.gz";
-
-  # Use the latest kernel
-  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
-
-  # Timezone, system version and locale
-  time.timeZone = "Europe/Helsinki";
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_MESSAGES = "en_US.UTF-8";
-    LC_TIME = "fi_FI.UTF-8";
-  };
-
   # Import hardware configuration
   imports = [./hardware-configuration.nix];
 
@@ -180,17 +165,6 @@
   virtualisation.virtualbox.host = {
     enable = true;
     enableExtensionPack = true;
-  };
-
-  # Podman
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;
-    # dnsname allows containers to use ${name}.dns.podman to reach each other
-    # on the same host instead of using hard-coded IPs.
-    # NOTE: --net must be the same on the containers, and not eq "host"
-    # TODO: extend this with flannel ontop of wireguard for cross-node comms
-    defaultNetwork.settings = {dns_enabled = true;};
   };
 
   # Steam and gaming settings

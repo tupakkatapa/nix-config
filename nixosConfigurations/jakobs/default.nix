@@ -13,12 +13,8 @@
   # Use the Raspberry Pi 4 kernel
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
 
-  # Timezone and system version
-  networking.hostName = "jakobs";
-  time.timeZone = "Europe/Helsinki";
-  console.keyMap = "fi";
-
   # Connectivity
+  networking.hostName = "jakobs";
   networking.firewall.enable = false;
   hardware.bluetooth.enable = true;
 

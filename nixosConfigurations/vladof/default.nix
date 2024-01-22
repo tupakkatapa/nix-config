@@ -15,9 +15,6 @@ in {
   # No bootloader
   boot.loader.grub.enable = false;
 
-  # Use the latest kernel
-  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
-
   # Enable NIC driver for stage-1
   boot.kernelPatches = [
     {
@@ -35,31 +32,17 @@ in {
   hardware.pulseaudio.enable = true;
   sound.mediaKeys.enable = true;
 
-  # Timezone, system version and locale
-  time.timeZone = "Europe/Helsinki";
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_MESSAGES = "en_US.UTF-8";
-    LC_TIME = "fi_FI.UTF-8";
-  };
-  console.keyMap = "fi";
-
   # Cage-kiosk (firefox)
   services.cage = {
     enable = true;
     user = "kari";
-    program =
-      lib.concatStringsSep ''
-        \
-      '' [
-        "${
-          config.home-manager.users."kari".programs.firefox.package
-        }/bin/firefox"
-        "https://www.youtube.com"
-        "https://plex.coditon.com"
-        "https://www.twitch.tv"
-        "https://kick.com"
-      ];
+    program = lib.concatStringsSep ''\'' [
+      "${config.home-manager.users."kari".programs.firefox.package}/bin/firefox"
+      "https://www.youtube.com"
+      "https://plex.coditon.com"
+      "https://www.twitch.tv"
+      "https://kick.com"
+    ];
     environment.XKB_DEFAULT_LAYOUT = "fi";
   };
   systemd.services.cage-tty1 = {serviceConfig = {Restart = "always";};};
