@@ -63,6 +63,7 @@ in {
   security.acme.defaults.email = "jesse@ponkila.com";
   security.acme.defaults.webroot = "${serviceDataDir}/acme";
 
+  # Other
   networking = {
     firewall = {
       allowedTCPPorts =

@@ -17,6 +17,8 @@ in {
     "d ${serviceDataDir}/jackett        700 276 276 -"
     "d ${serviceDataDir}/vaultwarden    700 993 993 -"
   ];
+
+  # Bind services without dir option
   fileSystems."/var/lib/bitwarden_rs" = {
     device = "${serviceDataDir}/vaultwarden";
     options = ["bind"];
@@ -234,11 +236,7 @@ in {
 
       # Other
       networking = {
-        firewall = {
-          enable = false;
-          allowedTCPPorts = [8177]; # Vaultwarden
-          allowedUDPPorts = [51820]; # WireGuard
-        };
+        firewall.enable = false;
         # Use systemd-resolved inside the container
         # Workaround for bug https://github.com/NixOS/nixpkgs/issues/162686
         useHostResolvConf = lib.mkForce false;

@@ -40,6 +40,9 @@
     vim
   ];
 
+  # Saiko's automatic gc
+  sys2x.gc.useDiskAware = true;
+
   # Reboots hanged system
   systemd.watchdog.device = "/dev/watchdog";
   systemd.watchdog.runtimeTime = "30s";

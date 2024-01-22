@@ -14,9 +14,8 @@ in {
     ./containers
   ];
 
-  # Bootloader for x86_64-linux / aarch64-linux
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # No bootloader
+  boot.loader.grub.enable = false;
 
   # Use the latest kernel
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest);
@@ -24,7 +23,7 @@ in {
   # Enable NIC driver for stage-1
   boot.kernelPatches = [
     {
-      name = "kernel nic config (vladof-mb)";
+      name = "kernel nic config (vladof)";
       patch = null;
       extraConfig = ''
         E1000E y
@@ -32,27 +31,11 @@ in {
         NET_VENDOR_INTEL y
       '';
     }
-    {
-      name = "kernel nic config (vladof-pci)";
-      patch = null;
-      extraConfig = ''
-        R8169 y
-        ETHERNET y
-        NET_VENDOR_REALTEK y
-      '';
-    }
   ];
 
   # Audio settings
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    #jack.enable = true;
-  };
-  # Make pipewire realtime-capable
-  #security.rtkit.enable = true;
+  hardware.pulseaudio.enable = true;
+  sound.mediaKeys.enable = true;
 
   # Timezone, system version and locale
   time.timeZone = "Europe/Helsinki";

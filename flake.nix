@@ -37,6 +37,9 @@
     nixpkgs-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh"; # stable
     nix-pxe.url = "git+ssh://git@github.com/majbacka-labs/Nix-PXE";
     nixobolus.url = "github:ponkila/nixobolus";
+
+    # Other
+    nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
   };
 
   outputs = {
@@ -45,6 +48,7 @@
     coditon-blog,
     flake-parts,
     home-manager,
+    nix-extras,
     nix-pxe,
     nixobolus,
     nixpkgs,
@@ -54,20 +58,20 @@
     ...
   } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} rec {
+      systems = nixpkgs.lib.systems.flakeExposed;
       imports = [
         inputs.devenv.flakeModule
         inputs.flake-parts.flakeModules.easyOverlay
       ];
-
-      systems = nixpkgs.lib.systems.flakeExposed;
 
       perSystem = {
         pkgs,
         lib,
         config,
         system,
+        inputs',
         ...
-      }: {
+      }: rec {
         # Overlays
         _module.args.pkgs = import inputs.nixpkgs {
           inherit system;
@@ -76,163 +80,115 @@
           ];
           config = {};
         };
-        overlayAttrs = {
-          inherit
-            (config.packages)
-            ping-sweep
-            print-banner
-            dm-pipewire-out-switcher
-            dm-quickfile
-            dm-radio
-            notify-screenshot
-            notify-volume
-            notify-pipewire-out-switcher
-            notify-not-hyprprop
-            lkddb-filter
-            ;
-        };
-
-        # Nix code formatter, accessible through 'nix fmt'
-        formatter = nixpkgs.legacyPackages.${system}.alejandra;
-
-        # Development shell, accessible trough 'nix develop' or 'direnv allow'
-        devenv.shells = {
-          default = {
-            packages = with pkgs; [
-              sops
-              ssh-to-age
-              inputs.nix-pxe.packages.${system}.pxe-generate
-            ];
-            env = {
-              NIX_CONFIG = ''
-                accept-flake-config = true
-                extra-experimental-features = flakes nix-command
-                warn-dirty = false
-              '';
-            };
-            pre-commit.hooks = {
-              alejandra.enable = true;
-              shellcheck.enable = true;
-              rustfmt.enable = false;
-            };
-            # Workaround for https://github.com/cachix/devenv/issues/760
-            containers = pkgs.lib.mkForce {};
+        overlayAttrs =
+          import ./packages {inherit pkgs;}
+          // {
+            "lkddb-filter" = inputs'.nix-pxe.packages.lkddb-filter;
+            "pxe-generate" = inputs'.nix-pxe.packages.pxe-generate;
           };
+
+        # Nix code formatter -> 'nix fmt'
+        formatter = pkgs.nixpkgs-fmt;
+
+        # Development shell -> 'nix develop' or 'direnv allow'
+        devenv.shells.default = {
+          packages = with pkgs; [
+            sops
+            ssh-to-age
+            pxe-generate
+          ];
+          env = {
+            NIX_CONFIG = ''
+              accept-flake-config = true
+              extra-experimental-features = flakes nix-command
+              warn-dirty = false
+            '';
+          };
+          pre-commit.hooks = {
+            alejandra.enable = true;
+            shellcheck.enable = true;
+            rustfmt.enable = false;
+          };
+          # Workaround for https://github.com/cachix/devenv/issues/760
+          containers = pkgs.lib.mkForce {};
         };
 
-        # Custom packages, accessible trough 'nix build', 'nix run', etc.
+        # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
         packages =
-          rec {
-            "ping-sweep" = pkgs.callPackage ./packages/ping-sweep {};
-            "print-banner" = pkgs.callPackage ./packages/print-banner {};
-            # Wofi scripts
-            "dm-pipewire-out-switcher" = pkgs.callPackage ./packages/wofi-scripts/dm-pipewire-out-switcher {};
-            "dm-quickfile" = pkgs.callPackage ./packages/wofi-scripts/dm-quickfile {};
-            "dm-radio" = pkgs.callPackage ./packages/wofi-scripts/dm-radio {};
-            # Notify scripts
-            "notify-screenshot" = pkgs.callPackage ./packages/notify-scripts/notify-screenshot {};
-            "notify-volume" = pkgs.callPackage ./packages/notify-scripts/notify-volume {};
-            "notify-pipewire-out-switcher" = pkgs.callPackage ./packages/notify-scripts/notify-pipewire-out-switcher {};
-            "notify-not-hyprprop" = pkgs.callPackage ./packages/notify-scripts/notify-not-hyprprop {};
-            # From other projects
-            "lkddb-filter" = inputs.nix-pxe.packages.${system}.lkddb-filter;
-          }
-          # Entrypoint aliases, accessible trough 'nix build'
-          // (with flake.nixosConfigurations; {
+          (with flake.nixosConfigurations; {
             "bandit" = bandit.config.system.build.kexecTree;
             "jakobs" = jakobs.config.system.build.kexecTree;
             "vladof" = vladof.config.system.build.squashfs;
-          });
+          })
+          // overlayAttrs;
       };
       flake = let
         inherit (self) outputs;
 
-        specialArgs = {inherit self inputs outputs;};
-
-        defaultModules = [
-          sops-nix.nixosModules.sops
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.sharedModules = [
-              nixvim.homeManagerModules.nixvim
+        withDefaults = config: {
+          specialArgs = {inherit inputs outputs;};
+          system = config.system or "x86_64-linux";
+          modules =
+            config.modules
+            ++ [
+              sops-nix.nixosModules.sops
+              home-manager.nixosModules.home-manager
+              nix-extras.nixosModules.all
+              {
+                home-manager.sharedModules = [
+                  nixvim.homeManagerModules.nixvim
+                ];
+                nixpkgs.overlays = [self.overlays.default];
+                system.stateVersion = "23.11";
+              }
+              ./system
             ];
-            nixpkgs.overlays = [self.overlays.default];
-            system.stateVersion = "23.11";
-          }
-          ./system
+        };
+
+        torque.modules = [
+          ./home-manager/users/kari
+          ./nixosConfigurations/torque
+          aagl.nixosModules.default
         ];
 
-        torque = {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          modules =
-            [
-              ./home-manager/users/kari
-              ./nixosConfigurations/torque
-              aagl.nixosModules.default
-            ]
-            ++ defaultModules;
-        };
+        vladof.modules = [
+          ./home-manager/users/kari/minimal-gui.nix
+          ./nixosConfigurations/vladof
+          nix-pxe.nixosModules.squashfs
+          coditon-blog.nixosModules.default
+        ];
 
-        vladof = {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          modules =
-            [
-              ./home-manager/users/kari/minimal-gui.nix
-              ./nixosConfigurations/vladof
-              nix-pxe.nixosModules.squashfs
-              coditon-blog.nixosModules.default
-            ]
-            ++ defaultModules;
-        };
+        maliwan.modules = [
+          ./home-manager/users/kari
+          ./nixosConfigurations/maliwan
+          aagl.nixosModules.default
+        ];
 
-        maliwan = {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          modules =
-            [
-              ./home-manager/users/kari
-              ./nixosConfigurations/maliwan
-              aagl.nixosModules.default
-            ]
-            ++ defaultModules;
-        };
-
-        bandit = {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          modules =
-            [
-              ./home-manager/users/kari/minimal.nix
-              ./nixosConfigurations/bandit
-              nixobolus.nixosModules.kexecTree
-            ]
-            ++ defaultModules;
-        };
+        bandit.modules = [
+          ./home-manager/users/kari/minimal.nix
+          ./nixosConfigurations/bandit
+          nixobolus.nixosModules.kexecTree
+        ];
 
         jakobs = {
-          inherit specialArgs;
           system = "aarch64-linux";
-          modules =
-            [
-              ./home-manager/users/kari/minimal.nix
-              ./nixosConfigurations/jakobs
-              nixobolus.nixosModules.kexecTree
-            ]
-            ++ defaultModules;
+          modules = [
+            ./home-manager/users/kari/minimal.nix
+            ./nixosConfigurations/jakobs
+            nixobolus.nixosModules.kexecTree
+          ];
         };
       in {
         # NixOS configuration entrypoints
         nixosConfigurations = with nixpkgs.lib;
           {
-            "bandit" = nixosSystem bandit;
-            "jakobs" = nixosSystem jakobs;
-            "maliwan" = nixosSystem maliwan;
-            "torque" = nixosSystem torque;
+            "bandit" = nixosSystem (withDefaults bandit);
+            "jakobs" = nixosSystem (withDefaults jakobs);
+            "maliwan" = nixosSystem (withDefaults maliwan);
+            "torque" = nixosSystem (withDefaults torque);
           }
           // (with nixpkgs-patched.lib; {
-            "vladof" = nixosSystem vladof;
+            "vladof" = nixosSystem (withDefaults vladof);
           });
       };
     };
