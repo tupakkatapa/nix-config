@@ -6,8 +6,7 @@
 }: {
   programs.nixvim = let
     disableKeys = keysList:
-      map
-      (keyName: {
+      map (keyName: {
         key = "<${keyName}>";
         action = "<Nop>";
       })
@@ -20,9 +19,7 @@
       providers.wl-copy.enable = true;
     };
 
-    globals = {
-      mapleader = " ";
-    };
+    globals = {mapleader = " ";};
 
     options = {
       laststatus = 0;
@@ -50,7 +47,7 @@
         }
         {
           key = "x";
-          action = "\"_x";
+          action = ''"_x'';
         }
         # Ctrl+s
         {

@@ -13,21 +13,14 @@
   # Functions for container configs
   helpers = {
     bindPorts = protocols:
-      lib.concatMap
-      (
-        protocol:
-          map
-          (port: {
-            inherit protocol;
-            hostPort = port;
-          })
-          (protocols.${protocol})
-      )
-      (builtins.attrNames protocols);
+      lib.concatMap (protocol:
+        map (port: {
+          inherit protocol;
+          hostPort = port;
+        }) (protocols.${protocol})) (builtins.attrNames protocols);
 
     bindMounts = paths:
-      lib.listToAttrs (map
-        (path: {
+      lib.listToAttrs (map (path: {
           name = path;
           value = {
             hostPath = path;
@@ -38,21 +31,12 @@
   };
 
   # Inherit global stuff for containers
-  extendedArgs =
-    args
-    // {
-      inherit serviceDataDir domain gateway helpers;
-    };
+  extendedArgs = args // {inherit serviceDataDir domain gateway helpers;};
 in {
-  imports = [
-    (import ./private.nix extendedArgs)
-    (import ./public.nix extendedArgs)
-  ];
+  imports = [(import ./private.nix extendedArgs) (import ./public.nix extendedArgs)];
 
   # Create directories, these are persistent
-  systemd.tmpfiles.rules = [
-    "d ${serviceDataDir} 770 root root -"
-  ];
+  systemd.tmpfiles.rules = ["d ${serviceDataDir} 770 root root -"];
 
   # ACME
   fileSystems."/var/lib/acme" = {

@@ -6,7 +6,8 @@
   ...
 }: let
   user = "kari";
-  optionalGroups = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
+  optionalGroups = groups:
+    builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
   optionalPaths = paths: builtins.filter (path: builtins.pathExists path) paths;
 in {
   # User config
@@ -60,15 +61,12 @@ in {
   services.getty.autologinUser = let
     userCfg = config.users.users."${user}";
   in
-    lib.mkIf
-    (
-      userCfg.password
+    lib.mkIf (userCfg.password
       == null
       && userCfg.initialPassword == null
       && userCfg.hashedPasswordFile == null
       && userCfg.hashedPassword == null
-      && userCfg.initialHashedPassword == null
-    )
+      && userCfg.initialHashedPassword == null)
     user;
 
   # Allows access to flake inputs and custom packages
@@ -83,7 +81,8 @@ in {
         ./config/neovim.nix
       ]
       # Importing host-spesific home-manager config if it exists
-      ++ optionalPaths [../../hosts/${config.networking.hostName}/default.nix];
+      ++ optionalPaths
+      [../../hosts/${config.networking.hostName}/default.nix];
 
     # Default apps
     home.sessionVariables = {

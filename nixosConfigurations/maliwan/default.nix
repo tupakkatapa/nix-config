@@ -24,9 +24,7 @@
   console.keyMap = "fi";
 
   # Import hardware configuration
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports = [./hardware-configuration.nix];
 
   # Greetd
   services.greetd = {

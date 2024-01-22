@@ -6,9 +6,7 @@
   pkgs,
   ...
 }: {
-  imports = [
-    ./nix-settings.nix
-  ];
+  imports = [./nix-settings.nix];
 
   boot = {
     kernelParams = [

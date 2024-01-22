@@ -45,9 +45,7 @@
   };
 
   # Import hardware configuration
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports = [./hardware-configuration.nix];
 
   # Greetd
   services.greetd = {
@@ -100,9 +98,7 @@
   programs.adb.enable = true;
 
   # Enable clock and voltage adjustment for AMD GPU
-  boot.kernelParams = [
-    "amdgpu.ppfeaturemask=0xffffffff"
-  ];
+  boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
 
   # RGB
   systemd.services.openrgb = {
@@ -223,9 +219,7 @@
   programs.gamemode = {
     enable = true;
     settings = {
-      general = {
-        renice = 10;
-      };
+      general = {renice = 10;};
       gpu = {
         apply_gpu_optimisations = "accept-responsibility";
         gpu_device = 0;

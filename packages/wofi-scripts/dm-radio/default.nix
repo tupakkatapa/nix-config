@@ -6,12 +6,7 @@ pkgs.stdenv.mkDerivation rec {
   name = "dm-radio";
   src = ./.;
 
-  buildInputs = with pkgs; [
-    wofi
-    notify
-    mpv
-    jq
-  ];
+  buildInputs = with pkgs; [wofi notify mpv jq];
 
   nativeBuildInputs = [pkgs.makeWrapper];
   installPhase = ''

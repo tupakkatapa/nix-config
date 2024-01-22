@@ -43,11 +43,7 @@
     imv
 
     # Fonts
-    (pkgs.nerdfonts.override {
-      fonts = [
-        "JetBrainsMono"
-      ];
-    })
+    (pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];})
     font-awesome # for waybar
 
     # WM Apps

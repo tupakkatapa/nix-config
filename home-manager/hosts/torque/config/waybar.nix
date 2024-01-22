@@ -4,7 +4,21 @@
   ...
 }: let
   inherit (config.home.sessionVariables) FONT TERMINAL EDITOR;
-  inherit (import ./colors.nix) background foreground accent inactive blue cyan green orange pink purple red yellow;
+  inherit
+    (import ./colors.nix)
+    background
+    foreground
+    accent
+    inactive
+    blue
+    cyan
+    green
+    orange
+    pink
+    purple
+    red
+    yellow
+    ;
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
@@ -25,17 +39,9 @@ in {
       layer = "top";
       spacing = 5;
 
-      modules-left = [
-        "custom/hostname"
-        "cpu"
-        "memory"
-        "disk"
-        "custom/player"
-      ];
+      modules-left = ["custom/hostname" "cpu" "memory" "disk" "custom/player"];
 
-      modules-center = [
-        "hyprland/workspaces"
-      ];
+      modules-center = ["hyprland/workspaces"];
 
       modules-right = [
         "tray"
@@ -68,7 +74,8 @@ in {
 
       "custom/player" = {
         exec-if = "${playerctl} status";
-        exec = ''${playerctl} metadata --format '{"text": "{{artist}} - {{title}}", "alt": "{{status}}", "tooltip": "{{title}} ({{artist}} - {{album}})"}' '';
+        exec = ''
+          ${playerctl} metadata --format '{"text": "{{artist}} - {{title}}", "alt": "{{status}}", "tooltip": "{{title}} ({{artist}} - {{album}})"}' '';
         return-type = "json";
         interval = 2;
         max-length = 50;
@@ -97,9 +104,7 @@ in {
         };
       };
 
-      "custom/hostname" = {
-        exec = "echo $USER@$HOSTNAME";
-      };
+      "custom/hostname" = {exec = "echo $USER@$HOSTNAME";};
 
       pulseaudio = {
         format = "{icon} {volume}%";
@@ -121,10 +126,18 @@ in {
         format-connected = " {device_alias}";
         format-connected-battery = " {device_alias} {device_battery_percentage}%";
         on-click = blueberry;
-        tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
-        tooltip-format-connected = "{controller_alias}\t\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
-        tooltip-format-enumerate-connected = "{device_alias}\t\t{device_address}";
-        tooltip-format-enumerate-connected-battery = "{device_alias}\t\t{device_address}\t{device_battery_percentage}%";
+        tooltip-format = ''
+          {controller_alias}	{controller_address}
+
+          {num_connections} connected'';
+        tooltip-format-connected = ''
+          {controller_alias}		{controller_address}
+
+          {num_connections} connected
+
+          {device_enumerate}'';
+        tooltip-format-enumerate-connected = "{device_alias}		{device_address}";
+        tooltip-format-enumerate-connected-battery = "{device_alias}		{device_address}	{device_battery_percentage}%";
         # Display order preference, since only one device is shown
         format-device-preference = ["CORSAIR VIRTUOSO XT Bluetooth" "MX Keys" "MX Master 2S"];
       };
@@ -135,9 +148,7 @@ in {
         format-disconnected = "";
       };
 
-      "clock#time" = {
-        format = "{:%H:%M}";
-      };
+      "clock#time" = {format = "{:%H:%M}";};
 
       "clock#date" = {
         format = "{:%d.%m.%Y}";
@@ -167,9 +178,7 @@ in {
         onclick = "";
       };
 
-      tray = {
-        spacing = 10;
-      };
+      tray = {spacing = 10;};
     };
     style = ''
       /* Global Styles */

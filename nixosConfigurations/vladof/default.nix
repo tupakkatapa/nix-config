@@ -10,9 +10,7 @@
   gateway = "192.168.1.1";
   interface = "enp0s31f6";
 in {
-  imports = [
-    ./containers
-  ];
+  imports = [./containers];
 
   # No bootloader
   boot.loader.grub.enable = false;
@@ -50,20 +48,21 @@ in {
   services.cage = {
     enable = true;
     user = "kari";
-    program = lib.concatStringsSep " \\\n\t" [
-      "${config.home-manager.users."kari".programs.firefox.package}/bin/firefox"
-      "https://www.youtube.com"
-      "https://plex.coditon.com"
-      "https://www.twitch.tv"
-      "https://kick.com"
-    ];
+    program =
+      lib.concatStringsSep ''
+        \
+      '' [
+        "${
+          config.home-manager.users."kari".programs.firefox.package
+        }/bin/firefox"
+        "https://www.youtube.com"
+        "https://plex.coditon.com"
+        "https://www.twitch.tv"
+        "https://kick.com"
+      ];
     environment.XKB_DEFAULT_LAYOUT = "fi";
   };
-  systemd.services.cage-tty1 = {
-    serviceConfig = {
-      Restart = "always";
-    };
-  };
+  systemd.services.cage-tty1 = {serviceConfig = {Restart = "always";};};
   hardware.opengl.enable = true;
 
   # Networking
@@ -144,12 +143,10 @@ in {
         '';
       };
       uptime.prefix = "Uptime:";
-      last_login = builtins.listToAttrs (map
-        (user: {
-          name = user;
-          value = 2;
-        })
-        (builtins.attrNames config.home-manager.users));
+      last_login = builtins.listToAttrs (map (user: {
+        name = user;
+        value = 2;
+      }) (builtins.attrNames config.home-manager.users));
     };
   };
 
@@ -159,9 +156,7 @@ in {
     isSystemUser = true;
     useDefaultShell = false;
     group = "sftp";
-    extraGroups = [
-      "transmission"
-    ];
+    extraGroups = ["transmission"];
     home = "/mnt/wd-red/sftp";
     openssh.authorizedKeys.keys = [
       # kari@torque

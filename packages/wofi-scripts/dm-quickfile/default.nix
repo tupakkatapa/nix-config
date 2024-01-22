@@ -6,12 +6,7 @@ pkgs.stdenv.mkDerivation rec {
   name = "dm-quickfile";
   src = ./.;
 
-  buildInputs = with pkgs; [
-    wofi
-    xdg-utils
-    alacritty
-    neovim
-  ];
+  buildInputs = with pkgs; [wofi xdg-utils alacritty neovim];
 
   nativeBuildInputs = [pkgs.makeWrapper];
   installPhase = ''

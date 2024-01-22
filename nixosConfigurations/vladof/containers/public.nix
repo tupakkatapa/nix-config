@@ -56,18 +56,16 @@ in {
     localAddress = address;
 
     # Binds
-    bindMounts =
-      helpers.bindMounts
-      [
-        # Appdata
-        "${serviceDataDir}/plex"
-        # Media
-        "/mnt/wd-red/sftp/media/movies"
-        "/mnt/wd-red/sftp/media/music"
-        "/mnt/wd-red/sftp/media/series"
-        # Other
-        "/mnt/wd-red/sftp/share"
-      ];
+    bindMounts = helpers.bindMounts [
+      # Appdata
+      "${serviceDataDir}/plex"
+      # Media
+      "/mnt/wd-red/sftp/media/movies"
+      "/mnt/wd-red/sftp/media/music"
+      "/mnt/wd-red/sftp/media/series"
+      # Other
+      "/mnt/wd-red/sftp/share"
+    ];
     forwardPorts = helpers.bindPorts {
       tcp = [32400 3005 8324 32469 8080 80];
       udp = [1900 5353 32410 32412 32413 32414];
@@ -79,9 +77,7 @@ in {
       pkgs,
       ...
     }: {
-      imports = [
-        inputs.coditon-blog.nixosModules.default
-      ];
+      imports = [inputs.coditon-blog.nixosModules.default];
 
       # My personal website
       services.coditon-blog = {

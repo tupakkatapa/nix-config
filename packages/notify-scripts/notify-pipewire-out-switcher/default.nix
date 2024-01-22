@@ -6,12 +6,7 @@ pkgs.stdenv.mkDerivation rec {
   name = "notify-pipewire-out-switcher";
   src = ./.;
 
-  buildInputs = with pkgs; [
-    pulseaudio
-    jq
-    notify
-    gawk
-  ];
+  buildInputs = with pkgs; [pulseaudio jq notify gawk];
 
   nativeBuildInputs = [pkgs.makeWrapper];
   installPhase = ''

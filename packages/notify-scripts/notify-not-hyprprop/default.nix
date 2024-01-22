@@ -6,11 +6,7 @@ pkgs.stdenv.mkDerivation rec {
   name = "notify-not-hyprprop";
   src = ./.;
 
-  buildInputs = with pkgs; [
-    notify
-    xdotool
-    jq
-  ];
+  buildInputs = with pkgs; [notify xdotool jq];
 
   nativeBuildInputs = [pkgs.makeWrapper];
   installPhase = ''

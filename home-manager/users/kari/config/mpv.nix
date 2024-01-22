@@ -13,10 +13,7 @@
       osd-font-size = 30;
       autofit = "30%x30%";
     };
-    scripts = with pkgs.mpvScripts; [
-      sponsorblock
-      thumbnail
-    ];
+    scripts = with pkgs.mpvScripts; [sponsorblock thumbnail];
     bindings = {
       "l" = "seek 5";
       "h" = "seek -5";

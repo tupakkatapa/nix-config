@@ -9,9 +9,7 @@
   user = "kari";
 in {
   # This configuration extends the minimal-gui version
-  imports = [
-    ./minimal-gui.nix
-  ];
+  imports = [./minimal-gui.nix];
 
   # Mount drives
   fileSystems = lib.mkIf (config.networking.hostName == "torque") {
@@ -45,18 +43,12 @@ in {
 
   # Secrets
   sops = {
-    secrets = {
-      "wireguard/dinar".sopsFile = ../../secrets.yaml;
-    };
-    age.sshKeyPaths = [
-      "/etc/ssh/ssh_host_ed25519_key"
-    ];
+    secrets = {"wireguard/dinar".sopsFile = ../../secrets.yaml;};
+    age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
   };
 
   # Set initial password
-  users.users.${user} = {
-    initialPassword = "${user}";
-  };
+  users.users.${user} = {initialPassword = "${user}";};
 
   # Wireguard
   networking.wg-quick.interfaces = {
@@ -92,15 +84,9 @@ in {
         "pxe-server" = {
           hostname = "192.168.1.169";
           user = "core";
-          extraOptions = {
-            "StrictHostKeyChecking" = "no";
-          };
+          extraOptions = {"StrictHostKeyChecking" = "no";};
         };
-        "192.168.1.*" = {
-          extraOptions = {
-            "StrictHostKeyChecking" = "no";
-          };
-        };
+        "192.168.1.*" = {extraOptions = {"StrictHostKeyChecking" = "no";};};
       };
     };
 
@@ -109,10 +95,9 @@ in {
     home.file = let
       scriptDir = ./scripts;
       scriptFiles = builtins.readDir scriptDir;
-    in
       # Places scripts in '~/.local/bin/', create it with systemd.tmpfiles
-      builtins.mapAttrs
-      (name: _: {
+    in
+      builtins.mapAttrs (name: _: {
         executable = true;
         target = ".local/bin/${name}";
         source = "${scriptDir}/${name}";

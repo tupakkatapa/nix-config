@@ -6,10 +6,7 @@ pkgs.stdenv.mkDerivation rec {
   name = "notify-volume";
   src = ./.;
 
-  buildInputs = with pkgs; [
-    notify
-    pamixer
-  ];
+  buildInputs = with pkgs; [notify pamixer];
 
   nativeBuildInputs = [pkgs.makeWrapper];
   installPhase = ''

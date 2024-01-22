@@ -6,12 +6,7 @@ pkgs.stdenv.mkDerivation rec {
   name = "dm-pipewire-out-switcher";
   src = ./.;
 
-  buildInputs = with pkgs; [
-    wofi
-    notify
-    pulseaudio
-    jq
-  ];
+  buildInputs = with pkgs; [wofi notify pulseaudio jq];
 
   nativeBuildInputs = [pkgs.makeWrapper];
   installPhase = ''

@@ -5,7 +5,21 @@
   ...
 }: let
   inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR FILEMANAGER;
-  inherit (import ./colors.nix) background foreground accent inactive blue cyan green orange pink purple red yellow;
+  inherit
+    (import ./colors.nix)
+    background
+    foreground
+    accent
+    inactive
+    blue
+    cyan
+    green
+    orange
+    pink
+    purple
+    red
+    yellow
+    ;
 
   # Notify Scripts
   notify = {

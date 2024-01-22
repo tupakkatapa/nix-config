@@ -64,20 +64,18 @@ in {
     localAddress = address;
 
     # Binds
-    bindMounts =
-      helpers.bindMounts
-      [
-        # Appdata
-        "${serviceDataDir}/jackett"
-        "${serviceDataDir}/radarr"
-        "${serviceDataDir}/transmission"
-        "${serviceDataDir}/vaultwarden"
-        # Media
-        "/mnt/wd-red/sftp/dnld"
-        "/mnt/wd-red/sftp/media/movies"
-        # Other
-        "/mnt/wd-red/secrets"
-      ];
+    bindMounts = helpers.bindMounts [
+      # Appdata
+      "${serviceDataDir}/jackett"
+      "${serviceDataDir}/radarr"
+      "${serviceDataDir}/transmission"
+      "${serviceDataDir}/vaultwarden"
+      # Media
+      "/mnt/wd-red/sftp/dnld"
+      "/mnt/wd-red/sftp/media/movies"
+      # Other
+      "/mnt/wd-red/secrets"
+    ];
     forwardPorts = helpers.bindPorts {
       tcp = [7878 9091 9117 8177];
       udp = [51820];

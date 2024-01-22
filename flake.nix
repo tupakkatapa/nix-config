@@ -88,7 +88,7 @@
           };
 
         # Nix code formatter -> 'nix fmt'
-        formatter = pkgs.nixpkgs-fmt;
+        formatter = pkgs.alejandra;
 
         # Development shell -> 'nix develop' or 'direnv allow'
         devenv.shells.default = {
