@@ -90,6 +90,21 @@ in {
       MANPAGER = "nvim +Man!";
     };
 
+    # Extra SSH config
+    programs.ssh = {
+      enable = true;
+      matchBlocks = {
+        "192.168.1.*" = {
+          extraOptions = {
+            "StrictHostKeyChecking" = "no";
+          };
+        };
+      };
+      forwardAgent = true;
+      addKeysToAgent = "yes";
+    };
+    services.ssh-agent.enable = true;
+
     home.packages = with pkgs; [
       eza
       htop

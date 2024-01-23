@@ -75,7 +75,6 @@ in {
 
     # Extra SSH config
     programs.ssh = {
-      enable = true;
       matchBlocks = {
         "ponkila" = {
           hostname = "192.168.100.10";
@@ -86,7 +85,6 @@ in {
           user = "core";
           extraOptions = {"StrictHostKeyChecking" = "no";};
         };
-        "192.168.1.*" = {extraOptions = {"StrictHostKeyChecking" = "no";};};
       };
     };
 
