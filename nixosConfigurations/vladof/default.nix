@@ -36,7 +36,7 @@ in {
   services.cage = {
     enable = true;
     user = "kari";
-    program = lib.concatStringsSep ''\'' [
+    program = lib.concatStringsSep " \\\n\t" [
       "${config.home-manager.users."kari".programs.firefox.package}/bin/firefox"
       "https://www.youtube.com"
       "https://plex.coditon.com"
@@ -45,7 +45,11 @@ in {
     ];
     environment.XKB_DEFAULT_LAYOUT = "fi";
   };
-  systemd.services.cage-tty1 = {serviceConfig = {Restart = "always";};};
+  systemd.services.cage-tty1 = {
+    serviceConfig = {
+      Restart = "always";
+    };
+  };
   hardware.opengl.enable = true;
 
   # Networking
