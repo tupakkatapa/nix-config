@@ -58,7 +58,7 @@
       builders-use-substitutes = true
 
       download-attempts = 3
-      connect-timeout = 10
+      connect-timeout = 5
       fallback = true
     '';
   };
