@@ -266,9 +266,9 @@ in {
       windowrule = fullscreen, title:wlogout
 
       # Fake fullscreens a window
-      windowrule = fakefullscreen, firefox
-      windowrule = fakefullscreen, discord
-      windowrule = fakefullscreen, Ferdium
+      # windowrule = fakefullscreen, firefox
+      # windowrule = fakefullscreen, discord
+      # windowrule = fakefullscreen, Ferdium
 
       # Forces an animation onto a window
       windowrule = animation none, Rofi
