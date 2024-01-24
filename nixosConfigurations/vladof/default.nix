@@ -59,6 +59,12 @@ in {
   };
   hardware.opengl.enable = true;
 
+  # Bind firefox directory to preserve cookies and such
+  fileSystems."/home/${username}/.mozilla/firefox" = {
+    device = "${appData}/firefox";
+    options = ["bind"];
+  };
+
   # Networking
   networking = {
     hostName = "vladof";
@@ -82,9 +88,10 @@ in {
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
-    "d /mnt/wd-red                        755 root root -"
-    "d /mnt/wd-red/sftp                   755 root root -"
-    "d ${appData}                         770 root root -"
+    "d /mnt/wd-red          755 root root -"
+    "d /mnt/wd-red/sftp     755 root root -"
+    "d ${appData}           770 root root -"
+    "d ${appData}/firefox   755 ${username} ${username} -"
   ];
 
   # Mounts
