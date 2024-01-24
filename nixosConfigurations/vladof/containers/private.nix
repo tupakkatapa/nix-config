@@ -18,12 +18,6 @@ in {
     "d ${appData}/vaultwarden    700 993 993 -"
   ];
 
-  # Bind services without dir option
-  fileSystems."/var/lib/bitwarden_rs" = {
-    device = "${appData}/vaultwarden";
-    options = ["bind"];
-  };
-
   # Reverse proxy
   services.caddy = {
     enable = true;
@@ -160,6 +154,10 @@ in {
           # LOG_FILE="/var/lib/bitwarden_rd/extented.log";
           # EXTENDED_LOGGING=true;
         };
+      };
+      fileSystems."/var/lib/bitwarden_rs" = {
+        device = "${appData}/vaultwarden";
+        options = ["bind"];
       };
 
       # # VPN
