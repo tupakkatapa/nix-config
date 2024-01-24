@@ -34,11 +34,8 @@ in {
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
-    "d /home/${user}/.local/bin 755 ${user} ${user} -"
-    "d /home/${user}/.ssh 755 ${user} ${user} -"
-    "d /home/${user}/Pictures 755 ${user} ${user} -"
+    "d /home/${user}/Pictures             755 ${user} ${user} -"
     "d /home/${user}/Pictures/Screenshots 755 ${user} ${user} -"
-    "d /home/${user}/Workspace 755 ${user} ${user} -"
   ];
 
   # Secrets
@@ -87,20 +84,6 @@ in {
         };
       };
     };
-
-    # Scripts and files
-    home.sessionPath = ["$HOME/.local/bin"];
-    home.file = let
-      scriptDir = ./scripts;
-      scriptFiles = builtins.readDir scriptDir;
-      # Places scripts in '~/.local/bin/', create it with systemd.tmpfiles
-    in
-      builtins.mapAttrs (name: _: {
-        executable = true;
-        target = ".local/bin/${name}";
-        source = "${scriptDir}/${name}";
-      })
-      scriptFiles;
 
     home.packages = with pkgs; [
       #### SELF

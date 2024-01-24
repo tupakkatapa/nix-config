@@ -69,6 +69,13 @@ in {
       && userCfg.initialHashedPassword == null)
     user;
 
+  # Create directories, these are persistent
+  systemd.tmpfiles.rules = [
+    "d /home/${user}/.local/bin 755 ${user} ${user} -"
+    "d /home/${user}/.ssh       755 ${user} ${user} -"
+    "d /home/${user}/Workspace  755 ${user} ${user} -"
+  ];
+
   # Allows access to flake inputs and custom packages
   home-manager.extraSpecialArgs = {inherit inputs pkgs;};
 
@@ -89,6 +96,20 @@ in {
       EDITOR = "nvim";
       MANPAGER = "nvim +Man!";
     };
+
+    # Scripts and files
+    home.sessionPath = ["$HOME/.local/bin"];
+    home.file = let
+      scriptDir = ./scripts;
+      scriptFiles = builtins.readDir scriptDir;
+      # Places scripts in '~/.local/bin/', create it with systemd.tmpfiles
+    in
+      builtins.mapAttrs (name: _: {
+        executable = true;
+        target = ".local/bin/${name}";
+        source = "${scriptDir}/${name}";
+      })
+      scriptFiles;
 
     # Extra SSH config
     programs.ssh = {
