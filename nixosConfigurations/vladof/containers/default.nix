@@ -3,11 +3,11 @@
   pkgs,
   lib,
   config,
+  appData,
+  domain,
+  interface,
   ...
 } @ args: let
-  serviceDataDir = "/mnt/wd-red/appdata";
-  interface = "enp0s31f6";
-  domain = "coditon.com";
   gateway = "10.11.10.1"; # Host interface
 
   # Functions for container configs
@@ -31,21 +31,18 @@
   };
 
   # Inherit global stuff for containers
-  extendedArgs = args // {inherit serviceDataDir domain gateway helpers;};
+  extendedArgs = args // {inherit appData domain gateway helpers;};
 in {
   imports = [(import ./private.nix extendedArgs) (import ./public.nix extendedArgs)];
 
-  # Create directories, these are persistent
-  systemd.tmpfiles.rules = ["d ${serviceDataDir} 770 root root -"];
-
   # ACME
   fileSystems."/var/lib/acme" = {
-    device = "${serviceDataDir}/acme";
+    device = "${appData}/acme";
     options = ["bind"];
   };
   security.acme.acceptTerms = true;
   security.acme.defaults.email = "jesse@ponkila.com";
-  security.acme.defaults.webroot = "${serviceDataDir}/acme";
+  security.acme.defaults.webroot = "${appData}/acme";
 
   # Other
   networking = {

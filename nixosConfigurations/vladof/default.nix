@@ -4,13 +4,20 @@
   lib,
   config,
   ...
-}: let
+} @ args: let
   domain = "coditon.com";
   address = "192.168.1.8";
   gateway = "192.168.1.1";
   interface = "enp0s31f6";
+
+  appData = "/mnt/wd-red/appdata";
+  sftpDir = "/mnt/wd-red/sftp";
+  username = "kari";
+
+  # Inherit global stuff for containers
+  extendedArgs = args // {inherit appData domain interface;};
 in {
-  imports = [./containers];
+  imports = [(import ./containers extendedArgs)];
 
   # No bootloader
   boot.loader.grub.enable = false;
@@ -35,9 +42,9 @@ in {
   # Cage-kiosk (firefox)
   services.cage = {
     enable = true;
-    user = "kari";
+    user = username;
     program = lib.concatStringsSep " \\\n\t" [
-      "${config.home-manager.users."kari".programs.firefox.package}/bin/firefox"
+      "${config.home-manager.users."${username}".programs.firefox.package}/bin/firefox"
       "https://www.youtube.com"
       "https://plex.coditon.com"
       "https://www.twitch.tv"
@@ -75,8 +82,9 @@ in {
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
-    "d /mnt/wd-red            755 root root -"
-    "d /mnt/wd-red/sftp       755 root root -"
+    "d /mnt/wd-red                        755 root root -"
+    "d /mnt/wd-red/sftp                   755 root root -"
+    "d ${appData}                         770 root root -"
   ];
 
   # Mounts

@@ -4,7 +4,7 @@
   lib,
   config,
   domain,
-  serviceDataDir,
+  appData,
   gateway,
   helpers,
   ...
@@ -14,7 +14,7 @@ in {
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
     "d /mnt/wd-red/sftp/share   755 239 239 -"
-    "d ${serviceDataDir}/plex   700 193 193 -"
+    "d ${appData}/plex   700 193 193 -"
   ];
 
   # Reverse proxy
@@ -58,7 +58,7 @@ in {
     # Binds
     bindMounts = helpers.bindMounts [
       # Appdata
-      "${serviceDataDir}/plex"
+      "${appData}/plex"
       # Media
       "/mnt/wd-red/sftp/media/movies"
       "/mnt/wd-red/sftp/media/music"
@@ -89,7 +89,7 @@ in {
       # Plex
       services.plex = {
         enable = true;
-        dataDir = "${serviceDataDir}/plex";
+        dataDir = "${appData}/plex";
         openFirewall = true;
       };
 

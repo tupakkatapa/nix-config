@@ -3,7 +3,7 @@
   lib,
   config,
   domain,
-  serviceDataDir,
+  appData,
   gateway,
   helpers,
   ...
@@ -12,15 +12,15 @@
 in {
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
-    "d ${serviceDataDir}/transmission   700  70  70 -"
-    "d ${serviceDataDir}/radarr         700 275 275 -"
-    "d ${serviceDataDir}/jackett        700 276 276 -"
-    "d ${serviceDataDir}/vaultwarden    700 993 993 -"
+    "d ${appData}/transmission   700  70  70 -"
+    "d ${appData}/radarr         700 275 275 -"
+    "d ${appData}/jackett        700 276 276 -"
+    "d ${appData}/vaultwarden    700 993 993 -"
   ];
 
   # Bind services without dir option
   fileSystems."/var/lib/bitwarden_rs" = {
-    device = "${serviceDataDir}/vaultwarden";
+    device = "${appData}/vaultwarden";
     options = ["bind"];
   };
 
@@ -64,18 +64,20 @@ in {
     localAddress = address;
 
     # Binds
-    bindMounts = helpers.bindMounts [
-      # Appdata
-      "${serviceDataDir}/jackett"
-      "${serviceDataDir}/radarr"
-      "${serviceDataDir}/transmission"
-      "${serviceDataDir}/vaultwarden"
-      # Media
-      "/mnt/wd-red/sftp/dnld"
-      "/mnt/wd-red/sftp/media/movies"
-      # Other
-      "/mnt/wd-red/secrets"
-    ];
+    bindMounts =
+      helpers.bindMounts
+      [
+        # Appdata
+        "${appData}/jackett"
+        "${appData}/radarr"
+        "${appData}/transmission"
+        "${appData}/vaultwarden"
+        # Media
+        "/mnt/wd-red/sftp/dnld"
+        "/mnt/wd-red/sftp/media/movies"
+        # Other
+        "/mnt/wd-red/secrets"
+      ];
     forwardPorts = helpers.bindPorts {
       tcp = [7878 9091 9117 8177];
       udp = [51820];
@@ -90,7 +92,7 @@ in {
       # Radarr
       services.radarr = {
         enable = true;
-        dataDir = "${serviceDataDir}/radarr";
+        dataDir = "${appData}/radarr";
         openFirewall = true;
       };
       users.users.radarr.extraGroups = ["transmission"];
@@ -98,7 +100,7 @@ in {
       # Jackett
       services.jackett = {
         enable = true;
-        dataDir = "${serviceDataDir}/jackett";
+        dataDir = "${appData}/jackett";
         openFirewall = true;
       };
       users.users.jackett.extraGroups = ["transmission"];
@@ -109,7 +111,7 @@ in {
         openFirewall = true;
         downloadDirPermissions = "0777";
         openRPCPort = true;
-        home = "${serviceDataDir}/transmission";
+        home = "${appData}/transmission";
         settings = {
           download-dir = "/mnt/wd-red/sftp/dnld";
           incomplete-dir = "/mnt/wd-red/sftp/dnld/.incomplete";
