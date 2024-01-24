@@ -12,7 +12,11 @@ in {
 
   # Home-manager config
   home-manager.users."${user}" = rec {
-    imports = [./config/alacritty.nix ./config/firefox ./config/mpv.nix];
+    imports = [
+      ./config/alacritty.nix
+      ./config/firefox
+      ./config/mpv.nix
+    ];
 
     # Default apps
     home.sessionVariables = {
@@ -21,6 +25,10 @@ in {
       FONT = "JetBrainsMono Nerd Font";
     };
 
-    home.packages = with pkgs; [(pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];})];
+    home.packages = with pkgs; [
+      (pkgs.nerdfonts.override {
+        fonts = ["JetBrainsMono"];
+      })
+    ];
   };
 }
