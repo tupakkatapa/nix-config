@@ -1,6 +1,7 @@
 {pkgs}: rec {
   "ping-sweep" = pkgs.callPackage ./ping-sweep {};
   "print-banner" = pkgs.callPackage ./print-banner {};
+  "fissh" = pkgs.callPackage ./fissh {};
   # Wofi scripts
   "dm-pipewire-out-switcher" =
     pkgs.callPackage ./wofi-scripts/dm-pipewire-out-switcher {};

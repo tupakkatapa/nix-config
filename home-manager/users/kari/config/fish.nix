@@ -66,7 +66,9 @@ in {
     interactiveShellInit =
       # Print banner
       ''
-        ${pkgs.print-banner}/bin/print-banner -o manpage -p "  " -s "\n"
+        if command -q print-banner
+          print-banner -o manpage -p "  " -s "\n"
+        end
       ''
       +
       # Use vim bindings and cursors

@@ -88,6 +88,7 @@ in {
     home.packages = with pkgs; [
       #### SELF
       ping-sweep
+      print-banner
 
       #### GUI
       czkawka

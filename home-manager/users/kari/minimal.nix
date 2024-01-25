@@ -127,6 +127,9 @@ in {
     services.ssh-agent.enable = true;
 
     home.packages = with pkgs; [
+      ping-sweep
+      fissh
+
       eza
       htop
       kexec-tools
