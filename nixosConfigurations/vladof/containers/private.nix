@@ -38,6 +38,18 @@ in {
           reverse_proxy http://${localAddress}:8222
         '';
       };
+      "lanraragi.${domain}" = {
+        useACMEHost = config.networking.fqdn;
+        extraConfig = ''
+          reverse_proxy http://${localAddress}:3000
+        '';
+      };
+      "prism.${domain}" = {
+        useACMEHost = config.networking.fqdn;
+        extraConfig = ''
+          reverse_proxy http://${localAddress}:2342
+        '';
+      };
     };
   };
 
@@ -56,14 +68,18 @@ in {
         "${appData}/radarr"
         "${appData}/transmission"
         "${appData}/vaultwarden"
+        "${appData}/photoprism"
+        "${appData}/lanraragi"
         # Media
         "/mnt/wd-red/sftp/dnld"
         "/mnt/wd-red/sftp/media/movies"
+        "/mnt/wd-red/sftp/media/books/lanraragi"
+        "/mnt/wd-red/sftp/media/img"
         # Other
         "/mnt/wd-red/secrets"
       ];
     forwardPorts = helpers.bindPorts {
-      tcp = [7878 9091 9117 8222];
+      tcp = [7878 9091 9117 8222 3000 2342];
       udp = [51820];
     };
 
@@ -140,7 +156,62 @@ in {
         };
       };
 
-      # Vaultwarden
+      # Photoprism (2342)
+      services.photoprism = {
+        enable = true;
+        address = localAddress;
+        originalsPath = "/mnt/wd-red/sftp/media/img";
+        passwordFile = pkgs.writeText "pass" "admin";
+        settings = {
+          PHOTOPRISM_SPONSOR = "true";
+          PHOTOPRISM_AUTH_MODE = "public";
+          PHOTOPRISM_READONLY = "true";
+        };
+      };
+      # Ensure user/group, might be configured upstream
+      users.users.photoprism = {
+        createHome = true;
+        group = "photoprism";
+        home = "${appData}/photoprism";
+        isSystemUser = true;
+      };
+      users.groups.photoprism = {};
+      # Bind service directories to persistent disk
+      fileSystems."/var/lib/private/photoprism" = {
+        device = "${appData}/photoprism";
+        options = ["bind"];
+      };
+
+      # Lanraragi (3000)
+      services.lanraragi = {
+        enable = true;
+        passwordFile = pkgs.writeText "pass" "admin";
+      };
+      # Ensure user/group, might be configured upstream
+      users.users.lanraragi = {
+        createHome = true;
+        group = "lanraragi";
+        home = "${appData}/lanraragi";
+        isSystemUser = true;
+      };
+      users.groups.lanraragi = {};
+      # Append to systemd service
+      systemd.services.lanraragi = {
+        serviceConfig = {
+          User = "lanraragi";
+          Group = "lanraragi";
+        };
+      };
+      # Bind service directories to persistent disk
+      fileSystems."/var/lib/private/lanraragi" = {
+        device = "${appData}/lanraragi";
+        options = ["bind"];
+      };
+      fileSystems."/var/lib/private/lanraragi/content" = {
+        device = "/mnt/wd-red/sftp/media/books/lanraragi";
+        options = ["bind"];
+      };
+
       # Vaultwarden (8222)
       services.vaultwarden = {
         enable = true;

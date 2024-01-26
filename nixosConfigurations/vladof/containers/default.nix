@@ -57,6 +57,8 @@ in {
           9091 # Transmission
           9117 # Jackett
           8222 # Vaultwarden
+          3000 # Lanraragi
+          2342 # Photoprism
         ]
         # Plex
         ++ [

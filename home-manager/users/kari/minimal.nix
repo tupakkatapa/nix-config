@@ -34,6 +34,7 @@ in {
       "caddy"
       "jackett"
       "lanraragi"
+      "photoprism"
       "plex"
       "radarr"
       "sftp"
