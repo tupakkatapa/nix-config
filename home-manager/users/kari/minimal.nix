@@ -28,9 +28,9 @@ in {
       "video"
       "wheel"
       "cups"
+      "sshd"
       # Homelab groups
       "acme"
-      "appdata"
       "caddy"
       "jackett"
       "lanraragi"
@@ -71,7 +71,6 @@ in {
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
-    "d /home/${user}/.local/bin 755 ${user} ${user} -"
     "d /home/${user}/.ssh       755 ${user} ${user} -"
     "d /home/${user}/Workspace  755 ${user} ${user} -"
   ];

@@ -25,6 +25,9 @@ in {
       FONT = "JetBrainsMono Nerd Font";
     };
 
+    # Allow fonts trough home.packages
+    fonts.fontconfig.enable = true;
+
     home.packages = with pkgs; [
       (pkgs.nerdfonts.override {
         fonts = ["JetBrainsMono"];

@@ -11,13 +11,14 @@
   interface = "enp0s31f6";
 
   appData = "/mnt/wd-red/appdata";
-  sftpDir = "/mnt/wd-red/sftp";
   username = "kari";
 
   # Inherit global stuff for containers
   extendedArgs = args // {inherit appData domain interface;};
 in {
-  imports = [(import ./containers extendedArgs)];
+  imports = [
+    (import ./containers extendedArgs)
+  ];
 
   # No bootloader
   boot.loader.grub.enable = false;
@@ -50,12 +51,16 @@ in {
       "https://www.twitch.tv"
       "https://kick.com"
     ];
-    environment.XKB_DEFAULT_LAYOUT = "fi";
+    environment = {
+      XKB_DEFAULT_LAYOUT = "fi";
+    };
   };
   systemd.services.cage-tty1 = {
     serviceConfig = {
       Restart = "always";
     };
+    wants = ["network-online.target"];
+    after = ["network-online.target"];
   };
   hardware.opengl.enable = true;
 

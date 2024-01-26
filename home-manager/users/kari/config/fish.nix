@@ -61,6 +61,7 @@ in {
 
       # Misc
       vim = mkIf hasNeovim "nvim";
+      amimullvad = "curl https://am.i.mullvad.net/connected";
     };
     functions = {fish_greeting = "";};
     interactiveShellInit =

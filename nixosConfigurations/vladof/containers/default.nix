@@ -8,8 +8,6 @@
   interface,
   ...
 } @ args: let
-  gateway = "10.11.10.1"; # Host interface
-
   # Functions for container configs
   helpers = {
     bindPorts = protocols:
@@ -31,9 +29,12 @@
   };
 
   # Inherit global stuff for containers
-  extendedArgs = args // {inherit appData domain gateway helpers;};
+  extendedArgs = args // {inherit appData domain helpers;};
 in {
-  imports = [(import ./private.nix extendedArgs) (import ./public.nix extendedArgs)];
+  imports = [
+    (import ./public.nix extendedArgs)
+    (import ./private.nix extendedArgs)
+  ];
 
   # ACME
   fileSystems."/var/lib/acme" = {
@@ -55,7 +56,7 @@ in {
           7878 # Radarr
           9091 # Transmission
           9117 # Jackett
-          8177 # Vaultwarden
+          8222 # Vaultwarden
         ]
         # Plex
         ++ [

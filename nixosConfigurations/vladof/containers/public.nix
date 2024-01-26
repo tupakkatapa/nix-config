@@ -5,11 +5,11 @@
   config,
   domain,
   appData,
-  gateway,
   helpers,
   ...
 }: let
-  address = "10.11.10.3";
+  hostAddress = "192.168.200.1";
+  localAddress = "192.168.200.2";
 in {
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
@@ -24,7 +24,7 @@ in {
       "plex.${domain}" = {
         useACMEHost = config.networking.fqdn;
         extraConfig = ''
-          reverse_proxy http://${address}:32400
+          reverse_proxy http://${localAddress}:32400
         '';
       };
       "share.${domain}" = {
@@ -37,12 +37,12 @@ in {
             hide .* _*
           }
         '';
-        # reverse_proxy http://${address}:80
+        # reverse_proxy http://${localAddress}:80
       };
       "blog.${domain}" = {
         useACMEHost = config.networking.fqdn;
         extraConfig = ''
-          reverse_proxy http://${address}:8080
+          reverse_proxy http://${localAddress}:8080
         '';
       };
     };
@@ -50,10 +50,9 @@ in {
 
   # Main config
   containers.public = {
+    inherit hostAddress localAddress;
     autoStart = true;
     privateNetwork = true;
-    hostAddress = gateway;
-    localAddress = address;
 
     # Binds
     bindMounts = helpers.bindMounts [
@@ -95,10 +94,7 @@ in {
 
       # Other
       networking = {
-        firewall = {
-          enable = false;
-          allowedTCPPorts = [80]; # Share
-        };
+        firewall.enable = false;
         # Use systemd-resolved inside the container
         # Workaround for bug https://github.com/NixOS/nixpkgs/issues/162686
         useHostResolvConf = lib.mkForce false;
