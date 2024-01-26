@@ -10,14 +10,6 @@
   hostAddress = "192.168.100.1";
   localAddress = "192.168.100.2";
 in {
-  # Create directories, these are persistent
-  systemd.tmpfiles.rules = [
-    "d ${appData}/transmission   700  70  70 -"
-    "d ${appData}/radarr         700 275 275 -"
-    "d ${appData}/jackett        700 276 276 -"
-    "d ${appData}/vaultwarden    700 993 993 -"
-  ];
-
   # Reverse proxy
   services.caddy = {
     enable = true;
@@ -87,7 +79,15 @@ in {
         dataDir = "${appData}/radarr";
         openFirewall = true;
       };
-      users.users.radarr.extraGroups = ["transmission"];
+      # Ensure user/group, might be configured upstream
+      users.users.radarr = {
+        createHome = true;
+        extraGroups = ["transmission"];
+        group = "radarr";
+        home = "${appData}/radarr";
+        isSystemUser = true;
+      };
+      users.groups.radarr = {};
 
       # Jackett (9117)
       services.jackett = {
@@ -95,7 +95,15 @@ in {
         dataDir = "${appData}/jackett";
         openFirewall = true;
       };
-      users.users.jackett.extraGroups = ["transmission"];
+      # Ensure user/group, might be configured upstream
+      users.users.jackett = {
+        createHome = true;
+        extraGroups = ["transmission"];
+        group = "jackett";
+        home = "${appData}/jackett";
+        isSystemUser = true;
+      };
+      users.groups.jackett = {};
 
       # Torrent (9091)
       services.transmission = {
@@ -116,6 +124,14 @@ in {
           rpc-whitelist-enabled = false;
         };
       };
+      # Ensure user, might be configured upstream
+      users.users.transmission = {
+        createHome = true;
+        group = "transmission";
+        home = "${appData}/transmission";
+        isSystemUser = true;
+      };
+      users.groups.transmission = {};
       # Workaround for https://github.com/NixOS/nixpkgs/issues/258793
       systemd.services.transmission = {
         serviceConfig = {

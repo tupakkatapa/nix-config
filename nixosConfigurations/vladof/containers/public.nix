@@ -14,7 +14,6 @@ in {
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
     "d /mnt/wd-red/sftp/share   755 239 239 -"
-    "d ${appData}/plex   700 193 193 -"
   ];
 
   # Reverse proxy
@@ -91,6 +90,14 @@ in {
         dataDir = "${appData}/plex";
         openFirewall = true;
       };
+      # Ensure user/group, might be configured upstream
+      users.users.plex = {
+        createHome = true;
+        group = "plex";
+        home = "${appData}/plex";
+        isSystemUser = true;
+      };
+      users.groups.plex = {};
 
       # Other
       networking = {
