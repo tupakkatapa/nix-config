@@ -75,7 +75,7 @@ in {
   hardware.opengl.enable = true;
 
   # Bind firefox directory to preserve cookies and such
-  fileSystems."/home/${username}/.mozilla/firefox" = {
+  fileSystems."/home/${username}/.mozilla" = {
     device = "${appData}/firefox";
     options = ["bind"];
   };
@@ -106,7 +106,7 @@ in {
     "d /mnt/wd-red          755 root root -"
     "d /mnt/wd-red/sftp     755 root root -"
     "d ${appData}           770 root root -"
-    "d ${appData}/firefox   755 ${username} ${username} -"
+    "d ${appData}/firefox   775 ${username} ${username} -"
   ];
 
   # Mounts
