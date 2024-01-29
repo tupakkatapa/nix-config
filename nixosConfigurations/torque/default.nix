@@ -29,37 +29,12 @@
   boot.loader.grub.font = "${pkgs.terminus_font}/share/fonts/terminus/ter-x24n.pcf.gz";
   boot.loader.grub.fontSize = 24;
 
-  # Import hardware configuration
-  imports = [./hardware-configuration.nix];
-
-  # Greetd
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = builtins.concatStringsSep " " [
-          "${pkgs.greetd.tuigreet}/bin/tuigreet"
-          "--asterisks"
-          "--remember"
-          "--time"
-          "--cmd Hyprland"
-        ];
-        user = "greeter";
-      };
-    };
-  };
-  # https://www.reddit.com/r/NixOS/comments/u0cdpi/tuigreet_with_xmonad_how/
-  systemd.services.greetd.serviceConfig = {
-    Type = "idle";
-    StandardInput = "tty";
-    StandardOutput = "tty";
-    # Without this errors will spam on screen
-    StandardError = "journal";
-    # Without these bootlogs will spam on screen
-    TTYReset = true;
-    TTYVHangup = true;
-    TTYVTDisallocate = true;
-  };
+  # Imports
+  imports = [
+    ./config/greetd.nix
+    ./config/openrgb.nix
+    ./hardware-configuration.nix
+  ];
 
   # https://github.com/NixOS/nixpkgs/issues/143365
   security.pam.services = {swaylock = {};};
@@ -84,20 +59,6 @@
 
   # Enable clock and voltage adjustment for AMD GPU
   boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
-
-  # RGB
-  systemd.services.openrgb = {
-    description = "OpenRGB Daemon";
-    wantedBy = ["multi-user.target"];
-    serviceConfig = {
-      ExecStart = "${pkgs.openrgb}/bin/openrgb --server";
-      Restart = "on-failure";
-    };
-  };
-  services.udev.packages = [pkgs.openrgb-with-all-plugins];
-  # You must load the i2c-dev module along with the correct i2c driver for your motherboard.
-  # This is usually i2c-piix4 for AMD systems and i2c-i801 for Intel systems.
-  boot.kernelModules = ["i2c-dev" "i2c-piix4"];
 
   # Add support for NTFS file system for mounting Windows drives
   # https://nixos.wiki/wiki/NTFS
@@ -148,7 +109,6 @@
   environment.systemPackages = with pkgs; [
     # Hardware
     oversteer
-    openrgb-with-all-plugins
     solaar
     xow_dongle-firmware
 
