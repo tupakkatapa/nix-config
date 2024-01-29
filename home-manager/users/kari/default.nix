@@ -38,20 +38,6 @@ in {
     "d /home/${user}/Pictures/Screenshots 755 ${user} ${user} -"
   ];
 
-  # Secrets
-  sops = {
-    secrets = {"wireguard/dinar".sopsFile = ../../secrets.yaml;};
-    age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
-  };
-
-  # Wireguard
-  networking.wg-quick.interfaces = {
-    "wg0" = {
-      autostart = false;
-      configFile = config.sops.secrets."wireguard/dinar".path;
-    };
-  };
-
   # Misc
   programs.anime-game-launcher.enable = true;
 

@@ -12,12 +12,25 @@
 in {
   # Secrets
   sops.secrets = {
+    wg-dinar = {
+      sopsFile = ../../secrets.yaml;
+      neededForUsers = true;
+    };
     # echo "password" | mkpasswd -s
     kari-password = {
       sopsFile = ../../secrets.yaml;
       neededForUsers = true;
     };
   };
+
+  # Wireguard
+  networking.wg-quick.interfaces = {
+    "wg0" = {
+      autostart = false;
+      configFile = config.sops.secrets.wg-dinar.path;
+    };
+  };
+
   # User config
   users.users.${user} = {
     isNormalUser = true;
