@@ -126,10 +126,10 @@ in {
         enable = true;
         openFirewall = true;
         downloadDirPermissions = "0777";
-        umask = 0;
         openRPCPort = true;
         home = "${appData}/transmission";
         settings = {
+          umask = 0;
           download-dir = "/mnt/wd-red/sftp/dnld";
           incomplete-dir = "/mnt/wd-red/sftp/dnld/.incomplete";
           download-queue-enabled = false;
