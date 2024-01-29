@@ -10,10 +10,19 @@
     builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
   optionalPaths = paths: builtins.filter (path: builtins.pathExists path) paths;
 in {
+  # Secrets
+  sops.secrets = {
+    # echo "password" | mkpasswd -s
+    kari-password = {
+      sopsFile = ../../secrets.yaml;
+      neededForUsers = true;
+    };
+  };
   # User config
   users.users.${user} = {
     isNormalUser = true;
     group = "${user}";
+    hashedPasswordFile = config.sops.secrets.kari-password.path;
     extraGroups = optionalGroups [
       "adbusers"
       "audio"
@@ -57,18 +66,6 @@ in {
   users.groups.${user} = {};
   environment.shells = [pkgs.fish];
   programs.fish.enable = true;
-
-  # Autologin if no password is set
-  services.getty.autologinUser = let
-    userCfg = config.users.users."${user}";
-  in
-    lib.mkIf (userCfg.password
-      == null
-      && userCfg.initialPassword == null
-      && userCfg.hashedPasswordFile == null
-      && userCfg.hashedPassword == null
-      && userCfg.initialHashedPassword == null)
-    user;
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [

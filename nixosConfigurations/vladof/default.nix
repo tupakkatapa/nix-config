@@ -38,6 +38,9 @@ in {
     }
   ];
 
+  # Autologin for 'kari'
+  services.getty.autologinUser = "kari";
+
   # Audio settings
   services.pipewire = {
     enable = true;

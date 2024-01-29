@@ -44,9 +44,6 @@ in {
     age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
   };
 
-  # Set initial password
-  users.users.${user} = {initialPassword = "${user}";};
-
   # Wireguard
   networking.wg-quick.interfaces = {
     "wg0" = {

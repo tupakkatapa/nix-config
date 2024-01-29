@@ -6,6 +6,16 @@
 }: {
   networking.hostName = "bandit";
 
+  # Autologin for 'kari'
+  services.getty.autologinUser = "kari";
+
+  # Allow passwordless sudo from wheel group
+  security.sudo = {
+    enable = true;
+    wheelNeedsPassword = lib.mkForce false;
+    execWheelOnly = true;
+  };
+
   # No bootloader
   boot.loader.grub.enable = false;
 
