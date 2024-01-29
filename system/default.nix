@@ -63,10 +63,9 @@
   zramSwap.algorithm = "zstd";
   zramSwap.memoryPercent = 100;
 
-  # Allow passwordless sudo from wheel group
-  security.sudo = {
-    enable = lib.mkDefault true;
-    wheelNeedsPassword = lib.mkForce false;
-    execWheelOnly = true;
+  # Sudo
+  security = {
+    sudo.enable = true;
+    polkit.enable = true;
   };
 }
