@@ -40,7 +40,7 @@
 
     # Netboot stuff
     nixpkgs-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh"; # stable
-    nix-pxe.url = "git+ssh://git@github.com/majbacka-labs/Nix-PXE";
+    nix-pxe.url = "git+ssh://git@github.com/majbacka-labs/Nix-PXE?ref=develop";
     nixobolus.url = "github:ponkila/nixobolus";
 
     # Other
@@ -76,7 +76,14 @@
         system,
         inputs',
         ...
-      }: rec {
+      }: let
+        packages =
+          import ./packages {inherit pkgs;}
+          // {
+            "lkddb-filter" = inputs'.nix-pxe.packages.lkddb-filter;
+            "pxe-generate" = inputs'.nix-pxe.packages.pxe-generate;
+          };
+      in {
         # Overlays
         _module.args.pkgs = import inputs.nixpkgs {
           inherit system;
@@ -85,12 +92,7 @@
           ];
           config = {};
         };
-        overlayAttrs =
-          import ./packages {inherit pkgs;}
-          // {
-            "lkddb-filter" = inputs'.nix-pxe.packages.lkddb-filter;
-            "pxe-generate" = inputs'.nix-pxe.packages.pxe-generate;
-          };
+        overlayAttrs = packages;
 
         # Nix code formatter -> 'nix fmt'
         formatter = pkgs.alejandra;
@@ -125,7 +127,7 @@
             "jakobs" = jakobs.config.system.build.kexecTree;
             "vladof" = vladof.config.system.build.squashfs;
           })
-          // overlayAttrs;
+          // packages;
       };
       flake = let
         inherit (self) outputs;
@@ -143,7 +145,9 @@
                 home-manager.sharedModules = [
                   nixvim.homeManagerModules.nixvim
                 ];
-                nixpkgs.overlays = [self.overlays.default];
+                nixpkgs.overlays = [
+                  self.overlays.default
+                ];
                 system.stateVersion = "23.11";
               }
               ./system
