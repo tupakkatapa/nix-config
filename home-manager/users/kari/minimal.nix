@@ -10,32 +10,10 @@
     builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
   optionalPaths = paths: builtins.filter (path: builtins.pathExists path) paths;
 in {
-  # Secrets
-  sops.secrets = {
-    wg-dinar = {
-      sopsFile = ../../secrets.yaml;
-      neededForUsers = true;
-    };
-    # echo "password" | mkpasswd -s
-    kari-password = {
-      sopsFile = ../../secrets.yaml;
-      neededForUsers = true;
-    };
-  };
-
-  # Wireguard
-  networking.wg-quick.interfaces = {
-    "wg0" = {
-      autostart = false;
-      configFile = config.sops.secrets.wg-dinar.path;
-    };
-  };
-
   # User config
   users.users.${user} = {
     isNormalUser = true;
     group = "${user}";
-    hashedPasswordFile = config.sops.secrets.kari-password.path;
     extraGroups = optionalGroups [
       "adbusers"
       "audio"

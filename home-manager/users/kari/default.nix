@@ -38,6 +38,21 @@ in {
     "d /home/${user}/Pictures/Screenshots 755 ${user} ${user} -"
   ];
 
+  # Wireguard
+  sops = {
+    secrets.wg-dinar = {
+      sopsFile = ../../secrets.yaml;
+      neededForUsers = true;
+    };
+    age.sshKeyPaths = [
+      "/etc/ssh/ssh_host_ed25519_key"
+    ];
+  };
+  networking.wg-quick.interfaces."wg0" = {
+    autostart = false;
+    configFile = config.sops.secrets.wg-dinar.path;
+  };
+
   # Misc
   programs.anime-game-launcher.enable = true;
 

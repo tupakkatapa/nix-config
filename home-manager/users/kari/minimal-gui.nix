@@ -7,8 +7,8 @@
 }: let
   user = "kari";
 in {
-  # This configuration extends the minimal version
-  imports = [./minimal.nix];
+  # This configuration extends the minimal-passwd version
+  imports = [./minimal-passwd.nix];
 
   # Home-manager config
   home-manager.users."${user}" = rec {
