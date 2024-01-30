@@ -58,6 +58,9 @@
   systemd.watchdog.device = "/dev/watchdog";
   systemd.watchdog.runtimeTime = "30s";
 
+  # Avoid locking up in low memory situations
+  services.earlyoom.enable = true;
+
   # Zram swap
   zramSwap.enable = true;
   zramSwap.algorithm = "zstd";
