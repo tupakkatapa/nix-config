@@ -31,8 +31,9 @@
 
   # Imports
   imports = [
-    ./config/greetd.nix
+    #./config/greetd.nix
     ./config/openrgb.nix
+    ./config/yubikey.nix
     ./hardware-configuration.nix
   ];
 
