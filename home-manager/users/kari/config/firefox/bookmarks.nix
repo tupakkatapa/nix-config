@@ -19,10 +19,6 @@
             url = "https://radarr.coditon.com";
           }
           {
-            name = "Share";
-            url = "https://share.coditon.com";
-          }
-          {
             name = "Torrent";
             url = "https://torrent.coditon.com";
           }
@@ -33,6 +29,18 @@
           {
             name = "Jackett";
             url = "https://jackett.coditon.com";
+          }
+          {
+            name = "Lanraragi";
+            url = "https://lanraragi.coditon.com";
+          }
+          {
+            name = "Nextcloud";
+            url = "https://next.coditon.com";
+          }
+          {
+            name = "Vaultwarden";
+            url = "https://vault.coditon.com";
           }
         ];
       }
@@ -240,6 +248,18 @@
       {
         name = "Ylilauta";
         url = "https://ylilauta.org";
+      }
+      {
+        name = "Wolt";
+        url = "https://wolt.com/fi/discovery";
+      }
+      {
+        name = "Outlook";
+        url = "https://outlook.live.com/mail";
+      }
+      {
+        name = "Protonmail";
+        url = "https://account.proton.me/mail";
       }
       {
         name = "Hauki";
