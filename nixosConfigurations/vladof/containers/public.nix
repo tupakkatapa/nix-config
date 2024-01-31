@@ -11,11 +11,6 @@
   hostAddress = "192.168.200.1";
   localAddress = "192.168.200.2";
 in {
-  # Create directories, these are persistent
-  systemd.tmpfiles.rules = [
-    "d /mnt/wd-red/sftp/share   755 239 239 -"
-  ];
-
   # Reverse proxy
   services.caddy = {
     enable = true;
@@ -26,25 +21,32 @@ in {
           reverse_proxy http://${localAddress}:32400
         '';
       };
-      "share.${domain}" = {
-        useACMEHost = config.networking.fqdn;
-        extraConfig = ''
-          encode zstd gzip
-          root * /mnt/wd-red/sftp/share
-          file_server {
-            browse
-            hide .* _*
-          }
-        '';
-        # reverse_proxy http://${localAddress}:80
-      };
       "blog.${domain}" = {
         useACMEHost = config.networking.fqdn;
         extraConfig = ''
-          reverse_proxy http://${localAddress}:8080
+          reverse_proxy http://${localAddress}:1337
+        '';
+      };
+      "next.${domain}" = {
+        useACMEHost = config.networking.fqdn;
+        extraConfig = ''
+          reverse_proxy http://${localAddress}:8888
         '';
       };
     };
+  };
+
+  # Secrets
+  sops = {
+    secrets = {
+      "nextcloud-admin-password" = {
+        sopsFile = ../../secrets.yaml;
+        mode = "444";
+      };
+    };
+    age.sshKeyPaths = [
+      "/mnt/wd-red/secrets/ssh/ssh_host_ed25519_key"
+    ];
   };
 
   # Main config
@@ -54,21 +56,26 @@ in {
     privateNetwork = true;
 
     # Binds
-    bindMounts = helpers.bindMounts [
-      # Appdata
-      "${appData}/plex"
-      # Media
-      "/mnt/wd-red/sftp/media/movies"
-      "/mnt/wd-red/sftp/media/music"
-      "/mnt/wd-red/sftp/media/series"
-      # Other
-      "/mnt/wd-red/sftp/share"
-    ];
+    bindMounts =
+      {
+        "/run/secrets/nextcloud-admin-password" = {
+          hostPath = "/run/secrets/nextcloud-admin-password";
+          isReadOnly = true;
+        };
+      }
+      // helpers.bindMounts [
+        # Appdata
+        "${appData}/plex"
+        # Media
+        "/mnt/wd-red/sftp/media/movies"
+        "/mnt/wd-red/sftp/media/music"
+        "/mnt/wd-red/sftp/media/series"
+        "/mnt/wd-red/sftp/media/img"
+      ];
     forwardPorts = helpers.bindPorts {
-      tcp = [32400 3005 8324 32469 8080 80];
+      tcp = [32400 3005 8324 32469 8888];
       udp = [1900 5353 32410 32412 32413 32414];
     };
-
     config = {
       config,
       lib,
@@ -77,14 +84,33 @@ in {
     }: {
       imports = [inputs.coditon-blog.nixosModules.default];
 
-      # My personal website
+      # Nextcloud (8888)
+      services.nextcloud = {
+        enable = true;
+        package = pkgs.nextcloud28;
+        hostName = "next.${domain}";
+        datadir = "${appData}/nextcloud";
+        https = true;
+        config = {
+          adminuser = "admin";
+          adminpassFile = "/run/secrets/nextcloud-admin-password";
+        };
+      };
+      services.nginx.virtualHosts."next.${domain}".listen = [
+        {
+          addr = "0.0.0.0";
+          port = 8888;
+        }
+      ];
+
+      # Blog (1337)
       services.coditon-blog = {
         enable = true;
         openFirewall = true;
-        port = 8080;
+        port = 1337;
       };
 
-      # Plex
+      # Plex (32400)
       services.plex = {
         enable = true;
         dataDir = "${appData}/plex";

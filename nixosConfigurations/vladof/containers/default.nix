@@ -37,28 +37,38 @@ in {
   ];
 
   # ACME
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "jesse@ponkila.com";
+    defaults.webroot = "${appData}/acme";
+  };
+  # Ensure user, might be configured upstream
+  users.users.acme = {
+    createHome = true;
+    group = "acme";
+    home = "${appData}/acme";
+    isSystemUser = true;
+  };
+  # Bind service directories to persistent disk
   fileSystems."/var/lib/acme" = {
     device = "${appData}/acme";
     options = ["bind"];
   };
-  security.acme.acceptTerms = true;
-  security.acme.defaults.email = "jesse@ponkila.com";
-  security.acme.defaults.webroot = "${appData}/acme";
 
   # Other
   networking = {
     firewall = {
       allowedTCPPorts =
         [
-          80 # HTTP (blog)
-          8080 # HTTP (fileserver)
+          80 # HTTP
           443 # HTTPS
+          1337 # Blog
           7878 # Radarr
           9091 # Transmission
           9117 # Jackett
           8222 # Vaultwarden
           3000 # Lanraragi
-          2342 # Photoprism
+          8888 # Nextcloud
         ]
         # Plex
         ++ [

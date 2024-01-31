@@ -77,7 +77,7 @@ in {
   # Bind firefox directory to preserve cookies and such
   fileSystems."/home/${username}/.mozilla" = {
     device = "${appData}/firefox";
-    options = ["bind"];
+    options = ["bind" "mode=755"];
   };
 
   # Networking
@@ -103,10 +103,10 @@ in {
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
-    "d /mnt/wd-red          755 root root -"
-    "d /mnt/wd-red/sftp     755 root root -"
-    "d ${appData}           770 root root -"
-    "d ${appData}/firefox   775 ${username} ${username} -"
+    "d /mnt/wd-red        755 root root -"
+    "d /mnt/wd-red/sftp   755 root root -"
+    "d ${appData}         770 root root -"
+    "d ${appData}/firefox 755 ${username} ${username} -"
   ];
 
   # Mounts

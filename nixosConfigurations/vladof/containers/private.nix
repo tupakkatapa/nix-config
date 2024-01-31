@@ -44,13 +44,21 @@ in {
           reverse_proxy http://${localAddress}:3000
         '';
       };
-      "prism.${domain}" = {
-        useACMEHost = config.networking.fqdn;
-        extraConfig = ''
-          reverse_proxy http://${localAddress}:2342
-        '';
+    };
+  };
+
+  # Secrets
+  sops = {
+    secrets = {
+      "vaultwarden-env".sopsFile = ../../secrets.yaml;
+      "lanraragi-admin-password" = {
+        sopsFile = ../../secrets.yaml;
+        mode = "444";
       };
     };
+    age.sshKeyPaths = [
+      "/mnt/wd-red/secrets/ssh/ssh_host_ed25519_key"
+    ];
   };
 
   # Main config
@@ -61,25 +69,38 @@ in {
 
     # Binds
     bindMounts =
-      helpers.bindMounts
+      {
+        "/run/secrets/vaultwarden-env" = {
+          hostPath = "/run/secrets/vaultwarden-env";
+          isReadOnly = true;
+        };
+        "/run/secrets/lanraragi-admin-password" = {
+          hostPath = "/run/secrets/lanraragi-admin-password";
+          isReadOnly = true;
+        };
+      }
+      // helpers.bindMounts
       [
         # Appdata
         "${appData}/jackett"
         "${appData}/radarr"
         "${appData}/transmission"
         "${appData}/vaultwarden"
-        "${appData}/photoprism"
         "${appData}/lanraragi"
         # Media
         "/mnt/wd-red/sftp/dnld"
         "/mnt/wd-red/sftp/media/movies"
         "/mnt/wd-red/sftp/media/books/lanraragi"
         "/mnt/wd-red/sftp/media/img"
-        # Other
-        "/mnt/wd-red/secrets"
       ];
     forwardPorts = helpers.bindPorts {
-      tcp = [7878 9091 9117 8222 3000 2342];
+      tcp = [
+        7878
+        9091
+        9117
+        8222
+        3000
+      ];
       udp = [51820];
     };
 
@@ -156,36 +177,10 @@ in {
         };
       };
 
-      # Photoprism (2342)
-      services.photoprism = {
-        enable = true;
-        address = localAddress;
-        originalsPath = "/mnt/wd-red/sftp/media/img";
-        passwordFile = pkgs.writeText "pass" "admin";
-        settings = {
-          PHOTOPRISM_SPONSOR = "true";
-          PHOTOPRISM_AUTH_MODE = "public";
-          PHOTOPRISM_READONLY = "true";
-        };
-      };
-      # Ensure user/group, might be configured upstream
-      users.users.photoprism = {
-        createHome = true;
-        group = "photoprism";
-        home = "${appData}/photoprism";
-        isSystemUser = true;
-      };
-      users.groups.photoprism = {};
-      # Bind service directories to persistent disk
-      fileSystems."/var/lib/private/photoprism" = {
-        device = "${appData}/photoprism";
-        options = ["bind"];
-      };
-
       # Lanraragi (3000)
       services.lanraragi = {
         enable = true;
-        passwordFile = pkgs.writeText "pass" "admin";
+        passwordFile = "/run/secrets/lanraragi-admin-password";
       };
       # Ensure user/group, might be configured upstream
       users.users.lanraragi = {
@@ -213,14 +208,17 @@ in {
       };
 
       # Vaultwarden (8222)
+      # https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
       services.vaultwarden = {
         enable = true;
         dbBackend = "sqlite";
         backupDir = "${appData}/vaultwarden/backup";
+        environmentFile = "/run/secrets/vaultwarden-env";
         config = {
           domain = "https://vault.${domain}";
-          rocketAddress = localAddress;
           rocketPort = 8222;
+          rocketAddress = "0.0.0.0";
+          signupsAllowed = false;
         };
       };
       # Bind service directories to persistent disk
