@@ -37,16 +37,11 @@ in {
   };
 
   # Secrets
-  sops = {
-    secrets = {
-      "nextcloud-admin-password" = {
-        sopsFile = ../../secrets.yaml;
-        mode = "444";
-      };
+  sops.secrets = {
+    "nextcloud-admin-password" = {
+      sopsFile = ../../secrets.yaml;
+      mode = "444";
     };
-    age.sshKeyPaths = [
-      "/mnt/wd-red/secrets/ssh/ssh_host_ed25519_key"
-    ];
   };
 
   # Main config

@@ -48,17 +48,12 @@ in {
   };
 
   # Secrets
-  sops = {
-    secrets = {
-      "vaultwarden-env".sopsFile = ../../secrets.yaml;
-      "lanraragi-admin-password" = {
-        sopsFile = ../../secrets.yaml;
-        mode = "444";
-      };
+  sops.secrets = {
+    "vaultwarden-env".sopsFile = ../../secrets.yaml;
+    "lanraragi-admin-password" = {
+      sopsFile = ../../secrets.yaml;
+      mode = "444";
     };
-    age.sshKeyPaths = [
-      "/mnt/wd-red/secrets/ssh/ssh_host_ed25519_key"
-    ];
   };
 
   # Main config

@@ -54,6 +54,21 @@
   # Saiko's automatic gc
   sys2x.gc.useDiskAware = true;
 
+  # Enable strict OpenSSH
+  services.openssh = {
+    enable = true;
+    allowSFTP = lib.mkDefault true;
+    extraConfig = ''
+      AllowAgentForwarding no
+      AllowStreamLocalForwarding no
+      AllowTcpForwarding yes
+      AuthenticationMethods publickey
+      X11Forwarding no
+    '';
+    settings.PasswordAuthentication = false;
+    settings.KbdInteractiveAuthentication = false;
+  };
+
   # Reboots hanged system
   systemd.watchdog.device = "/dev/watchdog";
   systemd.watchdog.runtimeTime = "30s";

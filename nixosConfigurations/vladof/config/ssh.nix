@@ -4,17 +4,10 @@
   lib,
   ...
 }: {
-  # Strict SSH/SFTP settings
+  # Extra SSH/SFTP settings
   services.openssh = {
-    enable = true;
-    allowSFTP = true;
+    allowSFTP = lib.mkForce true;
     extraConfig = ''
-      AllowAgentForwarding no
-      AllowStreamLocalForwarding no
-      AllowTcpForwarding yes
-      AuthenticationMethods publickey
-      X11Forwarding no
-
       Match User sftp
         AllowTcpForwarding no
         ChrootDirectory %h
@@ -23,8 +16,6 @@
         X11Forwarding no
       Match all
     '';
-    settings.PasswordAuthentication = false;
-    settings.KbdInteractiveAuthentication = false;
     hostKeys = [
       {
         path = "/mnt/wd-red/secrets/ssh/ssh_host_ed25519_key";

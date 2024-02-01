@@ -11,15 +11,9 @@ in {
   imports = [./minimal.nix];
 
   # Secrets
-  sops = {
-    secrets.kari-password = {
-      sopsFile = ../../secrets.yaml;
-      neededForUsers = true;
-    };
-    age.sshKeyPaths = [
-      "/etc/ssh/ssh_host_ed25519_key"
-      "/mnt/wd-red/secrets/ssh_host_ed25519_key"
-    ];
+  sops.secrets.kari-password = {
+    sopsFile = ../../secrets.yaml;
+    neededForUsers = true;
   };
 
   # Set password

@@ -39,14 +39,9 @@ in {
   ];
 
   # Wireguard
-  sops = {
-    secrets.wg-dinar = {
-      sopsFile = ../../secrets.yaml;
-      neededForUsers = true;
-    };
-    age.sshKeyPaths = [
-      "/etc/ssh/ssh_host_ed25519_key"
-    ];
+  sops.secrets.wg-dinar = {
+    sopsFile = ../../secrets.yaml;
+    neededForUsers = true;
   };
   networking.wg-quick.interfaces."wg0" = {
     autostart = false;
