@@ -67,6 +67,9 @@ in {
   # Allows access to flake inputs and custom packages
   home-manager.extraSpecialArgs = {inherit inputs pkgs;};
 
+  # Move existing files rather than exiting with an error
+  home-manager.backupFileExtension = "bak";
+
   home-manager.users."${user}" = {
     imports =
       [

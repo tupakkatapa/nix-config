@@ -30,6 +30,7 @@
     "image/jpeg" = ["imv.desktop"];
     "image/png" = ["imv.desktop"];
   };
+  xdg.configFile."mimeapps.list".force = true;
 
   # Allow fonts trough home.packages
   fonts.fontconfig.enable = true;

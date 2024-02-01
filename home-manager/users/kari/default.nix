@@ -62,6 +62,7 @@ in {
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = ["writer.desktop"];
       "text/csv" = ["impress.desktop"];
     };
+    xdg.configFile."mimeapps.list".force = true;
 
     # Extra SSH config
     programs.ssh = {

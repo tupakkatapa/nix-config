@@ -45,7 +45,7 @@ in {
       # Nix
       ngd = "nix fmt && git add . && direnv reload";
       nfc = "nix flake check --impure";
-      buidl = "rm -f ~/.config/mimeapps.list && sudo nixos-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
+      buidl = "sudo nixos-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
       gc = "nix-collect-garbage -d";
 
       # YouTube-DL
