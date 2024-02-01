@@ -42,13 +42,6 @@ in {
     defaults.email = "jesse@ponkila.com";
     defaults.webroot = "${appData}/acme";
   };
-  # Ensure user, might be configured upstream
-  users.users.acme = {
-    createHome = true;
-    group = "acme";
-    home = "${appData}/acme";
-    isSystemUser = true;
-  };
   # Bind service directories to persistent disk
   fileSystems."/var/lib/acme" = {
     device = "${appData}/acme";
