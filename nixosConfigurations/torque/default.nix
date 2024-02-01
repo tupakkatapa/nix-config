@@ -76,7 +76,6 @@
     firewall.enable = false;
   };
   hardware.bluetooth.enable = true;
-  services.resolved.enable = true;
 
   # Binary cache
   services.nix-serve = {

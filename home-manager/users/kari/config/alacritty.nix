@@ -41,11 +41,10 @@ in {
         };
         size = 10;
       };
-      draw_bold_text_with_bright_colors = true;
-      selection.save_to_clioboard = false;
       shell.program = "${pkgs.fish}/bin/fish";
 
       colors = {
+        draw_bold_text_with_bright_colors = true;
         primary = {
           background = "0x282828";
           foreground = "0xebdbb2";

@@ -1408,15 +1408,16 @@
         "nixpkgs-stable-patched": "nixpkgs-stable-patched"
       },
       "locked": {
-        "lastModified": 1703633010,
-        "narHash": "sha256-PyUNiooyz2Ea0mcPKptpccR1uedXJjWBeoUg1jdgxys=",
-        "ref": "refs/heads/main",
-        "rev": "8566eb5d6fa277019b04745756107b646cc3b98c",
-        "revCount": 10,
+        "lastModified": 1706494547,
+        "narHash": "sha256-KJO2YOsc10vylVi2DmKcBvy5AUODVtW8SSmyc6FX3kQ=",
+        "ref": "develop",
+        "rev": "819a2ef01f8217382776a845af3d90a54886bac3",
+        "revCount": 19,
         "type": "git",
         "url": "ssh://git@github.com/majbacka-labs/Nix-PXE"
       },
       "original": {
+        "ref": "develop",
         "type": "git",
         "url": "ssh://git@github.com/majbacka-labs/Nix-PXE"
       }
