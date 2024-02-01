@@ -69,6 +69,9 @@
     settings.KbdInteractiveAuthentication = false;
   };
 
+  # Reset the user and group files on system activation
+  users.mutableUsers = false;
+
   # Reboots hanged system
   systemd.watchdog.device = "/dev/watchdog";
   systemd.watchdog.runtimeTime = "30s";
