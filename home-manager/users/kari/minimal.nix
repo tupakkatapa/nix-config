@@ -15,31 +15,23 @@ in {
     isNormalUser = true;
     group = "${user}";
     extraGroups = optionalGroups [
+      "acme"
       "adbusers"
       "audio"
+      "caddy"
+      "cups"
       "i2c"
       "input"
       "jackaudio"
       "libvirtd"
       "podman"
       "rtkit"
+      "sftp"
+      "sshd"
       "users"
       "vboxusers"
       "video"
       "wheel"
-      "cups"
-      "sshd"
-      # Homelab groups
-      "acme"
-      "caddy"
-      "jackett"
-      "lanraragi"
-      "photoprism"
-      "plex"
-      "radarr"
-      "sftp"
-      "transmission"
-      "vaultwarden"
     ];
     openssh.authorizedKeys.keys = [
       # kari@torque
@@ -93,8 +85,8 @@ in {
     home.file = let
       scriptDir = ./scripts;
       scriptFiles = builtins.readDir scriptDir;
-      # Places scripts in '~/.local/bin/', create it with systemd.tmpfiles
     in
+      # Places scripts in '~/.local/bin/'
       builtins.mapAttrs (name: _: {
         executable = true;
         target = ".local/bin/${name}";
@@ -105,13 +97,7 @@ in {
     # Extra SSH config
     programs.ssh = {
       enable = true;
-      matchBlocks = {
-        "192.168.1.*" = {
-          extraOptions = {
-            "StrictHostKeyChecking" = "no";
-          };
-        };
-      };
+      matchBlocks."192.168.1.*".extraOptions."StrictHostKeyChecking" = "no";
       forwardAgent = true;
       addKeysToAgent = "yes";
     };
