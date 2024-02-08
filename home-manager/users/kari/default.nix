@@ -83,6 +83,7 @@ in {
       #### SELF
       ping-sweep
       print-banner
+      monitor-adjust
 
       #### GUI
       czkawka

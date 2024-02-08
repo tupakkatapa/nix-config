@@ -1,4 +1,5 @@
 {pkgs}: rec {
+  "monitor-adjust" = pkgs.callPackage ./monitor-adjust {};
   "ping-sweep" = pkgs.callPackage ./ping-sweep {};
   "print-banner" = pkgs.callPackage ./print-banner {};
   "fissh" = pkgs.callPackage ./fissh {};
