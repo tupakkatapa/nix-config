@@ -9,7 +9,7 @@ display_usage() {
 Usage: fissh [OPTIONS..] [USER@]HOST[:PORT]
 
 Description:
-  Bring you fish and keys with you
+  Bring your fish and keys with you
 
 Options:
   -c, --config PATH

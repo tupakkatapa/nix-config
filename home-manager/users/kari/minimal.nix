@@ -107,6 +107,7 @@ in {
       ping-sweep
       fissh
 
+      ffmpeg
       eza
       htop
       kexec-tools

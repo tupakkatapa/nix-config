@@ -76,7 +76,7 @@ in {
         "/mnt/wd-red/sftp/media/series"
       ];
     forwardPorts = helpers.bindPorts {
-      tcp = [32400 3005 8324 32469 8888];
+      tcp = [32400 3005 8324 32469 8888 1337];
       udp = [1900 5353 32410 32412 32413 32414];
     };
     config = {

@@ -7,7 +7,7 @@
 }: let
   manifest = (lib.importTOML ./Cargo.toml).package;
   quotesJson = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/prasertcbs/basic-dataset/master/most_popular_quotes.json";
+    url = "https://raw.githubusercontent.com/prasertcbs/basic-dataset/e74b5884160b7616e6f74280b2c6ac978208fe6c/most_popular_quotes.json";
     sha256 = "sha256-DBBLISlg/7hpm5x46iYICPPMu9csRmuWnVtHxV2h2qc=";
   };
   movieQuotesJson = pkgs.fetchurl {

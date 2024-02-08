@@ -12,7 +12,7 @@
     };
     grub = {
       enable = true;
-      configurationLimit = 10;
+      configurationLimit = 50;
       device = "nodev";
       efiSupport = true;
       useOSProber = true;
@@ -31,7 +31,7 @@
 
   # Imports
   imports = [
-    #./config/greetd.nix
+    ./config/greetd.nix
     ./config/openrgb.nix
     ./config/yubikey.nix
     ./hardware-configuration.nix
@@ -114,8 +114,8 @@
     xow_dongle-firmware
 
     # Wine
-    wineWowPackages.staging
     winetricks
+    wineWowPackages.waylandFull
 
     # Podman-compose
     podman-compose
