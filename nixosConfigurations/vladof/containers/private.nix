@@ -56,6 +56,16 @@ in {
     };
   };
 
+  # Create directories
+  systemd.tmpfiles.rules = [
+    "d /mnt/wd-red/sftp/dnld    700 root root -"
+    "d ${appData}/transmission  700 root root -"
+    "d ${appData}/jackett       700 root root -"
+    "d ${appData}/radarr        700 root root -"
+    "d ${appData}/vaultwarden   700 root root -"
+    "d ${appData}/lanraragi     700 root root -"
+  ];
+
   # Main config
   containers.private = {
     inherit hostAddress localAddress;
@@ -105,21 +115,23 @@ in {
       pkgs,
       ...
     }: {
+      # Set permissions
+      systemd.tmpfiles.rules = [
+        "d /mnt/wd-red/sftp/dnld    777 transmission transmission -"
+        "d ${appData}/transmission  700 transmission transmission -"
+        "d ${appData}/jackett       700 jackett jackett -"
+        "d ${appData}/lanraragi     700 lanraragi lanraragi -"
+        "d ${appData}/radarr        700 radarr radarr -"
+        "d ${appData}/vaultwarden   700 vaultwarden vaultwarden -"
+      ];
+
       # Radarr (7878)
       services.radarr = {
         enable = true;
         dataDir = "${appData}/radarr";
         openFirewall = true;
       };
-      # Ensure user/group, might be configured upstream
-      users.users.radarr = {
-        createHome = true;
-        extraGroups = ["transmission"];
-        group = "radarr";
-        home = "${appData}/radarr";
-        isSystemUser = true;
-      };
-      users.groups.radarr = {};
+      users.users.radarr.extraGroups = ["transmission"];
 
       # Jackett (9117)
       services.jackett = {
@@ -127,15 +139,7 @@ in {
         dataDir = "${appData}/jackett";
         openFirewall = true;
       };
-      # Ensure user/group, might be configured upstream
-      users.users.jackett = {
-        createHome = true;
-        extraGroups = ["transmission"];
-        group = "jackett";
-        home = "${appData}/jackett";
-        isSystemUser = true;
-      };
-      users.groups.jackett = {};
+      users.users.jackett.extraGroups = ["transmission"];
 
       # Torrent (9091)
       services.transmission = {
@@ -156,13 +160,6 @@ in {
           rpc-whitelist-enabled = false;
         };
       };
-      # Ensure user, might be configured upstream
-      users.users.transmission = {
-        createHome = true;
-        group = "transmission";
-        home = "${appData}/transmission";
-        isSystemUser = true;
-      };
       users.groups.transmission = {};
       # Workaround for https://github.com/NixOS/nixpkgs/issues/258793
       systemd.services.transmission = {
@@ -177,9 +174,8 @@ in {
         enable = true;
         passwordFile = "/run/secrets/lanraragi-admin-password";
       };
-      # Ensure user/group, might be configured upstream
+      # Create user/group
       users.users.lanraragi = {
-        createHome = true;
         group = "lanraragi";
         home = "${appData}/lanraragi";
         isSystemUser = true;

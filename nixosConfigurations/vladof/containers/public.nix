@@ -44,6 +44,13 @@ in {
     };
   };
 
+  # Create directories
+  systemd.tmpfiles.rules = [
+    "d /mnt/wd-red/sftp/nextcloud 700 root root -"
+    "d ${appData}/nextcloud       755 root root -"
+    "d ${appData}/plex            700 root root -"
+  ];
+
   # Main config
   containers.public = {
     inherit hostAddress localAddress;
@@ -61,11 +68,12 @@ in {
       // helpers.bindMounts [
         # Appdata
         "${appData}/plex"
+        "${appData}/nextcloud"
+        "/mnt/wd-red/sftp/nextcloud"
         # Media
         "/mnt/wd-red/sftp/media/movies"
         "/mnt/wd-red/sftp/media/music"
         "/mnt/wd-red/sftp/media/series"
-        "/mnt/wd-red/sftp/media/img"
       ];
     forwardPorts = helpers.bindPorts {
       tcp = [32400 3005 8324 32469 8888];
@@ -78,6 +86,13 @@ in {
       ...
     }: {
       imports = [inputs.coditon-blog.nixosModules.default];
+
+      # Set permissions
+      systemd.tmpfiles.rules = [
+        "d /mnt/wd-red/sftp/nextcloud 777 nextcloud nextcloud -"
+        "d ${appData}/nextcloud       777 nextcloud nextcloud -"
+        "d ${appData}/plex            700 plex plex -"
+      ];
 
       # Nextcloud (8888)
       services.nextcloud = {
@@ -111,14 +126,6 @@ in {
         dataDir = "${appData}/plex";
         openFirewall = true;
       };
-      # Ensure user/group, might be configured upstream
-      users.users.plex = {
-        createHome = true;
-        group = "plex";
-        home = "${appData}/plex";
-        isSystemUser = true;
-      };
-      users.groups.plex = {};
 
       # Other
       networking = {
