@@ -5,19 +5,10 @@
   ...
 }: let
   inherit (config.home.sessionVariables) FONT;
-
-  # Function to disable keys
-  disableKeys = keysList:
-    map (keyName: {
-      key = keyName;
-      action = "None";
-    })
-    keysList;
 in {
   programs.alacritty = {
     enable = true;
     settings = {
-      #key_bindings = disableKeys ["Up" "Down" "Right" "Left"];
       window.padding = {
         x = 20;
         y = 20;

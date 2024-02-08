@@ -4,14 +4,7 @@
   pkgs,
   ...
 }: {
-  programs.nixvim = let
-    disableKeys = keysList:
-      map (keyName: {
-        key = "<${keyName}>";
-        action = "<Nop>";
-      })
-      keysList;
-  in {
+  programs.nixvim = {
     enable = true;
 
     clipboard = {
@@ -32,57 +25,55 @@
     };
 
     # NOTE: Default mode is normal-visual-op
-    keymaps =
-      [
-        # Map :W to :w
-        {
-          mode = "c";
-          key = ":W";
-          action = "<cmd>w<cr>";
-        }
-        # Do not yank when pasting or deleting
-        {
-          key = "p";
-          action = "P";
-        }
-        {
-          key = "x";
-          action = ''"_x'';
-        }
-        # Ctrl+s
-        {
-          key = "<C-s>";
-          action = "<cmd>w<cr><esc>";
-        }
-        # Git status
-        {
-          mode = "n";
-          key = "<leader>g";
-          action = "<cmd>Neotree float git_status <CR>";
-        }
-        # Easier buffer switching
-        {
-          mode = "n";
-          key = "<leader>h";
-          action = "<C-w>h";
-        }
-        {
-          mode = "n";
-          key = "<leader>j";
-          action = "<C-w>j";
-        }
-        {
-          mode = "n";
-          key = "<leader>k";
-          action = "<C-w>k";
-        }
-        {
-          mode = "n";
-          key = "<leader>l";
-          action = "<C-w>l";
-        }
-      ]
-      ++ (disableKeys ["Up" "Down" "Left" "Right"]);
+    keymaps = [
+      # Map :W to :w
+      {
+        mode = "c";
+        key = ":W";
+        action = "<cmd>w<cr>";
+      }
+      # Do not yank when pasting or deleting
+      {
+        key = "p";
+        action = "P";
+      }
+      {
+        key = "x";
+        action = ''"_x'';
+      }
+      # Ctrl+s
+      {
+        key = "<C-s>";
+        action = "<cmd>w<cr><esc>";
+      }
+      # Git status
+      {
+        mode = "n";
+        key = "<leader>g";
+        action = "<cmd>Neotree float git_status <CR>";
+      }
+      # Easier buffer switching
+      {
+        mode = "n";
+        key = "<leader>h";
+        action = "<C-w>h";
+      }
+      {
+        mode = "n";
+        key = "<leader>j";
+        action = "<C-w>j";
+      }
+      {
+        mode = "n";
+        key = "<leader>k";
+        action = "<C-w>k";
+      }
+      {
+        mode = "n";
+        key = "<leader>l";
+        action = "<C-w>l";
+      }
+    ];
 
     options = {
       cursorline = true;
@@ -97,6 +88,7 @@
       comment-nvim.enable = true;
       rainbow-delimiters.enable = true;
       fugitive.enable = true;
+      # hardtime.enable = true;
 
       # Tabline plugin
       bufferline = {
