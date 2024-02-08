@@ -136,6 +136,10 @@
             url = "https://www.kernelconfig.io/index.html";
           }
           {
+            name = "Vimium";
+            url = "https://vimium.github.io/";
+          }
+          {
             name = "Vim Cheat Sheet";
             url = "https://vim.rtorr.com/";
           }

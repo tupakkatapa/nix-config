@@ -1,6 +1,10 @@
 # https://discourse.nixos.org/t/declare-firefox-extensions-and-settings/36265/17
 [
   {
+    uuid = "{d7742d87-e61d-4b78-b8a1-b469842139fa}";
+    shortId = "vimium-ff";
+  }
+  {
     uuid = "ff2mpv@yossarian.net";
     shortId = "ff2mpv";
   }
