@@ -6,7 +6,12 @@ pkgs.stdenv.mkDerivation rec {
   name = "notify-screenshot";
   src = ./.;
 
-  buildInputs = with pkgs; [notify grim slurp];
+  buildInputs = with pkgs; [
+    notify
+    grim
+    slurp
+    xdg-utils
+  ];
 
   nativeBuildInputs = [pkgs.makeWrapper];
   installPhase = ''
