@@ -174,7 +174,6 @@
         ];
 
         bandit.modules = [
-          ./home-manager/users/kari/minimal.nix
           ./nixosConfigurations/bandit
           nixobolus.nixosModules.kexecTree
         ];
@@ -191,7 +190,7 @@
         # NixOS configuration entrypoints
         nixosConfigurations = with nixpkgs.lib;
           {
-            "bandit" = nixosSystem (withDefaults bandit);
+            "bandit" = nixosSystem bandit;
             "jakobs" = nixosSystem (withDefaults jakobs);
             "maliwan" = nixosSystem (withDefaults maliwan);
             "torque" = nixosSystem (withDefaults torque);
