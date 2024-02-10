@@ -11,37 +11,13 @@
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Import hardware configuration
-  imports = [./hardware-configuration.nix];
-
-  # Greetd
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = builtins.concatStringsSep " " [
-          "${pkgs.greetd.tuigreet}/bin/tuigreet"
-          "--asterisks"
-          "--remember"
-          "--time"
-          "--cmd Hyprland"
-        ];
-        user = "greeter";
-      };
-    };
-  };
-  # https://www.reddit.com/r/NixOS/comments/u0cdpi/tuigreet_with_xmonad_how/
-  systemd.services.greetd.serviceConfig = {
-    Type = "idle";
-    StandardInput = "tty";
-    StandardOutput = "tty";
-    # Without this errors will spam on screen
-    StandardError = "journal";
-    # Without these bootlogs will spam on screen
-    TTYReset = true;
-    TTYVHangup = true;
-    TTYVTDisallocate = true;
-  };
+  # Imports
+  imports = [
+    ../.config/pipewire.nix
+    ../.config/tuigreet-hypr.nix
+    ../.config/yubikey.nix
+    ./hardware-configuration.nix
+  ];
 
   # https://github.com/NixOS/nixpkgs/issues/143365
   security.pam.services = {swaylock = {};};
@@ -75,31 +51,6 @@
     firewall.enable = false;
   };
   hardware.bluetooth.enable = true;
-
-  services.openssh = {
-    enable = true;
-    allowSFTP = false;
-    extraConfig = ''
-      AllowAgentForwarding no
-      AllowStreamLocalForwarding no
-      AllowTcpForwarding yes
-      AuthenticationMethods publickey
-      X11Forwarding no
-    '';
-    settings.PasswordAuthentication = false;
-    settings.KbdInteractiveAuthentication = false;
-  };
-
-  # Audio settings
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-  };
-  # Make pipewire realtime-capable
-  security.rtkit.enable = true;
 
   # Firmware blobs
   hardware.enableRedistributableFirmware = true;

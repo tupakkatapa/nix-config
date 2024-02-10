@@ -18,20 +18,6 @@
   networking.firewall.enable = false;
   hardware.bluetooth.enable = true;
 
-  services.openssh = {
-    enable = true;
-    allowSFTP = false;
-    extraConfig = ''
-      AllowAgentForwarding no
-      AllowStreamLocalForwarding no
-      AllowTcpForwarding yes
-      AuthenticationMethods publickey
-      X11Forwarding no
-    '';
-    settings.PasswordAuthentication = false;
-    settings.KbdInteractiveAuthentication = false;
-  };
-
   # Firmware blobs
   hardware.enableRedistributableFirmware = true;
 }

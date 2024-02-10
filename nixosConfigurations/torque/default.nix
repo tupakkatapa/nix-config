@@ -31,9 +31,11 @@
 
   # Imports
   imports = [
-    ./config/greetd.nix
-    ./config/openrgb.nix
-    ./config/yubikey.nix
+    ../.config/openrgb.nix
+    ../.config/gaming-amd.nix
+    ../.config/pipewire.nix
+    ../.config/tuigreet-hypr.nix
+    ../.config/yubikey.nix
     ./hardware-configuration.nix
   ];
 
@@ -57,9 +59,6 @@
 
   # Enable ADB for android development
   programs.adb.enable = true;
-
-  # Enable clock and voltage adjustment for AMD GPU
-  boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
 
   # Add support for NTFS file system for mounting Windows drives
   # https://nixos.wiki/wiki/NTFS
@@ -92,26 +91,11 @@
   # Logitech steering wheel
   hardware.new-lg4ff.enable = true;
 
-  # Audio settings
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-  };
-  # Make pipewire realtime-capable
-  security.rtkit.enable = true;
-
-  # Firmware blobs
-  hardware.enableRedistributableFirmware = true;
-
   # Host-spesific system packages
   environment.systemPackages = with pkgs; [
     # Hardware
     oversteer
     solaar
-    xow_dongle-firmware
 
     # Wine
     winetricks
@@ -126,49 +110,4 @@
     enable = true;
     enableExtensionPack = true;
   };
-
-  # Steam and gaming settings
-  nixpkgs.config.allowUnfree = true;
-  programs.steam = {
-    enable = true;
-    package = pkgs.steam.override {
-      extraPkgs = pkgs:
-        with pkgs; [
-          xorg.libXcursor
-          xorg.libXi
-          xorg.libXinerama
-          xorg.libXScrnSaver
-          libblockdev
-          libpng
-          libpulseaudio
-          libvorbis
-          stdenv.cc.cc.lib
-          libkrb5
-          keyutils
-        ];
-    };
-  };
-  hardware.steam-hardware.enable = true;
-
-  programs.gamemode = {
-    enable = true;
-    settings = {
-      general = {renice = 10;};
-      gpu = {
-        apply_gpu_optimisations = "accept-responsibility";
-        gpu_device = 0;
-        amd_performance_level = "high";
-      };
-    };
-  };
-  hardware.opengl = {
-    ## radv: an open-source Vulkan driver from freedesktop
-    driSupport = true;
-    driSupport32Bit = true;
-
-    ## amdvlk: an open-source Vulkan driver from AMD
-    extraPackages = [pkgs.amdvlk];
-    extraPackages32 = [pkgs.driversi686Linux.amdvlk];
-  };
-  hardware.xpadneo.enable = true;
 }
