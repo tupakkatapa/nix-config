@@ -6,7 +6,11 @@ pkgs.stdenv.mkDerivation rec {
   name = "notify-pipewire-out-switcher";
   src = ./.;
 
-  buildInputs = with pkgs; [pulseaudio jq notify gawk];
+  buildInputs = with pkgs; [
+    notify
+    jq
+    pipewire-out-switcher
+  ];
 
   nativeBuildInputs = [pkgs.makeWrapper];
   installPhase = ''
@@ -15,23 +19,15 @@ pkgs.stdenv.mkDerivation rec {
     chmod +x $out/bin/${name}
 
     # Assets
-    mkdir -p $out/share/icons
-    cp $src/audio-volume-high-panel.svg $out/share/icons
+    mkdir -p $out/share
+    cp $src/audio-volume-high-panel.svg $out/share
+    cp $src/devices.json $out/share
 
     substituteInPlace $out/bin/${name} \
-      --replace "audio-volume-high-panel.svg" "$out/share/icons/audio-volume-high-panel.svg"
+      --replace "audio-volume-high-panel.svg" "$out/share/audio-volume-high-panel.svg" \
+      --replace "devices.json" "$out/share/devices.json"
 
     wrapProgram $out/bin/${name} \
-      --prefix PATH : ${lib.makeBinPath buildInputs}
-
-    # Wrapper script to execute with devices.json
-    mkdir -p $out/share
-    cp $src/devices.json $out/share
-    echo "#!/usr/bin/env bash" > $out/bin/notify-pipewire-out-switcher-wrapper
-    echo "exec $out/bin/notify-pipewire-out-switcher $out/share/devices.json" >> $out/bin/notify-pipewire-out-switcher-wrapper
-    chmod +x $out/bin/notify-pipewire-out-switcher-wrapper
-
-    wrapProgram $out/bin/notify-pipewire-out-switcher-wrapper \
       --prefix PATH : ${lib.makeBinPath buildInputs}
   '';
 }

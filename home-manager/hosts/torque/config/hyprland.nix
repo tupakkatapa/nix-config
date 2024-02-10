@@ -24,7 +24,7 @@
   # Notify Scripts
   notify = {
     not-hyprprop = "${pkgs.notify-not-hyprprop}/bin/notify-not-hyprprop";
-    pipewire-out-switcher = "${pkgs.notify-pipewire-out-switcher}/bin/notify-pipewire-out-switcher-wrapper";
+    pipewire-out-switcher = "${pkgs.notify-pipewire-out-switcher}/bin/notify-pipewire-out-switcher";
     screenshot = "${pkgs.notify-screenshot}/bin/notify-screenshot";
     volume = "${pkgs.notify-volume}/bin/notify-volume";
   };
