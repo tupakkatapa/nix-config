@@ -24,7 +24,7 @@ in {
       "blog.${domain}" = {
         useACMEHost = config.networking.fqdn;
         extraConfig = ''
-          reverse_proxy http://${localAddress}:1337
+          reverse_proxy http://${localAddress}:54783
         '';
       };
       "next.${domain}" = {
@@ -76,7 +76,7 @@ in {
         "/mnt/wd-red/sftp/media/series"
       ];
     forwardPorts = helpers.bindPorts {
-      tcp = [32400 3005 8324 32469 8888 1337];
+      tcp = [32400 3005 8324 32469 8888 54783];
       udp = [1900 5353 32410 32412 32413 32414];
     };
     config = {
@@ -113,11 +113,11 @@ in {
         }
       ];
 
-      # Blog (1337)
+      # Blog (54783)
       services.coditon-blog = {
         enable = true;
         openFirewall = true;
-        port = 1337;
+        port = 54783;
       };
 
       # Plex (32400)

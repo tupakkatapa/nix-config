@@ -36,6 +36,7 @@
     fuse-overlayfs
     nix
     vim
+    tmux
   ];
 
   # Set the console keymap and font
@@ -57,7 +58,7 @@
   # Enable strict OpenSSH
   services.openssh = {
     enable = true;
-    allowSFTP = lib.mkDefault true;
+    allowSFTP = lib.mkDefault false;
     extraConfig = ''
       AllowAgentForwarding no
       AllowStreamLocalForwarding no

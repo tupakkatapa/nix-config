@@ -198,7 +198,7 @@ in {
           "browser.helperApps.deleteTempFileOnExit" = true;
 
           # HTTPS / SSL/TLS / OSCP / CERTS
-          "dom.security.https_only_mode" = true;
+          "dom.security.https_only_mode" = false; # changed this
           "dom.security.https_only_mode_send_http_background_request" = false;
           "browser.xul.error_pages.expert_bad_cert" = true;
           "security.tls.enable_0rtt_data" = false;

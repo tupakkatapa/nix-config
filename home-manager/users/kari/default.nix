@@ -96,6 +96,7 @@ in {
       rpi-imager
       sublime-merge
       video-trimmer
+      chromium
 
       # High Quality Games
       osu-lazer

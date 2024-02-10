@@ -11,7 +11,7 @@
   interface = "enp0s31f6";
 
   appData = "/mnt/wd-red/appdata";
-  username = "kari";
+  user = "kari";
 
   # Inherit global stuff for containers
   extendedArgs = args // {inherit appData domain interface;};
@@ -19,10 +19,11 @@ in {
   imports = [
     (import ./containers extendedArgs)
     ../.config/motd.nix
-    ../.config/pipewire.nix
+    #../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
   ];
+  hardware.pulseaudio.enable = true;
 
   # Enable NIC driver for stage-1
   boot.kernelPatches = [
@@ -38,14 +39,14 @@ in {
   ];
 
   # Autologin for 'kari'
-  services.getty.autologinUser = "kari";
+  services.getty.autologinUser = user;
 
   # Cage-kiosk (firefox)
   services.cage = {
     enable = true;
-    user = username;
+    user = user;
     program = lib.concatStringsSep " \\\n\t" [
-      "${config.home-manager.users."${username}".programs.firefox.package}/bin/firefox"
+      "${config.home-manager.users."${user}".programs.firefox.package}/bin/firefox"
       "https://www.youtube.com"
       "https://plex.coditon.com"
       "https://www.twitch.tv"
@@ -65,7 +66,7 @@ in {
   hardware.opengl.enable = true;
 
   # Bind firefox directory to preserve cookies and such
-  fileSystems."/home/${username}/.mozilla" = {
+  fileSystems."/home/${user}/.mozilla" = {
     device = "${appData}/firefox";
     options = ["bind" "mode=755"];
   };
@@ -138,10 +139,10 @@ in {
     "d /mnt/wd-red        755 root root -"
     "d /mnt/wd-red/sftp   755 root root -"
     "d ${appData}         770 root root -"
-    "d ${appData}/firefox 755 ${username} ${username} -"
+    "d ${appData}/firefox 755 ${user} ${user} -"
   ];
 
-  # Mounts
+  # Mount drives
   fileSystems."/mnt/wd-red" = {
     device = "/dev/disk/by-uuid/779bb7b3-9ce8-49df-9ade-4f50b379bed9";
     fsType = "ext4";

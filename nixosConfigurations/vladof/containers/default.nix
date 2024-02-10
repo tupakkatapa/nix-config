@@ -55,13 +55,13 @@ in {
         [
           80 # HTTP
           443 # HTTPS
-          1337 # Blog
           7878 # Radarr
           9091 # Transmission
           9117 # Jackett
           8222 # Vaultwarden
           3000 # Lanraragi
           8888 # Nextcloud
+          54783 # Blog
         ]
         # Plex
         ++ [

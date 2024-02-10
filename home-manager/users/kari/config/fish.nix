@@ -29,7 +29,7 @@ in {
       # Changing 'ls' to 'eza'
       ls = mkIf hasEza "eza -agl --color=always --group-directories-first";
       lsd = "sudo du -Lhc --max-depth=0 *";
-      tree = mkIf hasEza "eza -T";
+      tree = mkIf hasEza "eza --git-ignore -T";
 
       # Rsync
       rcp = "rsync -IPaL";
@@ -45,7 +45,7 @@ in {
       # Nix
       ngd = "nix fmt && git add . && direnv reload";
       nfc = "nix flake check --impure";
-      buidl = "sudo nixos-rebuild switch --flake path:$HOME/Workspace/nix-config#$(hostname) --show-trace";
+      buidl = "sudo nixos-rebuild switch --flake path:$HOME/nix-config#$(hostname) --show-trace";
       gc = "nix-collect-garbage -d";
 
       # YouTube-DL
