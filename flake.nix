@@ -173,10 +173,17 @@
           aagl.nixosModules.default
         ];
 
-        bandit.modules = [
-          ./nixosConfigurations/bandit
-          nixobolus.nixosModules.kexecTree
-        ];
+        bandit = {
+          system = "x86_64-linux";
+          specialArgs = {inherit inputs outputs;};
+          modules = [
+            ./nixosConfigurations/bandit
+            nixobolus.nixosModules.kexecTree
+            {
+              system.stateVersion = "23.11";
+            }
+          ];
+        };
 
         jakobs = {
           system = "aarch64-linux";
