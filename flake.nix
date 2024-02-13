@@ -40,7 +40,7 @@
 
     # Netboot stuff
     nixpkgs-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh"; # stable
-    nix-pxe.url = "git+ssh://git@github.com/majbacka-labs/Nix-PXE?ref=develop";
+    #nix-pxe.url = "git+ssh://git@github.com/majbacka-labs/Nix-PXE?ref=develop";
     nixobolus.url = "github:ponkila/nixobolus";
 
     # Other
@@ -125,7 +125,7 @@
           (with flake.nixosConfigurations; {
             "bandit" = bandit.config.system.build.kexecTree;
             "jakobs" = jakobs.config.system.build.kexecTree;
-            "vladof" = vladof.config.system.build.squashfs;
+            #"vladof" = vladof.config.system.build.squashfs;
           })
           // packages;
       };
@@ -160,12 +160,12 @@
           aagl.nixosModules.default
         ];
 
-        vladof.modules = [
-          ./home-manager/users/kari/minimal-gui.nix
-          ./nixosConfigurations/vladof
-          nix-pxe.nixosModules.squashfs
-          coditon-blog.nixosModules.default
-        ];
+        # vladof.modules = [
+        #   ./home-manager/users/kari/minimal-gui.nix
+        #   ./nixosConfigurations/vladof
+        #   nix-pxe.nixosModules.squashfs
+        #   coditon-blog.nixosModules.default
+        # ];
 
         maliwan.modules = [
           ./home-manager/users/kari
@@ -203,7 +203,7 @@
             "torque" = nixosSystem (withDefaults torque);
           }
           // (with nixpkgs-patched.lib; {
-            "vladof" = nixosSystem (withDefaults vladof);
+            #"vladof" = nixosSystem (withDefaults vladof);
           });
       };
     };
