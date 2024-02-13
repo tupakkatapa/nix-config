@@ -64,10 +64,6 @@
   # https://nixos.wiki/wiki/NTFS
   boot.supportedFilesystems = ["ntfs"];
 
-  # Enable sshfs package for mounting SSH drives
-  # https://nixos.org/manual/nixos/stable/#sec-sshfs-non-interactive
-  system.fsPackages = [pkgs.sshfs];
-
   # Connectivity
   networking = {
     networkmanager.enable = true;

@@ -141,6 +141,7 @@
               sops-nix.nixosModules.sops
               home-manager.nixosModules.home-manager
               nix-extras.nixosModules.all
+              self.nixosModules.sftpClient
               {
                 home-manager.sharedModules = [
                   nixvim.homeManagerModules.nixvim
@@ -205,6 +206,11 @@
           // (with nixpkgs-patched.lib; {
             #"vladof" = nixosSystem (withDefaults vladof);
           });
+
+        # NixOS modules
+        nixosModules.sftpClient = {
+          imports = [./modules/sftp-client.nix];
+        };
       };
     };
 }

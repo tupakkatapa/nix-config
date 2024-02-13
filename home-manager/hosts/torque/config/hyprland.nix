@@ -51,7 +51,7 @@ in {
     WLR_RENDERER_ALLOW_SOFTWARE = "1";
   };
 
-  home.file."Pictures/wallpaper".source = ./wallpaper.png;
+  home.file."wallpaper".source = ./wallpaper.png;
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -67,7 +67,7 @@ in {
       exec-once = ${gummy} start
 
       # Wallpaper
-      exec-once = ${swaybg} -i ~/Pictures/wallpaper --mode fill
+      exec-once = ${swaybg} -i ~/wallpaper --mode fill
 
       # RGB
       #exec-once = openrgb --client --device 1 --mode direct --color "330099"

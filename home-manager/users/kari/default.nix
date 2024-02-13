@@ -18,25 +18,21 @@ in {
       fsType = "ntfs-3g";
       options = ["rw"];
     };
-    "/mnt/sftp" = {
-      device = "sftp@192.168.1.8:/";
-      fsType = "sshfs";
-      options = [
-        "IdentityFile=/home/kari/.ssh/id_ed25519"
-        "ServerAliveInterval=15"
-        "_netdev"
-        "allow_other"
-        "reconnect"
-        "x-systemd.automount"
-      ];
-    };
   };
 
-  # Create directories, these are persistent
-  systemd.tmpfiles.rules = [
-    "d /home/${user}/Pictures             755 ${user} ${user} -"
-    "d /home/${user}/Pictures/Screenshots 755 ${user} ${user} -"
-  ];
+  # Mount SFTP and bind home directories
+  services.sftpClient = {
+    inherit user;
+    enable = true;
+    identifyFile = "/home/${user}/.ssh/id_ed25519";
+    what = "sftp@192.168.1.8:/";
+    where = "/mnt/sftp";
+    bindMounts = map (dir: {
+      what = "/mnt/sftp/home/${dir}";
+      where = "/home/${user}/${dir}";
+      mode = 700;
+    }) ["Downloads" "Pictures" "Workspace" "Documents"];
+  };
 
   # Wireguard
   sops.secrets.wg-dinar = {
