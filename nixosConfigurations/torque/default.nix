@@ -4,6 +4,22 @@
   config,
   ...
 }: {
+  /*
+     Persistent file memo
+
+  nix-serve:
+    /var/cache-priv-key.pem
+    /var/cache-pub-key.pem
+
+  yubikey:
+    ~/.config/Yubico/u2f_keys
+
+  ssh:
+    ~/.ssh/id_ed25519
+    /etc/ssh/ssh_host_ed25519_key
+
+  */
+
   # EFI Bootloader with dualboot
   boot.loader = {
     efi = {
