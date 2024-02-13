@@ -8,13 +8,9 @@
   user = "core";
 in {
   networking.hostName = "bandit";
-  console.keyMap = "fi";
 
   # Autologin
   services.getty.autologinUser = user;
-
-  # Enable SSH
-  services.openssh.enable = true;
 
   # User config
   users.users."${user}" = {
@@ -34,23 +30,6 @@ in {
   users.groups."${user}" = {};
   environment.shells = [pkgs.fish];
   programs.fish.enable = true;
-
-  # Install some packages
-  environment.systemPackages = with pkgs; [
-    git
-    nix
-    rsync
-    vim
-    tmux
-  ];
-
-  # Enable 'nix-shell -p <package>'
-  nix = {
-    registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-    nixPath =
-      lib.mapAttrsToList (key: value: "${key}=${value.to.path}")
-      config.nix.registry;
-  };
 
   # Allow passwordless sudo from wheel group
   security.sudo = {
