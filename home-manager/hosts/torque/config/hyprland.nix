@@ -27,6 +27,7 @@
     pipewire-out-switcher = "${pkgs.notify-pipewire-out-switcher}/bin/notify-pipewire-out-switcher";
     screenshot = "${pkgs.notify-screenshot}/bin/notify-screenshot";
     volume = "${pkgs.notify-volume}/bin/notify-volume";
+    brightness = "${pkgs.notify-brightness}/bin/notify-brightness";
   };
 
   # Wofi scripts
@@ -40,7 +41,6 @@
   hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pamixer = "${pkgs.pamixer}/bin/pamixer";
-  gummy = "${pkgs.gummy}/bin/gummy";
   swaybg = "${pkgs.swaybg}/bin/swaybg";
 in {
   home.sessionVariables = {
@@ -64,7 +64,6 @@ in {
       exec-once = wl-clipboard-history -t
       exec-once = swayidle -w
       exec-once = dunst
-      exec-once = ${gummy} start
 
       # Wallpaper
       exec-once = ${swaybg} -i ~/wallpaper --mode fill
@@ -88,9 +87,9 @@ in {
       monitor = ,preferred,auto,1
 
 
-      ### Brightness (gummy)
-      bind = ,XF86MonBrightnessDown, exec, ${gummy} -b -5
-      bind = ,XF86MonBrightnessUp, exec, ${gummy} -b +5
+      ### Brightness
+      bind = ,XF86MonBrightnessDown, exec, ${notify.brightness} -b -5
+      bind = ,XF86MonBrightnessUp, exec, ${notify.brightness} -b +5
 
 
       ### Input #################################### -->

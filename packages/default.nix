@@ -9,6 +9,7 @@
   "dm-quickfile" = pkgs.callPackage ./wofi-scripts/dm-quickfile {};
   "dm-radio" = pkgs.callPackage ./wofi-scripts/dm-radio {};
   # Notify scripts
+  "notify-brightness" = pkgs.callPackage ./notify-scripts/notify-brightness {};
   "notify-screenshot" = pkgs.callPackage ./notify-scripts/notify-screenshot {};
   "notify-volume" = pkgs.callPackage ./notify-scripts/notify-volume {};
   "notify-pipewire-out-switcher" = pkgs.callPackage ./notify-scripts/notify-pipewire-out-switcher {};
