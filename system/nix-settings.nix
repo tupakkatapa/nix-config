@@ -12,31 +12,24 @@
 
     # This will additionally add your inputs to the system's legacy channels
     # Making legacy nix commands consistent as well, awesome!
-    nixPath =
-      lib.mapAttrsToList (key: value: "${key}=${value.to.path}")
-      config.nix.registry;
+    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
     settings = {
       # Enable flakes and new 'nix' command
       experimental-features = "nix-command flakes";
       # Deduplicate and optimize nix store
       auto-optimise-store = true;
+      # Allows this server to be used as a remote builder
+      trusted-users = ["root" "@wheel"];
 
       extra-substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
-        "https://ezkea.cachix.org"
-        "http://torque.coditon.com:5000"
       ];
       extra-trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
-        "torque.coditon.com:deBXOnPXp2vEHu4BAvh7TY2aUIOhT481ohsECftxO0E="
       ];
-
-      # Allows this server to be used as a remote builder
-      trusted-users = ["root" "@wheel" "kari"];
     };
 
     # buildMachines = [
@@ -53,10 +46,11 @@
     #   }
     # ];
     distributedBuilds = true;
-    # optional, useful when the builder has a faster internet connection than yours
     extraOptions = ''
+      # optional, useful when the builder has a faster internet connection than yours
       builders-use-substitutes = true
 
+      # fallback if substituter down
       download-attempts = 3
       connect-timeout = 5
       fallback = true

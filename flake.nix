@@ -181,6 +181,7 @@
           specialArgs = {inherit inputs outputs;};
           modules = [
             ./nixosConfigurations/bandit
+            ./system/nix-settings.nix
             nixobolus.nixosModules.kexecTree
             {
               system.stateVersion = "23.11";

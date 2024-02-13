@@ -44,14 +44,6 @@ in {
     tmux
   ];
 
-  # Enable 'nix-shell -p <package>'
-  nix = {
-    registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-    nixPath =
-      lib.mapAttrsToList (key: value: "${key}=${value.to.path}")
-      config.nix.registry;
-  };
-
   # Allow passwordless sudo from wheel group
   security.sudo = {
     enable = true;
