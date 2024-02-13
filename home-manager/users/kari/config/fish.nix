@@ -28,7 +28,6 @@ in {
 
       # Changing 'ls' to 'eza'
       ls = mkIf hasEza "eza -agl --color=always --group-directories-first";
-      lsd = "sudo du -Lhc --max-depth=0 *";
       tree = mkIf hasEza "eza --git-ignore -T";
 
       # Rsync
@@ -38,6 +37,7 @@ in {
       # Adding flags
       df = "df -h";
       du = "du -h";
+
       free = "free -h";
       grep = "grep --color=auto";
       jctl = "journalctl -p 3 -xb";
@@ -62,6 +62,8 @@ in {
       # Misc
       vim = mkIf hasNeovim "nvim";
       amimullvad = "curl https://am.i.mullvad.net/connected";
+      lsd = "sudo du -Lhc --max-depth=0 *";
+      random-port = "shuf -i 1024-65535 -n 1";
     };
     functions = {fish_greeting = "";};
     interactiveShellInit =
