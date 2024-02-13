@@ -1410,14 +1410,16 @@
       "locked": {
         "lastModified": 1706494547,
         "narHash": "sha256-KJO2YOsc10vylVi2DmKcBvy5AUODVtW8SSmyc6FX3kQ=",
-        "path": "/nix/store/7pdjh0z4v171z48kj20kkc5dpl3r1jy1-source",
+        "ref": "develop",
         "rev": "819a2ef01f8217382776a845af3d90a54886bac3",
         "revCount": 19,
-        "type": "path"
+        "type": "git",
+        "url": "ssh://git@github.com/majbacka-labs/Nix-PXE"
       },
       "original": {
-        "id": "nix-pxe",
-        "type": "indirect"
+        "ref": "develop",
+        "type": "git",
+        "url": "ssh://git@github.com/majbacka-labs/Nix-PXE"
       }
     },
     "nix_2": {
