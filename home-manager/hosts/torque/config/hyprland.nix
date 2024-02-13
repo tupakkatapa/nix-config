@@ -317,7 +317,7 @@ in {
       bind = , r, submap, reset
 
       # Quickfile
-      bind = , f, exec, ${dm.quickfile} "/mnt/sftp/docs/tabs" "$HOME/Workspace/nix-config"
+      bind = , f, exec, ${dm.quickfile} "/mnt/sftp/docs/tabs" "$HOME/Documents" "$HOME/nix-config"
       bind = , f, submap, reset
 
       # Reset submaps
