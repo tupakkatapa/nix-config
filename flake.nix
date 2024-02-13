@@ -29,6 +29,7 @@
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
     hyprwm-contrib.url = "github:hyprwm/contrib";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -57,6 +58,7 @@
     nix-pxe,
     nixobolus,
     nixpkgs,
+    nixpkgs-stable,
     nixpkgs-patched,
     nixvim,
     sops-nix,
@@ -198,11 +200,13 @@
         # NixOS configuration entrypoints
         nixosConfigurations = with nixpkgs.lib;
           {
-            "bandit" = nixosSystem bandit;
             "jakobs" = nixosSystem (withDefaults jakobs);
             "maliwan" = nixosSystem (withDefaults maliwan);
             "torque" = nixosSystem (withDefaults torque);
           }
+          // (with nixpkgs-stable.lib; {
+            "bandit" = nixosSystem bandit;
+          })
           // (with nixpkgs-patched.lib; {
             "vladof" = nixosSystem (withDefaults vladof);
           });
