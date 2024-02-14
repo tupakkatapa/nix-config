@@ -28,15 +28,17 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1704520614,
-        "narHash": "sha256-zZY5BHB0mr9K/yxGfcTIjVxTvPp8OGN8eHtzi1/P51o=",
-        "path": "/nix/store/c6410h03qsarf24bgljqf373a9dfcr52-source",
-        "rev": "99b540880b51e4a5b11e9c6269c094ee7b8411aa",
-        "type": "path"
+        "lastModified": 1707919929,
+        "narHash": "sha256-QwQY4lv4pBU7dgDpgJ9cn5HWhtPlMs5mzn02O+wGqTA=",
+        "owner": "tupakkatapa",
+        "repo": "blog.coditon.com",
+        "rev": "453217314eb269018ed9b5f0b82ee1defedf67d8",
+        "type": "github"
       },
       "original": {
-        "id": "coditon-blog",
-        "type": "indirect"
+        "owner": "tupakkatapa",
+        "repo": "blog.coditon.com",
+        "type": "github"
       }
     },
     "devenv": {

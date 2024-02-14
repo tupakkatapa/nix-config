@@ -138,9 +138,9 @@ in {
         what = bindMount.what;
         where = bindMount.where;
         wantedBy = ["multi-user.target"];
-        #wants = ["better-network-online.target" "sftp-mount-trigger.service"];
-        #after = ["better-network-online.target" "sftp-mount-trigger.service"];
-        #requires = ["sftp-mount-trigger.service"];
+        wants = ["better-network-online.target" "sftp-mount-trigger.service"];
+        after = ["better-network-online.target" "sftp-mount-trigger.service"];
+        requires = ["sftp-mount-trigger.service"];
         options = concatStringsSep "," [
           "bind"
           "mode=${toString bindMount.mode}"

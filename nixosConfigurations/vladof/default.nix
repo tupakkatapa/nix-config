@@ -6,7 +6,7 @@
   ...
 } @ args: let
   domain = "coditon.com";
-  address = "192.168.1.8";
+  localAddress = "192.168.1.8";
   gateway = "192.168.1.1";
   interface = "enp0s31f6";
 
@@ -19,9 +19,6 @@ in {
   imports = [
     (import ./services extendedArgs)
     ../.config/motd.nix
-    #../.config/pipewire.nix
-    ../.config/tuigreet-hypr.nix
-    ../.config/yubikey.nix
   ];
   hardware.pulseaudio.enable = true;
 
@@ -79,7 +76,7 @@ in {
 
     interfaces.${interface}.ipv4.addresses = [
       {
-        address = address; # static IP
+        address = localAddress; # static IP
         prefixLength = 24;
       }
     ];
@@ -142,7 +139,7 @@ in {
   systemd.tmpfiles.rules = [
     "d /mnt/wd-red        755 root root -"
     "d /mnt/wd-red/sftp   755 root root -"
-    "d ${appData}         770 root root -"
+    "d ${appData}         777 root root -"
     "d ${appData}/firefox 755 ${user} ${user} -"
   ];
 

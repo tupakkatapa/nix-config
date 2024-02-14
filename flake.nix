@@ -46,6 +46,7 @@
 
     # Other
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
+    coditon-blog.url = "github:tupakkatapa/blog.coditon.com";
   };
 
   outputs = {
