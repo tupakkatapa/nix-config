@@ -17,7 +17,7 @@
   extendedArgs = args // {inherit appData domain interface;};
 in {
   imports = [
-    (import ./containers extendedArgs)
+    (import ./services extendedArgs)
     ../.config/motd.nix
     #../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
@@ -118,7 +118,11 @@ in {
     isSystemUser = true;
     useDefaultShell = false;
     group = "sftp";
-    extraGroups = ["transmission"];
+    extraGroups = [
+      "sshd"
+      "nextcloud"
+      "transmission"
+    ];
     home = "/mnt/wd-red/sftp";
     openssh.authorizedKeys.keys = [
       # kari@torque
