@@ -2,7 +2,7 @@
 # Derived from https://gitlab.com/dwt1/dmscripts/-/blob/master/scripts/dm-radio
 
 DMENU="wofi --dmenu -w 1"
-DMRADIOVOLUME="100"
+DMRADIOVOLUME="30"
 
 if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <path_to_stations_json>"
