@@ -41,7 +41,7 @@
 
     # Netboot stuff
     nixpkgs-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh"; # stable
-    nix-pxe.url = "git+ssh://git@github.com/majbacka-labs/Nix-PXE";
+    nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie";
     nixobolus.url = "github:ponkila/nixobolus";
 
     # Other
@@ -56,7 +56,7 @@
     flake-parts,
     home-manager,
     nix-extras,
-    nix-pxe,
+    nixie,
     nixobolus,
     nixpkgs,
     nixpkgs-stable,
@@ -83,8 +83,8 @@
         packages =
           import ./packages {inherit pkgs;}
           // {
-            "lkddb-filter" = inputs'.nix-pxe.packages.lkddb-filter;
-            "pxe-generate" = inputs'.nix-pxe.packages.pxe-generate;
+            "lkddb-filter" = inputs'.nixie.packages.lkddb-filter;
+            "pxe-generate" = inputs'.nixie.packages.pxe-generate;
           };
       in {
         # Overlays
@@ -167,7 +167,7 @@
         vladof.modules = [
           ./home-manager/users/kari/minimal-gui.nix
           ./nixosConfigurations/vladof
-          nix-pxe.nixosModules.squashfs
+          nixie.nixosModules.squashfs
           coditon-blog.nixosModules.default
         ];
 
