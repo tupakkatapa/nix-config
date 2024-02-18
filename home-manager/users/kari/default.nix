@@ -30,7 +30,7 @@ in {
       [
         {
           inherit identifyFile;
-          what = "/";
+          what = "${sftpPrefix}/";
           where = "/mnt/sftp";
         }
       ]
