@@ -21,17 +21,24 @@ in {
   };
 
   # Mount SFTP and bind home directories
-  services.sftpClient = {
-    inherit user;
-    enable = true;
+  services.sftpClient = let
     identifyFile = "/home/${user}/.ssh/id_ed25519";
-    what = "sftp@192.168.1.8:/";
-    where = "/mnt/sftp";
-    bindMounts = map (dir: {
-      what = "/mnt/sftp/home/${dir}";
-      where = "/home/${user}/${dir}";
-      mode = 700;
-    }) ["Downloads" "Pictures" "Workspace" "Documents"];
+    sftpPrefix = "sftp@192.168.1.8:";
+  in {
+    enable = true;
+    mounts =
+      [
+        {
+          inherit identifyFile;
+          what = "/";
+          where = "/mnt/sftp";
+        }
+      ]
+      ++ (map (dir: {
+        inherit identifyFile;
+        what = "${sftpPrefix}/home/${dir}";
+        where = "/home/${user}/${dir}";
+      }) ["Downloads" "Pictures" "Workspace" "Documents"]);
   };
 
   # Wireguard
