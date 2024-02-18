@@ -39,7 +39,7 @@ verbose_msg() {
 show_values() {
     echo "Current Monitor Settings:"
     ddcutil getvcp 10 | awk -F'current value = |, max value = ' '/Brightness/{print "Brightness: " $2}'
-    ddcutil getvcp 12 | awk -F'current value = |, max value = ' '/Contrast/{print "Contrast: " $2}'
+    ddcutil getvcp 12 | awk -F'current value = |, max value = ' '/Contrast /{print "Contrast: " $2}'
 }
 
 # Function to adjust brightness or contrast
@@ -47,6 +47,14 @@ adjust_value() {
     local feature_code=$1
     local adjustment=$2
     local current_value max_value new_value
+    local feature_name
+
+    # Determine feature name
+    feature_name=$(case $feature_code in
+        10) echo "Brightness";;
+        12) echo "Contrast";;
+        *) echo "Unknown";;
+    esac)
 
     # Extract current and max value
     read -r current_value max_value < <(ddcutil getvcp "$feature_code" | awk -F'current value = |, max value = ' 'NR==1{print $2" "$3}')
@@ -69,7 +77,7 @@ adjust_value() {
 
     # Set new value
     ddcutil setvcp "$feature_code" "$new_value"
-    echo "Value set to $new_value."
+    echo "$feature_name value set to $new_value."
 }
 
 # Parse arguments
