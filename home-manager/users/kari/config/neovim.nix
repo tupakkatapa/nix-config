@@ -21,7 +21,7 @@
 
     colorschemes.gruvbox = {
       enable = true;
-      contrastDark = "medium";
+      settings.contrast_dark = "medium";
     };
 
     # NOTE: Default mode is normal-visual-op
