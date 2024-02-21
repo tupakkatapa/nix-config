@@ -41,6 +41,11 @@
   };
   time.hardwareClockInLocalTime = true;
 
+  # Support for cross compilation
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+  ];
+
   # Set the font for GRUB
   boot.loader.grub.font = "${pkgs.terminus_font}/share/fonts/terminus/ter-x24n.pcf.gz";
   boot.loader.grub.fontSize = 24;
