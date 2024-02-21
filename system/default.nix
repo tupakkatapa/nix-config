@@ -78,7 +78,10 @@
   systemd.watchdog.runtimeTime = "30s";
 
   # Avoid locking up in low memory situations
-  services.earlyoom.enable = true;
+  services.earlyoom = {
+    enable = true;
+    freeMemThreshold = 5;
+  };
 
   # Zram swap
   zramSwap.enable = true;
