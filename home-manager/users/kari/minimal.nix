@@ -20,6 +20,7 @@ in {
       "audio"
       "caddy"
       "cups"
+      "disk"
       "i2c"
       "input"
       "jackaudio"

@@ -11,6 +11,7 @@
 ## Resources
 Here are some useful resources to learn about Nix and NixOS:
 
+- [NixOS - Everything Everywhere All At Once](https://www.youtube.com/watch?v=CwfKlX3rA6E)
 - [Nix Pills - Why You Should Give it a Try](https://nixos.org/guides/nix-pills/why-you-should-give-it-a-try.html)
 - [Zero to Nix - Declarative programming](https://zero-to-nix.com/concepts/declarative)
 - [NixOS Wiki - Btrfs Installation](https://nixos.wiki/wiki/Btrfs)

@@ -266,8 +266,8 @@
         url = "https://account.proton.me/mail";
       }
       {
-        name = "Hauki";
-        url = "https://www.youtube.com/watch?v=lrKZ-5xLZWI";
+        name = "Hetzner";
+        url = "https://console.hetzner.cloud";
       }
     ];
   }

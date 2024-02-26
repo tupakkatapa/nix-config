@@ -47,7 +47,7 @@ in {
     neededForUsers = true;
   };
   networking.wg-quick.interfaces."wg0" = {
-    autostart = false;
+    autostart = true;
     configFile = config.sops.secrets.wg-dinar.path;
   };
 

@@ -181,6 +181,7 @@
       treesitter = {
         enable = true;
         indent = true;
+        folding = false;
         nixvimInjections = true;
         grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
           bash

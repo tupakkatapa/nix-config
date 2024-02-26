@@ -45,9 +45,7 @@ in {
     program = lib.concatStringsSep " \\\n\t" [
       "${config.home-manager.users."${user}".programs.firefox.package}/bin/firefox"
       "https://www.youtube.com"
-      "https://plex.coditon.com"
-      "https://www.twitch.tv"
-      "https://kick.com"
+      "http://0.0.0.0:32400" # plex
     ];
     environment = {
       XKB_DEFAULT_LAYOUT = "fi";
