@@ -28,11 +28,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1707919929,
-        "narHash": "sha256-QwQY4lv4pBU7dgDpgJ9cn5HWhtPlMs5mzn02O+wGqTA=",
+        "lastModified": 1709333194,
+        "narHash": "sha256-FBX8aqa2KOy3baBnMUY7ewiDfYgvNaLU7eKJ2Fi+LEU=",
         "owner": "tupakkatapa",
         "repo": "blog.coditon.com",
-        "rev": "453217314eb269018ed9b5f0b82ee1defedf67d8",
+        "rev": "0a42116bc28cc504ffc2ff08513e672da7810980",
         "type": "github"
       },
       "original": {
