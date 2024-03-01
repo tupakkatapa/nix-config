@@ -1616,16 +1616,15 @@
         "nixpkgs-stable": "nixpkgs-stable_8"
       },
       "locked": {
-        "lastModified": 1709058344,
-        "narHash": "sha256-lVRMoZZgeIGkj2LO74EG0D18p96Pa9ZFTK0Rd5k4rYo=",
+        "lastModified": 1708431465,
+        "narHash": "sha256-zbNTvRla5eJlMMzZrc90/AheCsfS9jlOGGpGrU3ElpE=",
         "owner": "ponkila",
         "repo": "nixobolus",
-        "rev": "31ea2ac0a3bea4563ec712ed872d28edb7d61717",
+        "rev": "3cb7509e9d70cd7f19e5869eea3db1ce403c1b22",
         "type": "github"
       },
       "original": {
         "owner": "ponkila",
-        "ref": "jesse/init",
         "repo": "nixobolus",
         "type": "github"
       }
