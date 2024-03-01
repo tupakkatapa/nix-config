@@ -71,6 +71,10 @@
             name = "FitGirl Repacks";
             url = "https://fitgirl-repacks.site";
           }
+          {
+            name = "Libgen";
+            url = "https://libgen.is/";
+          }
         ];
       }
       {
