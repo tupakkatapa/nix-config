@@ -48,6 +48,12 @@ in {
       servicesConfig;
   };
 
+  # Firewall
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = lib.mapAttrsToList (name: service: service.port) servicesConfig;
+  };
+
   # Create directories, these are persistent
   systemd.tmpfiles.rules =
     lib.mapAttrsToList (
