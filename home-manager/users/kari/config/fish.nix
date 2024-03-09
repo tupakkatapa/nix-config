@@ -45,7 +45,10 @@ in {
       # Nix
       ngd = "nix fmt && git add . && direnv reload";
       nfc = "nix flake check --impure";
-      buidl = "sudo nixos-rebuild switch --flake path:$HOME/nix-config#$(hostname) --show-trace";
+      buidl = "sudo nixos-rebuild switch --flake path:$HOME/nix-config#$(hostname)";
+      nrs = "sudo nixos-rebuild switch --flake .";
+      nrt = "sudo nixos-rebuild test --flake .";
+      nrb = "sudo nixos-rebuild boot --flake .";
       gc = "nix-collect-garbage -d";
 
       # YouTube-DL
