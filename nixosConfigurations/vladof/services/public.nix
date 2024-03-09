@@ -16,10 +16,6 @@
       addr = "blog.${domain}";
       port = 54783;
     };
-    nextcloud = {
-      addr = "next.${domain}";
-      port = 63783;
-    };
   };
 in {
   # Reverse proxies
@@ -60,33 +56,6 @@ in {
       name: _: "d ${appData}/${name} 700 ${name} ${name} -"
     )
     servicesConfig;
-
-  # Secrets
-  sops.secrets = {
-    "nextcloud-admin-password" = {
-      sopsFile = ../../secrets.yaml;
-      mode = "444";
-    };
-  };
-
-  # Nextcloud
-  services.nextcloud = {
-    enable = true;
-    package = pkgs.nextcloud28;
-    hostName = servicesConfig.nextcloud.addr;
-    datadir = "${appData}/nextcloud";
-    https = true;
-    config = {
-      adminuser = "admin";
-      adminpassFile = config.sops.secrets.nextcloud-admin-password.path;
-    };
-  };
-  services.nginx.virtualHosts."${servicesConfig.nextcloud.addr}".listen = [
-    {
-      addr = "0.0.0.0";
-      port = servicesConfig.nextcloud.port;
-    }
-  ];
 
   # Blog
   services.coditon-blog = {

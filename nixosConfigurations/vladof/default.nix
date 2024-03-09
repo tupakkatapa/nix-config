@@ -115,7 +115,6 @@ in {
     group = "sftp";
     extraGroups = [
       "sshd"
-      "nextcloud"
       "transmission"
     ];
     home = "/mnt/wd-red/sftp";
