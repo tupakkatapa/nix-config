@@ -46,6 +46,8 @@ in {
         submap = scripts
         bind = , c, exec, ${hyprpicker} -a -n
         bind = , c, submap, reset
+        bind = , e, exec, ${pkgs.wofi-emoji}/bin/wofi-emoji
+        bind = , e, submap, reset
         bind = , f, exec, ${dm.quickfile} "/mnt/sftp/docs/tabs" "$HOME/Documents" "$HOME/nix-config"
         bind = , f, submap, reset
         bind = , p, exec, ${dm.pipewire-out-switcher}
