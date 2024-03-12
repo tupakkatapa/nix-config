@@ -25,7 +25,7 @@
       "tsx=on"
       "tsx_async_abort=off"
     ];
-    kernelPackages = lib.mkDefault (pkgs.linuxPackagesFor (pkgs.linux_latest));
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
     tmp.tmpfsSize = "80%"; # default is 50%
   };
 
@@ -35,8 +35,9 @@
     file
     fuse-overlayfs
     nix
-    vim
+    pciutils
     tmux
+    vim
   ];
 
   # Set the console keymap and font

@@ -64,6 +64,7 @@ in {
         bindm = ${mod}, mouse:272,  movewindow
         bindm = ${mod}, mouse:273,  resizewindow
       '';
+
     settings = {
       input = {
         follow_mouse = "1";

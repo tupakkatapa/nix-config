@@ -61,7 +61,7 @@
   ];
 
   # https://github.com/NixOS/nixpkgs/issues/143365
-  security.pam.services = {swaylock = {};};
+  security.pam.services.swaylock = {};
 
   # https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;
@@ -105,16 +105,6 @@
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
 
-  # Solaar uinput permissions, fixes brightness keys
-  services.udev.extraRules = let
-    solaar-rules = builtins.fetchurl {
-      url = "https://raw.githubusercontent.com/pwr-Solaar/Solaar/65b9005d97939873af1c16c65d9b4dcdf13d9be5/rules.d-uinput/42-logitech-unify-permissions.rules";
-      sha256 = "sha256:03qsxn82dni1zr1bxjlsw32s4v4r4ia8jizbb3jrnl3b5zdiyin5";
-    };
-  in ''
-    ${builtins.readFile solaar-rules}
-  '';
-
   # Logitech steering wheel
   hardware.new-lg4ff.enable = true;
 
@@ -123,10 +113,6 @@
     # Hardware
     oversteer
     solaar
-
-    # Wine
-    winetricks
-    wineWowPackages.waylandFull
 
     # Podman-compose
     podman-compose

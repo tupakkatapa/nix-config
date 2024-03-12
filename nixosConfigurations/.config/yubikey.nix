@@ -4,8 +4,8 @@
   lib,
   ...
 }: {
+  # Yubico's official tools
   environment.systemPackages = with pkgs; [
-    # Yubico's official tools
     yubikey-manager
     yubikey-manager-qt
     yubikey-personalization

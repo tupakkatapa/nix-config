@@ -26,14 +26,16 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
-    hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
-    hyprwm-contrib.url = "github:hyprwm/contrib";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:mic92/sops-nix";
+
+    # Hyprland
+    hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
+    hyprwm-contrib.url = "github:hyprwm/contrib";
 
     # Genshin Impact
     aagl.inputs.nixpkgs.follows = "nixpkgs";
@@ -83,8 +85,8 @@
         packages =
           import ./packages {inherit pkgs;}
           // {
-            "lkddb-filter" = inputs'.nixie.packages.lkddb-filter;
-            "pxe-generate" = inputs'.nixie.packages.pxe-generate;
+            lkddb-filter = inputs'.nixie.packages.lkddb-filter;
+            pxe-generate = inputs'.nixie.packages.pxe-generate;
           };
       in {
         # Overlays
