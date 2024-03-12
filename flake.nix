@@ -26,6 +26,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
@@ -60,6 +61,7 @@
     nix-extras,
     nixie,
     nixobolus,
+    nixos-hardware,
     nixpkgs,
     nixpkgs-stable,
     nixpkgs-patched,
@@ -164,6 +166,7 @@
           ./home-manager/users/kari
           ./nixosConfigurations/torque
           aagl.nixosModules.default
+          nixos-hardware.nixosModules.common-gpu-amd
         ];
 
         vladof.modules = [
@@ -171,12 +174,14 @@
           ./nixosConfigurations/vladof
           nixie.nixosModules.squashfs
           coditon-blog.nixosModules.default
+          nixos-hardware.nixosModules.common-gpu-intel
         ];
 
         maliwan.modules = [
           ./home-manager/users/kari
           ./nixosConfigurations/maliwan
           aagl.nixosModules.default
+          nixos-hardware.nixosModules.common-gpu-intel
         ];
 
         bandit = {
@@ -198,6 +203,7 @@
             ./home-manager/users/kari/minimal.nix
             ./nixosConfigurations/jakobs
             nixobolus.nixosModules.kexecTree
+            inputs.nixos-hardware.nixosModules.raspberry-pi-4
           ];
         };
       in {
