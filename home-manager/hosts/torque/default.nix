@@ -9,8 +9,8 @@
   # See 'home-manager/users/kari/minimal.nix' for an example how to do this conditionally
 
   imports = [
-    #./config/swayidle.nix
-    #./config/swaylock.nix
+    # ./config/swayidle.nix
+    # ./config/swaylock.nix
     ./config/dunst.nix
     ./config/gtk.nix
     ./config/hyprland.nix

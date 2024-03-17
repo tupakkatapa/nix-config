@@ -1,3 +1,4 @@
+# derived from: https://github.com/Misterio77/nix-config/blob/0ed82f3d63a366eafbacb8eee27985afe30b249a/home/misterio/features/desktop/common/wayland-wm/swayidle.nix
 {
   pkgs,
   lib,
@@ -7,7 +8,7 @@
   swaylock = "${config.programs.swaylock.package}/bin/swaylock";
   pgrep = "${pkgs.procps}/bin/pgrep";
   pactl = "${pkgs.pulseaudio}/bin/pactl";
-  openrgb = "${pkgs.openrgb}/bin/openrgb";
+  hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
 
   isLocked = "${pgrep} -x ${swaylock}";
   lockTime = 4 * 60; # TODO: configurable desktop (10 min)/laptop (4 min)
@@ -36,7 +37,7 @@ in {
       [
         {
           timeout = lockTime;
-          command = "${swaylock} -S --daemonize";
+          command = "${swaylock} -S --daemonize --grace 15";
         }
       ]
       ++
@@ -45,13 +46,13 @@ in {
         timeout = 10;
         command = "${pactl} set-source-mute @DEFAULT_SOURCE@ yes";
         resumeCommand = "${pactl} set-source-mute @DEFAULT_SOURCE@ no";
-      });
-    #++
-    # TODO: Turn off RGB
-    # (lib.optionals config.systemd.services.openrgb.enable (afterLockTimeout {
-    #   timeout = 20;
-    #   command = "${openrgb} --device 1 --client --color \"000000\" --mode direct";
-    #   resumeCommand = "${openrgb} --device 1 --client --color \"330099\" --mode direct";
-    # }))
+      })
+      ++
+      # Turn off displays (hyprland)
+      (lib.optionals config.wayland.windowManager.hyprland.enable (afterLockTimeout {
+        timeout = 40;
+        command = "${hyprctl} dispatch dpms off";
+        resumeCommand = "${hyprctl} dispatch dpms on";
+      }));
   };
 }
