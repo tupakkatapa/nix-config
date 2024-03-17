@@ -27,26 +27,42 @@
       addr = "lanraragi.${domain}";
       port = 3000;
     };
+    plex = {
+      addr = "plex.${domain}";
+      port = 32400;
+    };
+    coditon-blog = {
+      addr = "blog.${domain}";
+      port = 54783;
+    };
   };
+
+  # Generate things and stuff for services
+  servicesTmpfileRules = lib.mapAttrsToList (name: _: "d ${appData}/${name} 700 ${name} ${name} -") servicesConfig;
+  servicesPorts = lib.mapAttrsToList (name: service: service.port) servicesConfig;
+  servicesVirtualHosts =
+    lib.mapAttrs' (name: service: {
+      name = service.addr;
+      value = {
+        useACMEHost = service.addr;
+        extraConfig = ''
+          reverse_proxy http://127.0.0.1:${toString service.port}
+        '';
+      };
+    })
+    servicesConfig;
 in {
   # Reverse proxy
   services.caddy = {
     enable = true;
-    virtualHosts =
-      lib.mapAttrs' (name: service: {
-        name = service.addr;
-        value = {
-          useACMEHost = service.addr;
-          extraConfig = ''
-            reverse_proxy http://127.0.0.1:${toString service.port}
-          '';
-        };
-      })
-      servicesConfig;
+    virtualHosts = servicesVirtualHosts;
   };
 
   # TLS/SSL certificates
   security.acme = {
+    acceptTerms = true;
+    defaults.email = "jesse@ponkila.com";
+    defaults.webroot = "${appData}/acme";
     certs =
       lib.mapAttrs' (name: service: {
         name = service.addr;
@@ -54,25 +70,35 @@ in {
       })
       servicesConfig;
   };
+  # Bind service directories to persistent disk
+  fileSystems."/var/lib/acme" = {
+    device = "${appData}/acme";
+    options = ["bind"];
+  };
 
   # Firewall
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = lib.mapAttrsToList (name: service: service.port) servicesConfig;
+    allowedTCPPorts =
+      servicesPorts
+      ++ [
+        80
+        443
+      ];
   };
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules =
-    lib.mapAttrsToList (
-      name: _: "d ${appData}/${name} 700 ${name} ${name} -"
-    )
-    servicesConfig;
+    servicesTmpfileRules
+    ++ [
+      "d ${appData}/acme  700 acme acme -"
+    ];
 
   # Secrets
   sops.secrets = {
-    "vaultwarden-env".sopsFile = ../../secrets.yaml;
+    "vaultwarden-env".sopsFile = ../secrets.yaml;
     "lanraragi-admin-password" = {
-      sopsFile = ../../secrets.yaml;
+      sopsFile = ../secrets.yaml;
       mode = "444";
     };
   };
@@ -81,7 +107,6 @@ in {
   services.radarr = {
     enable = true;
     dataDir = "${appData}/radarr";
-    openFirewall = true;
   };
   users.users.radarr.extraGroups = ["transmission"];
 
@@ -89,14 +114,12 @@ in {
   services.jackett = {
     enable = true;
     dataDir = "${appData}/jackett";
-    openFirewall = true;
   };
   users.users.jackett.extraGroups = ["transmission"];
 
   # Torrent
   services.transmission = {
     enable = true;
-    openFirewall = true;
     downloadDirPermissions = "0770";
     openRPCPort = true;
     home = "${appData}/transmission";
@@ -167,5 +190,17 @@ in {
   fileSystems."/var/lib/bitwarden_rs" = {
     device = "${appData}/vaultwarden";
     options = ["bind"];
+  };
+
+  # Blog
+  services.coditon-blog = {
+    enable = true;
+    port = servicesConfig.coditon-blog.port;
+  };
+
+  # Plex (32400)
+  services.plex = {
+    enable = true;
+    dataDir = "${appData}/plex";
   };
 }

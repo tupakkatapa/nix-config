@@ -14,10 +14,10 @@
   user = "kari";
 
   # Inherit global stuff for containers
-  extendedArgs = args // {inherit appData domain interface;};
+  extendedArgs = args // {inherit appData domain;};
 in {
   imports = [
-    (import ./services extendedArgs)
+    (import ./services.nix extendedArgs)
     ../.config/motd.nix
   ];
   hardware.pulseaudio.enable = true;
