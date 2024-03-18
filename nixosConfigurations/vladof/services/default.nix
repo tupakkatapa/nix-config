@@ -57,25 +57,7 @@
     servicesConfig;
 
   # Generate index page
-  indexPage = pkgs.runCommand "indexPage" {} ''
-    mkdir -p $out
-    cat > $out/index.html <<EOF
-    <html>
-    <head>
-      <title>Service Index</title>
-    </head>
-    <body>
-      <h1>Services on ${domain}</h1>
-      <ul>
-        ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: service: ''
-        <li class="service-link"><a href="http://${service.addr}">${name}</a></li>
-      '')
-      servicesConfig)}
-      </ul>
-    </body>
-    </html>
-    EOF
-  '';
+  indexPage = import ./index.nix {inherit pkgs lib domain servicesConfig;};
 in {
   # Reverse proxy
   services.caddy = {
@@ -130,9 +112,9 @@ in {
 
   # Secrets
   sops.secrets = {
-    "vaultwarden-env".sopsFile = ../secrets.yaml;
+    "vaultwarden-env".sopsFile = ../../secrets.yaml;
     "lanraragi-admin-password" = {
-      sopsFile = ../secrets.yaml;
+      sopsFile = ../../secrets.yaml;
       mode = "444";
     };
   };

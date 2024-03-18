@@ -35,8 +35,8 @@
             url = "https://lanraragi.coditon.com";
           }
           {
-            name = "Nextcloud";
-            url = "https://next.coditon.com";
+            name = "Index";
+            url = "https://index.coditon.com";
           }
           {
             name = "Vaultwarden";
