@@ -68,7 +68,7 @@ in {
           # StartUp Settings
           "browser.aboutConfig.showWarning" = false;
           "browser.startup.page" = 1;
-          "browser.startup.homepage" = "about:home";
+          "browser.startup.homepage" = "https://index.coditon.com";
 
           # Disable Activity Stream
           "browser.newtabpage.enabled" = true; # changed this

@@ -35,6 +35,10 @@
       addr = "blog.${domain}";
       port = 54783;
     };
+    service-index = {
+      addr = "index.${domain}";
+      port = 53654;
+    };
   };
 
   # Generate things and stuff for services
@@ -51,11 +55,41 @@
       };
     })
     servicesConfig;
+
+  # Generate index page
+  indexPage = pkgs.runCommand "indexPage" {} ''
+    mkdir -p $out
+    cat > $out/index.html <<EOF
+    <html>
+    <head>
+      <title>Service Index</title>
+    </head>
+    <body>
+      <h1>Services on ${domain}</h1>
+      <ul>
+        ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: service: ''
+        <li class="service-link"><a href="http://${service.addr}">${name}</a></li>
+      '')
+      servicesConfig)}
+      </ul>
+    </body>
+    </html>
+    EOF
+  '';
 in {
   # Reverse proxy
   services.caddy = {
     enable = true;
-    virtualHosts = servicesVirtualHosts;
+    virtualHosts =
+      servicesVirtualHosts
+      // {
+        "${servicesConfig.service-index.addr}" = {
+          extraConfig = ''
+            root * ${indexPage}
+            file_server
+          '';
+        };
+      };
   };
 
   # TLS/SSL certificates
