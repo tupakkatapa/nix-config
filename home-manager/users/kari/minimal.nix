@@ -106,6 +106,7 @@ in {
 
     home.packages = with pkgs; [
       ping-sweep
+      pinit
       fissh
 
       ffmpeg
