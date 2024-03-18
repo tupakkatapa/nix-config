@@ -30,7 +30,7 @@ in {
           family = "${FONT}";
           style = "BoldItalic";
         };
-        size = 10;
+        size = 9;
       };
       shell.program = "${pkgs.fish}/bin/fish";
 

@@ -68,6 +68,7 @@ in {
       lsd = "sudo du -Lhc --max-depth=0 *";
       random-port = "shuf -i 1024-65535 -n 1";
       rm = "mv -t /tmp";
+      remove = "rm";
     };
     functions = {fish_greeting = "";};
     interactiveShellInit =

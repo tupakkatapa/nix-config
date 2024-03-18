@@ -56,12 +56,13 @@ in {
           # "https://addons.mozilla.org/firefox/downloads/file/3595905/gruvbox_dark_theme-1.1.xpi";
           "extensions.activeThemeID" = "{eb8c4a94-e603-49ef-8e81-73d3c4cc04ff}";
           "browser.uidensity" = 1;
-          "browser.toolbars.bookmarks.visibility" = "always";
+          "browser.toolbars.bookmarks.visibility" = "never";
           "browser.translations.neverTranslateLanguages" = "english finnish";
           "browser.shell.checkDefaultBrowser" = false;
           "identity.fxaccounts.enabled" = false;
           "browser.tabs.firefox-view" = false;
           "layout.spellcheckDefault" = 0;
+          "layout.css.devPixelsPerPx" = "0.9";
         }
         # derived from https://brainfucksec.github.io/firefox-hardening-guide
         // {

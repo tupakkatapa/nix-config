@@ -98,7 +98,10 @@ in {
     # Extra SSH config
     programs.ssh = {
       enable = true;
-      matchBlocks."192.168.1.*".extraOptions."StrictHostKeyChecking" = "no";
+      matchBlocks = {
+        "192.168.1.*".extraOptions."StrictHostKeyChecking" = "no";
+        "192.168.100.*".user = "core";
+      };
       forwardAgent = true;
       addKeysToAgent = "yes";
     };

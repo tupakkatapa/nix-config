@@ -38,10 +38,10 @@
     #     # To do this, run: sudo su -c 'ssh kari@buidl0.ponkila.com -i /root/.ssh/id_ed25519'
     #     systems = ["aarch64-linux" "i686-linux" "x86_64-linux"];
     #     supportedFeatures = ["benchmark" "big-parallel" "kvm" "nixos-test"];
-    #     sshUser = "kari";
+    #     sshUser = "core";
     #     protocol = "ssh";
     #     sshKey = "/root/.ssh/id_ed25519";
-    #     hostName = "buidl0.ponkila.com";
+    #     hostName = "192.168.100.5";
     #     maxJobs = 20;
     #   }
     # ];
