@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Script to add headers when printing multiple files
+
+GREEN='\033[0;32m'
+RESET='\033[0m'
+
+for file in "$@"; do
+    if [ -f "$file" ]; then
+        echo -e "${GREEN}==> $file <==${RESET}"
+        cat "$file"
+        echo # newline
+    fi
+done
+

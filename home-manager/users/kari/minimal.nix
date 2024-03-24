@@ -108,6 +108,7 @@ in {
     services.ssh-agent.enable = true;
 
     home.packages = with pkgs; [
+      tupakkatapa-utils
       ping-sweep
       pinit
       fissh

@@ -1,4 +1,5 @@
 {pkgs}: rec {
+  "tupakkatapa-utils" = pkgs.callPackage ./tupakkatapa-utils {};
   "monitor-adjust" = pkgs.callPackage ./monitor-adjust {};
   "ping-sweep" = pkgs.callPackage ./ping-sweep {};
   "print-banner" = pkgs.callPackage ./print-banner {};
