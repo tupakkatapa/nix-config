@@ -88,8 +88,10 @@ in {
         set fish_cursor_visual      block
       '';
     loginShellInit = ''
-      if command -q Hyprland
-        exec Hyprland &> /dev/null
+      if test (tty) = "/dev/tty1"
+        if command -q Hyprland
+          exec Hyprland &> /dev/null
+        end
       end
     '';
   };
