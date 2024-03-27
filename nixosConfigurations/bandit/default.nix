@@ -33,7 +33,50 @@ in {
   };
   users.groups."${user}" = {};
   environment.shells = [pkgs.fish];
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    shellAbbrs = {
+      q = "exit";
+      c = "clear";
+      ka = "pkill";
+
+      # Powerstate
+      bios = "systemctl reboot --firmware-setup";
+      rbt = "reboot";
+      sdn = "shutdown -h now";
+
+      # Removed home directory once
+      rm = "mv -it /tmp";
+      remove = "rm";
+
+      # Changing 'ls' to 'eza'
+      ls = "eza -agl --color=always --group-directories-first";
+      tree = "eza --git-ignore -T";
+
+      # Rsync
+      rcp = "rsync -PaL";
+      rmv = "rsync -PaL --remove-source-files";
+
+      # Adding flags
+      df = "df -h";
+      du = "du -h";
+      mv = "mv -i";
+      cp = "cp -ia";
+
+      free = "free -h";
+      grep = "grep --color=auto";
+      jctl = "journalctl -p 3 -xb";
+
+      # Nix
+      nfc = "nix flake check --impure";
+      gc = "nix-collect-garbage -d";
+
+      # Misc
+      vim = "nvim";
+      lsd = "sudo du -Lhc --max-depth=0 *";
+      port = "shuf -i 1024-65535 -n 1";
+    };
+  };
 
   # Install some packages
   environment.systemPackages = with pkgs; [
