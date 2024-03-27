@@ -4,7 +4,7 @@ declare -A device_aliases
 
 display_usage() {
   cat <<USAGE
-Usage: pipewire-out-switcherr [OPTIONS..] [JSON_FILE_PATH]
+Usage: pipewire-out-switcher [OPTIONS..] [JSON_FILE_PATH]
 
 Description:
   Switches audio output devices and optionally takes a JSON file to map device aliases.
@@ -15,6 +15,13 @@ Options:
 
   JSON_FILE_PATH
     Path to JSON file containing device aliases. If not provided, uses device names from pactl.
+
+    Example:
+
+    {
+      "speakers": "alsa_output.pci-0000_0c_00.4.analog-stereo",
+      "headset": "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo"
+    }
 
 USAGE
 }
