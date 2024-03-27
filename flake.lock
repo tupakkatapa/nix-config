@@ -1796,11 +1796,11 @@
     },
     "nixpkgs-patched": {
       "locked": {
-        "lastModified": 1710010887,
-        "narHash": "sha256-8GUxXsmQim94HYOerJg9RdMh+uqd+4LXJ3S07pAWiOc=",
+        "lastModified": 1711118120,
+        "narHash": "sha256-rQbe71HXfjAG3pKNIU5yBObpjKsV7QR6Fh+ISxK2q2Y=",
         "owner": "majbacka-labs",
         "repo": "nixpkgs",
-        "rev": "7541d7b2384093238f84c9a0b5f76e6fe25c0ecd",
+        "rev": "4f3bceb6dc26791f232537c99e9e0bb940596dd5",
         "type": "github"
       },
       "original": {
