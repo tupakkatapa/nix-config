@@ -13,11 +13,11 @@
   appData = "/mnt/wd-red/appdata";
   user = "kari";
 
-  # Inherit global stuff for containers
+  # Inherit global stuff for imports
   extendedArgs = args // {inherit appData domain;};
 in {
   imports = [
-    (import ./services.nix extendedArgs)
+    (import ./services extendedArgs)
     ../.config/motd.nix
   ];
   hardware.pulseaudio.enable = true;
@@ -142,10 +142,14 @@ in {
 
   # Mount drives
   fileSystems."/mnt/wd-red" = {
-    device = "/dev/disk/by-uuid/779bb7b3-9ce8-49df-9ade-4f50b379bed9";
-    fsType = "ext4";
-    options = ["noatime"];
+    device = "/dev/disk/by-uuid/a11f36c2-e601-4e6c-b8c2-136c4b07203e";
+    fsType = "btrfs";
+    # options = ["subvolid=420"];
     neededForBoot = true;
+  };
+  fileSystems."/mnt/boot" = {
+    device = "/dev/disk/by-uuid/4533-B153";
+    fsType = "vfat";
   };
 
   # Security

@@ -67,21 +67,6 @@ in {
     };
     xdg.configFile."mimeapps.list".force = true;
 
-    # Extra SSH config
-    programs.ssh = {
-      matchBlocks = {
-        "ponkila" = {
-          hostname = "192.168.100.10";
-          user = "core";
-        };
-        "pxe-server" = {
-          hostname = "192.168.1.169";
-          user = "core";
-          extraOptions = {"StrictHostKeyChecking" = "no";};
-        };
-      };
-    };
-
     home.packages = with pkgs; [
       #### SELF
       ping-sweep

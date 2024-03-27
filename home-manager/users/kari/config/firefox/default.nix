@@ -57,19 +57,20 @@ in {
           "extensions.activeThemeID" = "{eb8c4a94-e603-49ef-8e81-73d3c4cc04ff}";
           "browser.uidensity" = 1;
           "browser.toolbars.bookmarks.visibility" = "never";
-          "browser.translations.neverTranslateLanguages" = "english finnish";
+          "browser.translations.neverTranslateLanguages" = "en,fi";
           "browser.shell.checkDefaultBrowser" = false;
           "identity.fxaccounts.enabled" = false;
           "browser.tabs.firefox-view" = false;
           "layout.spellcheckDefault" = 0;
-          "layout.css.devPixelsPerPx" = "0.9";
+          "zoom.maxPercent" = 90;
+          "zoom.minPercent" = 90;
+          "browser.startup.homepage" = "https://index.coditon.com";
         }
         # derived from https://brainfucksec.github.io/firefox-hardening-guide
         // {
           # StartUp Settings
           "browser.aboutConfig.showWarning" = false;
           "browser.startup.page" = 1;
-          "browser.startup.homepage" = "https://index.coditon.com";
 
           # Disable Activity Stream
           "browser.newtabpage.enabled" = true; # changed this

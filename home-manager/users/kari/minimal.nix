@@ -100,7 +100,15 @@ in {
       enable = true;
       matchBlocks = {
         "192.168.1.*".extraOptions."StrictHostKeyChecking" = "no";
-        "192.168.100.*".user = "core";
+        "192.168.100.*" = {
+          user = "core";
+          extraOptions."StrictHostKeyChecking" = "no";
+        };
+        "pxe-server" = {
+          hostname = "192.168.1.169";
+          user = "core";
+          extraOptions = {"StrictHostKeyChecking" = "no";};
+        };
       };
       forwardAgent = true;
       addKeysToAgent = "yes";

@@ -30,13 +30,19 @@ in {
       ls = mkIf hasEza "eza -agl --color=always --group-directories-first";
       tree = mkIf hasEza "eza --git-ignore -T";
 
+      # Removed home directory once
+      rm = "mv -it /tmp";
+      remove = "rm";
+
       # Rsync
-      rcp = "rsync -IPaL";
-      rmv = "rsync -IPaL --remove-source-files";
+      rcp = "rsync -PaL";
+      rmv = "rsync -PaL --remove-source-files";
 
       # Adding flags
       df = "df -h";
       du = "du -h";
+      mv = "mv -i";
+      cp = "cp -ia";
 
       free = "free -h";
       grep = "grep --color=auto";
@@ -66,9 +72,7 @@ in {
       vim = mkIf hasNeovim "nvim";
       amimullvad = "curl https://am.i.mullvad.net/connected";
       lsd = "sudo du -Lhc --max-depth=0 *";
-      random-port = "shuf -i 1024-65535 -n 1";
-      rm = "mv -t /tmp";
-      remove = "rm";
+      port = "shuf -i 1024-65535 -n 1";
     };
     functions = {fish_greeting = "";};
     interactiveShellInit =
