@@ -117,20 +117,98 @@ in {
 
     home.packages = with pkgs; [
       tupakkatapa-utils
+      fissh
+      lkddb-filter
       ping-sweep
       pinit
-      fissh
 
       ffmpeg
-      eza
-      htop
       kexec-tools
-      lkddb-filter
       lshw
-      pciutils
+      refind
+      vim
+
+      # replacements
+      bat
+      eza
+      fd
+      ripgrep
       rsync
+      zoxide
+
+      # https://github.com/coreboot/coreboot/blob/main/util/liveiso/nixos/common.nix
+      acpica-tools
+      btrfs-progs
+      bzip2
+      ccrypt
+      chipsec
+      coreboot-utils
+      cryptsetup
+      curl
+      ddrescue
+      devmem2
+      dmidecode
+      dosfstools
+      e2fsprogs
+      efibootmgr
+      efivar
+      exfat
+      f2fs-tools
+      fuse
+      fuse3
+      fwts
+      gptfdisk
+      gitAndTools.gitFull
+      gitAndTools.tig
+      gzip
+      hdparm
+      hexdump
+      htop
+      i2c-tools
+      intel-gpu-tools
+      inxi
+      iotools
+      jfsutils
+      jq
+      lm_sensors
+      mdadm
+      minicom
+      mkpasswd
+      ms-sys
+      msr-tools
+      mtdutils
+      # neovim
+      nixos-install-tools
+      ntfsprogs
+      nvme-cli
+      openssl
+      p7zip
+      pacman
+      parted
+      pcimem
+      pciutils
+      phoronix-test-suite
+      powertop
+      psmisc
+      python3Full
+      rsync
+      screen
+      sdparm
+      smartmontools
+      socat
+      sshfs-fuse
+      testdisk
+      tmate
       tmux
+      uefitool
+      # uefitoolPackages.old-engine
+      unzip
+      upterm
+      usbutils
       wget
+      zfs
+      zip
+      zstd
     ];
 
     programs.home-manager.enable = true;

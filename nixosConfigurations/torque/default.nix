@@ -114,6 +114,10 @@
     oversteer
     solaar
 
+    # Wine
+    winetricks
+    wineWowPackages.waylandFull
+
     # Podman-compose
     podman-compose
   ];

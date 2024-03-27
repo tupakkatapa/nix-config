@@ -69,7 +69,6 @@ in {
 
     home.packages = with pkgs; [
       #### SELF
-      ping-sweep
       print-banner
       monitor-adjust
 
@@ -85,51 +84,40 @@ in {
       sublime-merge
       video-trimmer
       chromium
+      palemoon-bin
 
-      # High Quality Games
+      #### High Quality Games
       osu-lazer
       runelite
 
       #### CLI
       android-tools
-      ffmpeg
       gnupg
       grub2
-      jq
-      kalker
       parallel
       ssh-to-age
       yt-dlp
       ventoy
 
-      # Lang
+      #### Lang
       rustc
       cargo
       rustfmt
       gcc
 
-      # System Utilities
+      #### System Utilities
       nix-tree
 
-      # Networking
+      #### Networking
       iputils
       nmap
-      sshfs
       webcat
       wireguard-go
       wireguard-tools
       dhcpdump
 
-      # Alternatives
-      bat
-      fd
-      ripgrep
-
-      # Archive
-      p7zip
+      #### Archive
       unrar
-      unzip
-      zip
     ];
   };
 }
