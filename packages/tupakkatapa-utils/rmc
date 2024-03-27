@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Remove lines starting with spesific characters
+
+REMOVE_LINES_STARTING_WITH='#|;'
+
+prev_line_removed=0
+
+while IFS= read -r line || [[ -n "$line" ]]; do
+  if [[ $prev_line_removed -eq 1 && -z $line ]]; then
+    prev_line_removed=1
+  elif [[ $line =~ ^[[:space:]]*($REMOVE_LINES_STARTING_WITH) ]]; then
+    prev_line_removed=1
+  else
+    echo "$line"
+    prev_line_removed=0
+  fi
+done
