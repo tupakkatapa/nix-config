@@ -141,7 +141,7 @@ in {
       btrfs-progs
       bzip2
       ccrypt
-      chipsec
+      # chipsec
       coreboot-utils
       cryptsetup
       curl
@@ -165,9 +165,9 @@ in {
       hexdump
       htop
       i2c-tools
-      intel-gpu-tools
+      # intel-gpu-tools
       inxi
-      iotools
+      # iotools
       jfsutils
       jq
       lm_sensors
