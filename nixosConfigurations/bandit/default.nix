@@ -80,7 +80,7 @@ in {
 
   # Install some packages
   environment.systemPackages = with pkgs; [
-    lkddb-filter
+    # lkddb-filter
     refind
     vim
     eza
