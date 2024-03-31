@@ -12,7 +12,7 @@ pkgs.stdenv.mkDerivation rec {
   nativeBuildInputs = [pkgs.makeWrapper];
 
   # List of scripts to be installed
-  scripts = ["cathead" "prefix" "rmc" "ns"];
+  scripts = ["cathead" "prefix" "rmc" "ns" "rpg" "lsd"];
 
   installPhase = ''
     mkdir -p $out/bin

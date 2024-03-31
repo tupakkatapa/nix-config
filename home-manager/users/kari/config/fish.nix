@@ -71,8 +71,6 @@ in {
       # Misc
       vim = mkIf hasNeovim "nvim";
       amimullvad = "curl https://am.i.mullvad.net/connected";
-      lsd = "sudo du -Lhc --max-depth=0 *";
-      port = "shuf -i 1024-65535 -n 1";
     };
     functions = {fish_greeting = "";};
     interactiveShellInit =
