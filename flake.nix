@@ -44,12 +44,12 @@
 
     # Netboot stuff
     nixpkgs-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh"; # stable
-    nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie\?ref=develop3";
+    nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie";
     nixobolus.url = "github:ponkila/nixobolus";
 
     # Other
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
-    coditon-blog.url = "github:tupakkatapa/blog.coditon.com";
+    coditon-blog.url = "github:tupakkatapa/coditon-blog";
   };
 
   outputs = {

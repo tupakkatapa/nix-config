@@ -14,7 +14,10 @@
 
     globals = {mapleader = " ";};
 
-    options = {
+    opts = {
+      cursorline = true;
+      swapfile = false;
+      relativenumber = true;
       laststatus = 0;
       ruler = false;
     };
@@ -75,17 +78,11 @@
       }
     ];
 
-    options = {
-      cursorline = true;
-      swapfile = false;
-      relativenumber = true;
-    };
-
     plugins = {
       nix.enable = true;
       gitsigns.enable = true;
       todo-comments.enable = true;
-      comment-nvim.enable = true;
+      comment.enable = true;
       rainbow-delimiters.enable = true;
       fugitive.enable = true;
       # hardtime.enable = true;
@@ -158,8 +155,10 @@
       # Indentation guides
       indent-blankline = {
         enable = true;
-        scope.showStart = true;
-        scope.enabled = true;
+        settings = {
+          scope.showStart = true;
+          scope.enabled = true;
+        };
       };
 
       # Language server protocols
