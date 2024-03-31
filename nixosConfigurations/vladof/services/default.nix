@@ -41,6 +41,12 @@
     };
   };
 
+  # Define the derivation for blog contents
+  blogContents = pkgs.runCommand "blog-contents" {} ''
+    mkdir -p $out
+    cp -r ${./blog-contents}/* $out
+  '';
+
   # Generate things and stuff for services
   servicesTmpfileRules = lib.mapAttrsToList (name: _: "d ${appData}/${name} 700 ${name} ${name} -") servicesConfig;
   servicesPorts = lib.mapAttrsToList (name: service: service.port) servicesConfig;
@@ -212,6 +218,23 @@ in {
   services.coditon-blog = {
     enable = true;
     port = servicesConfig.coditon-blog.port;
+    dataDir = "${blogContents}";
+    name = "Jesse Karjalainen";
+    image = "${blogContents}/profile.jpg";
+    socials = [
+      {
+        fab = "fa-github";
+        url = "https://github.com/tupakkatapa";
+      }
+      {
+        fab = "fa-x-twitter";
+        url = "https://x.com/tupakkatapa";
+      }
+      {
+        fab = "fa-linkedin-in";
+        url = "https://www.linkedin.com/in/jesse-karjalainen-a7bb612b8/";
+      }
+    ];
   };
 
   # Plex (32400)
