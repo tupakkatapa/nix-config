@@ -31,7 +31,7 @@
       addr = "plex.${domain}";
       port = 32400;
     };
-    coditon-blog = {
+    coditon-md = {
       addr = "blog.${domain}";
       port = 54783;
     };
@@ -215,9 +215,9 @@ in {
   };
 
   # Blog
-  services.coditon-blog = {
+  services.coditon-md = {
     enable = true;
-    port = servicesConfig.coditon-blog.port;
+    port = servicesConfig.coditon-md.port;
     dataDir = "${blogContents}";
     name = "Jesse Karjalainen";
     image = "${blogContents}/profile.jpg";

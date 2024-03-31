@@ -49,13 +49,13 @@
 
     # Other
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
-    coditon-blog.url = "github:tupakkatapa/coditon-blog";
+    coditon-md.url = "github:tupakkatapa/coditon-md";
   };
 
   outputs = {
     self,
     aagl,
-    coditon-blog,
+    coditon-md,
     flake-parts,
     home-manager,
     nix-extras,
@@ -173,7 +173,7 @@
           ./home-manager/users/kari/minimal-gui.nix
           ./nixosConfigurations/vladof
           nixie.nixosModules.squashfs
-          coditon-blog.nixosModules.default
+          coditon-md.nixosModules.default
           nixos-hardware.nixosModules.common-gpu-intel
         ];
 

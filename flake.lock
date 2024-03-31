@@ -26,7 +26,7 @@
         "devenv": "devenv_2",
         "flake-compat": "flake-compat_3",
         "nixpkgs": [
-          "coditon-blog",
+          "coditon-md",
           "devenv",
           "nixpkgs"
         ],
@@ -70,23 +70,23 @@
         "type": "github"
       }
     },
-    "coditon-blog": {
+    "coditon-md": {
       "inputs": {
         "devenv": "devenv",
         "flake-parts": "flake-parts",
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1711845781,
-        "narHash": "sha256-3IiwRfivzMCOS5Gc13U7w5cIYHWBORk8pniVxWkBMIs=",
+        "lastModified": 1711894625,
+        "narHash": "sha256-3yDzfmx1b+G3PH1hEsMApcGhKst1ReL9QvAxiVsU9V8=",
         "owner": "tupakkatapa",
-        "repo": "coditon-blog",
-        "rev": "327842a4aa94417cb50a7af82f28ba76ffdfac0e",
+        "repo": "coditon-md",
+        "rev": "fa09614189900a123429417f196be4bce922f6c2",
         "type": "github"
       },
       "original": {
         "owner": "tupakkatapa",
-        "repo": "coditon-blog",
+        "repo": "coditon-md",
         "type": "github"
       }
     },
@@ -115,7 +115,7 @@
     "devenv_2": {
       "inputs": {
         "flake-compat": [
-          "coditon-blog",
+          "coditon-md",
           "devenv",
           "cachix",
           "flake-compat"
@@ -124,7 +124,7 @@
         "nixpkgs": "nixpkgs",
         "poetry2nix": "poetry2nix",
         "pre-commit-hooks": [
-          "coditon-blog",
+          "coditon-md",
           "devenv",
           "cachix",
           "pre-commit-hooks"
@@ -983,7 +983,7 @@
     "gitignore": {
       "inputs": {
         "nixpkgs": [
-          "coditon-blog",
+          "coditon-md",
           "devenv",
           "cachix",
           "pre-commit-hooks",
@@ -1007,7 +1007,7 @@
     "gitignore_2": {
       "inputs": {
         "nixpkgs": [
-          "coditon-blog",
+          "coditon-md",
           "devenv",
           "pre-commit-hooks",
           "nixpkgs"
@@ -1298,7 +1298,7 @@
       "inputs": {
         "flake-compat": "flake-compat_2",
         "nixpkgs": [
-          "coditon-blog",
+          "coditon-md",
           "devenv",
           "cachix",
           "devenv",
@@ -1363,7 +1363,7 @@
     "nix-github-actions": {
       "inputs": {
         "nixpkgs": [
-          "coditon-blog",
+          "coditon-md",
           "devenv",
           "cachix",
           "devenv",
@@ -1436,7 +1436,7 @@
       "inputs": {
         "flake-compat": "flake-compat_6",
         "nixpkgs": [
-          "coditon-blog",
+          "coditon-md",
           "devenv",
           "nixpkgs"
         ],
@@ -2250,7 +2250,7 @@
         "flake-utils": "flake-utils",
         "nix-github-actions": "nix-github-actions",
         "nixpkgs": [
-          "coditon-blog",
+          "coditon-md",
           "devenv",
           "cachix",
           "devenv",
@@ -2340,7 +2340,7 @@
         "flake-utils": "flake-utils_2",
         "gitignore": "gitignore",
         "nixpkgs": [
-          "coditon-blog",
+          "coditon-md",
           "devenv",
           "cachix",
           "nixpkgs"
@@ -2364,14 +2364,14 @@
     "pre-commit-hooks_2": {
       "inputs": {
         "flake-compat": [
-          "coditon-blog",
+          "coditon-md",
           "devenv",
           "flake-compat"
         ],
         "flake-utils": "flake-utils_3",
         "gitignore": "gitignore_2",
         "nixpkgs": [
-          "coditon-blog",
+          "coditon-md",
           "devenv",
           "nixpkgs"
         ],
@@ -2536,7 +2536,7 @@
     "root": {
       "inputs": {
         "aagl": "aagl",
-        "coditon-blog": "coditon-blog",
+        "coditon-md": "coditon-md",
         "devenv": "devenv_3",
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager",
