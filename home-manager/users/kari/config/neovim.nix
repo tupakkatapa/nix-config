@@ -156,7 +156,7 @@
       indent-blankline = {
         enable = true;
         settings = {
-          scope.showStart = true;
+          scope.show_start = true;
           scope.enabled = true;
         };
       };

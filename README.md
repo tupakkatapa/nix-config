@@ -1,7 +1,7 @@
 ## My NixOS Configurations
 | Hostname | Architecture | Format       | Users | Details
 | :-:       |  :-:    | :-:          | :-:   | :-
-[torque](nixosConfigurations/torque/default.nix)   | x86_64  | persistent | [kari](home-manager/users/kari/default.nix)              | AMD Desktop, Hyprland, [screenshot](https://raw.githubusercontent.com/tupakkatapa/nix-config/main/nixosConfigurations/torque/screenshot.png)
+[torgue](nixosConfigurations/torgue/default.nix)   | x86_64  | persistent | [kari](home-manager/users/kari/default.nix)              | AMD Desktop, Hyprland, [screenshot](https://raw.githubusercontent.com/tupakkatapa/nix-config/main/nixosConfigurations/torgue/screenshot.png)
 [maliwan](nixosConfigurations/maliwan/default.nix) | "       | "          | "                                                        | Intel Laptop, Hyprland
 [vladof](nixosConfigurations/vladof/default.nix)   | "       | netboot    | [kari(minimal-gui)](home-manager/users/kari/minimal.nix) | Homelab, Firefox kiosk
 [bandit](nixosConfigurations/bandit/default.nix)   | "       | "          | core                                                     | Minimal Configuration

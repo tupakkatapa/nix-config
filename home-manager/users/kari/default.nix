@@ -12,7 +12,7 @@ in {
   imports = [./minimal-gui.nix];
 
   # Mount drives
-  fileSystems = lib.mkIf (config.networking.hostName == "torque") {
+  fileSystems = lib.mkIf (config.networking.hostName == "torgue") {
     "/mnt/win" = {
       device = "/dev/disk/by-uuid/74D4CED9D4CE9CAC";
       fsType = "ntfs-3g";
@@ -75,7 +75,7 @@ in {
       #### GUI
       czkawka
       ferdium
-      gimp-with-plugins
+      # gimp-with-plugins
       libreoffice-qt
       #obsidian
       plexamp
@@ -85,6 +85,7 @@ in {
       video-trimmer
       chromium
       palemoon-bin
+      filezilla
 
       #### High Quality Games
       osu-lazer
@@ -98,6 +99,7 @@ in {
       ssh-to-age
       yt-dlp
       ventoy
+      chatgpt-cli
 
       #### Lang
       rustc

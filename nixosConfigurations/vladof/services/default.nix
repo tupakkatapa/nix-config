@@ -221,7 +221,7 @@ in {
     dataDir = "${blogContents}";
     name = "Jesse Karjalainen";
     image = "${blogContents}/profile.jpg";
-    socials = [
+    links = [
       {
         fab = "fa-github";
         url = "https://github.com/tupakkatapa";

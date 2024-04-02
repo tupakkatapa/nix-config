@@ -99,6 +99,10 @@
                 name = "FIGlet";
                 url = "https://patorjk.com/software/taag";
               }
+              {
+                name = "Favicon.io";
+                url = "https://favicon.io/";
+              }
             ];
           }
           {
@@ -166,21 +170,51 @@
         ];
       }
       {
-        name = "nix";
+        name = "git";
         bookmarks = [
           {
-            name = "Projects";
+            name = "Users";
             bookmarks = [
               {
-                name = "Misterio77/nix-config";
-                url = "https://github.com/Misterio77/nix-config";
+                name = "Misterio77";
+                url = "https://github.com/Misterio77";
               }
               {
-                name = "jhvst/nix-config";
-                url = "https://github.com/jhvst/nix-config";
+                name = "jhvst";
+                url = "https://github.com/jhvst";
+              }
+              {
+                name = "tupakkatapa";
+                url = "https://github.com/tupakkatapa";
+              }
+              {
+                name = "Afrikantahti";
+                url = "https://github.com/Afrikantahti";
+              }
+              {
+                name = "2xsaiko";
+                url = "https://git.sr.ht/~dblsaiko";
               }
             ];
           }
+          {
+            name = "Organizations";
+            bookmarks = [
+              {
+                name = "Ponkila";
+                url = "https://github.com/ponkila";
+              }
+              {
+                name = "Majbacka Labs";
+                url = "https://github.com/majbacka-labs";
+              }
+            ];
+          }
+        ];
+      }
+      {
+        name = "nix";
+        bookmarks = [
           {
             name = "Nix Reference Manual";
             bookmarks = [
@@ -224,6 +258,18 @@
             url = "https://nix-community.github.io/nixvim/";
           }
         ];
+      }
+      {
+        name = "NAPALM FTP Indexer";
+        url = "https://www.searchftps.net/";
+      }
+      {
+        name = "Exploit-DB";
+        url = "https://www.exploit-db.com/";
+      }
+      {
+        name = "Hackaday";
+        url = "https://hackaday.com/";
       }
       {
         name = "YouTube";
@@ -272,6 +318,14 @@
       {
         name = "Hetzner";
         url = "https://console.hetzner.cloud";
+      }
+      {
+        name = "Reuters";
+        url = "https://www.reuters.com/";
+      }
+      {
+        name = "Reddit";
+        url = "https://old.reddit.com/";
       }
     ];
   }
