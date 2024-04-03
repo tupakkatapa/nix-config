@@ -1,0 +1,46 @@
+---
+date: "2024-04-04"
+---
+
+# Mango Cheesecake
+
+*Serves 8, 3.5 h*
+
+The greatest pastry ever to be invented since I do not enjoy over-sweet desserts. The mango offers a refreshing and exotic flavor that's hard to resist in any shape or form. Perfect for having with a cup of coffee when your friends are over. We need bowls, a lot of bowls.
+
+## Ingredients
+
+### Crust
+- Whole grain digestive biscuits: 200g (7 oz)
+- Butter: 75g (2.6 oz)
+
+### Filling
+- Gelatin sheets: 5
+- Whipping cream: 2dl (0.85 cup)
+- Passion-mango quark: 200g (7 oz)
+- Cream cheese: 200g (7 oz)
+- Mango puree: 2.5dl (1 cup)
+- Sugar: 1dl (1/2 cup)
+
+### Glaze
+- Mango puree: 2.5dl (1 cup)
+- Gelatin sheets: 3
+- Water: 2 tbsp
+
+## Preparation
+1. Finely crush the biscuits. Combine with melted butter and press the mixture firmly into the bottom of a springform pan lined with parchment paper.
+2. Soak gelatin sheets in cold water for 10 minutes. Meanwhile, whip the cream until stiff peaks form.
+3. In a separate bowl, blend the quark, cream cheese, mango puree, and sugar.
+4. Boil a small amount of water, then dissolve the soaked gelatin sheets in it.
+5. Carefully mix the gelatin solution into the mango-quark mixture. Follow this by folding in the whipped cream.
+6. Transfer the filling over the biscuit base, smoothing the top. Chill in the refrigerator for at least 2 hours to firm up. Time for a nap 😴
+7. For the glaze, repeat the gelatin process for the remaining mango puree. Pour over the set filling, smoothing out the glaze. Refrigerate again for 1 hour.
+
+### Serving
+Loosen the cheesecake from the pan with a barbecue stick or a knife, and transfer it to a cake platter. Garnish with fresh berries or serve as is, if desired.
+
+## Note
+Original source: [K-Ruoka - Mangojuustokakku](https://www.k-ruoka.fi/reseptit/mangojuustokakku)
+
+
+
