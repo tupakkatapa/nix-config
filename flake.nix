@@ -149,6 +149,7 @@
               home-manager.nixosModules.home-manager
               nix-extras.nixosModules.all
               self.nixosModules.sftpClient
+              self.nixosModules.rsyncBackup
               self.nixosModules.autoScrcpy
               {
                 home-manager.sharedModules = [
@@ -229,6 +230,7 @@
         nixosModules = {
           sftpClient.imports = [./modules/sftp-client.nix];
           autoScrcpy.imports = [./modules/auto-scrcpy.nix];
+          rsyncBackup.imports = [./modules/rsync-backup.nix];
         };
       };
     };

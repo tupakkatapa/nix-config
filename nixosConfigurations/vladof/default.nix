@@ -22,6 +22,18 @@ in {
   ];
   hardware.pulseaudio.enable = true;
 
+  # Backup some accident-prone directories
+  services.rsyncBackup = {
+    enable = true;
+    backupFrequencyHours = 6;
+    folders = [
+      {
+        source = "/mnt/wd-red/sftp/home";
+        destination = "/mnt/wd-red/backups/home";
+      }
+    ];
+  };
+
   # Enable NIC driver for stage-1
   boot.kernelPatches = [
     {
