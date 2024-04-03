@@ -309,6 +309,7 @@ in {
         "float, title:wlogout"
         "float, viewnior"
         "float, yad"
+        "float, .scrcpy-wrapped"
 
         # Pseudo
         "pseudo, QjackCtl"

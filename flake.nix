@@ -149,6 +149,7 @@
               home-manager.nixosModules.home-manager
               nix-extras.nixosModules.all
               self.nixosModules.sftpClient
+              self.nixosModules.autoScrcpy
               {
                 home-manager.sharedModules = [
                   nixvim.homeManagerModules.nixvim
@@ -225,8 +226,9 @@
           });
 
         # NixOS modules
-        nixosModules.sftpClient = {
-          imports = [./modules/sftp-client.nix];
+        nixosModules = {
+          sftpClient.imports = [./modules/sftp-client.nix];
+          autoScrcpy.imports = [./modules/auto-scrcpy.nix];
         };
       };
     };

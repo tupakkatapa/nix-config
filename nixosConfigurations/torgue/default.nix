@@ -88,6 +88,16 @@ in {
     listenAddress = "0.0.0.0:11434";
   };
 
+  # Mirror Android phone automatically
+  services.autoScrcpy = {
+    enable = true;
+    user = {
+      name = "kari";
+      id = 1000;
+    };
+    waylandDisplay = "wayland-1";
+  };
+
   # EFI Bootloader with dualboot
   boot.loader = {
     efi = {
