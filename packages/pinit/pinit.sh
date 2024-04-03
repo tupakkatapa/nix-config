@@ -6,7 +6,7 @@ create_project() {
 
     # Create project directory with the given name and copy template files
     mkdir -p "${project_name}"
-    cp -r "src/${lang}/." "${project_name}/"
+    cp -r src/"${lang}"/* "${project_name}/"
 
     # Special handling for Rust to initialize with Cargo and rename the project appropriately
     if [ "${lang}" == "rust" ]; then

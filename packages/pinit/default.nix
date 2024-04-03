@@ -17,8 +17,10 @@ in
     installPhase = ''
       mkdir -p $out/bin
       cp $src/${packageName}.sh $out/bin/${packageName}
-      cp -r $src/src $out/bin/src
       chmod +x $out/bin/${packageName}
+
+      substituteInPlace $out/bin/${packageName} \
+        --replace "src" "$src/src"
 
       wrapProgram $out/bin/${packageName} \
         --prefix PATH : ${lib.makeBinPath buildInputs}
