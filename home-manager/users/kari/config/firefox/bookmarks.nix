@@ -127,6 +127,10 @@
             ];
           }
           {
+            name = "APKCombo";
+            url = "https://apkcombo.com/downloader/";
+          }
+          {
             name = "Dochub";
             url = "https://dochub.com/";
           }
@@ -166,6 +170,10 @@
           {
             name = "The Rust community’s crate registry";
             url = "https://crates.io/";
+          }
+          {
+            name = "Rust Language Cheat Sheet";
+            url = "https://cheats.rs/";
           }
         ];
       }

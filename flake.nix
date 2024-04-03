@@ -44,7 +44,7 @@
 
     # Netboot stuff
     nixpkgs-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh"; # stable
-    nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie";
+    nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie\?ref=jesse/bugs";
     nixobolus.url = "github:ponkila/nixobolus";
 
     # Other

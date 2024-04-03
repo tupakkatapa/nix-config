@@ -183,8 +183,7 @@ in {
         # Programs
         "SUPER, B, exec, ${BROWSER}"
         "SUPER, F, exec, ${FILEMANAGER}"
-        "SUPER, V, exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~/Workspace'"
-        "SUPER, C, exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~/nix-config'"
+        "SUPER, V, exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~'"
 
         # Misc
         "${mod} SHIFT, R, exec, hyprctl reload && notify-send \"Hyprland reloaded\""

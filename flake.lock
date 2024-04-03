@@ -77,11 +77,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1711901301,
-        "narHash": "sha256-mBzFtoQFeSfXSM/TdrqyZP+2u5LWTgn6KK2mY0zfg6s=",
+        "lastModified": 1712106070,
+        "narHash": "sha256-Ds9q0eYKoO0xJ3zCD7V472R7o+b8Q4KprYDAvDbNlTw=",
         "owner": "tupakkatapa",
         "repo": "coditon-md",
-        "rev": "fc70096dfe4189f8e36079c6bfaa4d36de674062",
+        "rev": "786e7d1d68c6505aad918c65f5ccb2fcd329bb41",
         "type": "github"
       },
       "original": {
@@ -1566,15 +1566,16 @@
         "nixpkgs-stable-patched": "nixpkgs-stable-patched"
       },
       "locked": {
-        "lastModified": 1711815441,
-        "narHash": "sha256-5XiR5ddkgqCUKCQ3sutTtHpcd5pa/sqN1es3kLXl+3g=",
-        "ref": "refs/heads/main",
-        "rev": "00de30c2b894f078a485276b0469dc0c01ec2817",
-        "revCount": 13,
+        "lastModified": 1711881286,
+        "narHash": "sha256-IoddHC7dsi/n+vMMgNIftKItrNfOehJUPGHfkVPLUBU=",
+        "ref": "jesse/bugs",
+        "rev": "cdc0b76de0e7cb563c2d954c5ce82429bba369ee",
+        "revCount": 15,
         "type": "git",
         "url": "ssh://git@github.com/majbacka-labs/nixie"
       },
       "original": {
+        "ref": "jesse/bugs",
         "type": "git",
         "url": "ssh://git@github.com/majbacka-labs/nixie"
       }
