@@ -116,7 +116,7 @@
         };
         filesystem = {
           useLibuvFileWatcher = true;
-          filteredItems.visible = true;
+          # filteredItems.visible = true;
           followCurrentFile.enabled = true;
         };
       };
@@ -175,6 +175,25 @@
         };
       };
       lsp-format.enable = true;
+
+      # A completion
+      cmp = {
+        enable = true;
+        settings = {
+          mapping = {
+            "<CR>" = "cmp.mapping.confirm({ select = true })";
+            "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+          };
+          snippet.expand = "luasnip";
+          sources = [
+            {name = "buffer";}
+            {name = "luasnip";}
+            {name = "nvim_lsp";}
+            {name = "path";}
+            {name = "tmux";}
+          ];
+        };
+      };
 
       # Highlighting
       treesitter = {
