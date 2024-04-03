@@ -4,11 +4,24 @@
 GREEN='\033[0;32m'
 RESET='\033[0m'
 
-for file in "$@"; do
-    if [ -f "$file" ]; then
-        echo -e "${GREEN}==> $file <==${RESET}"
-        cat "$file"
-        echo # newline
-    fi
-done
+search_path=("${@:-.}")
+
+print_file() {
+    echo -e "${GREEN}==> $1 <==${RESET}"
+    cat "$1"
+    echo # newline
+}
+
+if [[ "$1" == "-r" || "$1" == "--recursive" ]]; then
+    shift
+    find "${@:-.}" -type f -print0 | while IFS= read -r -d '' file; do
+        print_file "$file"
+    done
+else
+    for file in "${search_path[@]}"; do
+        if [ -f "$file" ]; then
+            print_file "$file"
+        fi
+    done
+fi
 
