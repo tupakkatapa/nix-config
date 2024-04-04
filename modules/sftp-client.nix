@@ -3,47 +3,48 @@
   pkgs,
   config,
   ...
-}:
-with lib; let
+}: let
   cfg = config.services.sftpClient;
 in {
   options.services.sftpClient = {
-    enable = mkEnableOption "SFTP Client";
+    enable = lib.mkEnableOption "SFTP Client";
 
-    mounts = mkOption {
-      type = types.listOf (types.submodule {
+    mounts = lib.mkOption {
+      type = lib.types.listOf (lib.types.submodule {
         options = {
-          identifyFile = mkOption {
-            type = types.str;
-            default = "/home/${cfg.user}/.ssh/id_ed25519";
+          identifyFile = lib.mkOption {
+            type = lib.types.str;
             description = "SSH identity file for the SFTP client.";
           };
-
-          what = mkOption {
-            type = types.str;
+          what = lib.mkOption {
+            type = lib.types.str;
             description = "The SFTP source.";
-            example = "sftp@192.168.1.8:/";
           };
-
-          where = mkOption {
-            type = types.str;
-            default = "/mnt/sftp";
+          where = lib.mkOption {
+            type = lib.types.str;
             description = "Mount point for the SFTP source.";
           };
         };
       });
       default = [];
       description = "List of directories to bind mount.";
+      example = [
+        {
+          identifyFile = "/home/user/.ssh/id_ed25519";
+          what = "user@192.168.1.100:/path/to/remote/dir";
+          where = "/mnt/my_sftp_mount";
+        }
+      ];
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     # Enable sshfs package for mounting SSH drives
     system.fsPackages = [pkgs.sshfs];
 
     # Mount drives
-    fileSystems = listToAttrs (map (mount:
-      nameValuePair mount.where {
+    fileSystems = lib.listToAttrs (map (mount:
+      lib.nameValuePair mount.where {
         device = mount.what;
         fsType = "sshfs";
         options = [
