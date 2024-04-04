@@ -131,6 +131,7 @@
         packages =
           (with flake.nixosConfigurations; {
             "bandit" = bandit.config.system.build.kexecTree;
+            "eridian" = eridian.config.system.build.kexecTree;
             "jakobs" = jakobs.config.system.build.kexecTree;
             "vladof" = vladof.config.system.build.squashfs;
           })
@@ -179,6 +180,13 @@
           nixos-hardware.nixosModules.common-gpu-intel
         ];
 
+        eridian.modules = [
+          ./home-manager/users/kari/minimal.nix
+          ./nixosConfigurations/eridian
+          nixie.nixosModules.nixie
+          nixobolus.nixosModules.kexecTree
+        ];
+
         maliwan.modules = [
           ./home-manager/users/kari
           ./nixosConfigurations/maliwan
@@ -215,6 +223,7 @@
         # NixOS configuration entrypoints
         nixosConfigurations = with nixpkgs.lib;
           {
+            "eridian" = nixosSystem (withDefaults eridian);
             "jakobs" = nixosSystem (withDefaults jakobs);
             "maliwan" = nixosSystem (withDefaults maliwan);
             "torgue" = nixosSystem (withDefaults torgue);
