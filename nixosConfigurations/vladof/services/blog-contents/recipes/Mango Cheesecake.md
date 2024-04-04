@@ -4,6 +4,10 @@ date: "2024-04-04"
 
 # Mango Cheesecake
 
+**Original source:** [K-Ruoka - Mangojuustokakku](https://www.k-ruoka.fi/reseptit/mangojuustokakku)
+
+---
+
 *Serves 8, 3.5 h*
 
 The greatest pastry ever to be invented since I do not enjoy over-sweet desserts. The mango offers a refreshing and exotic flavor that's hard to resist in any shape or form. Perfect for having with a cup of coffee when your friends are over. We need bowls, a lot of bowls.
@@ -25,7 +29,6 @@ The greatest pastry ever to be invented since I do not enjoy over-sweet desserts
 ### Glaze
 - Mango puree: 2.5dl (1 cup)
 - Gelatin sheets: 3
-- Water: 2 tbsp
 
 ## Preparation
 1. Finely crush the biscuits. Combine with melted butter and press the mixture firmly into the bottom of a springform pan lined with parchment paper.
@@ -38,9 +41,4 @@ The greatest pastry ever to be invented since I do not enjoy over-sweet desserts
 
 ### Serving
 Loosen the cheesecake from the pan with a barbecue stick or a knife, and transfer it to a cake platter. Garnish with fresh berries or serve as is, if desired.
-
-## Note
-Original source: [K-Ruoka - Mangojuustokakku](https://www.k-ruoka.fi/reseptit/mangojuustokakku)
-
-
 

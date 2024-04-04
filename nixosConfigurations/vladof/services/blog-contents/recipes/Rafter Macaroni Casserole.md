@@ -4,6 +4,10 @@ date: "2024-04-04"
 
 # Rafter Macaroni Casserole
 
+**Original source:** [K-Ruoka - Makaronilaatikko Koskenlaskijalla](https://www.k-ruoka.fi/reseptit/makaronilaatikko-koskenlaskijalla)
+
+---
+
 *Serves 4-5, 60-90 min*
 
 This is a beloved recipe in Finland, due to the "Koskenlaskija" (translates as Rafter, lol) processed cheese, known for its rich and strong taste.
@@ -28,10 +32,5 @@ This is a beloved recipe in Finland, due to the "Koskenlaskija" (translates as R
 6. Pour the mixture into an ovenproof dish and bake at 200°C (392°F) for 45-60 minutes.
 
 ### Serving
-Allow it to rest covered for 10 minutes before serving.
-
-## Note
-Original source: [K-Ruoka - Makaronilaatikko Koskenlaskijalla](https://www.k-ruoka.fi/reseptit/makaronilaatikko-koskenlaskijalla)
-
-
+Allow it to rest covered for 10 minutes before serving. Enjoy!
 

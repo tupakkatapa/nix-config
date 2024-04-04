@@ -26,7 +26,7 @@ A simple "mix everything" dish, perfect for those seeking something uncomplicate
 5. Lower the heat and add the crème fraîche and cooking cream to the skillet. Stir to combine and gently heat through, and season to your taste.
 
 ### Serving
-Add the cooked pasta to the skillet, tossing well to ensure the pasta is evenly coated with the sauce. You can also serve the pasta and the sauce separately to offer the possibility to play with the ratio. Oh, and if the sauce is too thick, add a little of the reserved pasta water to reach your desired consistency. Serve hot, with additional seasoning on top if desired.
+Add the cooked pasta to the skillet, tossing well to ensure the pasta is evenly coated with the sauce. You can also serve the pasta and the sauce separately to offer the possibility of playing with the ratio. Oh, and if you think the sauce is too thick, add a little pasta water or more cooking cream to reach your desired consistency. Serve hot, with additional seasoning on top if desired.
 
 
 

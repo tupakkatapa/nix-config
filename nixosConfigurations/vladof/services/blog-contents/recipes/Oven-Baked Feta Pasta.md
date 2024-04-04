@@ -4,6 +4,10 @@ date: "2024-04-04"
 
 # Oven-Baked Feta Pasta
 
+**Original source:** [Liemessä - Baked Feta Pasta](https://liemessa.fi/2020/09/baked-feta-pasta-original-recipe/)
+
+---
+
 *Serves 2, 30-40 min*
 
 This was a viral food trend from 2019. I should try this with some meat; maybe you will, but I never dare risk it because I know it's very tasty without.
@@ -27,9 +31,6 @@ This was a viral food trend from 2019. I should try this with some meat; maybe y
 
 ### Serving
 Serve warm, adorned with fresh basil leaves for an added burst of flavor.
-
-## Note
-Original source: [Liemessä - Baked Feta Pasta](https://liemessa.fi/2020/09/baked-feta-pasta-original-recipe/)
 
 
 
