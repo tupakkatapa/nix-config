@@ -15,38 +15,55 @@ in {
       description = "How often to run the backup, in hours.";
     };
 
-    folders = lib.mkOption {
+    paths = lib.mkOption {
       type = lib.types.listOf (lib.types.submodule {
         options = {
-          source = lib.mkOption {
-            type = lib.types.path;
-            description = "Source folder to backup.";
+          src = lib.mkOption {
+            type = lib.types.str;
+            description = "Source path to backup. Follows rsync syntax, can be a remote path.";
           };
-          destination = lib.mkOption {
-            type = lib.types.path;
-            description = "Destination folder for the backup.";
+          dest = lib.mkOption {
+            type = lib.types.str;
+            description = "Destination path for the backup. Follows rsync syntax, can be a remote path.";
+          };
+          extraFlags = lib.mkOption {
+            type = lib.types.str;
+            default = "";
+            description = "Extra flags to pass to rsync.";
           };
         };
       });
       default = [];
-      description = "List of folder pairs to backup.";
+      description = "List of path pairs to backup. Paths can be files or directories.";
+      example = [
+        {
+          src = "/home/user/documents";
+          dest = "/backup/documents";
+          extraFlags = "--delete";
+        }
+        {
+          src = "/home/user/pictures";
+          dest = "user@remote-server:/remote/backup/pictures";
+          extraFlags = "--progress";
+        }
+      ];
     };
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.services.rsyncBackup = {
-      description = "Rsync backup service for multiple folders";
+    systemd.services.rsync-backup = {
+      description = "Rsync backup service for multiple paths";
       path = [pkgs.rsync];
       script =
-        lib.concatMapStringsSep "\n" (folder: ''
-          echo "Starting backup from ${folder.source} to ${folder.destination}"
-          ${pkgs.rsync}/bin/rsync -a ${folder.source}/ ${folder.destination}
+        lib.concatMapStringsSep "\n" (path: ''
+          echo "Starting backup from ${path.src} to ${path.dest}"
+          ${pkgs.rsync}/bin/rsync -a ${path.extraFlags} ${path.src} ${path.dest}
         '')
-        cfg.folders;
+        cfg.paths;
       serviceConfig.Type = "oneshot";
     };
 
-    systemd.timers.rsyncBackup = {
+    systemd.timers.rsync-backup = {
       description = "Timer for rsync backup service";
       wantedBy = ["timers.target"];
       timerConfig = {

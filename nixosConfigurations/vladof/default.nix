@@ -26,10 +26,10 @@ in {
   services.rsyncBackup = {
     enable = true;
     backupFrequencyHours = 6;
-    folders = [
+    paths = [
       {
-        source = "/mnt/wd-red/sftp/home";
-        destination = "/mnt/wd-red/backups/home";
+        src = "/mnt/wd-red/sftp/home/";
+        dest = "/mnt/wd-red/backups/home";
       }
     ];
   };
