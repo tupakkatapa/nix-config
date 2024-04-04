@@ -117,7 +117,6 @@ in {
 
     home.packages = with pkgs; [
       tupakkatapa-utils
-      fissh
       lkddb-filter
       ping-sweep
       pinit
@@ -127,13 +126,21 @@ in {
       lshw
       refind
       vim
+      didyoumean
+      translate-shell
+      iputils
+      dhcpdump
+      webcat
+      unrar
+      gnupg
+      ssh-to-age
+      parallel
 
       # replacements
       bat
       eza
       fd
       ripgrep
-      rsync
       zoxide
 
       # https://github.com/coreboot/coreboot/blob/main/util/liveiso/nixos/common.nix

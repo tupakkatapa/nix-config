@@ -69,7 +69,6 @@ in {
 
     home.packages = with pkgs; [
       #### SELF
-      print-banner
       monitor-adjust
 
       #### GUI
@@ -93,10 +92,7 @@ in {
 
       #### CLI
       android-tools
-      gnupg
       grub2
-      parallel
-      ssh-to-age
       yt-dlp
       ventoy
       chatgpt-cli
@@ -111,15 +107,9 @@ in {
       nix-tree
 
       #### Networking
-      iputils
       nmap
-      webcat
       wireguard-go
       wireguard-tools
-      dhcpdump
-
-      #### Archive
-      unrar
     ];
   };
 }

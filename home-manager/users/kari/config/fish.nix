@@ -74,13 +74,6 @@ in {
     };
     functions = {fish_greeting = "";};
     interactiveShellInit =
-      # Print banner
-      # ''
-      #   if command -q print-banner
-      #     print-banner -o manpage -p "  " -s "\n"
-      #   end
-      # ''
-      # +
       # Use vim bindings and cursors
       ''
         fish_vi_key_bindings
