@@ -1,45 +1,48 @@
 # https://github.com/hyper-dot/Arch-Hyprland
-{
-  pkgs,
-  config,
-  inputs,
-  lib,
-  ...
-}: let
+{ pkgs
+, config
+, lib
+, ...
+}:
+let
   user = "kari";
-in {
+in
+{
   # This configuration extends the minimal-gui version
-  imports = [./minimal-gui.nix];
+  imports = [ ./minimal-gui.nix ];
 
   # Mount drives
   fileSystems = lib.mkIf (config.networking.hostName == "torgue") {
     "/mnt/win" = {
       device = "/dev/disk/by-uuid/74D4CED9D4CE9CAC";
       fsType = "ntfs-3g";
-      options = ["rw"];
+      options = [ "rw" ];
     };
   };
 
   # Mount SFTP and bind home directories
-  services.sftpClient = let
-    identifyFile = "/home/${user}/.ssh/id_ed25519";
-    sftpPrefix = "sftp@192.168.1.8:";
-  in {
-    enable = true;
-    mounts =
-      [
-        {
-          inherit identifyFile;
-          what = "${sftpPrefix}/";
-          where = "/mnt/sftp";
-        }
-      ]
-      ++ (map (dir: {
-        inherit identifyFile;
-        what = "${sftpPrefix}/home/${dir}";
-        where = "/home/${user}/${dir}";
-      }) ["Downloads" "Pictures" "Workspace" "Documents"]);
-  };
+  services.sftpClient =
+    let
+      identifyFile = "/home/${user}/.ssh/id_ed25519";
+      sftpPrefix = "sftp@192.168.1.8:";
+    in
+    {
+      enable = true;
+      mounts =
+        [
+          {
+            inherit identifyFile;
+            what = "${sftpPrefix}/";
+            where = "/mnt/sftp";
+          }
+        ]
+        ++ (map
+          (dir: {
+            inherit identifyFile;
+            what = "${sftpPrefix}/home/${dir}";
+            where = "/home/${user}/${dir}";
+          }) [ "Downloads" "Pictures" "Workspace" "Documents" ]);
+    };
 
   # Wireguard
   sops.secrets.wg-dinar = {
@@ -59,11 +62,11 @@ in {
     # Default apps
     xdg.mimeApps.enable = true;
     xdg.mimeApps.defaultApplications = {
-      "application/msword" = ["writer.desktop"];
-      "application/vnd.oasis.opendocument.spreadsheet" = ["impress.desktop"];
-      "application/vnd.oasis.opendocument.text" = ["writer.desktop"];
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = ["writer.desktop"];
-      "text/csv" = ["impress.desktop"];
+      "application/msword" = [ "writer.desktop" ];
+      "application/vnd.oasis.opendocument.spreadsheet" = [ "impress.desktop" ];
+      "application/vnd.oasis.opendocument.text" = [ "writer.desktop" ];
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = [ "writer.desktop" ];
+      "text/csv" = [ "impress.desktop" ];
     };
     xdg.configFile."mimeapps.list".force = true;
 

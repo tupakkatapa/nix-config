@@ -1,6 +1,6 @@
-{
-  pkgs,
-  lib,
+{ pkgs
+, lib
+,
 }:
 pkgs.stdenv.mkDerivation rec {
   name = "notify-pipewire-out-switcher";
@@ -12,7 +12,7 @@ pkgs.stdenv.mkDerivation rec {
     pipewire-out-switcher
   ];
 
-  nativeBuildInputs = [pkgs.makeWrapper];
+  nativeBuildInputs = [ pkgs.makeWrapper ];
   installPhase = ''
     mkdir -p $out/bin
     cp $src/${name}.sh $out/bin/${name}

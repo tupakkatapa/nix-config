@@ -1,14 +1,14 @@
-{
-  pkgs,
-  lib,
+{ pkgs
+, lib
+,
 }:
 pkgs.stdenv.mkDerivation rec {
   name = "dm-radio";
   src = ./.;
 
-  buildInputs = with pkgs; [wofi notify mpv jq];
+  buildInputs = with pkgs; [ wofi notify mpv jq ];
 
-  nativeBuildInputs = [pkgs.makeWrapper];
+  nativeBuildInputs = [ pkgs.makeWrapper ];
   installPhase = ''
     mkdir -p $out/bin
     cp $src/${name}.sh $out/bin/${name}

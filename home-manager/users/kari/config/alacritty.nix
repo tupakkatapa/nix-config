@@ -1,11 +1,11 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
+{ pkgs
+, config
+, ...
+}:
+let
   inherit (config.home.sessionVariables) FONT;
-in {
+in
+{
   programs.alacritty = {
     enable = true;
     settings = {

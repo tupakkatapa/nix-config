@@ -1,6 +1,6 @@
-{
-  pkgs,
-  lib,
+{ pkgs
+, lib
+,
 }:
 pkgs.stdenv.mkDerivation rec {
   name = "notify-screenshot";
@@ -13,7 +13,7 @@ pkgs.stdenv.mkDerivation rec {
     xdg-utils
   ];
 
-  nativeBuildInputs = [pkgs.makeWrapper];
+  nativeBuildInputs = [ pkgs.makeWrapper ];
   installPhase = ''
     mkdir -p $out/bin
     cp $src/${name}.sh $out/bin/${name}

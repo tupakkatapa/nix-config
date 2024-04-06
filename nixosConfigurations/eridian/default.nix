@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+_: {
   # Set a hostname and domain of your choice
   networking.hostName = "eridian";
 
@@ -23,12 +19,12 @@
         {
           name = "minimal";
           flakeUrl = "github:tupakkatapa/nix-config";
-          hosts = ["bandit"];
+          hosts = [ "bandit" ];
         }
         {
           name = "homelab";
           flakeUrl = "github:tupakkatapa/nix-config";
-          hosts = ["vladof" "bandit"];
+          hosts = [ "vladof" "bandit" ];
           default = "vladof";
           timeout = 1;
           buildRequests = true;
@@ -60,7 +56,7 @@
           name = "upstream";
           serve = true;
           address = "192.168.1.2";
-          interfaces = ["enp3s0"];
+          interfaces = [ "enp3s0" ];
           defaultMenu = "minimal";
           clients = [
             {

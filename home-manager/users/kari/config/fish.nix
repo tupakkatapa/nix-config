@@ -1,15 +1,15 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
+{ lib
+, config
+, ...
+}:
+let
   inherit (lib) mkIf;
   hasPackage = pname:
     lib.any (p: p ? pname && p.pname == pname) config.home.packages;
   hasNeovim = config.programs.neovim.enable || config.programs.nixvim.enable;
   hasEza = hasPackage "eza";
-in {
+in
+{
   programs.fish = {
     enable = true;
     shellAbbrs = rec {
@@ -69,7 +69,7 @@ in {
       vim = mkIf hasNeovim "nvim";
       amimullvad = "curl https://am.i.mullvad.net/connected";
     };
-    functions = {fish_greeting = "";};
+    functions = { fish_greeting = ""; };
     interactiveShellInit =
       # Use vim bindings and cursors
       ''

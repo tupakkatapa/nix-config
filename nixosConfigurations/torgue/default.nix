@@ -1,23 +1,21 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
+{ pkgs
+, ...
+}:
+let
   user = "kari";
-  appData = "/mnt/860/appdata";
-in {
+in
+{
   /*
      Persistent file memo
 
-  nix-serve:
+    nix-serve:
     /var/cache-priv-key.pem
     /var/cache-pub-key.pem
 
-  yubikey:
+    yubikey:
     ~/.config/Yubico/u2f_keys
 
-  ssh:
+    ssh:
     ~/.ssh/id_ed25519
     /etc/ssh/ssh_host_ed25519_key
   */
@@ -139,7 +137,7 @@ in {
   ];
 
   # https://github.com/NixOS/nixpkgs/issues/143365
-  security.pam.services.swaylock = {};
+  security.pam.services.swaylock = { };
 
   # https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;
@@ -161,7 +159,7 @@ in {
 
   # Add support for NTFS file system for mounting Windows drives
   # https://nixos.wiki/wiki/NTFS
-  boot.supportedFilesystems = ["ntfs"];
+  boot.supportedFilesystems = [ "ntfs" ];
 
   # Connectivity
   networking = {

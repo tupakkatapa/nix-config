@@ -1,18 +1,18 @@
-{
-  pkgs,
-  lib,
+{ pkgs
+, lib
+,
 }:
 pkgs.stdenv.mkDerivation rec {
   pname = "tupakkatapa-utils";
   version = "0.1";
   src = ./.;
 
-  buildInputs = with pkgs; []; # Add dependencies here
+  buildInputs = with pkgs; [ ]; # Add dependencies here
 
-  nativeBuildInputs = [pkgs.makeWrapper];
+  nativeBuildInputs = [ pkgs.makeWrapper ];
 
   # List of scripts to be installed
-  scripts = ["cathead" "prefix" "rmc" "ns" "rpg" "lsd" "git-ffwd-update"];
+  scripts = [ "cathead" "prefix" "rmc" "ns" "rpg" "lsd" "git-ffwd-update" ];
 
   installPhase = ''
     mkdir -p $out/bin

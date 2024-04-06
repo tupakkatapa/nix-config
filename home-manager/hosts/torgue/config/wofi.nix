@@ -1,11 +1,10 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config
+, ...
+}:
+let
   inherit (config.home.sessionVariables) FONT;
-in {
+in
+{
   programs.wofi = {
     enable = true;
     settings = {

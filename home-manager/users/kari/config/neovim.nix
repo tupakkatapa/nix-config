@@ -1,8 +1,6 @@
 # https://github.com/jhvst/nix-config/blob/main/nixosModules/neovim/default.nix
-{
-  lib,
-  pkgs,
-  ...
+{ pkgs
+, ...
 }: {
   programs.nixvim = {
     enable = true;
@@ -12,7 +10,7 @@
       providers.wl-copy.enable = true;
     };
 
-    globals = {mapleader = " ";};
+    globals = { mapleader = " "; };
 
     opts = {
       cursorline = true;
@@ -135,10 +133,10 @@
         enable = true;
         theme = "gruvbox-material";
         iconsEnabled = false;
-        disabledFiletypes.statusline = ["neo-tree"];
+        disabledFiletypes.statusline = [ "neo-tree" ];
         sections = {
-          lualine_a = [""];
-          lualine_b = [""];
+          lualine_a = [ "" ];
+          lualine_b = [ "" ];
           lualine_c = [
             "location"
             {
@@ -147,9 +145,9 @@
             }
             "filetype"
           ];
-          lualine_x = ["diagonostics"];
-          lualine_y = ["branch"];
-          lualine_z = ["mode"];
+          lualine_x = [ "diagonostics" ];
+          lualine_y = [ "branch" ];
+          lualine_z = [ "mode" ];
         };
         componentSeparators = {
           left = "";
@@ -195,11 +193,11 @@
           };
           snippet.expand = "luasnip";
           sources = [
-            {name = "buffer";}
-            {name = "luasnip";}
-            {name = "nvim_lsp";}
-            {name = "path";}
-            {name = "tmux";}
+            { name = "buffer"; }
+            { name = "luasnip"; }
+            { name = "nvim_lsp"; }
+            { name = "path"; }
+            { name = "tmux"; }
           ];
         };
       };

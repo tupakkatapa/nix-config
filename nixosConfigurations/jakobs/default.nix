@@ -1,8 +1,5 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, ...
 }: {
   # Use the Raspberry Pi 4 kernel
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;

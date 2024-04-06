@@ -1,11 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config
+, lib
+, pkgs
+, ...
+}:
+let
   cfg = config.services.autoScrcpy;
-in {
+in
+{
   options.services.autoScrcpy = {
     enable = lib.mkEnableOption ''
       Automatically start scrcpy when an Android device is connected
@@ -67,7 +68,7 @@ in {
         XDG_RUNTIME_DIR = "/run/user/${toString cfg.user.id}";
         WAYLAND_DISPLAY = cfg.waylandDisplay;
       };
-      wantedBy = ["multi-user.target"];
+      wantedBy = [ "multi-user.target" ];
     };
   };
 }

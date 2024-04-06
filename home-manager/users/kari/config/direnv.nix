@@ -4,7 +4,7 @@
     nix-direnv.enable = true;
     config = {
       # Automatically allow direnv
-      prefix = ["/home/kari/Workspace"];
+      prefix = [ "/home/kari/Workspace" ];
     };
   };
 }

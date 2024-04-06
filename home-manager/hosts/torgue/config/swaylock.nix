@@ -1,11 +1,12 @@
 # derived from: https://github.com/Misterio77/nix-config/blob/0ed82f3d63a366eafbacb8eee27985afe30b249a/home/misterio/features/desktop/common/wayland-wm/swaylock.nix
-{
-  pkgs,
-  config,
-  ...
-}: let
+{ pkgs
+, config
+, ...
+}:
+let
   inherit (config.home.sessionVariables) FONT;
-in {
+in
+{
   programs.swaylock = {
     enable = true;
     package = pkgs.swaylock-effects;

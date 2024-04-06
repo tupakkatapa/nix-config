@@ -1,12 +1,8 @@
-{
-  inputs,
-  outputs,
-  config,
-  lib,
-  pkgs,
-  ...
+{ lib
+, pkgs
+, ...
 }: {
-  imports = [./nix-settings.nix];
+  imports = [ ./nix-settings.nix ];
 
   boot = {
     kernelParams = [

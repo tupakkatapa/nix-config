@@ -1,9 +1,10 @@
-{
-  pkgs,
-  lib,
-  domain,
-  servicesConfig,
-}: let
+{ pkgs
+, lib
+, domain
+, servicesConfig
+,
+}:
+let
   # HTML file content with inline CSS
   html = pkgs.writeText "index.html" ''
     <html>
@@ -82,7 +83,7 @@
     </html>
   '';
 in
-  pkgs.runCommand "indexPage" {} ''
-    mkdir -p $out
-    cp ${html} $out/index.html
-  ''
+pkgs.runCommand "indexPage" { } ''
+  mkdir -p $out
+  cp ${html} $out/index.html
+''

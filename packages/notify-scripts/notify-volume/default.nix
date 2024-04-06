@@ -1,14 +1,14 @@
-{
-  pkgs,
-  lib,
+{ pkgs
+, lib
+,
 }:
 pkgs.stdenv.mkDerivation rec {
   name = "notify-volume";
   src = ./.;
 
-  buildInputs = with pkgs; [notify pamixer];
+  buildInputs = with pkgs; [ notify pamixer ];
 
-  nativeBuildInputs = [pkgs.makeWrapper];
+  nativeBuildInputs = [ pkgs.makeWrapper ];
   installPhase = ''
     mkdir -p $out/bin
     cp $src/${name}.sh $out/bin/${name}

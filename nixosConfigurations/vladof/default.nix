@@ -1,10 +1,8 @@
-{
-  inputs,
-  pkgs,
-  lib,
-  config,
-  ...
-} @ args: let
+{ lib
+, config
+, ...
+} @ args:
+let
   domain = "coditon.com";
   localAddress = "192.168.1.8";
   gateway = "192.168.1.1";
@@ -14,8 +12,9 @@
   user = "kari";
 
   # Inherit global stuff for imports
-  extendedArgs = args // {inherit appData domain;};
-in {
+  extendedArgs = args // { inherit appData domain; };
+in
+{
   imports = [
     (import ./services extendedArgs)
     ../.config/motd.nix
@@ -53,7 +52,7 @@ in {
   # Cage-kiosk (firefox)
   services.cage = {
     enable = true;
-    user = user;
+    inherit user;
     program = lib.concatStringsSep " \\\n\t" [
       "${config.home-manager.users."${user}".programs.firefox.package}/bin/firefox"
       "https://www.youtube.com"
@@ -67,15 +66,15 @@ in {
     serviceConfig = {
       Restart = "always";
     };
-    wants = ["network-online.target"];
-    after = ["network-online.target"];
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
   };
   hardware.opengl.enable = true;
 
   # Bind firefox directory to preserve cookies and such
   fileSystems."/home/${user}/.mozilla" = {
     device = "${appData}/firefox";
-    options = ["bind" "mode=755"];
+    options = [ "bind" "mode=755" ];
   };
 
   # Networking
@@ -92,9 +91,9 @@ in {
     ];
     defaultGateway = {
       address = gateway;
-      interface = interface;
+      inherit interface;
     };
-    nameservers = [gateway];
+    nameservers = [ gateway ];
     firewall.enable = true;
   };
   systemd.network.enable = true;
@@ -142,7 +141,7 @@ in {
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxmP58tAQ7oN1OT4nZ/pZtrb8vGvuh/l33lxiq3ngIU kari@maliwan"
     ];
   };
-  users.groups."sftp" = {};
+  users.groups."sftp" = { };
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [

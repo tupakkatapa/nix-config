@@ -1,8 +1,5 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, ...
 }: {
   # Bootloader for x86_64-linux / aarch64-linux
   boot.loader.systemd-boot = {
@@ -20,7 +17,7 @@
   ];
 
   # https://github.com/NixOS/nixpkgs/issues/143365
-  security.pam.services.swaylock = {};
+  security.pam.services.swaylock = { };
 
   # https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;
@@ -42,7 +39,7 @@
 
   # Enable sshfs package for mounting SSH drives
   # https://nixos.org/manual/nixos/stable/#sec-sshfs-non-interactive
-  system.fsPackages = [pkgs.sshfs];
+  system.fsPackages = [ pkgs.sshfs ];
 
   # Connectivity
   networking = {

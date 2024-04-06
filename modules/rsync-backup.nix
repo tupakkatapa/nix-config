@@ -1,11 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config
+, lib
+, pkgs
+, ...
+}:
+let
   cfg = config.services.rsyncBackup;
-in {
+in
+{
   options.services.rsyncBackup = {
     enable = lib.mkEnableOption "Enable rsync backup service";
 
@@ -33,7 +34,7 @@ in {
           };
         };
       });
-      default = [];
+      default = [ ];
       description = "List of path pairs to backup. Paths can be files or directories.";
       example = [
         {
@@ -53,19 +54,20 @@ in {
   config = lib.mkIf cfg.enable {
     systemd.services.rsync-backup = {
       description = "Rsync backup service for multiple paths";
-      path = [pkgs.rsync];
+      path = [ pkgs.rsync ];
       script =
-        lib.concatMapStringsSep "\n" (path: ''
-          echo "Starting backup from ${path.src} to ${path.dest}"
-          ${pkgs.rsync}/bin/rsync -a ${path.extraFlags} ${path.src} ${path.dest}
-        '')
-        cfg.paths;
+        lib.concatMapStringsSep "\n"
+          (path: ''
+            echo "Starting backup from ${path.src} to ${path.dest}"
+            ${pkgs.rsync}/bin/rsync -a ${path.extraFlags} ${path.src} ${path.dest}
+          '')
+          cfg.paths;
       serviceConfig.Type = "oneshot";
     };
 
     systemd.timers.rsync-backup = {
       description = "Timer for rsync backup service";
-      wantedBy = ["timers.target"];
+      wantedBy = [ "timers.target" ];
       timerConfig = {
         OnBootSec = "5min"; # run once right after boot
         OnUnitActiveSec = "${toString cfg.backupFrequencyHours}h";

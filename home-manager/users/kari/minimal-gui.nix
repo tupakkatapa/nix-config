@@ -1,14 +1,12 @@
-{
-  pkgs,
-  config,
-  inputs,
-  lib,
-  ...
-}: let
+{ pkgs
+, ...
+}:
+let
   user = "kari";
-in {
+in
+{
   # This configuration extends the minimal-passwd version
-  imports = [./minimal-passwd.nix];
+  imports = [ ./minimal-passwd.nix ];
 
   # Home-manager config
   home-manager.users."${user}" = rec {
@@ -30,7 +28,7 @@ in {
 
     home.packages = with pkgs; [
       (pkgs.nerdfonts.override {
-        fonts = ["JetBrainsMono"];
+        fonts = [ "JetBrainsMono" ];
       })
     ];
   };

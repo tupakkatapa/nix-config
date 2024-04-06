@@ -1,10 +1,11 @@
-{
-  pkgs,
-  config,
-  ...
-}: let
+{ pkgs
+, config
+, ...
+}:
+let
   inherit (config.home.sessionVariables) FONT;
-in {
+in
+{
   gtk = {
     enable = true;
     iconTheme = {

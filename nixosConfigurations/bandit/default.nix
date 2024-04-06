@@ -1,12 +1,11 @@
-{
-  pkgs,
-  lib,
-  config,
-  inputs,
-  ...
-}: let
+{ pkgs
+, lib
+, ...
+}:
+let
   user = "core";
-in {
+in
+{
   networking.hostName = "bandit";
   console.keyMap = "fi";
 
@@ -31,8 +30,8 @@ in {
     ];
     shell = pkgs.fish;
   };
-  users.groups."${user}" = {};
-  environment.shells = [pkgs.fish];
+  users.groups."${user}" = { };
+  environment.shells = [ pkgs.fish ];
   programs.fish = {
     enable = true;
     shellAbbrs = {

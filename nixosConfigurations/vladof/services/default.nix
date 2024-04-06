@@ -1,11 +1,11 @@
-{
-  pkgs,
-  lib,
-  config,
-  domain,
-  appData,
-  ...
-}: let
+{ pkgs
+, lib
+, config
+, domain
+, appData
+, ...
+}:
+let
   servicesConfig = {
     transmission = {
       addr = "torrent.${domain}";
@@ -42,29 +42,31 @@
   };
 
   # Define the derivation for blog contents
-  blogContents = pkgs.runCommand "blog-contents" {} ''
+  blogContents = pkgs.runCommand "blog-contents" { } ''
     mkdir -p $out
     cp -r ${./blog-contents}/* $out
   '';
 
   # Generate things and stuff for services
   servicesTmpfileRules = lib.mapAttrsToList (name: _: "d ${appData}/${name} 700 ${name} ${name} -") servicesConfig;
-  servicesPorts = lib.mapAttrsToList (name: service: service.port) servicesConfig;
+  servicesPorts = lib.mapAttrsToList (_name: service: service.port) servicesConfig;
   servicesVirtualHosts =
-    lib.mapAttrs' (name: service: {
-      name = service.addr;
-      value = {
-        useACMEHost = service.addr;
-        extraConfig = ''
-          reverse_proxy http://127.0.0.1:${toString service.port}
-        '';
-      };
-    })
-    servicesConfig;
+    lib.mapAttrs'
+      (name: service: {
+        name = service.addr;
+        value = {
+          useACMEHost = service.addr;
+          extraConfig = ''
+            reverse_proxy http://127.0.0.1:${toString service.port}
+          '';
+        };
+      })
+      servicesConfig;
 
   # Generate index page
-  indexPage = import ./index.nix {inherit pkgs lib domain servicesConfig;};
-in {
+  indexPage = import ./index.nix { inherit pkgs lib domain servicesConfig; };
+in
+{
   # Reverse proxy
   services.caddy = {
     enable = true;
@@ -86,16 +88,17 @@ in {
     defaults.email = "jesse@ponkila.com";
     defaults.webroot = "${appData}/acme";
     certs =
-      lib.mapAttrs' (name: service: {
-        name = service.addr;
-        value = {};
-      })
-      servicesConfig;
+      lib.mapAttrs'
+        (name: service: {
+          name = service.addr;
+          value = { };
+        })
+        servicesConfig;
   };
   # Bind service directories to persistent disk
   fileSystems."/var/lib/acme" = {
     device = "${appData}/acme";
-    options = ["bind"];
+    options = [ "bind" ];
   };
 
   # Firewall
@@ -130,14 +133,14 @@ in {
     enable = true;
     dataDir = "${appData}/radarr";
   };
-  users.users.radarr.extraGroups = ["transmission"];
+  users.users.radarr.extraGroups = [ "transmission" ];
 
   # Jackett
   services.jackett = {
     enable = true;
     dataDir = "${appData}/jackett";
   };
-  users.users.jackett.extraGroups = ["transmission"];
+  users.users.jackett.extraGroups = [ "transmission" ];
 
   # Torrent
   services.transmission = {
@@ -176,7 +179,7 @@ in {
     home = "${appData}/lanraragi";
     isSystemUser = true;
   };
-  users.groups.lanraragi = {};
+  users.groups.lanraragi = { };
   # Append to systemd service
   systemd.services.lanraragi = {
     serviceConfig = {
@@ -187,11 +190,11 @@ in {
   # Bind service directories to persistent disk
   fileSystems."/var/lib/private/lanraragi" = {
     device = "${appData}/lanraragi";
-    options = ["bind"];
+    options = [ "bind" ];
   };
   fileSystems."/var/lib/private/lanraragi/content" = {
     device = "/mnt/wd-red/sftp/media/books/lanraragi";
-    options = ["bind"];
+    options = [ "bind" ];
   };
 
   # Vaultwarden
@@ -211,13 +214,13 @@ in {
   # Bind service directories to persistent disk
   fileSystems."/var/lib/bitwarden_rs" = {
     device = "${appData}/vaultwarden";
-    options = ["bind"];
+    options = [ "bind" ];
   };
 
   # Blog
   services.coditon-md = {
     enable = true;
-    port = servicesConfig.coditon-md.port;
+    inherit (servicesConfig.coditon-md) port;
     dataDir = "${blogContents}";
     name = "Jesse Karjalainen";
     image = "${blogContents}/profile.jpg";

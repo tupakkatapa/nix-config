@@ -1,20 +1,20 @@
-{
-  lib,
-  inputs,
-  pkgs,
-  config,
-  ...
-}: let
+{ lib
+, pkgs
+, config
+, ...
+}:
+let
   inherit (config.home.sessionVariables) FONT;
-in {
+in
+{
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = {
-    "text/html" = ["firefox.desktop"];
-    "text/xml" = ["firefox.desktop"];
-    "x-scheme-handler/http" = ["firefox.desktop"];
-    "x-scheme-handler/https" = ["firefox.desktop"];
-    "x-scheme-handler/about" = ["firefox.desktop"];
-    "x-scheme-handler/unknown" = ["firefox.desktop"];
+    "text/html" = [ "firefox.desktop" ];
+    "text/xml" = [ "firefox.desktop" ];
+    "x-scheme-handler/http" = [ "firefox.desktop" ];
+    "x-scheme-handler/https" = [ "firefox.desktop" ];
+    "x-scheme-handler/about" = [ "firefox.desktop" ];
+    "x-scheme-handler/unknown" = [ "firefox.desktop" ];
   };
 
   programs.firefox = {
@@ -25,13 +25,15 @@ in {
           # Block non-declarative installing
           "*".installation_mode = "blocked";
         }
-        // lib.listToAttrs (map (extension: {
-          name = extension.uuid;
-          value = {
-            install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${extension.shortId}/latest.xpi";
-            installation_mode = "force_installed";
-          };
-        }) (import ./extensions.nix));
+        // lib.listToAttrs (map
+          (extension: {
+            name = extension.uuid;
+            value = {
+              install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${extension.shortId}/latest.xpi";
+              installation_mode = "force_installed";
+            };
+          })
+          (import ./extensions.nix));
     };
 
     profiles.personal = {
@@ -40,7 +42,7 @@ in {
       search = {
         default = "DuckDuckGo";
         force = true;
-        order = ["DuckDuckGo" "Google"];
+        order = [ "DuckDuckGo" "Google" ];
       };
 
       bookmarks = import ./bookmarks.nix;

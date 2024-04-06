@@ -1,15 +1,15 @@
-{
-  pkgs,
-  config,
-  inputs,
-  lib,
-  ...
-}: let
+{ pkgs
+, config
+, inputs
+, ...
+}:
+let
   user = "kari";
   optionalGroups = groups:
     builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
   optionalPaths = paths: builtins.filter (path: builtins.pathExists path) paths;
-in {
+in
+{
   # User config
   users.users.${user} = {
     isNormalUser = true;
@@ -47,8 +47,8 @@ in {
     ];
     shell = pkgs.fish;
   };
-  users.groups.${user} = {};
-  environment.shells = [pkgs.fish];
+  users.groups.${user} = { };
+  environment.shells = [ pkgs.fish ];
   programs.fish.enable = true;
 
   # Create directories, these are persistent
@@ -58,7 +58,7 @@ in {
   ];
 
   # Allows access to flake inputs and custom packages
-  home-manager.extraSpecialArgs = {inherit inputs pkgs;};
+  home-manager.extraSpecialArgs = { inherit inputs pkgs; };
 
   # Move existing files rather than exiting with an error
   home-manager.backupFileExtension = "bak";
@@ -73,7 +73,7 @@ in {
       ]
       # Importing host-spesific home-manager config if it exists
       ++ optionalPaths
-      [../../hosts/${config.networking.hostName}/default.nix];
+        [ ../../hosts/${config.networking.hostName}/default.nix ];
 
     # Default apps
     home.sessionVariables = {
@@ -82,18 +82,20 @@ in {
     };
 
     # Scripts and files
-    home.sessionPath = ["$HOME/.local/bin"];
-    home.file = let
-      scriptDir = ./scripts;
-      scriptFiles = builtins.readDir scriptDir;
-    in
+    home.sessionPath = [ "$HOME/.local/bin" ];
+    home.file =
+      let
+        scriptDir = ./scripts;
+        scriptFiles = builtins.readDir scriptDir;
+      in
       # Places scripts in '~/.local/bin/'
-      builtins.mapAttrs (name: _: {
-        executable = true;
-        target = ".local/bin/${name}";
-        source = "${scriptDir}/${name}";
-      })
-      scriptFiles;
+      builtins.mapAttrs
+        (name: _: {
+          executable = true;
+          target = ".local/bin/${name}";
+          source = "${scriptDir}/${name}";
+        })
+        scriptFiles;
 
     # Extra SSH config
     programs.ssh = {
@@ -107,7 +109,7 @@ in {
         "pxe-server" = {
           hostname = "192.168.1.169";
           user = "core";
-          extraOptions = {"StrictHostKeyChecking" = "no";};
+          extraOptions = { "StrictHostKeyChecking" = "no"; };
         };
       };
       forwardAgent = true;

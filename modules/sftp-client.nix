@@ -1,11 +1,12 @@
-{
-  lib,
-  pkgs,
-  config,
-  ...
-}: let
+{ lib
+, pkgs
+, config
+, ...
+}:
+let
   cfg = config.services.sftpClient;
-in {
+in
+{
   options.services.sftpClient = {
     enable = lib.mkEnableOption "SFTP Client";
 
@@ -26,7 +27,7 @@ in {
           };
         };
       });
-      default = [];
+      default = [ ];
       description = "List of directories to bind mount.";
       example = [
         {
@@ -40,22 +41,23 @@ in {
 
   config = lib.mkIf cfg.enable {
     # Enable sshfs package for mounting SSH drives
-    system.fsPackages = [pkgs.sshfs];
+    system.fsPackages = [ pkgs.sshfs ];
 
     # Mount drives
-    fileSystems = lib.listToAttrs (map (mount:
-      lib.nameValuePair mount.where {
-        device = mount.what;
-        fsType = "sshfs";
-        options = [
-          "IdentityFile=${mount.identifyFile}"
-          "ServerAliveInterval=15"
-          "_netdev"
-          "allow_other"
-          "reconnect"
-          "x-systemd.automount"
-        ];
-      })
-    cfg.mounts);
+    fileSystems = lib.listToAttrs (map
+      (mount:
+        lib.nameValuePair mount.where {
+          device = mount.what;
+          fsType = "sshfs";
+          options = [
+            "IdentityFile=${mount.identifyFile}"
+            "ServerAliveInterval=15"
+            "_netdev"
+            "allow_other"
+            "reconnect"
+            "x-systemd.automount"
+          ];
+        })
+      cfg.mounts);
   };
 }

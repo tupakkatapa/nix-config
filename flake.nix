@@ -33,6 +33,8 @@
     nixvim.url = "github:nix-community/nixvim";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:mic92/sops-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
 
     # Hyprland
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
@@ -52,195 +54,210 @@
     coditon-md.url = "github:tupakkatapa/coditon-md";
   };
 
-  outputs = {
-    self,
-    aagl,
-    coditon-md,
-    flake-parts,
-    home-manager,
-    homestakeros-base,
-    nix-extras,
-    nixie,
-    nixos-hardware,
-    nixpkgs,
-    nixpkgs-patched,
-    nixpkgs-stable,
-    nixvim,
-    sops-nix,
-    ...
-  } @ inputs:
-    flake-parts.lib.mkFlake {inherit inputs;} rec {
+  outputs =
+    { self
+    , aagl
+    , coditon-md
+    , flake-parts
+    , home-manager
+    , homestakeros-base
+    , nix-extras
+    , nixie
+    , nixos-hardware
+    , nixpkgs
+    , nixpkgs-patched
+    , nixpkgs-stable
+    , nixvim
+    , sops-nix
+    , ...
+    } @ inputs:
+    flake-parts.lib.mkFlake { inherit inputs; } rec {
       systems = nixpkgs.lib.systems.flakeExposed;
       imports = [
         inputs.devenv.flakeModule
         inputs.flake-parts.flakeModules.easyOverlay
+        inputs.treefmt-nix.flakeModule
       ];
 
-      perSystem = {
-        pkgs,
-        lib,
-        config,
-        system,
-        inputs',
-        ...
-      }: let
-        packages =
-          import ./packages {inherit pkgs;}
-          // {
-            lkddb-filter = inputs'.nixie.packages.lkddb-filter;
-            pxe-generate = inputs'.nixie.packages.pxe-generate;
+      perSystem =
+        { pkgs
+        , lib
+        , config
+        , system
+        , inputs'
+        , ...
+        }:
+        let
+          packages =
+            import ./packages { inherit pkgs; }
+            // {
+              inherit (inputs'.nixie.packages) lkddb-filter;
+              inherit (inputs'.nixie.packages) pxe-generate;
+            };
+        in
+        {
+          # Overlays
+          _module.args.pkgs = import inputs.nixpkgs {
+            inherit system;
+            overlays = [
+              self.overlays.default
+            ];
+            config = { };
           };
-      in {
-        # Overlays
-        _module.args.pkgs = import inputs.nixpkgs {
-          inherit system;
-          overlays = [
-            self.overlays.default
-          ];
-          config = {};
+          overlayAttrs = packages;
+
+          # Nix code formatter -> 'nix fmt'
+          treefmt.config = {
+            projectRootFile = "flake.nix";
+            flakeFormatter = true;
+            flakeCheck = true;
+            programs = {
+              nixpkgs-fmt.enable = true;
+              deadnix.enable = true;
+              statix.enable = true;
+            };
+          };
+
+          # Development shell -> 'nix develop' or 'direnv allow'
+          devenv.shells.default = {
+            packages = with pkgs; [
+              sops
+              ssh-to-age
+              pxe-generate
+            ];
+            env = {
+              NIX_CONFIG = ''
+                accept-flake-config = true
+                extra-experimental-features = flakes nix-command
+                warn-dirty = false
+              '';
+            };
+            pre-commit.hooks = {
+              rustfmt.enable = false;
+              shellcheck.enable = true;
+              treefmt.enable = true;
+            };
+            pre-commit.settings.treefmt.package = config.treefmt.build.wrapper;
+            # Workaround for https://github.com/cachix/devenv/issues/760
+            containers = pkgs.lib.mkForce { };
+          };
+
+          # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
+          packages =
+            (with flake.nixosConfigurations; {
+              "bandit" = bandit.config.system.build.kexecTree;
+              "eridian" = eridian.config.system.build.kexecTree;
+              "jakobs" = jakobs.config.system.build.kexecTree;
+              "vladof" = vladof.config.system.build.squashfs;
+            })
+            // packages;
         };
-        overlayAttrs = packages;
+      flake =
+        let
+          inherit (self) outputs;
 
-        # Nix code formatter -> 'nix fmt'
-        formatter = pkgs.alejandra;
+          withDefaults = config: {
+            specialArgs = { inherit inputs outputs; };
+            system = config.system or "x86_64-linux";
+            modules =
+              config.modules
+              ++ [
+                sops-nix.nixosModules.sops
+                home-manager.nixosModules.home-manager
+                nix-extras.nixosModules.all
+                self.nixosModules.sftpClient
+                self.nixosModules.rsyncBackup
+                self.nixosModules.autoScrcpy
+                {
+                  home-manager.sharedModules = [
+                    nixvim.homeManagerModules.nixvim
+                  ];
+                  nixpkgs.overlays = [
+                    self.overlays.default
+                  ];
+                  system.stateVersion = "23.11";
+                }
+                ./system
+              ];
+          };
 
-        # Development shell -> 'nix develop' or 'direnv allow'
-        devenv.shells.default = {
-          packages = with pkgs; [
-            sops
-            ssh-to-age
-            pxe-generate
+          torgue.modules = [
+            ./home-manager/users/kari
+            ./nixosConfigurations/torgue
+            aagl.nixosModules.default
+            nixos-hardware.nixosModules.common-gpu-amd
           ];
-          env = {
-            NIX_CONFIG = ''
-              accept-flake-config = true
-              extra-experimental-features = flakes nix-command
-              warn-dirty = false
-            '';
-          };
-          pre-commit.hooks = {
-            alejandra.enable = true;
-            shellcheck.enable = true;
-            rustfmt.enable = false;
-          };
-          # Workaround for https://github.com/cachix/devenv/issues/760
-          containers = pkgs.lib.mkForce {};
-        };
 
-        # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
-        packages =
-          (with flake.nixosConfigurations; {
-            "bandit" = bandit.config.system.build.kexecTree;
-            "eridian" = eridian.config.system.build.kexecTree;
-            "jakobs" = jakobs.config.system.build.kexecTree;
-            "vladof" = vladof.config.system.build.squashfs;
-          })
-          // packages;
-      };
-      flake = let
-        inherit (self) outputs;
+          vladof.modules = [
+            ./home-manager/users/kari/minimal-gui.nix
+            ./nixosConfigurations/vladof
+            nixie.nixosModules.squashfs
+            coditon-md.nixosModules.default
+            nixos-hardware.nixosModules.common-gpu-intel
+          ];
 
-        withDefaults = config: {
-          specialArgs = {inherit inputs outputs;};
-          system = config.system or "x86_64-linux";
-          modules =
-            config.modules
-            ++ [
-              sops-nix.nixosModules.sops
-              home-manager.nixosModules.home-manager
-              nix-extras.nixosModules.all
-              self.nixosModules.sftpClient
-              self.nixosModules.rsyncBackup
-              self.nixosModules.autoScrcpy
+          eridian.modules = [
+            ./home-manager/users/kari/minimal.nix
+            ./nixosConfigurations/eridian
+            nixie.nixosModules.nixie
+            homestakeros-base.nixosModules.kexecTree
+          ];
+
+          maliwan.modules = [
+            ./home-manager/users/kari
+            ./nixosConfigurations/maliwan
+            aagl.nixosModules.default
+            nixos-hardware.nixosModules.common-gpu-intel
+          ];
+
+          bandit = {
+            system = "x86_64-linux";
+            specialArgs = { inherit inputs outputs; };
+            modules = [
+              ./nixosConfigurations/bandit
+              ./system/nix-settings.nix
+              homestakeros-base.nixosModules.kexecTree
               {
-                home-manager.sharedModules = [
-                  nixvim.homeManagerModules.nixvim
-                ];
                 nixpkgs.overlays = [
                   self.overlays.default
                 ];
                 system.stateVersion = "23.11";
               }
-              ./system
             ];
-        };
+          };
 
-        torgue.modules = [
-          ./home-manager/users/kari
-          ./nixosConfigurations/torgue
-          aagl.nixosModules.default
-          nixos-hardware.nixosModules.common-gpu-amd
-        ];
-
-        vladof.modules = [
-          ./home-manager/users/kari/minimal-gui.nix
-          ./nixosConfigurations/vladof
-          nixie.nixosModules.squashfs
-          coditon-md.nixosModules.default
-          nixos-hardware.nixosModules.common-gpu-intel
-        ];
-
-        eridian.modules = [
-          ./home-manager/users/kari/minimal.nix
-          ./nixosConfigurations/eridian
-          nixie.nixosModules.nixie
-          homestakeros-base.nixosModules.kexecTree
-        ];
-
-        maliwan.modules = [
-          ./home-manager/users/kari
-          ./nixosConfigurations/maliwan
-          aagl.nixosModules.default
-          nixos-hardware.nixosModules.common-gpu-intel
-        ];
-
-        bandit = {
-          system = "x86_64-linux";
-          specialArgs = {inherit inputs outputs;};
-          modules = [
-            ./nixosConfigurations/bandit
-            ./system/nix-settings.nix
-            homestakeros-base.nixosModules.kexecTree
+          jakobs = {
+            system = "aarch64-linux";
+            modules = [
+              ./home-manager/users/kari/minimal.nix
+              ./nixosConfigurations/jakobs
+              homestakeros-base.nixosModules.kexecTree
+              inputs.nixos-hardware.nixosModules.raspberry-pi-4
+            ];
+          };
+        in
+        {
+          # NixOS configuration entrypoints
+          nixosConfigurations = with nixpkgs.lib;
             {
-              nixpkgs.overlays = [
-                self.overlays.default
-              ];
-              system.stateVersion = "23.11";
+              "eridian" = nixosSystem (withDefaults eridian);
+              "jakobs" = nixosSystem (withDefaults jakobs);
+              "maliwan" = nixosSystem (withDefaults maliwan);
+              "torgue" = nixosSystem (withDefaults torgue);
             }
-          ];
-        };
+            // (with nixpkgs-stable.lib; {
+              "bandit" = nixosSystem bandit;
+            })
+            // (with nixpkgs-patched.lib; {
+              "vladof" = nixosSystem (withDefaults vladof);
+            });
 
-        jakobs = {
-          system = "aarch64-linux";
-          modules = [
-            ./home-manager/users/kari/minimal.nix
-            ./nixosConfigurations/jakobs
-            homestakeros-base.nixosModules.kexecTree
-            inputs.nixos-hardware.nixosModules.raspberry-pi-4
-          ];
+          # NixOS modules
+          nixosModules = {
+            sftpClient.imports = [ ./modules/sftp-client.nix ];
+            autoScrcpy.imports = [ ./modules/auto-scrcpy.nix ];
+            rsyncBackup.imports = [ ./modules/rsync-backup.nix ];
+          };
         };
-      in {
-        # NixOS configuration entrypoints
-        nixosConfigurations = with nixpkgs.lib;
-          {
-            "eridian" = nixosSystem (withDefaults eridian);
-            "jakobs" = nixosSystem (withDefaults jakobs);
-            "maliwan" = nixosSystem (withDefaults maliwan);
-            "torgue" = nixosSystem (withDefaults torgue);
-          }
-          // (with nixpkgs-stable.lib; {
-            "bandit" = nixosSystem bandit;
-          })
-          // (with nixpkgs-patched.lib; {
-            "vladof" = nixosSystem (withDefaults vladof);
-          });
-
-        # NixOS modules
-        nixosModules = {
-          sftpClient.imports = [./modules/sftp-client.nix];
-          autoScrcpy.imports = [./modules/auto-scrcpy.nix];
-          rsyncBackup.imports = [./modules/rsync-backup.nix];
-        };
-      };
     };
 }

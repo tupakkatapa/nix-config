@@ -1,14 +1,14 @@
-{
-  pkgs,
-  lib,
+{ pkgs
+, lib
+,
 }:
 pkgs.stdenv.mkDerivation rec {
   name = "dm-quickfile";
   src = ./.;
 
-  buildInputs = with pkgs; [wofi xdg-utils alacritty neovim];
+  buildInputs = with pkgs; [ wofi xdg-utils alacritty neovim ];
 
-  nativeBuildInputs = [pkgs.makeWrapper];
+  nativeBuildInputs = [ pkgs.makeWrapper ];
   installPhase = ''
     mkdir -p $out/bin
     cp $src/${name}.sh $out/bin/${name}

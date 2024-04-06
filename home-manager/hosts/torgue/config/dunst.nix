@@ -1,26 +1,19 @@
-{
-  pkgs,
-  config,
-  ...
-}: let
+{ pkgs
+, config
+, ...
+}:
+let
   inherit (config.home.sessionVariables) FONT;
   inherit
     (import ./colors.nix)
     background
     foreground
     accent
-    inactive
-    blue
-    cyan
-    green
-    orange
-    pink
-    purple
     red
-    yellow
     ;
-in {
-  home.packages = [pkgs.libnotify];
+in
+{
+  home.packages = [ pkgs.libnotify ];
   services.dunst = {
     enable = true;
     iconTheme = {

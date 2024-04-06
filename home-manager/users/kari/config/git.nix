@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   programs.git = {
     enable = true;
     package = pkgs.gitFull;
@@ -7,7 +7,7 @@
     userEmail = "jesse@ponkila.com";
     userName = "tupakkatapa";
     extraConfig = {
-      safe.directory = ["*"];
+      safe.directory = [ "*" ];
       http = {
         # https://stackoverflow.com/questions/22369200/git-pull-push-error-rpc-failed-result-22-http-code-408
         postBuffer = "524288000";

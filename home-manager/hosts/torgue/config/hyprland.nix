@@ -1,11 +1,11 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
+{ pkgs
+, lib
+, config
+, ...
+}:
+let
   inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR FILEMANAGER;
-  inherit (import ./colors.nix) background foreground accent inactive blue cyan green orange pink purple red yellow;
+  inherit (import ./colors.nix) accent inactive;
   mod = "ALT";
 
   notify = {
@@ -26,7 +26,8 @@
   pamixer = "${pkgs.pamixer}/bin/pamixer";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   swaybg = "${pkgs.swaybg}/bin/swaybg";
-in {
+in
+{
   home.sessionVariables = {
     LIBSEAT_BACKEND = "logind";
     MOZ_ENABLE_WAYLAND = "1";

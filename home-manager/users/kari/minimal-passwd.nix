@@ -1,14 +1,12 @@
-{
-  pkgs,
-  config,
-  inputs,
-  lib,
-  ...
-}: let
+{ config
+, ...
+}:
+let
   user = "kari";
-in {
+in
+{
   # This configuration extends the minimal version
-  imports = [./minimal.nix];
+  imports = [ ./minimal.nix ];
 
   # Secrets
   sops.secrets.kari-password = {

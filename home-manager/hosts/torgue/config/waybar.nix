@@ -1,20 +1,18 @@
-{
-  pkgs,
-  config,
-  ...
-}: let
-  inherit (config.home.sessionVariables) FONT TERMINAL EDITOR;
+{ pkgs
+, config
+, ...
+}:
+let
+  inherit (config.home.sessionVariables) FONT;
   inherit
     (import ./colors.nix)
     background
     foreground
-    accent
     inactive
     blue
     cyan
     green
     orange
-    pink
     purple
     red
     yellow
@@ -23,12 +21,13 @@
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
   blueberry = "${pkgs.blueberry}/bin/blueberry";
-in {
+in
+{
   programs.waybar = {
     enable = true;
     systemd.enable = true;
     package = pkgs.waybar.overrideAttrs (oa: {
-      mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
+      mesonFlags = (oa.mesonFlags or [ ]) ++ [ "-Dexperimental=true" ];
     });
     settings.primary = {
       height = 20;
@@ -39,9 +38,9 @@ in {
       layer = "top";
       spacing = 5;
 
-      modules-left = ["custom/hostname" "cpu" "memory" "disk" "custom/player"];
+      modules-left = [ "custom/hostname" "cpu" "memory" "disk" "custom/player" ];
 
-      modules-center = ["hyprland/workspaces"];
+      modules-center = [ "hyprland/workspaces" ];
 
       modules-right = [
         "tray"
@@ -104,7 +103,7 @@ in {
         };
       };
 
-      "custom/hostname" = {exec = "echo $USER@$HOSTNAME";};
+      "custom/hostname" = { exec = "echo $USER@$HOSTNAME"; };
 
       pulseaudio = {
         format = "{icon} {volume}%";
@@ -115,7 +114,7 @@ in {
           "alsa_output.pci-0000_0a_00.1.hdmi-stereo" = "";
           headphone = "";
           headset = "";
-          default = ["" "" ""];
+          default = [ "" "" "" ];
         };
         on-click = pavucontrol;
       };
@@ -139,7 +138,7 @@ in {
         tooltip-format-enumerate-connected = "{device_alias}		{device_address}";
         tooltip-format-enumerate-connected-battery = "{device_alias}		{device_address}	{device_battery_percentage}%";
         # Display order preference, since only one device is shown
-        format-device-preference = ["CORSAIR VIRTUOSO XT Bluetooth" "MX Keys" "MX Master 2S"];
+        format-device-preference = [ "CORSAIR VIRTUOSO XT Bluetooth" "MX Keys" "MX Master 2S" ];
       };
 
       network = {
@@ -148,7 +147,7 @@ in {
         format-disconnected = "";
       };
 
-      "clock#time" = {format = "{:%H:%M}";};
+      "clock#time" = { format = "{:%H:%M}"; };
 
       "clock#date" = {
         format = "{:%d.%m.%Y}";
@@ -172,13 +171,13 @@ in {
       battery = {
         bat = "BAT0";
         interval = 10;
-        format-icons = ["" "" "" "" ""];
+        format-icons = [ "" "" "" "" "" ];
         format = "{icon} {capacity}%";
         format-charging = "󰂄 {capacity}%";
         onclick = "";
       };
 
-      tray = {spacing = 10;};
+      tray = { spacing = 10; };
     };
     style = ''
       /* Global Styles */
