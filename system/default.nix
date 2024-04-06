@@ -47,10 +47,10 @@
   # Timezone, system version and locale
   time.timeZone = "Europe/Helsinki";
   i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_MESSAGES = "en_US.UTF-8";
-    LC_TIME = "fi_FI.UTF-8";
-  };
+  # i18n.extraLocaleSettings = {
+  #   LC_MESSAGES = "en_US.UTF-8";
+  #   LC_TIME = "fi_FI.UTF-8";
+  # };
   time.hardwareClockInLocalTime = true;
 
   # Saiko's automatic gc

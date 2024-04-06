@@ -124,6 +124,55 @@
                 name = "musmath";
                 url = "https://musmath.com/";
               }
+              {
+                name = "backtracks";
+                bookmarks = [
+                  {
+                    name = "65 BPM";
+                    url = "https://www.youtube.com/watch?v=RNvxvwc0cWQ";
+                  }
+                  {
+                    name = "75 BPM";
+                    url = "https://www.youtube.com/watch?v=r3xzzBis9RI";
+                  }
+                  {
+                    name = "85 BPM";
+                    url = "https://www.youtube.com/watch?v=yamlK-3d-XM";
+                  }
+                  {
+                    name = "95 BPM";
+                    url = "https://www.youtube.com/watch?v=OK1bcvAad4U";
+                  }
+                  {
+                    name = "105 BPM";
+                    url = "https://www.youtube.com/watch?v=jtRSVeqbOlQ";
+                  }
+                  {
+                    name = "115 BPM";
+                    url = "https://www.youtube.com/watch?v=m4EQFgC3k_M";
+                  }
+                  {
+                    name = "125 BPM";
+                    url = "https://www.youtube.com/watch?v=qO4qlPJi8Ic";
+                  }
+                  {
+                    name = "135 BPM";
+                    url = "https://www.youtube.com/watch?v=2INSl9YzMB4";
+                  }
+                  {
+                    name = "145 BPM";
+                    url = "https://www.youtube.com/watch?v=-2ubWypOT98";
+                  }
+                  {
+                    name = "155 BPM";
+                    url = "https://www.youtube.com/watch?v=qRXkX-fEbEA";
+                  }
+                  {
+                    name = "165 BPM";
+                    url = "https://www.youtube.com/watch?v=5-nrgYle0EY";
+                  }
+                ];
+              }
             ];
           }
           {
@@ -264,6 +313,10 @@
           {
             name = "Nixvim docs";
             url = "https://nix-community.github.io/nixvim/";
+          }
+          {
+            name = "Nix (builtins) & Nixpkgs (lib) Functions";
+            url = "https://teu5us.github.io/nix-lib.html";
           }
         ];
       }

@@ -63,8 +63,8 @@
     nixie,
     nixos-hardware,
     nixpkgs,
-    nixpkgs-stable,
     nixpkgs-patched,
+    nixpkgs-stable,
     nixvim,
     sops-nix,
     ...

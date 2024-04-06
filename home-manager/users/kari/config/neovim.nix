@@ -116,7 +116,16 @@
         };
         filesystem = {
           useLibuvFileWatcher = true;
-          # filteredItems.visible = true;
+          filteredItems = {
+            visible = false;
+            alwaysShow = [
+              ".gitignore"
+              ".envrc"
+              ".config"
+              ".wine"
+              ".sops.yaml"
+            ];
+          };
           followCurrentFile.enabled = true;
         };
       };

@@ -8,7 +8,7 @@
 [maliwan](nixosConfigurations/maliwan/default.nix) | "       | "          | "                                                         | Intel Laptop, Hyprland
 [vladof](nixosConfigurations/vladof/default.nix)   | "       | netboot    | [kari (minimal-gui)](home-manager/users/kari/minimal.nix) | Homelab, Firefox kiosk
 [bandit](nixosConfigurations/bandit/default.nix)   | "       | "          | core                                                      | Minimal Configuration
-[eridian](nixosConfigurations/eridian/default.nix) | "       | "          | [kari (minimal)](home-manager/users/kari/minimal.nix)     | Netboot Server (Nixie)
+[eridian](nixosConfigurations/eridian/default.nix) | "       | "          | [kari (minimal)](home-manager/users/kari/minimal.nix)     | Netboot Server ([Nixie](https://github.com/majbacka-labs/nixos.fi))
 [jakobs](nixosConfigurations/jakobs/default.nix)   | aarch64 | "          | "                                                         | Rasberry Pi 4 Model B
 
 **Read about [netbooting NixOS](https://blog.coditon.com/content/posts/Netbooting%20NixOS.md)**

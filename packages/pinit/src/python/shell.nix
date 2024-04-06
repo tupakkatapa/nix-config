@@ -1,4 +1,7 @@
-{pkgs ? import <nixpkgs>}: let
+{
+  pkgs ? import <nixpkgs> {},
+  lib ? pkgs.lib,
+}: let
   python3 = pkgs.python3;
 
   myPythonEnv = python3.withPackages (ps:

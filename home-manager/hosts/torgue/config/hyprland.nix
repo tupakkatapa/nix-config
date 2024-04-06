@@ -327,6 +327,10 @@ in {
         "float, pavucontrol"
         "size 1400 800, pavucontrol"
 
+        "center, title:^(Extension: (Bitwarden - Free Password Manager) - Bitwarden — Mozilla Firefox)$"
+        "float, title:^(Extension: (Bitwarden - Free Password Manager) - Bitwarden — Mozilla Firefox)$"
+        "size 480 648, title:^(Extension: (Bitwarden - Free Password Manager) - Bitwarden — Mozilla Firefox "
+
         "center, title:^(Picture-in-Picture)$"
         "float, title:^(Picture-in-Picture)$"
         "pin, title:^(Picture-in-Picture)$"
