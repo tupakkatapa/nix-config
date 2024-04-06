@@ -45,7 +45,7 @@
     # Netboot stuff
     nixpkgs-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh"; # stable
     nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie\?ref=jesse/bugs";
-    nixobolus.url = "github:ponkila/nixobolus";
+    homestakeros-base.url = "github:ponkila/HomestakerOS\?dir=nixosModules/base";
 
     # Other
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
@@ -58,9 +58,9 @@
     coditon-md,
     flake-parts,
     home-manager,
+    homestakeros-base,
     nix-extras,
     nixie,
-    nixobolus,
     nixos-hardware,
     nixpkgs,
     nixpkgs-stable,
@@ -184,7 +184,7 @@
           ./home-manager/users/kari/minimal.nix
           ./nixosConfigurations/eridian
           nixie.nixosModules.nixie
-          nixobolus.nixosModules.kexecTree
+          homestakeros-base.nixosModules.kexecTree
         ];
 
         maliwan.modules = [
@@ -200,7 +200,7 @@
           modules = [
             ./nixosConfigurations/bandit
             ./system/nix-settings.nix
-            nixobolus.nixosModules.kexecTree
+            homestakeros-base.nixosModules.kexecTree
             {
               nixpkgs.overlays = [
                 self.overlays.default
@@ -215,7 +215,7 @@
           modules = [
             ./home-manager/users/kari/minimal.nix
             ./nixosConfigurations/jakobs
-            nixobolus.nixosModules.kexecTree
+            homestakeros-base.nixosModules.kexecTree
             inputs.nixos-hardware.nixosModules.raspberry-pi-4
           ];
         };
