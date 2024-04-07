@@ -124,6 +124,7 @@ in
       pinit
 
       ffmpeg
+      ranger
       kexec-tools
       lshw
       refind

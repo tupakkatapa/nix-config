@@ -89,6 +89,16 @@ in
       palemoon-bin
       filezilla
 
+      ### Fun
+      cool-retro-term
+      activate-linux
+      cbonsai
+      cmatrix
+      rig
+      sl
+      tui-journal
+      termusic
+
       #### High Quality Games
       osu-lazer
       runelite
