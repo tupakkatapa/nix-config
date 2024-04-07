@@ -88,12 +88,26 @@
         , ...
         }:
         let
-          packages =
-            import ./packages { inherit pkgs; }
-            // {
-              inherit (inputs'.nixie.packages) lkddb-filter;
-              inherit (inputs'.nixie.packages) pxe-generate;
-            };
+          packages = rec {
+            "tupakkatapa-utils" = pkgs.callPackage ./packages/tupakkatapa-utils { };
+            "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
+            "ping-sweep" = pkgs.callPackage ./packages/ping-sweep { };
+            "pipewire-out-switcher" = pkgs.callPackage ./packages/pipewire-out-switcher { };
+            "pinit" = pkgs.callPackage ./packages/pinit { };
+            # Wofi scripts
+            "dm-pipewire-out-switcher" = pkgs.callPackage ./packages/wofi-scripts/dm-pipewire-out-switcher { };
+            "dm-quickfile" = pkgs.callPackage ./packages/wofi-scripts/dm-quickfile { };
+            "dm-radio" = pkgs.callPackage ./packages/wofi-scripts/dm-radio { };
+            # Notify scripts
+            "notify-brightness" = pkgs.callPackage ./packages/notify-scripts/notify-brightness { };
+            "notify-screenshot" = pkgs.callPackage ./packages/notify-scripts/notify-screenshot { };
+            "notify-volume" = pkgs.callPackage ./packages/notify-scripts/notify-volume { };
+            "notify-pipewire-out-switcher" = pkgs.callPackage ./packages/notify-scripts/notify-pipewire-out-switcher { };
+            "notify-not-hyprprop" = pkgs.callPackage ./packages/notify-scripts/notify-not-hyprprop { };
+            # Inputs
+            inherit (inputs'.nixie.packages) lkddb-filter;
+            inherit (inputs'.nixie.packages) pxe-generate;
+          };
         in
         {
           # Overlays
@@ -254,9 +268,9 @@
 
           # NixOS modules
           nixosModules = {
-            sftpClient.imports = [ ./modules/sftp-client.nix ];
-            autoScrcpy.imports = [ ./modules/auto-scrcpy.nix ];
-            rsyncBackup.imports = [ ./modules/rsync-backup.nix ];
+            sftpClient.imports = [ ./nixosModules/sftp-client.nix ];
+            autoScrcpy.imports = [ ./nixosModules/auto-scrcpy.nix ];
+            rsyncBackup.imports = [ ./nixosModules/rsync-backup.nix ];
           };
         };
     };
