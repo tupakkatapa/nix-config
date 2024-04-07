@@ -1,7 +1,8 @@
-{ lib
+{ pkgs
+, lib
 , config
 , ...
-} @ args:
+}:
 let
   domain = "coditon.com";
   localAddress = "192.168.1.8";
@@ -12,7 +13,7 @@ let
   user = "kari";
 
   # Inherit global stuff for imports
-  extendedArgs = args // { inherit appData domain; };
+  extendedArgs = { inherit pkgs lib config domain appData; };
 in
 {
   imports = [
