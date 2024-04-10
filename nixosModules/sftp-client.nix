@@ -10,11 +10,18 @@ in
   options.services.sftpClient = {
     enable = lib.mkEnableOption "SFTP Client";
 
+    defaultIdentityFile = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      description = "Default SSH identity file for the SFTP client.";
+    };
+
     mounts = lib.mkOption {
       type = lib.types.listOf (lib.types.submodule {
         options = {
           identifyFile = lib.mkOption {
             type = lib.types.str;
+            default = cfg.defaultIdentityFile;
             description = "SSH identity file for the SFTP client.";
           };
           what = lib.mkOption {

@@ -23,22 +23,20 @@ in
   # Mount SFTP and bind home directories
   services.sftpClient =
     let
-      identifyFile = "/home/${user}/.ssh/id_ed25519";
       sftpPrefix = "sftp@192.168.1.8:";
     in
     {
       enable = true;
+      defaultIdentifyFile = "/home/${user}/.ssh/id_ed25519";
       mounts =
         [
           {
-            inherit identifyFile;
             what = "${sftpPrefix}/";
             where = "/mnt/sftp";
           }
         ]
         ++ (map
           (dir: {
-            inherit identifyFile;
             what = "${sftpPrefix}/home/${dir}";
             where = "/home/${user}/${dir}";
           }) [ "Downloads" "Pictures" "Workspace" "Documents" ]);
