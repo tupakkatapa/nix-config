@@ -77,11 +77,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1712201922,
-        "narHash": "sha256-CzWXibFKq1mfkH/5ceCzvxF+jXeHF4LsF2nkzWOwvGE=",
+        "lastModified": 1712736254,
+        "narHash": "sha256-wgpzgqp37Xljs/otlN8cWWcixPOUc4n82ZXi9cDpddY=",
         "owner": "tupakkatapa",
         "repo": "coditon-md",
-        "rev": "f56359b43dccb9c9fd0e254b8835622a1719090a",
+        "rev": "d72d54c9375955b3518b75845c6218214a9c21ce",
         "type": "github"
       },
       "original": {
