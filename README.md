@@ -1,17 +1,16 @@
 ## My NixOS Configurations
 
-⚠️ Caution! Most of the hosts here are **truly declarative** by being **ephemeral**. ⚠️
-
 | Hostname | Architecture | Format       | Users | Details
 | :-:       |  :-:    | :-:          | :-:   | :-
 [torgue](nixosConfigurations/torgue/default.nix)   | x86_64  | persistent | [kari](home-manager/users/kari/default.nix)               | AMD Desktop, Hyprland, [screenshot](https://raw.githubusercontent.com/tupakkatapa/nix-config/main/nixosConfigurations/torgue/screenshot.png)
 [maliwan](nixosConfigurations/maliwan/default.nix) | "       | "          | "                                                         | Intel Laptop, Hyprland
 [vladof](nixosConfigurations/vladof/default.nix)   | "       | netboot    | [kari (minimal-gui)](home-manager/users/kari/minimal.nix) | Homelab, Firefox kiosk
-[bandit](nixosConfigurations/bandit/default.nix)   | "       | "          | core                                                      | Minimal Configuration
+[bandit](nixosConfigurations/bandit/default.nix)   | "       | "          | core                                                      | Minimal headless
+[gearbox](nixosConfigurations/eridian/default.nix) | "       | "          | "                                                         | Minimal GUI
 [eridian](nixosConfigurations/eridian/default.nix) | "       | "          | [kari (minimal)](home-manager/users/kari/minimal.nix)     | Netboot Server ([Nixie](https://github.com/majbacka-labs/nixos.fi))
 [jakobs](nixosConfigurations/jakobs/default.nix)   | aarch64 | "          | "                                                         | Rasberry Pi 4 Model B
 
-**Read about [netbooting NixOS](https://blog.coditon.com/content/posts/Netbooting%20NixOS.md)**
+Most of the hosts here are **truly declarative** by being **ephemeral**. Read more about netbooting NixOS at [my blog post](https://blog.coditon.com/content/posts/Netbooting%20NixOS.md) or documentation of [majbacka-labs/nixos.fi](https://github.com/majbacka-labs/nixos.fi).
 
 ## Resources
 

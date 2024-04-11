@@ -160,6 +160,7 @@
           packages =
             (with flake.nixosConfigurations; {
               "bandit" = bandit.config.system.build.kexecTree;
+              "gearbox" = gearbox.config.system.build.squashfs;
               "eridian" = eridian.config.system.build.kexecTree;
               "jakobs" = jakobs.config.system.build.kexecTree;
               "vladof" = vladof.config.system.build.squashfs;
@@ -191,7 +192,8 @@
                   ];
                   system.stateVersion = "23.11";
                 }
-                ./system
+                ./system/base.nix
+                ./system/nix-settings.nix
               ];
           };
 
@@ -224,21 +226,18 @@
             nixos-hardware.nixosModules.common-gpu-intel
           ];
 
-          bandit = {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs outputs; };
-            modules = [
-              ./nixosConfigurations/bandit
-              ./system/nix-settings.nix
-              homestakeros-base.nixosModules.kexecTree
-              {
-                nixpkgs.overlays = [
-                  self.overlays.default
-                ];
-                system.stateVersion = "23.11";
-              }
-            ];
-          };
+          bandit.modules = [
+            ./nixosConfigurations/bandit
+            ./home-manager/users/core
+            homestakeros-base.nixosModules.kexecTree
+          ];
+
+          gearbox.modules = [
+            ./nixosConfigurations/gearbox
+            ./home-manager/users/core
+            nixie.nixosModules.squashfs
+            nixos-hardware.nixosModules.common-gpu-intel
+          ];
 
           jakobs = {
             system = "aarch64-linux";
@@ -260,9 +259,10 @@
               "torgue" = nixosSystem (withDefaults torgue);
             }
             // (with nixpkgs-stable.lib; {
-              "bandit" = nixosSystem bandit;
+              "bandit" = nixosSystem (withDefaults bandit);
             })
             // (with nixpkgs-patched.lib; {
+              "gearbox" = nixosSystem (withDefaults gearbox);
               "vladof" = nixosSystem (withDefaults vladof);
             });
 

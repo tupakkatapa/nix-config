@@ -2,8 +2,6 @@
 , pkgs
 , ...
 }: {
-  imports = [ ./nix-settings.nix ];
-
   boot = {
     kernelParams = [
       "boot.shell_on_fail"
@@ -38,7 +36,7 @@
 
   # Set the console keymap and font
   console.keyMap = "fi";
-  console.font = "${pkgs.terminus_font}/share/consolefonts/ter-c24n.psf.gz";
+  # console.font = "${pkgs.terminus_font}/share/consolefonts/ter-c24n.psf.gz";
 
   # Timezone, system version and locale
   time.timeZone = "Europe/Helsinki";
