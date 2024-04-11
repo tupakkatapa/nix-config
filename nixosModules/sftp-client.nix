@@ -19,7 +19,7 @@ in
     mounts = lib.mkOption {
       type = lib.types.listOf (lib.types.submodule {
         options = {
-          identifyFile = lib.mkOption {
+          identityFile = lib.mkOption {
             type = lib.types.str;
             default = cfg.defaultIdentityFile;
             description = "SSH identity file for the SFTP client.";
@@ -57,7 +57,7 @@ in
           device = mount.what;
           fsType = "sshfs";
           options = [
-            "IdentityFile=${mount.identifyFile}"
+            "IdentityFile=${mount.identityFile}"
             "ServerAliveInterval=15"
             "_netdev"
             "allow_other"

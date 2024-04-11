@@ -27,7 +27,7 @@ in
     in
     {
       enable = true;
-      defaultIdentifyFile = "/home/${user}/.ssh/id_ed25519";
+      defaultIdentityFile = "/home/${user}/.ssh/id_ed25519";
       mounts =
         [
           {
