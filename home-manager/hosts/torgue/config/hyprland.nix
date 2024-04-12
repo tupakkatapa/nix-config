@@ -345,6 +345,10 @@ in
         "float, Nautilus"
         "size 1400 800, org.gnome.Nautilus"
 
+        "center, thunar"
+        "float, thunar"
+        "size 1400 800, thunar"
+
         "center, Alacritty"
         "float, Alacritty"
         "size 1400 800, Alacritty"
