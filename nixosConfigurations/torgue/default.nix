@@ -133,6 +133,7 @@ in
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
+    ../.config/retroarch.nix
     ./hardware-configuration.nix
   ];
 
