@@ -4,11 +4,24 @@ create_project() {
     local lang=$1
     local project_name=$2
 
-    # Create project directory with the given name and copy template files
+    # Create project directory with the given name
     mkdir -p "${project_name}"
-    cp -r src/"${lang}"/* "${project_name}/"
 
-    # Special handling for Rust to initialize with Cargo and rename the project appropriately
+    if [ "${lang}" == "flutter" ]; then
+        # Clone the flutter template repository
+        # git clone https://github.com/babariviere/flutter-nix-hello-world.git "${project_name}"
+        git clone -b fix https://github.com/MikiVanousek/flutter-nix-hello-world.git "${project_name}"
+
+        # Remove the README.md file
+        rm -f "${project_name}/README.md"
+
+        # TODO: rename project within files
+    else
+        # Copy template files for other languages
+        cp -r src/"${lang}"/* "${project_name}/"
+    fi
+
+    # Special handling for rust to initialize with cargo and rename the project appropriately
     if [ "${lang}" == "rust" ]; then
         (cd "${project_name}" && cargo init --name "${project_name}")
     fi
@@ -23,17 +36,17 @@ create_project() {
 }
 
 if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 <lang> <project_name>"
-    echo "Example: $0 rust my_rust_project"
+    echo "usage: $0 <lang> <project_name>"
+    echo "example: $0 flutter my_flutter_project"
     exit 1
 fi
 
 case "$1" in
-    rust|python|bash)
+    rust|python|bash|flutter)
         create_project "$1" "$2"
         ;;
     *)
-        echo "Unsupported language. Supported languages: rust, python, bash"
+        echo "unsupported language. supported languages: rust, python, bash, flutter"
         exit 1
         ;;
 esac
