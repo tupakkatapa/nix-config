@@ -86,6 +86,7 @@ in
       chromium
       palemoon-bin
       filezilla
+      kdenlive
 
       ### Fun
       cool-retro-term
@@ -96,6 +97,8 @@ in
       sl
       tui-journal
       termusic
+      ttyper
+      nudoku
 
       #### High Quality Games
       osu-lazer

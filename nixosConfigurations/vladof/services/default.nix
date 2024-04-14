@@ -145,7 +145,7 @@ in
   # Torrent
   services.transmission = {
     enable = true;
-    downloadDirPermissions = "0770";
+    downloadDirPermissions = "0777";
     openRPCPort = true;
     home = "${appData}/transmission";
     settings = {

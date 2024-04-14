@@ -134,6 +134,7 @@ in
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
     ../.config/retroarch.nix
+    ../.config/virtualisation.nix
     ./hardware-configuration.nix
   ];
 
@@ -190,25 +191,5 @@ in
     # Hardware
     oversteer
     solaar
-
-    # Wine
-    winetricks
-    wineWowPackages.waylandFull
-
-    # Podman-compose
-    podman-compose
   ];
-
-  # Podman
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;
-    defaultNetwork.settings.dns_enabled = true;
-  };
-
-  # VirtualBox
-  virtualisation.virtualbox.host = {
-    enable = true;
-    enableExtensionPack = true;
-  };
 }

@@ -185,6 +185,7 @@ in
         "SUPER, B, exec, ${BROWSER}"
         "SUPER, F, exec, ${FILEMANAGER}"
         "SUPER, V, exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~'"
+        "SUPER, T, exec, ${pkgs.cool-retro-term}/bin/cool-retro-term"
 
         # Misc
         "${mod} SHIFT, R, exec, hyprctl reload && notify-send \"Hyprland reloaded\""
@@ -327,10 +328,6 @@ in
         "center, pavucontrol"
         "float, pavucontrol"
         "size 1400 800, pavucontrol"
-
-        "center, title:^(Extension: (Bitwarden - Free Password Manager) - Bitwarden — Mozilla Firefox)$"
-        "float, title:^(Extension: (Bitwarden - Free Password Manager) - Bitwarden — Mozilla Firefox)$"
-        "size 480 648, title:^(Extension: (Bitwarden - Free Password Manager) - Bitwarden — Mozilla Firefox "
 
         "center, title:^(Picture-in-Picture)$"
         "float, title:^(Picture-in-Picture)$"

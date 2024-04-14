@@ -47,6 +47,7 @@ in
 
       bookmarks = import ./bookmarks.nix;
 
+      # about:config
       settings =
         {
           "browser.compactmode.show" = true;
@@ -60,6 +61,7 @@ in
           "browser.uidensity" = 1;
           "browser.toolbars.bookmarks.visibility" = "never";
           "browser.translations.neverTranslateLanguages" = "en,fi";
+          "browser.translations.autoTranslate" = true;
           "browser.shell.checkDefaultBrowser" = false;
           "identity.fxaccounts.enabled" = false;
           "browser.tabs.firefox-view" = false;
@@ -81,10 +83,8 @@ in
           "browser.newtabpage.activity-stream.telemetry" = false;
           "browser.newtabpage.activity-stream.feeds.snippets" = false;
           "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
-          "browser.newtabpage.activity-stream.section.highlights.includePocket" =
-            false;
-          "browser.newtabpage.activity-stream.feeds.discoverystreamfeed" =
-            false;
+          "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+          "browser.newtabpage.activity-stream.feeds.discoverystreamfeed" = false;
           "browser.newtabpage.activity-stream.showSponsored" = false;
           "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
           "browser.newtabpage.activity-stream.default.sites" = "";
@@ -153,8 +153,7 @@ in
           "browser.safebrowsing.downloads.enabled" = false;
           "browser.safebrowsing.downloads.remote.enabled" = false;
           "browser.safebrowsing.downloads.remote.url" = "";
-          "browser.safebrowsing.downloads.remote.block_potentially_unwanted" =
-            false;
+          "browser.safebrowsing.downloads.remote.block_potentially_unwanted" = false;
           "browser.safebrowsing.downloads.remote.block_uncommon" = false;
           "browser.safebrowsing.allowOverride" = false;
 
@@ -232,10 +231,8 @@ in
           # Cookies
           "browser.contentblocking.category" = "strict";
           "privacy.partition.serviceWorkers" = true;
-          "privacy.partition.always_partition_third_party_non_cookie_storage" =
-            true;
-          "privacy.partition.always_partition_third_party_non_cookie_storage.exempt_sessionstorage" =
-            true;
+          "privacy.partition.always_partition_third_party_non_cookie_storage" = true;
+          "privacy.partition.always_partition_third_party_non_cookie_storage.exempt_sessionstorage" = true;
 
           # UI Features
           "dom.disable_open_during_load" = true;
@@ -264,12 +261,11 @@ in
           "privacy.sanitize.timeSpan" = 0;
 
           # Fingerprinting (RFP)
-          "privacy.resistFingerprinting" = false; # changes this
+          "privacy.resistFingerprinting" = false; # changed this
           "privacy.window.maxInnerWidth" = 1600;
           "privacy.window.maxInnerHeight" = 900;
           "privacy.resistFingerprinting.block_mozAddonManager" = true;
-          "browser.display.use_system_colors" =
-            false; # Default: false [Non-Windows]
+          "browser.display.use_system_colors" = false; # Default: false [Non-Windows]
           "browser.startup.blankWindow" = false;
         };
     };

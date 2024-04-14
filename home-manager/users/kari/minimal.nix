@@ -106,11 +106,6 @@ in
           user = "core";
           extraOptions."StrictHostKeyChecking" = "no";
         };
-        "pxe-server" = {
-          hostname = "192.168.1.169";
-          user = "core";
-          extraOptions = { "StrictHostKeyChecking" = "no"; };
-        };
       };
       forwardAgent = true;
       addKeysToAgent = "yes";
@@ -144,7 +139,6 @@ in
       eza
       fd
       ripgrep
-      zoxide
 
       # https://github.com/coreboot/coreboot/blob/main/util/liveiso/nixos/common.nix
       acpica-tools

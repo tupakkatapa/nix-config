@@ -4,7 +4,7 @@ date: "2024-04-10"
 
 # Home Directory at SFTP Server
 
-In this blog post, I discuss how I've begun to centralize the data I use on a daily basis. My intention is to gather all my data in one place, and in such a form that it is directly accessible from any device.
+In this blog post, I discuss how I've begun to centralize the data I use on a daily basis. My intention at the long run is to gather all my data in one place, and in such a form that it is directly accessible from any device.
 
 ## Introduction
 
