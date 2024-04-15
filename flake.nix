@@ -220,9 +220,8 @@
           ];
 
           maliwan.modules = [
-            ./home-manager/users/kari
+            ./home-manager/users/kari/minimal-gui.nix
             ./nixosConfigurations/maliwan
-            aagl.nixosModules.default
             nixos-hardware.nixosModules.common-gpu-intel
           ];
 

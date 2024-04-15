@@ -27,6 +27,10 @@ in
     fonts.fontconfig.enable = true;
 
     home.packages = with pkgs; [
+      ferdium
+      plexamp
+      sublime-merge
+
       (pkgs.nerdfonts.override {
         fonts = [ "JetBrainsMono" ];
       })
