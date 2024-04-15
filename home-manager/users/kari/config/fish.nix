@@ -35,8 +35,8 @@ in
       remove = "rm";
 
       # Rsync
-      rcp = "rsync -PaL";
-      rmv = "rsync -PaL --remove-source-files";
+      rcp = "rsync --exclude='/.git' --filter='dir-merge,-n /.gitignore' -PaL";
+      rmv = rcp + " --remove-source-files";
 
       # Adding flags
       df = "df -h";
