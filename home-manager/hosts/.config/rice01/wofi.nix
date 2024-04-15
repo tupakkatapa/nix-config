@@ -2,7 +2,7 @@
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) FONT;
+  inherit (config.home.sessionVariables) FONT TERMINAL;
 in
 {
   programs.wofi = {
@@ -14,7 +14,7 @@ in
       layer = "overlay";
       normal_window = true;
       prompt = " Search ... ";
-      term = "alacritty";
+      term = "${TERMINAL}";
 
       # Geometry
       dynamic_lines = true;
