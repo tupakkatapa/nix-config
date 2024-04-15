@@ -11,6 +11,8 @@ pkgs.stdenv.mkDerivation rec {
 
   buildInputs = with pkgs; [
     cargo
+    git
+    nix
   ];
 
   nativeBuildInputs = [ pkgs.makeWrapper ];
