@@ -194,6 +194,7 @@
                 }
                 ./system/base.nix
                 ./system/nix-settings.nix
+                ./system/openssh.nix
               ];
           };
 
