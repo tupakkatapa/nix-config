@@ -73,17 +73,24 @@ let
 
     markdown = [ "text/markdown" ];
 
-    office = [
-      "application/vnd.oasis.opendocument.text"
-      "application/vnd.oasis.opendocument.spreadsheet"
-      "application/vnd.oasis.opendocument.presentation"
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      "application/vnd.openxmlformats-officedocument.presentationml.presentation"
-      "application/msword"
-      "application/vnd.ms-excel"
-      "application/vnd.ms-powerpoint"
-    ];
+    office = {
+      spreadsheet = [
+        "application/vnd.ms-excel"
+        "application/vnd.oasis.opendocument.spreadsheet"
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        "text/csv"
+      ];
+      presentation = [
+        "application/vnd.ms-powerpoint"
+        "application/vnd.oasis.opendocument.presentation"
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+      ];
+      text = [
+        "application/msword"
+        "application/vnd.oasis.opendocument.text"
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      ];
+    };
 
     pdf = [ "application/pdf" ];
 

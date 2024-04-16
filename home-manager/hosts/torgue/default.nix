@@ -2,7 +2,7 @@
 , ...
 }@args:
 let
-  helpers = import ../helpers.nix args;
+  helpers = import ../../helpers.nix args;
 in
 {
   # This file should be imported under 'home-manager.users.<username>'

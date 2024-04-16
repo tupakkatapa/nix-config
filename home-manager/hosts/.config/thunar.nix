@@ -2,7 +2,7 @@
 , ...
 }@args:
 let
-  helpers = import ../helpers.nix args;
+  helpers = import ../../helpers.nix args;
 in
 {
   # Set as default

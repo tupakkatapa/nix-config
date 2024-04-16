@@ -1,9 +1,10 @@
 # https://github.com/hyper-dot/Arch-Hyprland
 { pkgs
 , ...
-}:
+}@args:
 let
   user = "kari";
+  helpers = import ../../helpers.nix args;
 in
 {
   # This configuration extends the minimal-gui version
@@ -16,12 +17,10 @@ in
   home-manager.users."${user}" = rec {
     # Default apps
     xdg.mimeApps.enable = true;
-    xdg.mimeApps.defaultApplications = {
-      "application/msword" = [ "writer.desktop" ];
-      "application/vnd.oasis.opendocument.spreadsheet" = [ "impress.desktop" ];
-      "application/vnd.oasis.opendocument.text" = [ "writer.desktop" ];
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = [ "writer.desktop" ];
-      "text/csv" = [ "impress.desktop" ];
+    xdg.mimeApps.defaultApplications = helpers.createMimes {
+      text = [ "writer.desktop" ];
+      spreadsheet = [ "calc.desktop" ];
+      presentation = [ "impress.desktop" ];
     };
     xdg.configFile."mimeapps.list".force = true;
 
