@@ -129,15 +129,17 @@ in
       let
         scriptDir = ./scripts;
         scriptFiles = builtins.readDir scriptDir;
-      in
-      # Places scripts in '~/.local/bin/'
-      builtins.mapAttrs
-        (name: _: {
+        makeScript = name: {
           executable = true;
           target = ".local/bin/${name}";
           source = "${scriptDir}/${name}";
-        })
-        scriptFiles;
+        };
+        staticFiles = {
+          ".config/jack/focusrite_guitarix_v2.xml".source = ./config/focusrite_guitarix_v2.xml;
+          ".config/jack/focusrite_guitarix_ardour_v2.xml".source = ./config/focusrite_guitarix_ardour_v2.xml;
+        };
+      in
+      staticFiles // builtins.mapAttrs (name: _: makeScript name) scriptFiles;
 
     # Extra SSH config
     programs.ssh = {

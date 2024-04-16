@@ -25,14 +25,13 @@ in
     xdg.configFile."mimeapps.list".force = true;
 
     home.packages = with pkgs; [
-      #### SELF
       monitor-adjust
 
-      #### GUI
+      # GUI
       czkawka
       # gimp-with-plugins
       libreoffice-qt
-      #obsidian
+      # obsidian
       qemu
       rpi-imager
       video-trimmer
@@ -41,7 +40,7 @@ in
       filezilla
       kdenlive
 
-      ### Fun
+      # Fun
       cool-retro-term
       activate-linux
       cbonsai
@@ -53,26 +52,31 @@ in
       ttyper
       nudoku
 
-      #### High Quality Games
+      # Music production
+      qjackctl
+      ardour
+      guitarix
+
+      # High Quality Games
       osu-lazer
       runelite
 
-      #### CLI
+      # CLI
       android-tools
       grub2
       ventoy
       chatgpt-cli
 
-      #### Lang
+      # Lang
       rustc
       cargo
       rustfmt
       gcc
 
-      #### System Utilities
+      # System Utilities
       nix-tree
 
-      #### Networking
+      # Networking
       nmap
       wireguard-go
       wireguard-tools

@@ -9,7 +9,6 @@ in
   home.sessionVariables = {
     FILEMANAGER = "thunar";
   };
-  xdg.mime.enable = true;
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = helpers.createMimes {
     directory = [ "thunar.desktop" ];

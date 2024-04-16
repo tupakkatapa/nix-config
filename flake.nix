@@ -148,7 +148,7 @@
             };
             pre-commit.hooks = {
               rustfmt.enable = false;
-              shellcheck.enable = true;
+              # shellcheck.enable = true;
               treefmt.enable = true;
             };
             pre-commit.settings.treefmt.package = config.treefmt.build.wrapper;

@@ -340,11 +340,11 @@ in
 
         "center, org.gnome.Nautilus"
         "float, Nautilus"
-        "size 1400 800, org.gnome.Nautilus"
+        "size 1500 1000, org.gnome.Nautilus"
 
         "center, thunar"
         "float, thunar"
-        "size 1400 800, thunar"
+        "size 1500 1000, thunar"
 
         "center, Alacritty"
         "float, Alacritty"

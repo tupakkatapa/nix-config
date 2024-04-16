@@ -17,7 +17,6 @@ in
   home.sessionVariables = {
     FONT = "JetBrainsMono Nerd Font";
   };
-  xdg.mime.enable = true;
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = helpers.createMimes {
     audio = [ "mpv.desktop" ];
