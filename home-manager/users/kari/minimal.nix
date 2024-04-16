@@ -108,10 +108,10 @@ in
   home-manager.users."${user}" = {
     imports =
       [
-        ./config/direnv.nix
-        ./config/fish.nix
-        ./config/git.nix
-        ./config/neovim.nix
+        ./.config/direnv.nix
+        ./.config/fish.nix
+        ./.config/git.nix
+        ./.config/neovim.nix
       ]
       # Importing host-spesific home-manager config if it exists
       ++ optionalPaths
@@ -135,8 +135,8 @@ in
           source = "${scriptDir}/${name}";
         };
         staticFiles = {
-          ".config/jack/focusrite_guitarix_v2.xml".source = ./config/focusrite_guitarix_v2.xml;
-          ".config/jack/focusrite_guitarix_ardour_v2.xml".source = ./config/focusrite_guitarix_ardour_v2.xml;
+          ".config/jack/focusrite_guitarix_v2.xml".source = ./.config/focusrite_guitarix_v2.xml;
+          ".config/jack/focusrite_guitarix_ardour_v2.xml".source = ./.config/focusrite_guitarix_ardour_v2.xml;
         };
       in
       staticFiles // builtins.mapAttrs (name: _: makeScript name) scriptFiles;

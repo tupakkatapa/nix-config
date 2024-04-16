@@ -11,9 +11,9 @@ in
   # Home-manager config
   home-manager.users."${user}" = rec {
     imports = [
-      ./config/alacritty.nix
-      ./config/firefox
-      ./config/mpv.nix
+      ./.config/alacritty.nix
+      ./.config/firefox
+      ./.config/mpv.nix
     ];
 
     # Default apps
