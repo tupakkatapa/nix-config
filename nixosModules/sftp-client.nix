@@ -38,7 +38,7 @@ in
       description = "List of directories to bind mount.";
       example = [
         {
-          identifyFile = "/home/user/.ssh/id_ed25519";
+          identityFile = "/home/user/.ssh/id_ed25519";
           what = "user@192.168.1.100:/path/to/remote/dir";
           where = "/mnt/my_sftp_mount";
         }
