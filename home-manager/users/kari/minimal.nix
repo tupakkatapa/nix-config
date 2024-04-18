@@ -25,7 +25,7 @@ in
     let
       sftpPrefix = "sftp@192.168.1.8:";
     in
-    {
+    lib.mkIf (config.networking.hostName != "vladof") {
       enable = true;
       defaultIdentityFile = "/home/${user}/.ssh/id_ed25519";
       mounts =
