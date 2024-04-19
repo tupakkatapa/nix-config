@@ -5,12 +5,21 @@
   # Enable NIC driver for stage-1
   boot.kernelPatches = [
     {
-      name = "kernel nic config (torgue)";
+      name = "enable e1000 for PC";
       patch = null;
       extraConfig = ''
-        E1000 y
         ETHERNET y
         NET_VENDOR_INTEL y
+        E1000 y
+      '';
+    }
+    {
+      name = "enable r8169 for laptop";
+      patch = null;
+      extraConfig = ''
+        ETHERNET y
+        NET_VENDOR_REALTEK y
+        R8169 y
       '';
     }
   ];
