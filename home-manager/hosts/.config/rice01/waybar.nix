@@ -11,6 +11,7 @@ let
     inactive
     blue
     cyan
+    pink
     green
     orange
     purple
@@ -46,8 +47,10 @@ in
         "tray"
         "pulseaudio"
         "bluetooth"
+        "custom/wireguard"
         "network"
         "battery"
+        "custom/weather"
         "clock#date"
         "clock#time"
       ];
@@ -71,10 +74,17 @@ in
         format-alt = " {free} free";
       };
 
+      # "custom/wireguard" = {}
+
+      "custom/weather" = {
+        format = "{}°C";
+        exec = ''dig oulu.weather @dns.toys +short | head -n 1 | cut -d '"' -f 4 | cut -d 'C' -f 1'';
+        interval = 120; # 15 min
+      };
+
       "custom/player" = {
         exec-if = "${playerctl} status";
-        exec = ''
-          ${playerctl} metadata --format '{"text": "{{artist}} - {{title}}", "alt": "{{status}}", "tooltip": "{{title}} ({{artist}} - {{album}})"}' '';
+        exec = ''${playerctl} metadata --format '{"text": "{{artist}} - {{title}}", "alt": "{{status}}", "tooltip": "{{title}} ({{artist}} - {{album}})"}' '';
         return-type = "json";
         interval = 2;
         max-length = 50;
@@ -100,6 +110,15 @@ in
           "7" = "7";
           "8" = "8";
           "9" = "9";
+          # "1" = "一";
+          # "2" = "二";
+          # "3" = "三";
+          # "4" = "四";
+          # "5" = "五";
+          # "6" = "六";
+          # "7" = "七";
+          # "8" = "八";
+          # "9" = "九";
         };
       };
 
@@ -120,25 +139,14 @@ in
       };
 
       bluetooth = {
-        format = " on";
-        format-disabled = " off";
-        format-connected = " {device_alias}";
-        format-connected-battery = " {device_alias} {device_battery_percentage}%";
+        format = " {status}";
+        format-disabled = "";
+        format-connected = " {num_connections} connected";
+        tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
+        tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
+        tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
+        tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
         on-click = blueberry;
-        tooltip-format = ''
-          {controller_alias}	{controller_address}
-
-          {num_connections} connected'';
-        tooltip-format-connected = ''
-          {controller_alias}		{controller_address}
-
-          {num_connections} connected
-
-          {device_enumerate}'';
-        tooltip-format-enumerate-connected = "{device_alias}		{device_address}";
-        tooltip-format-enumerate-connected-battery = "{device_alias}		{device_address}	{device_battery_percentage}%";
-        # Display order preference, since only one device is shown
-        format-device-preference = [ "CORSAIR VIRTUOSO XT Bluetooth" "MX Keys" "MX Master 2S" ];
       };
 
       network = {
@@ -231,6 +239,8 @@ in
       #tray,
       #custom-player,
       #custom-hostname,
+      #custom-wireguard,
+      #custom-weather,
       #bluetooth {
         padding: 0 15px;
         color: #${foreground};
@@ -261,6 +271,10 @@ in
 
       #bluetooth.disconnected {
         color: #${cyan};
+      }
+
+      #custom-wireguard {
+        color: #${pink};
       }
 
       #network {

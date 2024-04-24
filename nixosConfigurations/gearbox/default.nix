@@ -24,6 +24,17 @@
     }
   ];
 
+  boot.kernelParams = [
+    # Initiates a an interactive shell at Stage 1
+    # "boot.debug1"
+
+    # Same as debug1, but waits until kernel modules are loaded
+    # "boot.debug1devices"
+
+    # Same as debug1, but waits until 'neededForBoot' filesystems are mounted
+    # "boot.debug1mounts"
+  ];
+
   # Autologin
   services.getty.autologinUser = "core";
 
@@ -45,14 +56,14 @@
       xterm.enable = false;
       xfce.enable = true;
     };
-    displayManager = {
-      autoLogin = {
-        enable = true;
-        user = "core";
-      };
-      lightdm.enable = true;
-      defaultSession = "xfce";
+    displayManager.lightdm.enable = true;
+  };
+  services.displayManager = {
+    autoLogin = {
+      enable = true;
+      user = "core";
     };
+    defaultSession = "xfce";
   };
 
   # Wine

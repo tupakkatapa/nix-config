@@ -19,7 +19,7 @@ Most of the hosts here are **truly declarative** by being **ephemeral**. Read mo
 - **nixosConfigurations**: Host configurations.
 - **nixosModules**: My custom modules.
 - **packages**: My custom packages.
-- **system**: Very common configuration.
+- **system**: Very common configurations.
 
 You may also find `.config` directories in various places; these are used for storing shared configurations in the context indicated by the location.
 

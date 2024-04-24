@@ -224,6 +224,14 @@
             name = "Rust Language Cheat Sheet";
             url = "https://cheats.rs/";
           }
+          {
+            name = "Bash Reference Manual";
+            url = "https://www.gnu.org/software/bash/manual/html_node/index.html#SEC_Contents";
+          }
+          {
+            name = "rEFInd Boot Manager";
+            url = "http://www.rodsbooks.com/refind/index.html";
+          }
         ];
       }
       {
@@ -387,6 +395,10 @@
       {
         name = "Reddit";
         url = "https://old.reddit.com/";
+      }
+      {
+        name = "EverythingMoe";
+        url = "https://everythingmoe.com/";
       }
     ];
   }
