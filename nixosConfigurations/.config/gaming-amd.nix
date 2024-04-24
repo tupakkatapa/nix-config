@@ -1,11 +1,10 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, lib
+, config
+, ...
 }: {
   # Enable clock and voltage adjustment for AMD GPU
-  boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
+  boot.kernelParams = [ "amdgpu.ppfeaturemask=0xffffffff" ];
 
   # System packages
   environment.systemPackages = with pkgs; [
@@ -34,13 +33,14 @@
     };
   };
   hardware.xpadneo.enable = true;
+  hardware.xone.enable = true;
   hardware.bluetooth.enable = true;
   security.rtkit.enable = true;
 
   programs.gamemode = {
     enable = true;
     settings = {
-      general = {renice = 10;};
+      general = { renice = 10; };
       gpu = {
         apply_gpu_optimisations = "accept-responsibility";
         gpu_device = 0;
