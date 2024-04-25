@@ -156,6 +156,12 @@ in
     };
     services.ssh-agent.enable = true;
 
+    # Terminal file manager
+    programs.yazi = {
+      enable = true;
+      enableFishIntegration = true;
+    };
+
     home.packages = with pkgs; [
       tupakkatapa-utils
       lkddb-filter
@@ -163,7 +169,6 @@ in
       pinit
 
       ffmpeg
-      ranger
       kexec-tools
       lshw
       refind

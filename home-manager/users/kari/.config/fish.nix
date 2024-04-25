@@ -7,6 +7,7 @@ let
   hasPackage = pname:
     lib.any (p: p ? pname && p.pname == pname) config.home.packages;
   hasNeovim = config.programs.neovim.enable || config.programs.nixvim.enable;
+  hasYazi = config.programs.yazi.enable || config.programs.yazi.enable;
   hasEza = hasPackage "eza";
 in
 {
@@ -29,6 +30,9 @@ in
       # Changing 'ls' to 'eza'
       ls = mkIf hasEza "eza -agl --color=always --group-directories-first";
       tree = mkIf hasEza "eza --git-ignore -T";
+
+      # Changing 'fm' to 'yazi'
+      fm = mkIf hasYazi "yazi";
 
       # Removed home directory once
       rm = "mv -it /tmp";
