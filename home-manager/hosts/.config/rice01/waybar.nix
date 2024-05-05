@@ -11,7 +11,6 @@ let
     inactive
     blue
     cyan
-    pink
     green
     orange
     purple
@@ -47,10 +46,8 @@ in
         "tray"
         "pulseaudio"
         "bluetooth"
-        "custom/wireguard"
         "network"
         "battery"
-        "custom/weather"
         "clock#date"
         "clock#time"
       ];
@@ -72,14 +69,6 @@ in
         interval = 30;
         format = " {percentage_free}% free";
         format-alt = " {free} free";
-      };
-
-      # "custom/wireguard" = {}
-
-      "custom/weather" = {
-        format = "{}°C";
-        exec = ''dig oulu.weather @dns.toys +short | head -n 1 | cut -d '"' -f 4 | cut -d 'C' -f 1'';
-        interval = 120; # 15 min
       };
 
       "custom/player" = {
@@ -239,8 +228,6 @@ in
       #tray,
       #custom-player,
       #custom-hostname,
-      #custom-wireguard,
-      #custom-weather,
       #bluetooth {
         padding: 0 15px;
         color: #${foreground};
@@ -271,10 +258,6 @@ in
 
       #bluetooth.disconnected {
         color: #${cyan};
-      }
-
-      #custom-wireguard {
-        color: #${pink};
       }
 
       #network {
