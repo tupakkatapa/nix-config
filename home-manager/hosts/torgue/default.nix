@@ -41,6 +41,7 @@ in
     xfce.mousepad
     xarchiver
     zathura
+    gthumb
     imv
 
     # Fonts

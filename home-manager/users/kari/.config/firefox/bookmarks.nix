@@ -75,6 +75,10 @@
             name = "Libgen";
             url = "https://libgen.is/";
           }
+          {
+            name = "1337x";
+            url = "https://1337x.to/";
+          }
         ];
       }
       {
@@ -373,6 +377,10 @@
         url = "https://ylilauta.org";
       }
       {
+        name = "Ebinlauta";
+        url = "https://ebinlauta.org/b/";
+      }
+      {
         name = "Wolt";
         url = "https://wolt.com/fi/discovery";
       }
@@ -399,6 +407,14 @@
       {
         name = "EverythingMoe";
         url = "https://everythingmoe.com/";
+      }
+      {
+        name = "SpaceWeatherLive";
+        url = "https://www.spaceweatherlive.com/";
+      }
+      {
+        name = "MAL";
+        url = "https://myanimelist.net/";
       }
     ];
   }

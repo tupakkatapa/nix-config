@@ -1,4 +1,5 @@
 # https://discourse.nixos.org/t/declare-firefox-extensions-and-settings/36265/17
+# https://nur.nix-community.org/repos/rycee/
 [
   {
     uuid = "{d7742d87-e61d-4b78-b8a1-b469842139fa}";
@@ -55,5 +56,25 @@
   {
     uuid = "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
     shortId = "new-tab-override";
+  }
+  {
+    uuid = "{f209234a-76f0-4735-9920-eb62507a54cd}";
+    shortId = "unpaywall";
+  }
+  {
+    uuid = "{db420ff1-427a-4cda-b5e7-7d395b9f16e1}";
+    shortId = "to-deepl";
+  }
+  {
+    uuid = "simple-tab-groups@drive4ik";
+    shortId = "simple-tab-groups";
+  }
+  {
+    uuid = "savewebpas@jeffersonscher.com";
+    shortId = "save-webp-as-png-or-jpeg";
+  }
+  {
+    uuid = "{e4a8a97b-f2ed-450b-b12d-ee082ba24781}";
+    shortId = "greasemonkey";
   }
 ]

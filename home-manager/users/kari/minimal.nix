@@ -183,6 +183,7 @@ in
       ssh-to-age
       parallel
       yt-dlp
+      kalker
 
       # replacements
       bat
