@@ -1,21 +1,16 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}: {
+_: {
   # Yubico's official tools
-  environment.systemPackages = with pkgs; [
-    yubikey-manager
-    yubikey-manager-qt
-    yubikey-personalization
-    yubikey-personalization-gui
-    yubico-piv-tool
-    yubioath-flutter
-  ];
-  services.udev.packages = [
-    pkgs.yubikey-personalization
-  ];
+  # environment.systemPackages = with pkgs; [
+  #   yubikey-manager
+  #   yubikey-manager-qt
+  #   yubikey-personalization
+  #   yubikey-personalization-gui
+  #   yubico-piv-tool
+  #   yubioath-flutter
+  # ];
+  # services.udev.packages = [
+  #   pkgs.yubikey-personalization
+  # ];
 
   # Logging-in
   # nix-shell -p pam_u2f

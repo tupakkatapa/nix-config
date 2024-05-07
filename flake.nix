@@ -149,9 +149,11 @@
             pre-commit.hooks = {
               rustfmt.enable = false;
               # shellcheck.enable = true;
-              treefmt.enable = true;
+              treefmt = {
+                enable = true;
+                package = config.treefmt.build.wrapper;
+              };
             };
-            pre-commit.settings.treefmt.package = config.treefmt.build.wrapper;
             # Workaround for https://github.com/cachix/devenv/issues/760
             containers = pkgs.lib.mkForce { };
           };
