@@ -34,12 +34,23 @@ in
             what = "${sftpPrefix}/";
             where = "/mnt/sftp";
           }
-        ]
-        ++ (map
-          (dir: {
-            what = "${sftpPrefix}/home/${dir}";
-            where = "/home/${user}/${dir}";
-          }) [ "Downloads" "Pictures" "Workspace" "Documents" ]);
+          {
+            what = "${sftpPrefix}/docs";
+            where = "/home/${user}/Documents";
+          }
+          {
+            what = "${sftpPrefix}/media";
+            where = "/home/${user}/Media";
+          }
+          {
+            what = "${sftpPrefix}/code/workspace";
+            where = "/home/${user}/Workspace";
+          }
+          {
+            what = "${sftpPrefix}/dnld";
+            where = "/home/${user}/Downloads";
+          }
+        ];
     };
 
   # Wireguard
@@ -97,6 +108,7 @@ in
   systemd.tmpfiles.rules = [
     "d /home/${user}/.ssh       755 ${user} ${user} -"
     "d /home/${user}/Workspace  755 ${user} ${user} -"
+    "d /home/${user}/Media      755 ${user} ${user} -"
   ];
 
   # Allows access to flake inputs and custom packages
