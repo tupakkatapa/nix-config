@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Print YouTube playlist URLs
+
+# Check if an argument was provided
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <youtube_url>"
+    exit 1
+fi
+
+youtube_url="$1"
+
+# Check if jq is installed
+if command -v jq &> /dev/null; then
+    # Use jq to parse the JSON output and extract video URLs
+    yt-dlp --flat-playlist -J "$youtube_url" | jq -r '.entries[].url' | sed 's_^_https://www.youtube.com/watch?v=_'
+else
+    # Fallback method if jq is not installed
+    echo "jq not found, using fallback method..."
+    yt-dlp --flat-playlist --get-id "$youtube_url" | xargs -I {} echo https://www.youtube.com/watch?v={}
+fi
+
