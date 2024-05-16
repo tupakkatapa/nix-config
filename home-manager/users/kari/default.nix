@@ -11,7 +11,7 @@ in
   imports = [ ./minimal-gui.nix ];
 
   # Misc
-  programs.anime-game-launcher.enable = true;
+  # programs.anime-game-launcher.enable = true;
 
   # Home-manager config
   home-manager.users."${user}" = rec {
@@ -29,16 +29,14 @@ in
 
       # GUI
       czkawka
-      # gimp-with-plugins
       libreoffice-qt
       # obsidian
       qemu
       rpi-imager
-      video-trimmer
       chromium
       palemoon-bin
       filezilla
-      kdenlive
+      arduino-ide
 
       # Fun
       cool-retro-term
@@ -52,14 +50,21 @@ in
       ttyper
       nudoku
 
+      # Media creation and editing
+      aseprite
+      gimp-with-plugins
+      kdenlive
+      video-trimmer
+
       # Music production
       qjackctl
       ardour
       guitarix
+      audacity
 
       # High Quality Games
-      osu-lazer
-      runelite
+      # osu-lazer
+      # runelite
 
       # CLI
       android-tools

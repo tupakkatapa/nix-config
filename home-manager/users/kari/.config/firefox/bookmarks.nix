@@ -184,7 +184,7 @@
             url = "https://apkcombo.com/downloader/";
           }
           {
-            name = "Dochub";
+            name = "DocHub";
             url = "https://dochub.com/";
           }
           {
@@ -333,6 +333,57 @@
         ];
       }
       {
+        name = "blogs";
+        bookmarks = [
+          {
+            name = "Juuso Haavisto";
+            url = "https://juuso.dev/rss.xml";
+          }
+          {
+            name = "Rick Vagabond";
+            url = "https://rickvagabond.blog/";
+          }
+        ];
+      }
+      {
+        name = "sol";
+        bookmarks = [
+          {
+            name = "SpaceWeatherLive";
+            url = "https://www.spaceweatherlive.com/";
+          }
+          {
+            name = "WSA-Enlil";
+            url = "https://www.swpc.noaa.gov/products/wsa-enlil-solar-wind-prediction";
+          }
+          {
+            name = "SDO";
+            url = "https://sdo.gsfc.nasa.gov/data/";
+          }
+          {
+            name = "Downdetector";
+            url = "https://downdetector.com/";
+          }
+        ];
+      }
+      {
+        name = "lauta";
+        bookmarks = [
+          {
+            name = "Ylilauta";
+            url = "https://ylilauta.org";
+          }
+          {
+            name = "Ebinlauta";
+            url = "https://ebinlauta.org/b/";
+          }
+          {
+            name = "Jofaboard";
+            url = "https://jofaboard.com/";
+          }
+        ];
+      }
+      {
         name = "NAPALM FTP Indexer";
         url = "https://www.searchftps.net/";
       }
@@ -373,14 +424,6 @@
         url = "https://news.ycombinator.com/news";
       }
       {
-        name = "Ylilauta";
-        url = "https://ylilauta.org";
-      }
-      {
-        name = "Ebinlauta";
-        url = "https://ebinlauta.org/b/";
-      }
-      {
         name = "Wolt";
         url = "https://wolt.com/fi/discovery";
       }
@@ -409,13 +452,14 @@
         url = "https://everythingmoe.com/";
       }
       {
-        name = "SpaceWeatherLive";
-        url = "https://www.spaceweatherlive.com/";
-      }
-      {
         name = "MAL";
         url = "https://myanimelist.net/";
+      }
+      {
+        name = "Zophar";
+        url = "https://www.zophar.net/";
       }
     ];
   }
 ]
+

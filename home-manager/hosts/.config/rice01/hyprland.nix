@@ -191,7 +191,7 @@ in
         "${mod} SHIFT, R, exec, hyprctl reload && notify-send \"Hyprland reloaded\""
         "${mod} SHIFT, W, exec, pkill waybar; waybar & notify-send \"Waybar reloaded\""
         "${mod}, XF86AudioRaiseVolume, exec, ${notify.pipewire-out-switcher}"
-        ", Print, exec, ${notify.screenshot} \"$HOME/Pictures/Screenshots\""
+        ", Print, exec, ${notify.screenshot} \"$HOME/Media/screenshots\""
 
         # Window management
         "${mod}, D,     pseudo"
