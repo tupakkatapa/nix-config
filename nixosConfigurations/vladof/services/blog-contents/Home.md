@@ -14,7 +14,7 @@ Hello there! I'm Jesse, and I have booked this little corner of the world wide w
   - 2024-03-27 - [Netbooting NixOS](./posts/Netbooting%20NixOS.md)
   - 2024-03-01 - [My First Year as a Developer](./posts/My%20First%20Year%20as%20a%20Developer.md)
 
-#### Check these out
+### Check these out
 
   - https://juuso.dev/
   - https://www.zophar.net/

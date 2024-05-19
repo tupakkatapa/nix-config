@@ -30,7 +30,7 @@ This easy banana bread recipe is perfect for using up those overripe bananas tha
 4. Pour the batter into a loaf pan brushed with oil and bake on the middle rack of the oven for about 50 minutes.
 5. Remove the bread from the oven, let it cool completely, and then turn it out of the pan.
 
-## Tips
+### Tips
 - You can check doneness with a toothpick; if it comes out clean, the bread is ready.
 - You may need to adjust the time depending on your oven. If the bread is about to burn on top but is raw inside, in an emergency, remove the bread from the pan, slice it into several pieces and bake on a baking sheet for a while. It's not pretty but does not affect the taste.
 

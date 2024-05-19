@@ -4,7 +4,7 @@ date: "2024-01-01"
 
 In this blog post, I will briefly demonstrate how to import JSON data into a NixOS configuration. This concept originated when I was trying to incorporate user input data from a web frontend into a NixOS configuration dynamically.
 
-For a comprehensive understanding how this could be used, refer to [this documentation](https://github.com/ponkila/HomestakerOS/blob/main/docs/workflow.md) from a related project, HomestakerOS. It describes the entire workflow, including a data schema for the user input.
+For a comprehensive understanding how this could be used, refer to [this documentation](https://github.com/ponkila/HomestakerOS/blob/d7a349f391749664bcb32aa586666f8bae47aa11/docs/workflow.md) from a related project, HomestakerOS. It describes the entire workflow, including a data schema for the user input.
 
 **Important note:** Adding configurations dynamically somewhat contradicts the principles of the Nix philosophy and may potentially be exploited for malicious intentions. Therefore, it's advised to manually check the contents of the imported configuration and limit the configuration's scope to enhance security, especially if the data is sent over the internet.
 
