@@ -18,7 +18,6 @@ A simple "mix everything" dish, perfect for those seeking something uncomplicate
 - Basil & Black pepper
 
 ## Preparation
-
 1. Cook the fusilli pasta according to the package instructions.
 2. While the pasta cooks, chop the bacon into small pieces. Peel and finely chop the onion.
 3. In a large skillet over medium heat, cook the onion and bacon pieces until the bacon starts to crisp.
