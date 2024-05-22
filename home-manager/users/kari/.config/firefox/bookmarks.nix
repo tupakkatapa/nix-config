@@ -217,6 +217,10 @@
             url = "https://wiki.hyprland.org/";
           }
           {
+            name = "Waybar";
+            url = "https://github.com/Alexays/Waybar/wiki";
+          }
+          {
             name = "iPXE";
             url = "https://ipxe.org/docs";
           }

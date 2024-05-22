@@ -162,6 +162,7 @@ in
           user = "core";
           extraOptions."StrictHostKeyChecking" = "no";
         };
+        "vladof".hostname = "192.168.1.8";
       };
       forwardAgent = true;
       addKeysToAgent = "yes";
