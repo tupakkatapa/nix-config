@@ -13,6 +13,8 @@ pkgs.stdenv.mkDerivation rec {
     cargo
     git
     nix
+    nodejs
+    yarn
   ];
 
   nativeBuildInputs = [ pkgs.makeWrapper ];
