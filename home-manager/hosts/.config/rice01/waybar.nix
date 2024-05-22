@@ -43,6 +43,7 @@ in
       modules-center = [ "hyprland/workspaces" ];
 
       modules-right = [
+        "hyprland/window"
         "tray"
         "pulseaudio"
         "bluetooth"
@@ -84,6 +85,14 @@ in
           "Stopped" = " ";
         };
         on-click = "${playerctl} play-pause";
+      };
+
+      "hyprland/window" = {
+        format = "{}";
+        # "rewrite" = {
+        #   "(.*) — Mozilla Firefox" = "🌎 $1";
+        #   "(.*) - fish" = "> [$1]";
+        # };
       };
 
       "hyprland/workspaces" = {
@@ -228,6 +237,7 @@ in
       #tray,
       #custom-player,
       #custom-hostname,
+      #window,
       #bluetooth {
         padding: 0 15px;
         color: #${foreground};
