@@ -6,6 +6,8 @@ date: "2024-05-19"
 
 In this blog post, I will go through some basic music theory to help navigate the fretboard with scales using logic, not memory. This serves as a memo to myself and in honor of Anthony Wellington's "MILLPAD" method of learning the 7 basic modes, with my own "Manhattan Movement" addition.
 
+> After I wrote this blog post, a fellow human enlightened me by sharing Michael Pillitiere's [series](https://youtube.com/playlist?list=PLB04Q_-DchOO2pfeUB7rT2imLd9jeOFzz&feature=shared) about this exact concept. However, I believe that the original core concept still belongs to Anthony Wellington, as he posted on [April 13, 2020](https://m.facebook.com/BASSOLOGY/posts/i-came-up-with-the-millpad-grid-almost-25-years-ago-then-i-started-showing-it-to/3348368578523953/) on Facebook about it, stating he came up with it almost 25 years ago. Michael published his book about this in 2002, but he explains the same things I've figured out on my own, so I wasn't the first one to discover this. The rest of the blog post remains unedited regarding this, so keep this in mind.
+
 I have been learning to play bass for almost 2 years now, very passively though, and only for myself. Overwhelmed by all the scales, I tried to find a more efficient way to learn them, for me at least. I stumbled across Anthony Wellington's lecture about the modes, and it blew my mind. It explains the modes in a completely new way. In addition to reading this blog post, I highly recommend you check out the lecture. It is one hour long and totally worth it, even if you already know all the basic scales. You can watch the lecture from [here](https://www.youtube.com/watch?v=L74DpDgMTzw). I have been using and studying the method for a while now, and I've started to notice further patterns within this master scale. Without further ado, let's dive in.
 
 ## The Scale Chart
@@ -85,7 +87,7 @@ Now, we know how to move to upper strings and move down the neck using the one s
 
 ## How About Guitar?
 
-I play bass, so I'm writing this from that perspective, but everything above works on guitar too. However, but we need to add one more rule to adapt for the standard tuning interval difference between the fourth and the last two strings. The rule goes like this: before switching strings from G to B, insert a half step; similarly, when moving from the Lydian to the Locrian sequence (see the chart). That's it, nothing more than that.
+I play bass, so I'm writing this from that perspective, but everything above works on guitar too. However, we need to add one more rule to adapt for the standard tuning interval difference between the fourth and the last two strings. The rule goes like this: before switching strings from G to B, insert a half step; similarly, when moving from the Lydian to the Locrian sequence (see the chart). That's it, nothing more than that.
 
 ## Other Scales
 
