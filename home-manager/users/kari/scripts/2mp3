@@ -32,7 +32,7 @@ done
 
 # Function to convert audio files to MP3
 convert_to_mp3() {
-  find "$directory" -type f -name "*.$1" -exec sh -c 'ffmpeg -i "$0" -b:a 320k -map_metadata 0 -id3v2_version 3 "${0%.$1}.mp3"' {} \;
+  find "$directory" -type f -regextype posix-extended -regex ".*\.$1$" -exec sh -c 'ffmpeg -y -i "$0" -b:a 320k -map_metadata 0 -id3v2_version 3 "${0%.$1}.mp3"' {} \;
 }
 
 # Array of file extensions to convert
@@ -43,16 +43,13 @@ for ext in "${extensions[@]}"; do
   convert_to_mp3 "$ext"
 done
 
-# Remove non-MP3 files
+# Remove non-MP3 files if they don't have a double extension
 for ext in "${extensions[@]}"; do
-  find "$directory" -type f -name "*.$ext" -exec rm {} \;
+  find "$directory" -type f -regextype posix-extended -regex ".*\.$ext$" ! -name "*.mp3" -exec rm {} \;
 done
 
 # Conditional cleanup
 if [ "$cleanup" = true ]; then
-  find "$directory" -type f ! -name "*.mp3" \
-    ! -name "*.zip" ! -name "*.tar" ! -name "*.gz" ! -name "*.bz2" ! -name "*.7z" ! -name "*.rar" \
-    -exec rm {} \;
+  find "$directory" -type f -regextype posix-extended ! -regex ".*\.(mp3|zip|tar|gz|bz2|7z|rar)$" -exec rm {} \;
   find "$directory" -type d -empty -delete
 fi
-
