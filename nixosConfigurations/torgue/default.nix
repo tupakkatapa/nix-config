@@ -9,7 +9,13 @@
   #   port = 11434;
   # };
 
-  # Mirror Android phone automatically
+  # For screensharing via OBS
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+  };
+
+  # Mirror android phone automatically
   services.autoScrcpy = {
     enable = true;
     user = {
