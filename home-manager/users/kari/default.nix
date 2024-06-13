@@ -37,6 +37,7 @@ in
       palemoon-bin
       filezilla
       arduino-ide
+      discord
 
       # Fun
       cool-retro-term

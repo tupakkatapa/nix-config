@@ -43,7 +43,7 @@ in
       modules-center = [ "hyprland/workspaces" ];
 
       modules-right = [
-        "hyprland/window"
+        # "hyprland/window"
         "tray"
         "pulseaudio"
         "bluetooth"
@@ -87,13 +87,14 @@ in
         on-click = "${playerctl} play-pause";
       };
 
-      "hyprland/window" = {
-        format = "{}";
-        # "rewrite" = {
-        #   "(.*) — Mozilla Firefox" = "🌎 $1";
-        #   "(.*) - fish" = "> [$1]";
-        # };
-      };
+      # "hyprland/window" = {
+      #   format = "{}";
+      #   "rewrite" = {
+      #     "" = "Desktop";
+      #     "(.*) — Mozilla Firefox"= "Mozilla Firefox";
+      #     "(.*) - (.*)$"= "$2";
+      #   };
+      # };
 
       "hyprland/workspaces" = {
         format = "{icon}";

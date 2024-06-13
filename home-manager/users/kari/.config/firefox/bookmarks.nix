@@ -132,12 +132,20 @@
                 name = "backtracks";
                 bookmarks = [
                   {
+                    name = "63 BPM";
+                    url = "https://www.youtube.com/watch?v=GhM_MJEB7e0";
+                  }
+                  {
                     name = "65 BPM";
                     url = "https://www.youtube.com/watch?v=RNvxvwc0cWQ";
                   }
                   {
                     name = "75 BPM";
                     url = "https://www.youtube.com/watch?v=r3xzzBis9RI";
+                  }
+                  {
+                    name = "80 BPM";
+                    url = "https://www.youtube.com/watch?v=2fqzbwsy4nA";
                   }
                   {
                     name = "85 BPM";

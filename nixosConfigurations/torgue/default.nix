@@ -2,11 +2,12 @@
 , ...
 }: {
   # Local LLM
-  services.ollama = {
-    enable = true;
-    acceleration = "rocm";
-    listenAddress = "0.0.0.0:11434";
-  };
+  # services.ollama = {
+  #   enable = true;
+  #   acceleration = "rocm";
+  #   host = "0.0.0.0";
+  #   port = 11434;
+  # };
 
   # Mirror Android phone automatically
   services.autoScrcpy = {

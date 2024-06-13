@@ -23,6 +23,7 @@
     colorschemes.gruvbox = {
       enable = true;
       settings.contrast_dark = "medium";
+      package = pkgs.vimPlugins.gruvbox-nvim;
     };
 
     # NOTE: Default mode is normal-visual-op
@@ -162,9 +163,9 @@
       # Indentation guides
       indent-blankline = {
         enable = true;
-        settings = {
-          scope.show_start = true;
-          scope.enabled = true;
+        settings.scope = {
+          enabled = true;
+          show_start = true;
         };
       };
 

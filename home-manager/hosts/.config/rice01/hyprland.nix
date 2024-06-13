@@ -153,7 +153,7 @@ in
         "swayidle -w"
         "wl-clipboard-history -t"
 
-        "[workspace 4 silent] discord"
+        # "[workspace 4 silent] discord"
         "[workspace 4 silent] ferdium"
         "[workspace 5 silent] plexamp"
         "openrgb --startminimized"

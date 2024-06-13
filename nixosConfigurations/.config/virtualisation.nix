@@ -1,8 +1,8 @@
 { pkgs, ... }: {
   environment.systemPackages = with pkgs; [
     # Wine
-    winetricks
-    wineWowPackages.waylandFull
+    # winetricks
+    # wineWowPackages.waylandFull
     #wineWowPackages.staging
 
     # Podman-compose
@@ -16,9 +16,9 @@
     defaultNetwork.settings.dns_enabled = true;
   };
 
-  # VirtualBox
-  virtualisation.virtualbox.host = {
-    enable = true;
-    enableExtensionPack = true;
-  };
+  # VirtualBox (failed to build)
+  # virtualisation.virtualbox.host = {
+  #   enable = true;
+  #   enableExtensionPack = true;
+  # };
 }
