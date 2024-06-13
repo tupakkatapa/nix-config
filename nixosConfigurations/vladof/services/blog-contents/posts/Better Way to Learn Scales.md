@@ -22,7 +22,7 @@ You should probably try to forget everything you've learned about modes while le
  iii  |   | • | • |   | • | Phrygian
  vii  |   | • | • |   | • | Locrian
  IV   | • |   | • |   | • | Lydian
- IV   | • |   | • |   | • | Ionian
+ I    | • |   | • |   | • | Ionian
  V    | • |   | • |   | • | Mixolydian
         ^
 ```
@@ -91,5 +91,5 @@ I play bass, so I'm writing this from that perspective, but everything above wor
 
 ## Other Scales
 
-Of course, there are also other scales which are not part of the master scale. For example, pentatonic, harmonic, and I think even more for the guitar. There might be some similar tricks to these, but I haven't found any, and decided to learn them just the old regular way; through shapes. For harmonic minor, I came across [this Reddit post](https://www.reddit.com/r/guitars/comments/uozs96/an_easy_way_to_learn_scale_modes_for_ionian_and/). I haven't looked much into it, but it seems to work in the same way as the regular MILLPAD chart.
+Of course, there are also other scales which are not part of the master scale. For example, pentatonic, harmonic, and I think even more for the guitar. There might be some similar tricks to these, but I haven't found any, and decided to learn them just the old regular way; through shapes. For harmonic minor, I came across [this Reddit post](https://www.reddit.com/r/guitars/comments/uozs96/an_easy_way_to_learn_scale_modes_for_ionian_and/). I haven't looked much into it, but it seems to work in the same way as the regular MILLPAD chart. By the way, I found an awesome set of tools that can be used, such as finding a scale for your spontaneously made riff. It's called [Musmath](https://www.musmath.com/) — check it out and see how you can use it when learning the scales.
 

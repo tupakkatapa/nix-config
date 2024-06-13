@@ -26,7 +26,8 @@ This easy banana bread recipe is perfect for using up those overripe bananas tha
 ## Preparation
 1. Preheat the oven to 175°C (347°F).
 2. Mash the peeled bananas with a fork until smooth. Mix in the melted butter.
-3. Combine the baking soda and salt with the flour. Lightly beat the eggs and mix the sugars into the banana mixture. Finally, add the flour mixture and mix until the batter is smooth.
+3. Lightly beat the eggs into the mixture, then mix in the baking soda, sugars, salt and cinnamon.
+4. Finally, add the flour and mix well, until the batter is smooth.
 4. Pour the batter into a loaf pan brushed with oil and bake on the middle rack of the oven for about 50 minutes.
 5. Remove the bread from the oven, let it cool completely, and then turn it out of the pan.
 
