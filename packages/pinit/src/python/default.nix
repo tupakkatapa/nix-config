@@ -20,7 +20,7 @@ pkgs.stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p $out/bin
-    cp $src/${packageName}.py $out/bin/${packageName}
+    cp $src/main.py $out/bin/${packageName}
     chmod +x $out/bin/${packageName}
 
     wrapProgram $out/bin/${packageName} \
