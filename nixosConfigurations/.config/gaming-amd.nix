@@ -50,9 +50,11 @@
   };
 
   # Nixos-hardware
-  hardware.amdgpu.amdvlk = true;
-  hardware.amdgpu.loadInInitrd = true;
-  hardware.amdgpu.opencl = true;
+  hardware.amdgpu = {
+    amdvlk.enable = true;
+    initrd.enable = true;
+    opencl.enable = true;
+  };
 
   # Firmware blobs
   hardware.enableRedistributableFirmware = true;
