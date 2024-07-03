@@ -471,6 +471,10 @@
         name = "Zophar";
         url = "https://www.zophar.net/";
       }
+      {
+        name = "Kansalliskirjasto";
+        url = "https://digi.kansalliskirjasto.fi/etusivu";
+      }
     ];
   }
 ]

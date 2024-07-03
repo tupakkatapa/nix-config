@@ -50,16 +50,15 @@ in
       discord
 
       # Fun
-      cool-retro-term
-      activate-linux
-      cbonsai
-      cmatrix
-      rig
-      sl
-      tui-journal
-      termusic
-      ttyper
-      nudoku
+      # cbonsai
+      # cmatrix
+      # cool-retro-term
+      # nudoku
+      # rig
+      # sl
+      # termusic
+      # ttyper
+      # tui-journal
 
       # Media creation and editing
       aseprite
@@ -81,13 +80,14 @@ in
       android-tools
       grub2
       ventoy
-      chatgpt-cli
+      # chatgpt-cli
 
       # Lang
       rustc
       cargo
       rustfmt
       gcc
+      jdk22
 
       # System Utilities
       nix-tree

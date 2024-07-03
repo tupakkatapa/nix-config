@@ -96,6 +96,7 @@ in
     };
     nameservers = [ gateway ];
     firewall.enable = true;
+    stevenblack.enable = true;
   };
   systemd.network.enable = true;
 

@@ -26,6 +26,7 @@ let
   pamixer = "${pkgs.pamixer}/bin/pamixer";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   swaybg = "${pkgs.swaybg}/bin/swaybg";
+  activate-linux = "${pkgs.activate-linux}/bin/activate-linux";
 in
 {
   home.sessionVariables = {
@@ -152,6 +153,7 @@ in
         "dunst"
         "swayidle -w"
         "wl-clipboard-history -t"
+        "${activate-linux} -s 0.9"
 
         # "[workspace 4 silent] discord"
         "[workspace 4 silent] ferdium"
