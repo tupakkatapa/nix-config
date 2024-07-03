@@ -11,14 +11,6 @@ let
       addr = "torrent.${domain}";
       port = 9091;
     };
-    radarr = {
-      addr = "radarr.${domain}";
-      port = 7878;
-    };
-    jackett = {
-      addr = "jackett.${domain}";
-      port = 9117;
-    };
     vaultwarden = {
       addr = "vault.${domain}";
       port = 8222;
@@ -127,20 +119,6 @@ in
       mode = "444";
     };
   };
-
-  # Radarr
-  services.radarr = {
-    enable = true;
-    dataDir = "${appData}/radarr";
-  };
-  users.users.radarr.extraGroups = [ "transmission" ];
-
-  # Jackett
-  services.jackett = {
-    enable = true;
-    dataDir = "${appData}/jackett";
-  };
-  users.users.jackett.extraGroups = [ "transmission" ];
 
   # Torrent
   services.transmission = {
