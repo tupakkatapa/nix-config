@@ -145,7 +145,7 @@ in
         pseudotile = "true";
         split_width_multiplier = "2.0";
       };
-      master.new_is_master = "false";
+      master.new_status = "slave";
 
       # Startup
       exec-once = [
