@@ -13,6 +13,7 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
+    config.common.default = "hyprland";
   };
 
   # Mirror android phone automatically

@@ -14,7 +14,7 @@ in
   # programs.anime-game-launcher.enable = true;
 
   # Home-manager config
-  home-manager.users."${user}" = rec {
+  home-manager.users."${user}" = {
     # Default apps
     xdg.mimeApps.enable = true;
     xdg.mimeApps.defaultApplications = helpers.createMimes {

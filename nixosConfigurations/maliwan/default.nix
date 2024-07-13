@@ -53,5 +53,5 @@
   hardware.enableRedistributableFirmware = true;
 
   # Enable OpenGL drivers
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
 }

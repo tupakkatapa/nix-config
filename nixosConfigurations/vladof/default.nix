@@ -70,7 +70,7 @@ in
     wants = [ "network-online.target" ];
     after = [ "network-online.target" ];
   };
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
 
   # Bind firefox directory to preserve cookies and such
   fileSystems."/home/${user}/.mozilla" = {

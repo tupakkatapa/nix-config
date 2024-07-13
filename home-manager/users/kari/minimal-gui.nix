@@ -9,7 +9,7 @@ in
   imports = [ ./minimal-passwd.nix ];
 
   # Home-manager config
-  home-manager.users."${user}" = rec {
+  home-manager.users."${user}" = {
     imports = [
       ./.config/alacritty.nix
       ./.config/firefox
