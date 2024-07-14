@@ -101,6 +101,9 @@ in
       ++ [
         80
         443
+        5001 # IPFS
+        4001
+        8080
       ];
   };
 
@@ -117,6 +120,44 @@ in
     "lanraragi-admin-password" = {
       sopsFile = ../../secrets.yaml;
       mode = "444";
+    };
+  };
+
+  # IPFS seed for Jhvst
+  # https://github.com/ipfs/kubo/blob/master/docs/config.md
+  services.kubo = {
+    enable = true;
+    localDiscovery = true;
+    dataDir = "${appData}/ipfs";
+    settings = {
+      Addresses.API = "/ip4/127.0.0.1/tcp/5001";
+      API.HTTPHeaders = {
+        Access-Control-Allow-Origin = [ "http://127.0.0.1:5001" "https://webui.ipfs.io" ];
+        Access-Control-Allow-Methods = [ "PUT" "POST" ];
+      };
+      Ipns = {
+        RepublishPeriod = "1h";
+        RecordLifetime = "48h";
+        ResolveCacheSize = 128;
+        MaxCacheTTL = "1m";
+      };
+      Peering = {
+        Peers = [
+          {
+            ID = "12D3KooWLiaVwjwrgGbxbQ8Zk7qMNMUHhhU5KQyTh93pf1kYnXxU";
+          }
+          {
+            ID = "12D3KooWPpN7WoKZyBsYBVfwUDBtFaU22PJ5PgSaQRBx6gvn4Fg7";
+          }
+        ];
+      };
+    };
+  };
+  # Set IPFS path and pin objects to local storage
+  systemd.services.ipfs = {
+    postStart = "ipfs pin add /ipns/nixos.fi";
+    environment = {
+      IPFS_PATH = "${config.services.kubo.dataDir}";
     };
   };
 
