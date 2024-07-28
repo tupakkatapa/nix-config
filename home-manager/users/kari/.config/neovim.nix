@@ -206,7 +206,7 @@
       # Highlighting
       treesitter = {
         enable = true;
-        indent = true;
+        settings.indent.enable = true;
         folding = false;
         nixvimInjections = true;
         grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [

@@ -33,9 +33,9 @@ in
 
   home.packages = with pkgs; [
     # Nautilus
-    gnome.nautilus
-    gnome.file-roller
-    gnome.sushi
+    nautilus
+    file-roller
+    sushi
 
     # GUI tools
     xfce.mousepad

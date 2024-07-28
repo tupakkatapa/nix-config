@@ -1,6 +1,4 @@
 { pkgs
-, lib
-, config
 , ...
 }: {
   # Enable clock and voltage adjustment for AMD GPU
