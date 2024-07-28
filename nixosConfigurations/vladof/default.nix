@@ -21,6 +21,8 @@ in
     ../.config/motd.nix
   ];
   hardware.pulseaudio.enable = true;
+  # https://github.com/NixOS/nixpkgs/issues/319809
+  sound.enable = lib.mkForce false;
 
   # Backup some accident-prone directories
   # services.rsyncBackup = {

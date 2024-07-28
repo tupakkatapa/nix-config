@@ -222,7 +222,7 @@ in
   services.vaultwarden = {
     enable = true;
     dbBackend = "sqlite";
-    backupDir = "${appData}/vaultwarden/backup";
+    # backupDir = "${appData}/vaultwarden/backup";
     environmentFile = config.sops.secrets.vaultwarden-env.path;
     config = {
       domain = "https://${servicesConfig.vaultwarden.addr}";
