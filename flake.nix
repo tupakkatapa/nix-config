@@ -46,7 +46,9 @@
 
     # Netboot stuff
     nixpkgs-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh"; # stable
+    # nixpkgs-patched.url = "git+file:///home/kari/Workspace/nixpkgs\?ref=patch-init1sh"; # stable
     nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie\?ref=jesse/bugs";
+    # nixie.url = "git+file:///home/kari/Workspace/nixie\?ref=jesse/refind-generate";
     homestakeros-base.url = "github:ponkila/HomestakerOS\?dir=nixosModules/base";
 
     # Other
@@ -139,6 +141,7 @@
               sops
               ssh-to-age
               pxe-generate
+              nix-tree
             ];
             env = {
               NIX_CONFIG = ''
