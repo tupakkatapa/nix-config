@@ -11,15 +11,6 @@ let
   optionalPaths = paths: builtins.filter (path: builtins.pathExists path) paths;
 in
 {
-  # Mount drives
-  fileSystems = lib.mkIf (config.networking.hostName == "torgue") {
-    "/mnt/win" = {
-      device = "/dev/disk/by-uuid/74D4CED9D4CE9CAC";
-      fsType = "ntfs-3g";
-      options = [ "rw" ];
-    };
-  };
-
   # Mount SFTP and bind home directories
   services.sftpClient =
     let
