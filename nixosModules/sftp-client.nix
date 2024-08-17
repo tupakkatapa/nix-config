@@ -50,6 +50,9 @@ in
     # Enable sshfs package for mounting SSH drives
     system.fsPackages = [ pkgs.sshfs ];
 
+    # “fusermount3: option allow_other only allowed if ‘user_allow_other’ is set in /etc/fuse.conf”
+    programs.fuse.userAllowOther = true;
+
     # Mount drives
     fileSystems = lib.listToAttrs (map
       (mount:
