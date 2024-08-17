@@ -67,6 +67,7 @@ in
       servicesVirtualHosts
       // {
         "${servicesConfig.service-index.addr}" = {
+          useACMEHost = servicesConfig.service-index.addr;
           extraConfig = ''
             root * ${indexPage}
             file_server
@@ -74,12 +75,21 @@ in
         };
       };
   };
+  users.users.caddy.extraGroups = [ "acme" ];
 
   # TLS/SSL certificates
   security.acme = {
     acceptTerms = true;
-    defaults.email = "jesse@ponkila.com";
-    defaults.webroot = "${appData}/acme";
+    defaults = {
+      email = "jesse@ponkila.com";
+      dnsProvider = "cloudflare";
+      dnsResolver = "1.1.1.1:53";
+      credentialFiles = {
+        CF_DNS_API_TOKEN_FILE = config.sops.secrets.acme-cf-dns-token.path;
+      };
+      dnsPropagationCheck = true;
+      reloadServices = [ "caddy.service" ];
+    };
     certs =
       lib.mapAttrs'
         (name: service: {
@@ -117,6 +127,11 @@ in
 
   # Secrets
   sops.secrets = {
+    "acme-cf-dns-token" = {
+      sopsFile = ../../secrets.yaml;
+      group = "acme";
+      mode = "440";
+    };
     "vaultwarden-env".sopsFile = ../../secrets.yaml;
     "lanraragi-admin-password" = {
       sopsFile = ../../secrets.yaml;
