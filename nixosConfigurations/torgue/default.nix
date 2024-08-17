@@ -109,6 +109,10 @@
     openFirewall = true;
   };
 
+  # Optimize kernel for low-latency audio
+  powerManagement.cpuFreqGovernor = "performance";
+  musnix.enable = true;
+
   # Logitech unifying receiver
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;

@@ -69,8 +69,10 @@ in
       # Music production
       qjackctl
       ardour
-      guitarix
       audacity
+      guitarix
+      gxplugins-lv2
+      ladspaPlugins
 
       # High Quality Games
       # osu-lazer

@@ -52,6 +52,8 @@
     homestakeros-base.url = "github:ponkila/HomestakerOS\?dir=nixosModules/base";
 
     # Other
+    musnix.url = "github:musnix/musnix";
+    musnix.inputs.nixpkgs.follows = "nixpkgs";
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
     coditon-md.url = "github:tupakkatapa/coditon-md";
   };
@@ -63,6 +65,7 @@
     , flake-parts
     , home-manager
     , homestakeros-base
+    , musnix
     , nix-extras
     , nixie
     , nixos-hardware
@@ -208,6 +211,7 @@
             ./home-manager/users/kari
             ./nixosConfigurations/torgue
             aagl.nixosModules.default
+            musnix.nixosModules.musnix
             nixos-hardware.nixosModules.common-gpu-amd
           ];
 
