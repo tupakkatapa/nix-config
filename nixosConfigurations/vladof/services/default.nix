@@ -6,6 +6,7 @@
 , ...
 }:
 let
+  # Quick service config
   servicesConfig = {
     transmission = {
       addr = "torrent.${domain}";
@@ -53,7 +54,7 @@ let
           '';
         };
       })
-      servicesConfig;
+      (lib.filterAttrs (name: _: name != "service-index") servicesConfig);
 
   # Generate index page
   indexPage = import ./index.nix { inherit pkgs lib domain servicesConfig; };
@@ -87,7 +88,7 @@ in
         })
         servicesConfig;
   };
-  # Bind service directories to persistent disk
+  # Bind ACME directory to preserve certs
   fileSystems."/var/lib/acme" = {
     device = "${appData}/acme";
     options = [ "bind" ];

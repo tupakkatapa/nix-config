@@ -69,6 +69,7 @@ in
     refind
     vim
     eza
+    lshw
 
     # https://github.com/coreboot/coreboot/blob/main/util/liveiso/nixos/common.nix
     acpica-tools

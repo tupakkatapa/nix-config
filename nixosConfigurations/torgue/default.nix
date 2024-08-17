@@ -26,7 +26,7 @@
     waylandDisplay = "wayland-1";
   };
 
-  # EFI Bootloader with dualboot
+  # EFI Bootloader
   boot.loader = {
     efi = {
       canTouchEfiVariables = true;

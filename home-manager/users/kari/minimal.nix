@@ -153,7 +153,12 @@ in
           user = "core";
           extraOptions."StrictHostKeyChecking" = "no";
         };
+        "192.168.1.171" = {
+          user = "core";
+          extraOptions."StrictHostKeyChecking" = "no";
+        };
         "vladof".hostname = "192.168.1.8";
+        "torgue".hostname = "192.168.1.127";
       };
       forwardAgent = true;
       addKeysToAgent = "yes";

@@ -6,6 +6,6 @@
 
   # Connectivity
   networking.hostName = "jakobs";
-  networking.firewall.enable = false;
+  networking.firewall.enable = true;
   hardware.bluetooth.enable = true;
 }

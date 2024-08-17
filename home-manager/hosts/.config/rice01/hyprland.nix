@@ -26,7 +26,7 @@ let
   pamixer = "${pkgs.pamixer}/bin/pamixer";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   swaybg = "${pkgs.swaybg}/bin/swaybg";
-  activate-linux = "${pkgs.activate-linux}/bin/activate-linux";
+  activate-linux = "${pkgs.activate-linux}/bin/activate-linux -s 1.05";
 in
 {
   home.sessionVariables = {

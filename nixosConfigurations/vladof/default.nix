@@ -21,8 +21,6 @@ in
     ../.config/motd.nix
   ];
   hardware.pulseaudio.enable = true;
-  # https://github.com/NixOS/nixpkgs/issues/319809
-  sound.enable = lib.mkForce false;
 
   # Backup some accident-prone directories
   # services.rsyncBackup = {
@@ -102,7 +100,7 @@ in
   };
   systemd.network.enable = true;
 
-  # Extra SSH/SFTP settings
+  # Extra SSH/SFTP settings (in addition to openssh.nix)
   services.openssh = {
     allowSFTP = lib.mkForce true;
     extraConfig = ''

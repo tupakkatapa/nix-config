@@ -24,7 +24,7 @@ in
     ~/.config/guitarix/banks
   */
 
-  # # Enable NIC driver for stage-1
+  # Enable NIC driver for stage-1
   boot.kernelPatches = [
     {
       name = "kernel nic config (torgue)";

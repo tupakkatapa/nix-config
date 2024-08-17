@@ -23,7 +23,7 @@
     };
   };
 
-  # Passwordless sudo when SSH'ing with keys
+  # # Passwordless sudo when SSH'ing with keys
   # security.pam.services.sudo = { config, ... }: {
   #   rules.auth.rssh = {
   #     order = config.rules.auth.ssh_agent_auth.order - 1;
@@ -36,8 +36,7 @@
   #         '';
   #   };
   # };
-
-  # Keep SSH_AUTH_SOCK when sudo'ing
+  # # Keep SSH_AUTH_SOCK when sudo'ing
   # security.sudo.extraConfig = ''
   #   Defaults env_keep+=SSH_AUTH_SOCK
   # '';
