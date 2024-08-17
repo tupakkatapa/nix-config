@@ -89,13 +89,15 @@
       # Tabline plugin
       bufferline = {
         enable = true;
-        offsets = [
-          {
-            filetype = "neo-tree";
-            text = " Neovim ";
-            text_align = "center";
-          }
-        ];
+        settings.options = {
+          offsets = [
+            {
+              filetype = "neo-tree";
+              text = " Neovim ";
+              text_align = "center";
+            }
+          ];
+        };
       };
 
       # File browser

@@ -38,7 +38,7 @@ in
       monitor-adjust
 
       # GUI
-      czkawka
+      # czkawka
       libreoffice-qt
       # obsidian
       qemu
