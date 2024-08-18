@@ -3,14 +3,8 @@
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) FONT;
-  inherit
-    (import ./colors.nix)
-    background
-    foreground
-    accent
-    red
-    ;
+  inherit (config.home.sessionVariables) FONT THEME;
+  colors = (import ../../../colors.nix).${THEME};
 in
 {
   home.packages = [ pkgs.libnotify ];
@@ -39,7 +33,7 @@ in
         text_icon_padding = 0;
         frame_width = 2;
 
-        frame_color = "#${accent}";
+        frame_color = "#${colors.base06}";
         separator_color = "frame";
 
         sort = "yes";
@@ -66,16 +60,16 @@ in
         timeout = 5;
       };
       urgency_low = {
-        background = "#${background}";
-        foreground = "#${foreground}";
+        background = "#${colors.base00}";
+        foreground = "#${colors.base05}";
       };
       urgency_normal = {
-        background = "#${background}";
-        foreground = "#${foreground}";
+        background = "#${colors.base00}";
+        foreground = "#${colors.base05}";
       };
       urgency_critical = {
-        background = "#${background}";
-        foreground = "#${red}";
+        background = "#${colors.base00}";
+        foreground = "#${colors.base08}";
       };
     };
   };

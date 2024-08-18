@@ -1,8 +1,14 @@
 # https://github.com/jhvst/nix-config/blob/main/nixosModules/neovim/default.nix
 { pkgs
+, config
 , lib
 , ...
-}: {
+}:
+let
+  inherit (config.home.sessionVariables) THEME;
+  colors = (import ../../../colors.nix).${THEME};
+in
+{
   home.sessionVariables = {
     EDITOR = lib.mkDefault "nvim";
     MANPAGER = lib.mkDefault "nvim +Man!";
@@ -26,10 +32,9 @@
       ruler = false;
     };
 
-    colorschemes.gruvbox = {
+    colorschemes.base16 = {
       enable = true;
-      settings.contrast_dark = "medium";
-      package = pkgs.vimPlugins.gruvbox-nvim;
+      colorscheme = lib.mapAttrs (_name: color: "#${color}") colors;
     };
 
     # NOTE: Default mode is normal-visual-op

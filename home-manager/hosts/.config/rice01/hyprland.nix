@@ -4,8 +4,8 @@
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR FILEMANAGER;
-  inherit (import ./colors.nix) accent inactive;
+  inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR FILEMANAGER THEME;
+  colors = (import ../../../colors.nix).${THEME};
   mod = "ALT";
 
   notify = {
@@ -90,8 +90,8 @@ in
       monitor = ",preferred,auto,1";
 
       general = {
-        "col.active_border" = "rgb(${accent})";
-        "col.inactive_border" = "rgb(${inactive})";
+        "col.active_border" = "rgb(${colors.base06})";
+        "col.inactive_border" = "rgb(${colors.base02})";
         border_size = "2";
         gaps_in = "5";
         gaps_out = "5";

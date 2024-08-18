@@ -3,20 +3,8 @@
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) FONT;
-  inherit
-    (import ./colors.nix)
-    background
-    foreground
-    inactive
-    blue
-    cyan
-    green
-    orange
-    purple
-    red
-    yellow
-    ;
+  inherit (config.home.sessionVariables) FONT THEME;
+  colors = (import ../../../colors.nix).${THEME};
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
@@ -166,11 +154,11 @@ in
           "on-scroll" = 1;
           "on-click-right" = "mode";
           format = {
-            months = "<span color='#${red}'><b>{}</b></span>";
-            days = "<span color='#${foreground}'><b>{}</b></span>";
-            weeks = "<span color='#${inactive}'><b>W{}</b></span>";
-            weekdays = "<span color='#${yellow}'><b>{}</b></span>";
-            today = "<span color='#${green}'><b><u>{}</u></b></span>";
+            months = "<span color='#${colors.base08}'><b>{}</b></span>";
+            days = "<span color='#${colors.base05}'><b>{}</b></span>";
+            weeks = "<span color='#${colors.base02}'><b>W{}</b></span>";
+            weekdays = "<span color='#${colors.base0A}'><b>{}</b></span>";
+            today = "<span color='#${colors.base0B}'><b><u>{}</u></b></span>";
           };
         };
       };
@@ -199,7 +187,7 @@ in
       /* Waybar Styles */
       window#waybar {
         background-color: transparent;
-        color: #${foreground};
+        color: #${colors.base05};
         transition-property: background-color;
         transition-duration: 0.5s;
         border-radius: 0;
@@ -210,13 +198,13 @@ in
       #workspaces {
         border-radius: 20px;
         padding: 0 10px;
-        background-color: #${background};
+        background-color: #${colors.base00};
       }
 
       /* Workspace Button Styles */
       #workspaces button {
         padding: 0 0;
-        color: #${inactive};
+        color: #${colors.base02};
         background-color: transparent;
         box-shadow: inset 0 -3px transparent;
         border: none;
@@ -224,7 +212,7 @@ in
       }
 
       #workspaces button.active {
-        color: #${foreground};
+        color: #${colors.base05};
       }
 
       /* Global Item Styles */
@@ -241,56 +229,56 @@ in
       #window,
       #bluetooth {
         padding: 0 15px;
-        color: #${foreground};
+        color: #${colors.base05};
         border-radius: 20px;
-        background-color: #${background};
+        background-color: #${colors.base00};
       }
 
       /* Item Styles */
       #cpu {
-        color: #${red};
+        color: #${colors.base08};
       }
 
       #memory {
-        color: #${yellow};
+        color: #${colors.base0A};
       }
 
       #disk {
-        color: #${green};
+        color: #${colors.base0B};
       }
 
       #pulseaudio {
-        color: #${blue};
+        color: #${colors.base0D};
       }
 
       #bluetooth {
-        color: #${cyan};
+        color: #${colors.base0C};
       }
 
       #bluetooth.disconnected {
-        color: #${cyan};
+        color: #${colors.base0C};
       }
 
       #network {
-        color: #${orange};
+        color: #${colors.base09};
       }
 
       #network.disconnected {
-        color: #${orange};
+        color: #${colors.base09};
       }
 
       #battery {
-        color: #${purple};
+        color: #${colors.base0E};
       }
 
       #battery.charging,
       #battery.full,
       #battery.plugged {
-        color: #${green};
+        color: #${colors.base0B};
       }
 
       #battery.critical:not(.charging) {
-        color: #${red};
+        color: #${colors.base08};
         animation-name: blink;
         animation-duration: 0.5s;
         animation-timing-function: linear;
@@ -304,7 +292,7 @@ in
 
       #tray > .needs-attention {
         -gtk-icon-effect: highlight;
-        background-color: #${background};
+        background-color: #${colors.base00};
       }
     '';
   };

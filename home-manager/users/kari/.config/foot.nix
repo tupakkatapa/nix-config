@@ -2,7 +2,8 @@
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) FONT;
+  inherit (config.home.sessionVariables) FONT THEME;
+  colors = (import ../../../colors.nix).${THEME};
 in
 {
   programs.foot = {
@@ -22,28 +23,26 @@ in
 
       # Color settings
       colors = {
-        background = "282828"; # Background color
-        foreground = "ebdbb2"; # Foreground (text) color
+        background = colors.base00;
+        foreground = colors.base06;
 
-        # Regular colors
-        regular0 = "282828"; # Surface 1 (Black)
-        regular1 = "cc241d"; # Red
-        regular2 = "98971a"; # Green
-        regular3 = "d79921"; # Yellow
-        regular4 = "458588"; # Blue
-        regular5 = "b16286"; # Maroon (Magenta)
-        regular6 = "689d6a"; # Teal (Cyan)
-        regular7 = "a89984"; # Subtext 1 (White)
+        regular0 = colors.base01;
+        regular1 = colors.base08;
+        regular2 = colors.base0B;
+        regular3 = colors.base0A;
+        regular4 = colors.base0D;
+        regular5 = colors.base0E;
+        regular6 = colors.base0C;
+        regular7 = colors.base06;
 
-        # Bright colors
-        bright0 = "928374"; # Surface 2 (Bright Black)
-        bright1 = "fb4934"; # Red
-        bright2 = "b8bb26"; # Green
-        bright3 = "fabd2f"; # Yellow
-        bright4 = "83a598"; # Blue
-        bright5 = "d3869b"; # Maroon (Bright Magenta)
-        bright6 = "8ec07c"; # Teal (Bright Cyan)
-        bright7 = "ebdbb2"; # Subtext 0 (Bright White)
+        bright0 = colors.base02;
+        bright1 = colors.base08;
+        bright2 = colors.base0B;
+        bright3 = colors.base0A;
+        bright4 = colors.base0D;
+        bright5 = colors.base0E;
+        bright6 = colors.base0C;
+        bright7 = colors.base07;
       };
     };
   };

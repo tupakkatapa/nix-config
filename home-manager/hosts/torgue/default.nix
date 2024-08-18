@@ -1,6 +1,7 @@
 { pkgs
+, lib
 , ...
-}@args:
+}:
 {
   # This file should be imported under 'home-manager.users.<username>'
   # See 'home-manager/users/kari/minimal.nix' for an example how to do this conditionally
@@ -11,7 +12,8 @@
 
   # Default apps
   home.sessionVariables = {
-    FONT = "JetBrainsMono Nerd Font";
+    FONT = lib.mkDefault "JetBrainsMono Nerd Font";
+    THEME = lib.mkDefault "gruvbox-dark-medium";
   };
 
   # Allow fonts trough home.packages

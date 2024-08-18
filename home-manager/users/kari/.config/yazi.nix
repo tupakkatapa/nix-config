@@ -1,10 +1,13 @@
 # https://github.com/fdnt7/nix-config/blob/3d9866e701e6bb897a189e428add4b68922d1e6f/home-manager/programs/yazi/yazi.nix
 # https://github.com/Anomalocaridid/dotfiles/blob/4e6c64d2a80f04de451d7807b99e2c345a197296/home-modules/yazi.nix
 { pkgs
+, config
 , lib
 , ...
 }@args:
 let
+  inherit (config.home.sessionVariables) THEME;
+  colors = (import ../../../colors.nix).${THEME};
   helpers = import ../../../helpers.nix args;
 
   plugs = pkgs.fetchFromGitHub {
@@ -55,13 +58,6 @@ let
     rev = "0ba4bb22e452c287daaf67fe87e218dc12205dba";
     hash = "sha256-K+JXBfJPPl/scLeMCq4+OiyGjYKM7bJgdZf8q8O+2zk=";
   };
-  #
-  gruvbox_theme = pkgs.fetchFromGitHub {
-    owner = "poperigby";
-    repo = "gruvbox-dark-yazi";
-    rev = "3337133a913d48765094eed937af728bedc65beb";
-    hash = "sha256-TRRyuTg4JBE+u987C+42C36cXEV6rb8+pw7qTA56jhM=";
-  };
 
   # Dynamically create open rules for archive types
   archiveOpenRules = map
@@ -89,7 +85,6 @@ in
     poppler
     ripgrep
     unar
-    zathura
     xarchiver
 
     glow
@@ -97,19 +92,36 @@ in
     hexyl
     exiftool
     ouch
-
-    # for alacritty
-    # ueberzugpp
   ];
 
-  home.sessionVariables = {
-    FILEMANAGER = lib.mkDefault "yazi";
+  home = {
+    sessionVariables = {
+      FILEMANAGER = lib.mkDefault "yazi";
+    };
+    # https://yazi-rs.github.io/docs/tips/#smart-enter
+    file.".config/yazi/plugins/smart-enter.yazi/init.lua".text = ''
+      return {
+        entry = function()
+          local h = cx.active.current.hovered
+          ya.manager_emit(h and h.cha.is_dir and "enter" or "open", { hovered = true })
+        end,
+      }
+    '';
+  };
+
+  programs.zathura = {
+    enable = true;
+    options = {
+      adjust-open = "width";
+      smooth-scroll = true;
+      statusbar-fg = "#${colors.base05}";
+      statusbar-bg = "#${colors.base00}";
+    };
   };
 
   programs.yazi = {
     enable = true;
     enableFishIntegration = true;
-    theme = fromTOML (builtins.readFile "${gruvbox_theme}/theme.toml");
 
     plugins = {
       chmod = "${plugs}/chmod.yazi";
@@ -266,43 +278,41 @@ in
           run = ''shell "$SHELL" --block --confirm'';
           desc = "Open shell here";
         }
-
         {
           on = [ "y" ];
           run = [ ''shell 'for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list' --confirm'' "yank" ];
         }
-
         # Plugins
+        {
+          on = [ "l" ];
+          run = "plugin --sync smart-enter";
+          desc = "Enter the child directory; or open file.";
+        }
         {
           on = [ "c" "m" ];
           run = "plugin chmod";
           desc = "Chmod on selected files";
         }
-
         {
           on = "T";
           run = "plugin --sync max-preview";
           desc = "Maximize or restore preview";
         }
-
         {
           on = "Y";
           run = "plugin --sync hide-preview";
           desc = "Hide or show preview";
         }
-
         {
           on = "F";
           run = "plugin smart-filter";
           desc = "Smart filter";
         }
-
         {
           on = "f";
           run = "plugin jump-to-char";
           desc = "Jump to char";
         }
-
         {
           on = "<C-d>";
           run = "plugin diff";
@@ -311,5 +321,101 @@ in
       ];
     };
 
+    theme = with colors;
+      {
+        manager = {
+          cwd = { fg = "#${base0D}"; };
+
+          hovered = { fg = "#${base00}"; bg = "#${base0D}"; };
+          preview_hovered = { underline = true; };
+
+          find_keyword = { fg = "#${base0B}"; italic = true; };
+          find_position = { fg = "#${base09}"; bg = "reset"; italic = true; };
+
+          marker_selected = { fg = "#${base0B}"; bg = "#${base0B}"; };
+          marker_copied = { fg = "#${base0B}"; bg = "#${base0B}"; };
+          marker_cut = { fg = "#${base08}"; bg = "#${base08}"; };
+
+          tab_active = { fg = "#${base00}"; bg = "#${base02}"; };
+          tab_inactive = { fg = "#${base04}"; bg = "#${base01}"; };
+          tab_width = 1;
+
+          border_symbol = "│";
+          border_style = { fg = "#${base03}"; };
+        };
+
+        status = {
+          separator_open = "";
+          separator_close = "";
+          separator_style = { fg = "#${base01}"; bg = "#${base01}"; };
+
+          mode_normal = { fg = "#${base00}"; bg = "#${base04}"; bold = true; };
+          mode_select = { fg = "#${base00}"; bg = "#${base0B}"; bold = true; };
+          mode_unset = { fg = "#${base00}"; bg = "#${base0E}"; bold = true; };
+
+          progress_label = { fg = "#${base06}"; bold = true; };
+          progress_normal = { fg = "#${base02}"; bg = "#${base01}"; };
+          progress_error = { fg = "#${base08}"; bg = "#${base01}"; };
+
+          permissions_t = { fg = "#${base02}"; };
+          permissions_r = { fg = "#${base0B}"; };
+          permissions_w = { fg = "#${base08}"; };
+          permissions_x = { fg = "#${base0B}"; };
+          permissions_s = { fg = "#${base03}"; };
+        };
+
+        input = {
+          border = { fg = "#${base04}"; };
+          title = { };
+          value = { };
+          selected = { reversed = true; };
+        };
+
+        select = {
+          border = { fg = "#${base02}"; };
+          active = { fg = "#${base09}"; };
+          inactive = { };
+        };
+
+        tasks = {
+          border = { fg = "#${base02}"; };
+          title = { };
+          hovered = { underline = true; };
+        };
+
+        which = {
+          mask = { bg = "#${base01}"; };
+          cand = { fg = "#${base0D}"; };
+          rest = { fg = "#${base03}"; };
+          desc = { fg = "#${base09}"; };
+          separator = "  ";
+          separator_style = { fg = "#${base02}"; };
+        };
+
+        help = {
+          on = { fg = "#${base09}"; };
+          exec = { fg = "#${base0D}"; };
+          desc = { fg = "#${base03}"; };
+          hovered = { bg = "#${base02}"; bold = true; };
+          footer = { fg = "#${base01}"; bg = "#${base04}"; };
+        };
+
+        filetype = {
+          rules = [
+            { mime = "image/*"; fg = "#${base0D}"; }
+            { mime = "video/*"; fg = "#${base0B}"; }
+            { mime = "audio/*"; fg = "#${base0B}"; }
+            { mime = "application/zip"; fg = "#${base09}"; }
+            { mime = "application/gzip"; fg = "#${base09}"; }
+            { mime = "application/x-tar"; fg = "#${base09}"; }
+            { mime = "application/x-bzip"; fg = "#${base09}"; }
+            { mime = "application/x-bzip2"; fg = "#${base09}"; }
+            { mime = "application/x-7z-compressed"; fg = "#${base09}"; }
+            { mime = "application/x-rar"; fg = "#${base09}"; }
+            { name = "*"; fg = "#${base04}"; }
+            { name = "*/"; fg = "#${base0D}"; }
+          ];
+        };
+      };
   };
 }
