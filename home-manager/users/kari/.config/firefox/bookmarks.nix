@@ -320,7 +320,15 @@
           }
           {
             name = "NixOS Search";
+            url = "https://search.nixos.org/options?";
+          }
+          {
+            name = "NixOS Search";
             url = "https://search.nixos.org/packages?";
+          }
+          {
+            name = "Nixpkgs Issues";
+            url = "https://github.com/NixOS/nixpkgs/issues";
           }
           {
             name = "Home Manager Search";
