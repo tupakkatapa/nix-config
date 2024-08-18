@@ -1,7 +1,13 @@
 # https://github.com/jhvst/nix-config/blob/main/nixosModules/neovim/default.nix
 { pkgs
+, lib
 , ...
 }: {
+  home.sessionVariables = {
+    EDITOR = lib.mkDefault "nvim";
+    MANPAGER = lib.mkDefault "nvim +Man!";
+  };
+
   programs.nixvim = {
     enable = true;
 
@@ -107,8 +113,15 @@
         enableDiagnostics = true;
         enableGitStatus = true;
         closeIfLastWindow = true;
+        eventHandlers = {
+          neo_tree_buffer_enter = ''
+            function()
+              vim.opt_local.number = true;
+              vim.opt_local.relativenumber = true;
+            end
+          '';
+        };
         window = {
-          width = 35;
           autoExpandWidth = true;
           mappings = {
             "l".command = "open";
