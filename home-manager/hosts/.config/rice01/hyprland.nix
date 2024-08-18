@@ -185,7 +185,7 @@ in
 
         # Programs
         "SUPER, B, exec, ${BROWSER}"
-        "SUPER, F, exec, ${FILEMANAGER}"
+        "SUPER, F, exec, ${TERMINAL} -e sh -c '${FILEMANAGER} ~'"
         "SUPER, V, exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~'"
         "SUPER, T, exec, ${pkgs.cool-retro-term}/bin/cool-retro-term"
 
@@ -340,17 +340,9 @@ in
 
         "center, title:^(Close Virtual Machine)$"
 
-        "center, org.gnome.Nautilus"
-        "float, Nautilus"
-        "size 1500 1000, org.gnome.Nautilus"
-
-        "center, thunar"
-        "float, thunar"
-        "size 1500 1000, thunar"
-
-        "center, Alacritty"
-        "float, Alacritty"
-        "size 1400 800, Alacritty"
+        "center, foot"
+        "float, foot"
+        "size 1400 800, foot"
 
         "center, Plexamp"
         "float, Plexamp"
@@ -373,9 +365,8 @@ in
         "animation none, Rofi"
 
         # Additional opacity multiplier
-        "opacity 0.9 override 0.9 override, ^(Alacritty)$"
+        "opacity 0.9 override 0.9 override, ^(foot)$"
         "opacity 0.9 override 0.9 override, ^(Plexamp)$"
-        "opacity 0.9 override 0.9 override, ^(org.gnome.Nautilus)$"
       ];
     };
   };

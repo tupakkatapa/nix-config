@@ -9,7 +9,6 @@ in
   # See 'home-manager/users/kari/minimal.nix' for an example how to do this conditionally
 
   imports = [
-    ../.config/thunar.nix
     ../.config/rice01
   ];
 
@@ -17,33 +16,11 @@ in
   home.sessionVariables = {
     FONT = "JetBrainsMono Nerd Font";
   };
-  xdg.mimeApps.enable = true;
-  xdg.mimeApps.defaultApplications = helpers.createMimes {
-    audio = [ "mpv.desktop" ];
-    archive = [ "xarchiver.desktop" ];
-    image = [ "imv-dir.desktop" ];
-    pdf = [ "org.pwmt.zathura-pdf-mupdf.desktop" ];
-    text = [ "org.xfce.mousepad.desktop" ];
-    video = [ "mpv.desktop" ];
-  };
-  xdg.configFile."mimeapps.list".force = true;
 
   # Allow fonts trough home.packages
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
-    # Nautilus
-    nautilus
-    file-roller
-    sushi
-
-    # GUI tools
-    xfce.mousepad
-    xarchiver
-    zathura
-    gthumb
-    imv
-
     # Fonts
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     font-awesome # for waybar

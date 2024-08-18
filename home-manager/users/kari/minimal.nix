@@ -115,16 +115,11 @@ in
         ./.config/fish.nix
         ./.config/git.nix
         ./.config/neovim.nix
+        ./.config/yazi.nix
       ]
       # Importing host-spesific home-manager config if it exists
       ++ optionalPaths
         [ ../../hosts/${config.networking.hostName}/default.nix ];
-
-    # Default apps
-    home.sessionVariables = {
-      EDITOR = "nvim";
-      MANPAGER = "nvim +Man!";
-    };
 
     # Scripts and files
     home.sessionPath = [ "$HOME/.local/bin" ];
@@ -164,12 +159,6 @@ in
       addKeysToAgent = "yes";
     };
     services.ssh-agent.enable = true;
-
-    # Terminal file manager
-    programs.yazi = {
-      enable = true;
-      enableFishIntegration = true;
-    };
 
     home.packages = with pkgs; [
       tupakkatapa-utils

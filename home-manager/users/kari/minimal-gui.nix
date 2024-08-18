@@ -11,16 +11,18 @@ in
   # Home-manager config
   home-manager.users."${user}" = {
     imports = [
-      ./.config/alacritty.nix
+      ./.config/foot.nix
       ./.config/firefox
       ./.config/mpv.nix
+      ./.config/imv.nix
     ];
 
     # Default apps
     home.sessionVariables = {
       BROWSER = "firefox";
-      TERMINAL = "alacritty";
       FONT = "JetBrainsMono Nerd Font";
+      FILEMANAGER = "yazi";
+      TERMINAL = "foot";
     };
 
     # Allow fonts trough home.packages

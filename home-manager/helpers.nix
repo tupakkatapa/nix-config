@@ -111,6 +111,8 @@ let
   };
 in
 {
+  inherit mimes;
+
   # Function to create MIME associations
   createMimes = option:
     lib.listToAttrs (lib.flatten (lib.mapAttrsToList
