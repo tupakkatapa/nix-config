@@ -58,26 +58,9 @@
     coditon-md.url = "github:tupakkatapa/coditon-md";
   };
 
-  outputs =
-    { self
-    , aagl
-    , coditon-md
-    , flake-parts
-    , home-manager
-    , homestakeros-base
-    , musnix
-    , nix-extras
-    , nixie
-    , nixos-hardware
-    , nixpkgs
-    , nixpkgs-patched
-    , nixpkgs-stable
-    , nixvim
-    , sops-nix
-    , ...
-    } @ inputs:
-    flake-parts.lib.mkFlake { inherit inputs; } rec {
-      systems = nixpkgs.lib.systems.flakeExposed;
+  outputs = { self, ... }@inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } rec {
+      systems = inputs.nixpkgs.lib.systems.flakeExposed;
       imports = [
         inputs.devenv.flakeModule
         inputs.flake-parts.flakeModules.easyOverlay
@@ -86,14 +69,13 @@
 
       perSystem =
         { pkgs
-        , lib
         , config
         , system
         , inputs'
         , ...
         }:
         let
-          packages = rec {
+          packages = {
             "tupakkatapa-utils" = pkgs.callPackage ./packages/tupakkatapa-utils { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
             "ping-sweep" = pkgs.callPackage ./packages/ping-sweep { };
@@ -180,98 +162,112 @@
         let
           inherit (self) outputs;
 
+          # Base configuration applied to all hosts
           withDefaults = config: {
             specialArgs = { inherit inputs outputs; };
             system = config.system or "x86_64-linux";
-            modules =
-              config.modules
-              ++ [
-                sops-nix.nixosModules.sops
-                home-manager.nixosModules.home-manager
-                nix-extras.nixosModules.all
-                self.nixosModules.sftpClient
-                self.nixosModules.rsyncBackup
-                self.nixosModules.autoScrcpy
-                {
-                  home-manager.sharedModules = [
-                    nixvim.homeManagerModules.nixvim
-                  ];
-                  nixpkgs.overlays = [
-                    self.overlays.default
-                  ];
-                  system.stateVersion = "24.05";
-                }
-                ./system/base.nix
-                ./system/nix-settings.nix
-                ./system/openssh.nix
-              ];
+            modules = config.modules or [ ] ++ [
+              inputs.nix-extras.nixosModules.all
+              ./system/base.nix
+              ./system/nix-settings.nix
+              ./system/openssh.nix
+              {
+                nixpkgs.overlays = [
+                  self.overlays.default
+                ];
+                system.stateVersion = "24.05";
+              }
+            ];
           };
 
-          torgue.modules = [
-            ./home-manager/users/kari
-            ./nixosConfigurations/torgue
-            aagl.nixosModules.default
-            musnix.nixosModules.musnix
-            nixos-hardware.nixosModules.common-gpu-amd
-          ];
+          # Optional additional configuration
+          withExtra = config: {
+            modules = config.modules or [ ] ++ [
+              inputs.home-manager.nixosModules.home-manager
+              self.nixosModules.sftpClient
+              {
+                home-manager.sharedModules = [
+                  inputs.nixvim.homeManagerModules.nixvim
+                ];
+              }
+            ];
+          };
 
-          vladof.modules = [
-            ./home-manager/users/kari/minimal-gui.nix
-            ./nixosConfigurations/vladof
-            nixie.nixosModules.squashfs
-            coditon-md.nixosModules.default
-            nixos-hardware.nixosModules.common-gpu-intel
-          ];
+          # Hosts
+          torgue = withExtra {
+            modules = [
+              ./home-manager/users/kari
+              ./nixosConfigurations/torgue
+              inputs.aagl.nixosModules.default
+              inputs.musnix.nixosModules.musnix
+              inputs.nixos-hardware.nixosModules.common-gpu-amd
+              self.nixosModules.autoScrcpy
+            ];
+          };
 
-          eridian.modules = [
-            ./home-manager/users/kari/minimal.nix
-            ./nixosConfigurations/eridian
-            nixie.nixosModules.nixie
-            homestakeros-base.nixosModules.kexecTree
-          ];
+          vladof = withExtra {
+            modules = [
+              ./home-manager/users/kari/minimal-gui.nix
+              ./nixosConfigurations/vladof
+              inputs.nixie.nixosModules.squashfs
+              inputs.coditon-md.nixosModules.default
+              inputs.nixos-hardware.nixosModules.common-gpu-intel
+            ];
+          };
 
-          maliwan.modules = [
-            ./home-manager/users/kari/minimal-gui.nix
-            ./nixosConfigurations/maliwan
-            nixos-hardware.nixosModules.common-gpu-intel
-          ];
+          eridian = withExtra {
+            modules = [
+              ./home-manager/users/kari/minimal.nix
+              ./nixosConfigurations/eridian
+              inputs.nixie.nixosModules.nixie
+              inputs.homestakeros-base.nixosModules.kexecTree
+            ];
+          };
+
+          maliwan = withExtra {
+            modules = [
+              ./home-manager/users/kari/minimal-gui.nix
+              ./nixosConfigurations/maliwan
+              inputs.nixos-hardware.nixosModules.common-gpu-intel
+            ];
+          };
 
           bandit.modules = [
             ./nixosConfigurations/bandit
             ./home-manager/users/core
-            homestakeros-base.nixosModules.kexecTree
+            inputs.homestakeros-base.nixosModules.kexecTree
           ];
 
           gearbox.modules = [
             ./nixosConfigurations/gearbox
             ./home-manager/users/core
-            nixie.nixosModules.squashfs
-            nixos-hardware.nixosModules.common-gpu-intel
+            inputs.nixie.nixosModules.squashfs
+            inputs.nixos-hardware.nixosModules.common-gpu-intel
           ];
 
-          jakobs = {
+          jakobs = withExtra {
             system = "aarch64-linux";
             modules = [
               ./home-manager/users/kari/minimal.nix
               ./nixosConfigurations/jakobs
-              homestakeros-base.nixosModules.kexecTree
+              inputs.homestakeros-base.nixosModules.kexecTree
               inputs.nixos-hardware.nixosModules.raspberry-pi-4
             ];
           };
         in
         {
           # NixOS configuration entrypoints
-          nixosConfigurations = with nixpkgs.lib;
+          nixosConfigurations = with inputs.nixpkgs.lib;
             {
               "eridian" = nixosSystem (withDefaults eridian);
               "jakobs" = nixosSystem (withDefaults jakobs);
               "maliwan" = nixosSystem (withDefaults maliwan);
               "torgue" = nixosSystem (withDefaults torgue);
             }
-            // (with nixpkgs-stable.lib; {
+            // (with inputs.nixpkgs-stable.lib; {
               "bandit" = nixosSystem (withDefaults bandit);
             })
-            // (with nixpkgs-patched.lib; {
+            // (with inputs.nixpkgs-patched.lib; {
               "gearbox" = nixosSystem (withDefaults gearbox);
               "vladof" = nixosSystem (withDefaults vladof);
             });
