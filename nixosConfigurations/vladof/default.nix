@@ -132,6 +132,7 @@ in
       "transmission"
     ];
     home = "/mnt/wd-red/sftp";
+    homeMode = "770";
     openssh.authorizedKeys.keys = [
       # kari@torgue
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEdpdbTOz0h9tVvkn13k1e8X7MnctH3zHRFmYWTbz9T kari@torgue"
