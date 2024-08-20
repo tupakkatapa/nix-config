@@ -16,6 +16,13 @@ let
   extendedArgs = { inherit pkgs lib config domain appData; };
 in
 {
+  # Public key
+  age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEJktZ00i+OxH4Azi1tLkwoYrJ0qo2RIZ5huzzK+g2w root@vladof";
+  services.openssh.hostKeys = [{
+    path = "/mnt/wd-red/secrets/ssh/ssh_host_ed25519_key";
+    type = "ed25519";
+  }];
+
   imports = [
     (import ./services extendedArgs)
     # ../.config/motd.nix
@@ -112,12 +119,6 @@ in
         X11Forwarding no
       Match all
     '';
-    hostKeys = [
-      {
-        path = "/mnt/wd-red/secrets/ssh/ssh_host_ed25519_key";
-        type = "ed25519";
-      }
-    ];
   };
 
   # SFTP user/group
@@ -141,6 +142,9 @@ in
 
       # kari@maliwan
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxmP58tAQ7oN1OT4nZ/pZtrb8vGvuh/l33lxiq3ngIU kari@maliwan"
+
+      # kari@yubikey
+      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOdsfK46X5IhxxEy81am6A8YnHo2rcF2qZ75cHOKG7ToAAAACHNzaDprYXJp ssh:kari"
     ];
   };
   users.groups."sftp" = { };

@@ -9,14 +9,13 @@ in
   imports = [ ./minimal.nix ];
 
   # Secrets
-  sops.secrets.kari-password = {
-    sopsFile = ../../secrets.yaml;
-    neededForUsers = true;
+  age.secrets = {
+    "password".rekeyFile = ./secrets/password.age;
   };
 
   # Set password
   users.users.${user} = {
     # echo "password" | mkpasswd -s
-    hashedPasswordFile = config.sops.secrets.kari-password.path;
+    hashedPasswordFile = config.age.secrets.password.path;
   };
 }

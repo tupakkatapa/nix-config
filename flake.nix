@@ -22,6 +22,9 @@
   };
 
   inputs = {
+    agenix-rekey.inputs.nixpkgs.follows = "nixpkgs";
+    agenix-rekey.url = "github:oddlama/agenix-rekey";
+    agenix.url = "github:ryantm/agenix";
     devenv.url = "github:cachix/devenv";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -31,8 +34,6 @@
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    sops-nix.url = "github:mic92/sops-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
@@ -62,6 +63,7 @@
     inputs.flake-parts.lib.mkFlake { inherit inputs; } rec {
       systems = inputs.nixpkgs.lib.systems.flakeExposed;
       imports = [
+        inputs.agenix-rekey.flakeModule
         inputs.devenv.flakeModule
         inputs.flake-parts.flakeModules.easyOverlay
         inputs.treefmt-nix.flakeModule
@@ -123,10 +125,10 @@
           # Development shell -> 'nix develop' or 'direnv allow'
           devenv.shells.default = {
             packages = with pkgs; [
-              sops
               ssh-to-age
               pxe-generate
               nix-tree
+              config.agenix-rekey.package
             ];
             env = {
               NIX_CONFIG = ''
@@ -157,6 +159,9 @@
               "vladof" = vladof.config.system.build.squashfs;
             })
             // packages;
+
+          # Hosts that should use agenix-rekey for secret management
+          agenix-rekey.nodes = { inherit (self.nixosConfigurations) vladof torgue maliwan eridian jakobs; };
         };
       flake =
         let
@@ -183,6 +188,8 @@
           # Optional additional configuration
           withExtra = config: {
             modules = config.modules or [ ] ++ [
+              inputs.agenix-rekey.nixosModules.default
+              inputs.agenix.nixosModules.default
               inputs.home-manager.nixosModules.home-manager
               self.nixosModules.sftpClient
               {
@@ -202,6 +209,16 @@
               inputs.musnix.nixosModules.musnix
               inputs.nixos-hardware.nixosModules.common-gpu-amd
               self.nixosModules.autoScrcpy
+              {
+                age.rekey = {
+                  localStorageDir = ./nixosConfigurations/torgue/secrets/rekey;
+                  masterIdentities = [{
+                    identity = ./master.hmac;
+                    pubkey = "age1snpq9cusnjf7rnhjmrtjnzrs6cjpasx82h9j77fe9hewgk60lgcqnnvejw";
+                  }];
+                  storageMode = "local";
+                };
+              }
             ];
           };
 
@@ -212,6 +229,16 @@
               inputs.nixie.nixosModules.squashfs
               inputs.coditon-md.nixosModules.default
               inputs.nixos-hardware.nixosModules.common-gpu-intel
+              {
+                age.rekey = {
+                  localStorageDir = ./nixosConfigurations/vladof/secrets/rekey;
+                  masterIdentities = [{
+                    identity = ./master.hmac;
+                    pubkey = "age1snpq9cusnjf7rnhjmrtjnzrs6cjpasx82h9j77fe9hewgk60lgcqnnvejw";
+                  }];
+                  storageMode = "local";
+                };
+              }
             ];
           };
 
@@ -221,6 +248,16 @@
               ./nixosConfigurations/eridian
               inputs.nixie.nixosModules.nixie
               inputs.homestakeros-base.nixosModules.kexecTree
+              {
+                age.rekey = {
+                  localStorageDir = ./nixosConfigurations/eridian/secrets/rekey;
+                  masterIdentities = [{
+                    identity = ./master.hmac;
+                    pubkey = "age1snpq9cusnjf7rnhjmrtjnzrs6cjpasx82h9j77fe9hewgk60lgcqnnvejw";
+                  }];
+                  storageMode = "local";
+                };
+              }
             ];
           };
 
@@ -229,6 +266,16 @@
               ./home-manager/users/kari/minimal-gui.nix
               ./nixosConfigurations/maliwan
               inputs.nixos-hardware.nixosModules.common-gpu-intel
+              {
+                age.rekey = {
+                  localStorageDir = ./nixosConfigurations/maliwan/secrets/rekey;
+                  masterIdentities = [{
+                    identity = ./master.hmac;
+                    pubkey = "age1snpq9cusnjf7rnhjmrtjnzrs6cjpasx82h9j77fe9hewgk60lgcqnnvejw";
+                  }];
+                  storageMode = "local";
+                };
+              }
             ];
           };
 
@@ -252,6 +299,19 @@
               ./nixosConfigurations/jakobs
               inputs.homestakeros-base.nixosModules.kexecTree
               inputs.nixos-hardware.nixosModules.raspberry-pi-4
+              {
+                age.rekey = {
+                  localStorageDir = ./nixosConfigurations/jakobs/secrets/rekey;
+                  masterIdentities = [{
+                    identity = ./master.hmac;
+                    pubkey = "age1snpq9cusnjf7rnhjmrtjnzrs6cjpasx82h9j77fe9hewgk60lgcqnnvejw";
+                  }];
+                  storageMode = "local";
+                };
+                home-manager.sharedModules = [
+                  inputs.nixvim.homeManagerModules.nixvim
+                ];
+              }
             ];
           };
         in

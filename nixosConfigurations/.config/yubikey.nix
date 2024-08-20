@@ -1,16 +1,20 @@
-_: {
-  # Yubico's official tools
-  # environment.systemPackages = with pkgs; [
-  #   yubikey-manager
-  #   yubikey-manager-qt
-  #   yubikey-personalization
-  #   yubikey-personalization-gui
-  #   yubico-piv-tool
-  #   yubioath-flutter
-  # ];
-  # services.udev.packages = [
-  #   pkgs.yubikey-personalization
-  # ];
+{ pkgs, ... }: {
+  environment.systemPackages = with pkgs; [
+    pinentry-curses
+    age-plugin-fido2-hmac
+
+    # Yubico's official tools
+    yubikey-manager
+    yubikey-manager-qt
+    yubikey-personalization
+    yubikey-personalization-gui
+    yubico-piv-tool
+    yubioath-flutter
+  ];
+  services.udev.packages = [
+    pkgs.yubikey-personalization
+  ];
+  services.yubikey-agent.enable = true;
 
   # Logging-in
   # nix-shell -p pam_u2f

@@ -9,6 +9,13 @@
   #   port = 11434;
   # };
 
+  # Public key
+  age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGUob0osP0Jv2es9yRTDHXrTE1SoRPXuiiy/vz1n3ehk root@torque";
+  services.openssh.hostKeys = [{
+    path = "/etc/ssh/ssh_host_ed25519_key";
+    type = "ed25519";
+  }];
+
   # For screensharing via OBS
   xdg.portal = {
     enable = true;

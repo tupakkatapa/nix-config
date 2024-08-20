@@ -85,7 +85,7 @@ in
       dnsProvider = "cloudflare";
       dnsResolver = "1.1.1.1:53";
       credentialFiles = {
-        CF_DNS_API_TOKEN_FILE = config.sops.secrets.acme-cf-dns-token.path;
+        CF_DNS_API_TOKEN_FILE = config.age.secrets.acme-cf-dns-token.path;
       };
       dnsPropagationCheck = true;
       reloadServices = [ "caddy.service" ];
@@ -126,16 +126,16 @@ in
     ];
 
   # Secrets
-  sops.secrets = {
+  age.secrets = {
+    "vaultwarden-env".rekeyFile = ../secrets/vaultwarden-env.age;
+    "lanraragi-admin-password" = {
+      rekeyFile = ../secrets/lanraragi-admin-password.age;
+      mode = "444";
+    };
     "acme-cf-dns-token" = {
-      sopsFile = ../../secrets.yaml;
+      rekeyFile = ../secrets/acme-cf-dns-token.age;
       group = "acme";
       mode = "440";
-    };
-    "vaultwarden-env".sopsFile = ../../secrets.yaml;
-    "lanraragi-admin-password" = {
-      sopsFile = ../../secrets.yaml;
-      mode = "444";
     };
   };
 
@@ -207,7 +207,7 @@ in
   # Lanraragi (3000)
   services.lanraragi = {
     enable = true;
-    passwordFile = config.sops.secrets.lanraragi-admin-password.path;
+    passwordFile = config.age.secrets.lanraragi-admin-password.path;
   };
   # Create user/group
   users.users.lanraragi = {
@@ -239,7 +239,7 @@ in
     enable = true;
     dbBackend = "sqlite";
     # backupDir = "${appData}/vaultwarden/backup";
-    environmentFile = config.sops.secrets.vaultwarden-env.path;
+    environmentFile = config.age.secrets.vaultwarden-env.path;
     config = {
       domain = "https://${servicesConfig.vaultwarden.addr}";
       rocketPort = servicesConfig.vaultwarden.port;
