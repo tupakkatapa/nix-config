@@ -23,7 +23,6 @@ in
       FONT = "JetBrainsMono Nerd Font";
       FILEMANAGER = "yazi";
       TERMINAL = "foot";
-      THEME = "gruvbox-dark-medium";
     };
 
     # Allow fonts trough home.packages

@@ -166,6 +166,11 @@ in
     };
     services.ssh-agent.enable = true;
 
+    # Default apps
+    home.sessionVariables = {
+      THEME = "gruvbox-dark-medium";
+    };
+
     home.packages = with pkgs; [
       tupakkatapa-utils
       lkddb-filter
