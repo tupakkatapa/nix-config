@@ -1,7 +1,6 @@
 { pkgs
 , config
 , inputs
-, lib
 , ...
 }:
 let
@@ -11,84 +10,6 @@ let
   optionalPaths = paths: builtins.filter (path: builtins.pathExists path) paths;
 in
 {
-  # Secrets
-  age.secrets = {
-    "wg-dinar".rekeyFile = ./secrets/wg-dinar.age;
-    "ed25519-sk" = {
-      rekeyFile = ./secrets/ed25519-sk.age;
-      path = "/home/${user}/.ssh/id_ed25519_sk";
-      mode = "600";
-      owner = user;
-      group = user;
-    };
-    "yubico-u2f-keys" = {
-      rekeyFile = ./secrets/yubico-u2f-keys.age;
-      owner = user;
-      group = user;
-      mode = "644";
-    };
-  };
-
-  # Yubikey
-  environment.systemPackages = with pkgs; [
-    pinentry-curses
-    age-plugin-fido2-hmac
-    yubikey-manager
-  ];
-  services.yubikey-agent.enable = true;
-  programs.yubikey-touch-detector.enable = true;
-
-  # U2F
-  security.pam = {
-    u2f.authFile = config.age.secrets."yubico-u2f-keys".path;
-    services = {
-      greetd.u2fAuth = true;
-      sudo.u2fAuth = true;
-      swaylock.u2fAuth = true;
-      login.u2fAuth = true;
-    };
-  };
-
-  # Mount SFTP and bind home directories
-  services.sftpClient =
-    let
-      sftpPrefix = "sftp@192.168.1.8:";
-    in
-    lib.mkIf (config.networking.hostName != "vladof") {
-      enable = true;
-      defaultIdentityFile = "/home/${user}/.ssh/id_ed25519";
-      mounts =
-        [
-          {
-            what = "${sftpPrefix}/";
-            where = "/mnt/sftp";
-          }
-          {
-            what = "${sftpPrefix}/docs";
-            where = "/home/${user}/Documents";
-          }
-          {
-            what = "${sftpPrefix}/media";
-            where = "/home/${user}/Media";
-          }
-          {
-            what = "${sftpPrefix}/code/workspace";
-            where = "/home/${user}/Workspace";
-          }
-          {
-            what = "${sftpPrefix}/dnld";
-            where = "/home/${user}/Downloads";
-          }
-        ];
-    };
-
-  # Wireguard
-  networking.wg-quick.interfaces."wg0" = {
-    autostart = true;
-    configFile = config.age.secrets.wg-dinar.path;
-  };
-
-  # User config
   users.users.${user} = {
     isNormalUser = true;
     group = "${user}";
@@ -125,13 +46,6 @@ in
   environment.shells = [ pkgs.fish ];
   programs.fish.enable = true;
 
-  # Create directories, these are persistent
-  systemd.tmpfiles.rules = [
-    "d /home/${user}/.ssh       755 ${user} ${user} -"
-    "d /home/${user}/Workspace  755 ${user} ${user} -"
-    "d /home/${user}/Media      755 ${user} ${user} -"
-  ];
-
   # Allows access to flake inputs and custom packages
   home-manager.extraSpecialArgs = { inherit inputs pkgs; };
 
@@ -143,13 +57,25 @@ in
       [
         ./.config/direnv.nix
         ./.config/fish.nix
-        ./.config/git.nix
         ./.config/neovim.nix
         ./.config/yazi.nix
       ]
       # Importing host-spesific home-manager config if it exists
       ++ optionalPaths
         [ ../../hosts/${config.networking.hostName}/default.nix ];
+
+    # Git
+    programs.git = {
+      enable = true;
+      package = pkgs.gitFull;
+      extraConfig = {
+        safe.directory = [ "*" ];
+        http = {
+          # https://stackoverflow.com/questions/22369200/git-pull-push-error-rpc-failed-result-22-http-code-408
+          postBuffer = "524288000";
+        };
+      };
+    };
 
     # Scripts and files
     home.sessionPath = [ "$HOME/.local/bin" ];
@@ -162,35 +88,8 @@ in
           target = ".local/bin/${name}";
           source = "${scriptDir}/${name}";
         };
-        staticFiles = {
-          ".config/jack/focusrite_guitarix_v2.xml".source = ./.config/focusrite_guitarix_v2.xml;
-          ".config/jack/focusrite_guitarix_ardour_v2.xml".source = ./.config/focusrite_guitarix_ardour_v2.xml;
-        };
       in
-      staticFiles // builtins.mapAttrs (name: _: makeScript name) scriptFiles;
-
-    # Extra SSH config
-    programs.ssh = {
-      enable = true;
-      matchBlocks = {
-        "192.168.1.*".extraOptions."StrictHostKeyChecking" = "no";
-        "192.168.100.*" = {
-          user = "core";
-          extraOptions."StrictHostKeyChecking" = "no";
-        };
-        "192.168.1.171" = {
-          user = "core";
-          extraOptions."StrictHostKeyChecking" = "no";
-        };
-        "vladof" = {
-          hostname = "192.168.1.8";
-          extraOptions."StrictHostKeyChecking" = "no";
-        };
-      };
-      forwardAgent = true;
-      addKeysToAgent = "yes";
-    };
-    services.ssh-agent.enable = true;
+      builtins.mapAttrs (name: _: makeScript name) scriptFiles;
 
     # Default apps
     home.sessionVariables = {
@@ -248,8 +147,8 @@ in
       fuse3
       fwts
       gptfdisk
-      gitAndTools.gitFull
-      gitAndTools.tig
+      # gitAndTools.gitFull
+      # gitAndTools.tig
       gzip
       hdparm
       hexdump

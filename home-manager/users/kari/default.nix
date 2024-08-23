@@ -34,6 +34,12 @@ in
       ];
     };
 
+    # Qjackctl presets
+    home.file = {
+      ".config/jack/focusrite_guitarix_v2.xml".source = ./.config/focusrite_guitarix_v2.xml;
+      ".config/jack/focusrite_guitarix_ardour_v2.xml".source = ./.config/focusrite_guitarix_ardour_v2.xml;
+    };
+
     home.packages = with pkgs; [
       monitor-adjust
 

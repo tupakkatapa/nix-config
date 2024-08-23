@@ -15,6 +15,7 @@ in
 
     other:
     ~/.config/guitarix/banks
+    gpg --list-secret-keys --keyid-format=long
   */
 
   # Enable NIC driver for stage-1
