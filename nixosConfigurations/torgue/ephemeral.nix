@@ -9,10 +9,6 @@ in
   /*
     Persistent file memo
 
-    nix-serve:
-    /var/cache-priv-key.pem
-    /var/cache-pub-key.pem
-
     yubikey:
     ~/.config/Yubico/u2f_keys
 

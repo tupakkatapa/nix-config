@@ -1,4 +1,5 @@
 { pkgs
+, config
 , ...
 }: {
   imports = [
@@ -18,6 +19,15 @@
     path = "/etc/ssh/ssh_host_ed25519_key";
     type = "ed25519";
   }];
+
+  # Secrets
+  age.secrets = {
+    "cache-priv-key" = {
+      rekeyFile = ./secrets/cache-priv-key.age;
+      mode = "600";
+      group = "nix-serve";
+    };
+  };
 
   # For screensharing via OBS
   xdg.portal = {
@@ -102,7 +112,7 @@
   # Binary cache
   services.nix-serve = {
     enable = true;
-    secretKeyFile = "/var/cache-priv-key.pem";
+    secretKeyFile = config.age.secrets."cache-priv-key".path;
     port = 5000;
     openFirewall = true;
   };
