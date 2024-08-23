@@ -11,6 +11,27 @@ let
   optionalPaths = paths: builtins.filter (path: builtins.pathExists path) paths;
 in
 {
+  # Secrets
+  age.secrets = {
+    "wg-dinar".rekeyFile = ./secrets/wg-dinar.age;
+    "ed25519-sk" = {
+      rekeyFile = ./secrets/ed25519-sk.age;
+      path = "/home/${user}/.ssh/id_ed25519_sk";
+      mode = "600";
+      owner = user;
+      group = user;
+    };
+    "yubico-u2f-keys" = {
+      rekeyFile = ./secrets/yubico-u2f-keys.age;
+      owner = user;
+      group = user;
+      mode = "644";
+    };
+  };
+
+  # U2F
+  security.pam.u2f.authFile = config.age.secrets."yubico-u2f-keys".path;
+
   # Mount SFTP and bind home directories
   services.sftpClient =
     let
@@ -43,18 +64,6 @@ in
           }
         ];
     };
-
-  # Secrets
-  age.secrets = {
-    "wg-dinar".rekeyFile = ./secrets/wg-dinar.age;
-    "ed25519-sk" = {
-      rekeyFile = ./secrets/ed25519-sk.age;
-      path = "/home/${user}/.ssh/id_ed25519_sk";
-      mode = "600";
-      owner = user;
-      group = user;
-    };
-  };
 
   # Wireguard
   networking.wg-quick.interfaces."wg0" = {
