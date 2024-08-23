@@ -29,8 +29,25 @@ in
     };
   };
 
+  # Yubikey
+  environment.systemPackages = with pkgs; [
+    pinentry-curses
+    age-plugin-fido2-hmac
+    yubikey-manager
+  ];
+  services.yubikey-agent.enable = true;
+  programs.yubikey-touch-detector.enable = true;
+
   # U2F
-  security.pam.u2f.authFile = config.age.secrets."yubico-u2f-keys".path;
+  security.pam = {
+    u2f.authFile = config.age.secrets."yubico-u2f-keys".path;
+    services = {
+      greetd.u2fAuth = true;
+      sudo.u2fAuth = true;
+      swaylock.u2fAuth = true;
+      login.u2fAuth = true;
+    };
+  };
 
   # Mount SFTP and bind home directories
   services.sftpClient =

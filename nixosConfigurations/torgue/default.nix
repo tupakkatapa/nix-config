@@ -7,7 +7,6 @@
     ../.config/gaming-amd.nix
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
-    ../.config/yubikey.nix
     ../.config/retroarch.nix
     ../.config/virtualisation.nix
     ./hardware-configuration.nix

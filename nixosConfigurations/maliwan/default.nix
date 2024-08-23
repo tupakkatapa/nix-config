@@ -4,7 +4,6 @@
   imports = [
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
-    ../.config/yubikey.nix
     ./hardware-configuration.nix
   ];
 
