@@ -1,13 +1,16 @@
 { pkgs
 , ...
 }: {
-  # Local LLM
-  # services.ollama = {
-  #   enable = true;
-  #   acceleration = "rocm";
-  #   host = "0.0.0.0";
-  #   port = 11434;
-  # };
+  imports = [
+    ../.config/openrgb.nix
+    ../.config/gaming-amd.nix
+    ../.config/pipewire.nix
+    ../.config/tuigreet-hypr.nix
+    ../.config/yubikey.nix
+    ../.config/retroarch.nix
+    ../.config/virtualisation.nix
+    ./hardware-configuration.nix
+  ];
 
   # Public key
   age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGUob0osP0Jv2es9yRTDHXrTE1SoRPXuiiy/vz1n3ehk root@torque";
@@ -62,18 +65,6 @@
   # Set the font for GRUB
   boot.loader.grub.font = "${pkgs.terminus_font}/share/fonts/terminus/ter-x24n.pcf.gz";
   boot.loader.grub.fontSize = 24;
-
-  # Imports
-  imports = [
-    ../.config/openrgb.nix
-    ../.config/gaming-amd.nix
-    ../.config/pipewire.nix
-    ../.config/tuigreet-hypr.nix
-    ../.config/yubikey.nix
-    ../.config/retroarch.nix
-    ../.config/virtualisation.nix
-    ./hardware-configuration.nix
-  ];
 
   # https://github.com/NixOS/nixpkgs/issues/143365
   security.pam.services.swaylock = { };

@@ -16,6 +16,11 @@ let
   extendedArgs = { inherit pkgs lib config domain appData; };
 in
 {
+  imports = [
+    (import ./services extendedArgs)
+    # ../.config/motd.nix
+  ];
+
   # Public key
   age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEJktZ00i+OxH4Azi1tLkwoYrJ0qo2RIZ5huzzK+g2w root@vladof";
   services.openssh.hostKeys = [{
@@ -23,10 +28,7 @@ in
     type = "ed25519";
   }];
 
-  imports = [
-    (import ./services extendedArgs)
-    # ../.config/motd.nix
-  ];
+  # Audio
   hardware.pulseaudio.enable = true;
 
   # Backup some accident-prone directories

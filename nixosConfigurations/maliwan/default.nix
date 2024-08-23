@@ -1,20 +1,26 @@
 { pkgs
 , ...
 }: {
-  # Bootloader for x86_64-linux / aarch64-linux
-  boot.loader.systemd-boot = {
-    enable = true;
-    configurationLimit = 10;
-  };
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Imports
   imports = [
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
     ./hardware-configuration.nix
   ];
+
+  # Public key
+  # age.rekey.hostPubkey = "";
+  services.openssh.hostKeys = [{
+    path = "/etc/ssh/ssh_host_ed25519_key";
+    type = "ed25519";
+  }];
+
+  # Bootloader for x86_64-linux / aarch64-linux
+  boot.loader.systemd-boot = {
+    enable = true;
+    configurationLimit = 10;
+  };
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # https://github.com/NixOS/nixpkgs/issues/143365
   security.pam.services.swaylock = { };

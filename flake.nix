@@ -185,7 +185,7 @@
             ];
           };
 
-          # Optional additional configuration
+          # Optional additional modules
           withExtra = config: {
             modules = config.modules or [ ] ++ [
               inputs.agenix-rekey.nixosModules.default
