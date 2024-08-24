@@ -63,7 +63,6 @@ in
   # Mount SFTP and bind home directories
   services.sftpClient = lib.mkIf (config.networking.hostName != "vladof") {
     enable = true;
-    inherit user;
     defaultIdentityFile = "/home/${user}/.ssh/id_ed25519";
     mounts = [{
       what = "sftp@192.168.1.8:/";
