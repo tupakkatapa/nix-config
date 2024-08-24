@@ -161,7 +161,7 @@
             // packages;
 
           # Hosts that should use agenix-rekey for secret management
-          agenix-rekey.nodes = { inherit (self.nixosConfigurations) vladof torgue maliwan eridian jakobs; };
+          agenix-rekey.nodes = { inherit (self.nixosConfigurations) vladof torgue maliwan eridian; };
         };
       flake =
         let
