@@ -155,7 +155,7 @@
               "bandit" = bandit.config.system.build.kexecTree;
               "gearbox" = gearbox.config.system.build.squashfs;
               "eridian" = eridian.config.system.build.kexecTree;
-              "jakobs" = jakobs.config.system.build.kexecTree;
+              # "jakobs" = jakobs.config.system.build.kexecTree;
               "vladof" = vladof.config.system.build.squashfs;
             })
             // packages;
@@ -292,35 +292,35 @@
             inputs.nixos-hardware.nixosModules.common-gpu-intel
           ];
 
-          jakobs = withExtra {
-            system = "aarch64-linux";
-            modules = [
-              ./home-manager/users/kari/minimal.nix
-              ./nixosConfigurations/jakobs
-              inputs.homestakeros-base.nixosModules.kexecTree
-              inputs.nixos-hardware.nixosModules.raspberry-pi-4
-              {
-                age.rekey = {
-                  localStorageDir = ./nixosConfigurations/jakobs/secrets/rekey;
-                  masterIdentities = [{
-                    identity = ./master.hmac;
-                    pubkey = "age1snpq9cusnjf7rnhjmrtjnzrs6cjpasx82h9j77fe9hewgk60lgcqnnvejw";
-                  }];
-                  storageMode = "local";
-                };
-                home-manager.sharedModules = [
-                  inputs.nixvim.homeManagerModules.nixvim
-                ];
-              }
-            ];
-          };
+          # jakobs = withExtra {
+          #   system = "aarch64-linux";
+          #   modules = [
+          #     ./home-manager/users/kari/minimal.nix
+          #     ./nixosConfigurations/jakobs
+          #     inputs.homestakeros-base.nixosModules.kexecTree
+          #     inputs.nixos-hardware.nixosModules.raspberry-pi-4
+          #     {
+          #       age.rekey = {
+          #         localStorageDir = ./nixosConfigurations/jakobs/secrets/rekey;
+          #         masterIdentities = [{
+          #           identity = ./master.hmac;
+          #           pubkey = "age1snpq9cusnjf7rnhjmrtjnzrs6cjpasx82h9j77fe9hewgk60lgcqnnvejw";
+          #         }];
+          #         storageMode = "local";
+          #       };
+          #       home-manager.sharedModules = [
+          #         inputs.nixvim.homeManagerModules.nixvim
+          #       ];
+          #     }
+          #   ];
+          # };
         in
         {
           # NixOS configuration entrypoints
           nixosConfigurations = with inputs.nixpkgs.lib;
             {
               "eridian" = nixosSystem (withDefaults eridian);
-              "jakobs" = nixosSystem (withDefaults jakobs);
+              # "jakobs" = nixosSystem (withDefaults jakobs);
               "maliwan" = nixosSystem (withDefaults maliwan);
               "torgue" = nixosSystem (withDefaults torgue);
             }
