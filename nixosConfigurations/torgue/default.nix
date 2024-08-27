@@ -92,14 +92,6 @@
   };
   hardware.bluetooth.enable = true;
 
-  # Binary cache
-  services.nix-serve = {
-    enable = true;
-    secretKeyFile = config.age.secrets."cache-priv-key".path;
-    port = 5000;
-    openFirewall = true;
-  };
-
   # Optimize kernel for low-latency audio
   powerManagement.cpuFreqGovernor = "performance";
   musnix.enable = true;
