@@ -21,12 +21,6 @@ in
       owner = user;
       group = user;
     };
-    "yubico-u2f-keys" = {
-      file = ./secrets/yubico-u2f-keys.age;
-      owner = user;
-      group = user;
-      mode = "644";
-    };
   };
 
   # Set password
@@ -51,7 +45,7 @@ in
 
   # U2F
   security.pam = {
-    u2f.settings.authFile = config.age.secrets."yubico-u2f-keys".path;
+    u2f.settings.authFile = "/home/${user}/.ssh/u2f_keys";
     services = {
       greetd.u2fAuth = true;
       sudo.u2fAuth = true;
