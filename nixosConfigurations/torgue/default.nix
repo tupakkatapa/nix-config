@@ -29,35 +29,14 @@
     waylandDisplay = "wayland-1";
   };
 
-  # EFI Bootloader
-  boot.loader = {
-    efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot";
-    };
-    grub = {
-      enable = true;
-      configurationLimit = 50;
-      device = "nodev";
-      efiSupport = true;
-      useOSProber = true;
-      # Text mode
-      gfxmodeEfi = "text";
-      gfxmodeBios = "text";
-      splashImage = null;
-    };
-    timeout = 1;
-  };
-  time.hardwareClockInLocalTime = true;
+  # Simple bootloader
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # Support for cross compilation
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
   ];
-
-  # Set the font for GRUB
-  boot.loader.grub.font = "${pkgs.terminus_font}/share/fonts/terminus/ter-x24n.pcf.gz";
-  boot.loader.grub.fontSize = 24;
 
   # https://github.com/NixOS/nixpkgs/issues/143365
   security.pam.services.swaylock = { };
