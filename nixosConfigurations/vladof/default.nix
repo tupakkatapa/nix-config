@@ -22,7 +22,6 @@ in
   ];
 
   # Public key
-  age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEJktZ00i+OxH4Azi1tLkwoYrJ0qo2RIZ5huzzK+g2w root@vladof";
   services.openssh.hostKeys = [{
     path = "/mnt/wd-red/secrets/ssh/ssh_host_ed25519_key";
     type = "ed25519";

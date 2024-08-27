@@ -12,17 +12,17 @@ in
 
   # Secrets
   age.secrets = {
-    "password".rekeyFile = ./secrets/password.age;
-    "wg-dinar".rekeyFile = ./secrets/wg-dinar.age;
+    "password".file = ./secrets/password.age;
+    "wg-dinar".file = ./secrets/wg-dinar.age;
     "ed25519-sk" = {
-      rekeyFile = ./secrets/ed25519-sk.age;
+      file = ./secrets/ed25519-sk.age;
       path = "/home/${user}/.ssh/id_ed25519_sk";
       mode = "600";
       owner = user;
       group = user;
     };
     "yubico-u2f-keys" = {
-      rekeyFile = ./secrets/yubico-u2f-keys.age;
+      file = ./secrets/yubico-u2f-keys.age;
       owner = user;
       group = user;
       mode = "644";

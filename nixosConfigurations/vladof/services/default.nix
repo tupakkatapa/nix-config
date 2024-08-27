@@ -127,13 +127,13 @@ in
 
   # Secrets
   age.secrets = {
-    "vaultwarden-env".rekeyFile = ../secrets/vaultwarden-env.age;
+    "vaultwarden-env".file = ../secrets/vaultwarden-env.age;
     "lanraragi-admin-password" = {
-      rekeyFile = ../secrets/lanraragi-admin-password.age;
+      file = ../secrets/lanraragi-admin-password.age;
       mode = "444";
     };
     "acme-cf-dns-token" = {
-      rekeyFile = ../secrets/acme-cf-dns-token.age;
+      file = ../secrets/acme-cf-dns-token.age;
       group = "acme";
       mode = "440";
     };

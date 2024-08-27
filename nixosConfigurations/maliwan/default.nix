@@ -7,13 +7,6 @@
     ./hardware-configuration.nix
   ];
 
-  # Public key
-  # age.rekey.hostPubkey = "";
-  services.openssh.hostKeys = [{
-    path = "/etc/ssh/ssh_host_ed25519_key";
-    type = "ed25519";
-  }];
-
   # Bootloader for x86_64-linux / aarch64-linux
   boot.loader.systemd-boot = {
     enable = true;
