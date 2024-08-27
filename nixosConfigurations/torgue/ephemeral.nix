@@ -9,13 +9,11 @@ in
   /*
     Persistent file memo
 
-    ssh:
-    ~/.ssh/id_ed25519
-    /etc/ssh/ssh_host_ed25519_key
-
-    other:
-    ~/.config/guitarix/banks
     gpg --list-secret-keys --keyid-format=long
+    /etc/ssh/ssh_host_ed25519_key
+    /etc/ssh/ssh_host_ed25519_key.pub
+    ~/.ssh/id_ed25519
+    ~/.ssh/u2f_keys
   */
 
   # Enable NIC driver for stage-1
