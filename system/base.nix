@@ -41,10 +41,17 @@
   # Timezone, system version and locale
   time.timeZone = "Europe/Helsinki";
   i18n.defaultLocale = "en_US.UTF-8";
-  # i18n.extraLocaleSettings = {
-  #   LC_MESSAGES = "en_US.UTF-8";
-  #   LC_TIME = "fi_FI.UTF-8";
-  # };
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "fi_FI.UTF-8";
+    LC_IDENTIFICATION = "fi_FI.UTF-8";
+    LC_MEASUREMENT = "fi_FI.UTF-8";
+    LC_MONETARY = "fi_FI.UTF-8";
+    LC_NAME = "fi_FI.UTF-8";
+    LC_NUMERIC = "fi_FI.UTF-8";
+    LC_PAPER = "fi_FI.UTF-8";
+    LC_TELEPHONE = "fi_FI.UTF-8";
+    LC_TIME = "fi_FI.UTF-8";
+  };
   time.hardwareClockInLocalTime = true;
 
   # Saiko's automatic gc
@@ -67,6 +74,12 @@
   zramSwap.enable = true;
   zramSwap.algorithm = "zstd";
   zramSwap.memoryPercent = 100;
+
+  # Public key
+  services.openssh.hostKeys = lib.mkDefault [{
+    path = "/etc/ssh/ssh_host_ed25519_key";
+    type = "ed25519";
+  }];
 
   # Sudo
   security = {
