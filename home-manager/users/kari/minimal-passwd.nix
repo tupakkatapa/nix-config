@@ -34,32 +34,37 @@ in
   ];
 
   # Mount SFTP and bind home directories
-  services.sftpClient = lib.mkIf (config.networking.hostName != "vladof") {
-    enable = true;
-    defaultIdentityFile = "/home/${user}/.ssh/id_ed25519";
-    mounts = [{
-      what = "sftp@192.168.1.8:/";
-      where = "/mnt/sftp";
-    }];
-    binds = [
-      {
-        what = "/mnt/sftp/docs";
-        where = "/home/${user}/Documents";
-      }
-      {
-        what = "/mnt/sftp/media";
-        where = "/home/${user}/Media";
-      }
-      {
-        what = "/mnt/sftp/dnld";
-        where = "/home/${user}/Downloads";
-      }
-      {
-        what = "/mnt/sftp/code/workspace";
-        where = "/home/${user}/Workspace";
-      }
-    ];
-  };
+  services.sftpClient =
+    let
+      sftpPrefix = "sftp@192.168.1.8:";
+    in
+    lib.mkIf (config.networking.hostName != "vladof") {
+      enable = true;
+      defaultIdentityFile = "/home/${user}/.ssh/id_ed25519";
+      mounts =
+        [
+          {
+            what = "${sftpPrefix}/";
+            where = "/mnt/sftp";
+          }
+          {
+            what = "${sftpPrefix}/docs";
+            where = "/home/${user}/Documents";
+          }
+          {
+            what = "${sftpPrefix}/media";
+            where = "/home/${user}/Media";
+          }
+          {
+            what = "${sftpPrefix}/code/workspace";
+            where = "/home/${user}/Workspace";
+          }
+          {
+            what = "${sftpPrefix}/dnld";
+            where = "/home/${user}/Downloads";
+          }
+        ];
+    };
 
   home-manager.users."${user}" = {
     # Extra SSH config
