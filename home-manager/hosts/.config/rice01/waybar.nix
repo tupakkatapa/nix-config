@@ -127,7 +127,6 @@ in
 
       bluetooth = {
         format = " {status}";
-        format-disabled = "";
         format-connected = " {num_connections} connected";
         tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
         tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
