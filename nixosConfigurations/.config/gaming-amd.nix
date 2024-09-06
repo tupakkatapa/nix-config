@@ -7,6 +7,13 @@
   # System packages
   environment.systemPackages = with pkgs; [
     xow_dongle-firmware
+    (lutris.override {
+      extraPkgs = _pkgs: [
+        # List package dependencies here
+        winetricks
+        wineWowPackages.waylandFull
+      ];
+    })
   ];
 
   # Steam and gaming settings
@@ -34,6 +41,7 @@
   hardware.xone.enable = true;
   hardware.bluetooth.enable = true;
   security.rtkit.enable = true;
+  hardware.graphics.enable32Bit = true;
 
   programs.gamemode = {
     enable = true;
