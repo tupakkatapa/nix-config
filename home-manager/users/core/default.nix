@@ -64,6 +64,15 @@ in
     };
   };
 
+  # Passwordless sudo
+  security.sudo.extraRules = [{
+    users = [ user ];
+    commands = [{
+      command = "ALL";
+      options = [ "NOPASSWD" ];
+    }];
+  }];
+
   # Install some packages
   environment.systemPackages = with pkgs; [
     refind
