@@ -18,7 +18,7 @@ in
       path = "/home/${user}/.ssh/id_ed25519_sk";
       mode = "600";
       owner = user;
-      group = user;
+      group = "users";
     };
   };
 
