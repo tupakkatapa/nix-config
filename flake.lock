@@ -1251,22 +1251,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-patched": {
-      "locked": {
-        "lastModified": 1723908877,
-        "narHash": "sha256-G0q28D+SblJQYhjpmzPpl2uWKIjO0LE6GyLGsaO8Cik=",
-        "owner": "majbacka-labs",
-        "repo": "nixpkgs",
-        "rev": "c79e40efa557d23e48676ec032ce1ef659738262",
-        "type": "github"
-      },
-      "original": {
-        "owner": "majbacka-labs",
-        "ref": "patch-init1sh",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-regression": {
       "locked": {
         "lastModified": 1643052045,
@@ -1849,7 +1833,6 @@
         "nixie": "nixie",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_11",
-        "nixpkgs-patched": "nixpkgs-patched",
         "nixpkgs-stable": "nixpkgs-stable_6",
         "nixvim": "nixvim",
         "treefmt-nix": "treefmt-nix_2"
