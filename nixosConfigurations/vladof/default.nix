@@ -42,19 +42,6 @@ in
   #   ];
   # };
 
-  # Enable NIC driver for stage-1
-  boot.kernelPatches = [
-    {
-      name = "kernel nic config (vladof)";
-      patch = null;
-      extraConfig = ''
-        E1000E y
-        ETHERNET y
-        NET_VENDOR_INTEL y
-      '';
-    }
-  ];
-
   # Autologin for 'kari'
   services.getty.autologinUser = user;
 

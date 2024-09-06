@@ -42,10 +42,7 @@
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
 
     # Netboot stuff
-    nixpkgs-patched.url = "github:majbacka-labs/nixpkgs/patch-init1sh"; # stable
-    # nixpkgs-patched.url = "git+file:///home/kari/Workspace/nixpkgs\?ref=patch-init1sh"; # stable
     nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie\?ref=jesse/bugs";
-    # nixie.url = "git+file:///home/kari/Workspace/nixie\?ref=jesse/refind-generate";
     homestakeros-base.url = "github:ponkila/HomestakerOS\?dir=nixosModules/base";
 
     # Other
@@ -149,10 +146,10 @@
           packages =
             (with flake.nixosConfigurations; {
               "bandit" = bandit.config.system.build.kexecTree;
-              "gearbox" = gearbox.config.system.build.squashfs;
+              "gearbox" = gearbox.config.system.build.kexecTree;
               "eridian" = eridian.config.system.build.kexecTree;
               # "jakobs" = jakobs.config.system.build.kexecTree;
-              "vladof" = vladof.config.system.build.squashfs;
+              "vladof" = vladof.config.system.build.kexecTree;
             })
             // packages;
         };
@@ -208,8 +205,9 @@
             modules = [
               ./home-manager/users/kari/minimal-gui.nix
               ./nixosConfigurations/vladof
-              inputs.nixie.nixosModules.squashfs
+              ./system/kexec-tree.nix
               inputs.coditon-md.nixosModules.default
+              # inputs.homestakeros-base.nixosModules.kexecTree
               inputs.nixos-hardware.nixosModules.common-gpu-intel
             ];
           };
@@ -218,8 +216,9 @@
             modules = [
               ./home-manager/users/kari/minimal.nix
               ./nixosConfigurations/eridian
+              ./system/kexec-tree.nix
               inputs.nixie.nixosModules.nixie
-              inputs.homestakeros-base.nixosModules.kexecTree
+              # inputs.homestakeros-base.nixosModules.kexecTree
             ];
           };
 
@@ -234,13 +233,15 @@
           bandit.modules = [
             ./nixosConfigurations/bandit
             ./home-manager/users/core
-            inputs.homestakeros-base.nixosModules.kexecTree
+            ./system/kexec-tree.nix
+            # inputs.homestakeros-base.nixosModules.kexecTree
           ];
 
           gearbox.modules = [
             ./nixosConfigurations/gearbox
             ./home-manager/users/core
-            inputs.nixie.nixosModules.squashfs
+            ./system/kexec-tree.nix
+            # inputs.homestakeros-base.nixosModules.kexecTree
             inputs.nixos-hardware.nixosModules.common-gpu-intel
           ];
 
@@ -262,14 +263,10 @@
               # "jakobs" = nixosSystem (withDefaults jakobs);
               "maliwan" = nixosSystem (withDefaults maliwan);
               "torgue" = nixosSystem (withDefaults torgue);
-            }
-            // (with inputs.nixpkgs-stable.lib; {
-              "bandit" = nixosSystem (withDefaults bandit);
-            })
-            // (with inputs.nixpkgs-patched.lib; {
-              "gearbox" = nixosSystem (withDefaults gearbox);
               "vladof" = nixosSystem (withDefaults vladof);
-            });
+              "gearbox" = nixosSystem (withDefaults gearbox);
+              "bandit" = nixosSystem (withDefaults bandit);
+            };
 
           # NixOS modules
           nixosModules = {
