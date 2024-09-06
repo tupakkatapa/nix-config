@@ -32,6 +32,7 @@
     pciutils
     tmux
     vim
+    inetutils
   ];
 
   # Set the console keymap and font
