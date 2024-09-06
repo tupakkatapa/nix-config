@@ -77,4 +77,8 @@
     uuid = "{e4a8a97b-f2ed-450b-b12d-ee082ba24781}";
     shortId = "greasemonkey";
   }
+  {
+    uuid = "wayback_machine@mozilla.org";
+    shortId = "wayback-machine_new";
+  }
 ]

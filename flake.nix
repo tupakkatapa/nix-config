@@ -50,6 +50,7 @@
     musnix.inputs.nixpkgs.follows = "nixpkgs";
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
     coditon-md.url = "github:tupakkatapa/coditon-md";
+    mozid.url = "github:tupakkatapa/mozid";
   };
 
   outputs = { self, ... }@inputs:
@@ -90,6 +91,8 @@
             inherit (inputs'.nixie.packages) lkddb-filter;
             inherit (inputs'.nixie.packages) pxe-generate;
             inherit (inputs'.agenix.packages) agenix;
+            inherit (inputs'.mozid.packages) mozid;
+
           };
         in
         {
@@ -122,6 +125,7 @@
               pxe-generate
               nix-tree
               agenix
+              mozid
             ];
             env = {
               NIX_CONFIG = ''
