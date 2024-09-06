@@ -1,5 +1,4 @@
-{ pkgs
-, config
+{ config
 , lib
 , ...
 }:
@@ -33,26 +32,6 @@ in
   systemd.tmpfiles.rules = [
     "d /home/${user}/.ssh 755 ${user} ${user} -"
   ];
-
-  # Yubikey
-  environment.systemPackages = with pkgs; [
-    pinentry-curses
-    age-plugin-fido2-hmac
-    yubikey-manager
-  ];
-  services.yubikey-agent.enable = true;
-  programs.yubikey-touch-detector.enable = true;
-
-  # U2F
-  security.pam = {
-    u2f.settings.authFile = "/home/${user}/.ssh/u2f_keys";
-    services = {
-      greetd.u2fAuth = true;
-      sudo.u2fAuth = true;
-      swaylock.u2fAuth = true;
-      login.u2fAuth = true;
-    };
-  };
 
   # Mount SFTP and bind home directories
   services.sftpClient = lib.mkIf (config.networking.hostName != "vladof") {

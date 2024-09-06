@@ -9,6 +9,7 @@
     ../.config/tuigreet-hypr.nix
     ../.config/retroarch.nix
     ../.config/virtualisation.nix
+    ../.config/yubikey.nix
     ./hardware-configuration.nix
   ];
 
