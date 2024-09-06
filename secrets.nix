@@ -5,7 +5,6 @@ let
 
   # Systems
   torgue = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFEKXIIumm+MG2D+dchumh56QfSozqpBOdlO5TxecZNe root@torgue";
-  torguePath = "nixosConfigurations/torgue/secrets";
   vladof = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEJktZ00i+OxH4Azi1tLkwoYrJ0qo2RIZ5huzzK+g2w root@vladof";
   vladofPath = "nixosConfigurations/vladof/secrets";
   allSystems = [ torgue vladof ];
