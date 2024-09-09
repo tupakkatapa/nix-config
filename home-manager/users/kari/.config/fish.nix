@@ -82,6 +82,11 @@ in
         set fish_cursor_insert      line       blink
         set fish_cursor_replace_one underscore blink
         set fish_cursor_visual      block
+
+        # Function to handle missing commands with comma
+        function fish_command_not_found --on-event fish_command_not_found
+          , $argv[1..-1]
+        end
       '';
     loginShellInit = ''
       if test (tty) = "/dev/tty1"

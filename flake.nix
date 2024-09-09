@@ -45,6 +45,10 @@
     nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie\?ref=jesse/bugs";
     homestakeros-base.url = "github:ponkila/HomestakerOS\?dir=nixosModules/base";
 
+    # Index
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
     # Other
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
@@ -126,6 +130,8 @@
               nix-tree
               agenix
               mozid
+              lkddb-filter
+              pinit
             ];
             env = {
               NIX_CONFIG = ''
@@ -188,6 +194,10 @@
               {
                 home-manager.sharedModules = [
                   inputs.nixvim.homeManagerModules.nixvim
+                  inputs.nix-index-database.hmModules.nix-index
+                  {
+                    programs.nix-index.enable = true;
+                    programs.nix-index-database.comma.enable = true;}
                 ];
               }
             ];
