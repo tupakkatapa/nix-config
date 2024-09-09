@@ -1,6 +1,7 @@
 { pkgs
 , config
 , inputs
+, lib
 , ...
 }:
 let
@@ -100,114 +101,25 @@ in
 
     # Default apps
     home.sessionVariables = {
-      THEME = "gruvbox-dark-medium";
+      BROWSER = lib.mkDefault "none";
+      FILEMANAGER = lib.mkDefault "none";
+      FONT = lib.mkDefault "none";
+      TERMINAL = lib.mkDefault "none";
+      THEME = lib.mkDefault "gruvbox-dark-medium";
     };
 
     home.packages = with pkgs; [
       tupakkatapa-utils
-      lkddb-filter
       ping-sweep
-      pinit
 
       ffmpeg
-      kexec-tools
       lshw
-      refind
-      vim
-      didyoumean
-      translate-shell
-      iputils
-      dhcpdump
-      webcat
-      unrar
-      gnupg
-      ssh-to-age
-      parallel
       yt-dlp
       kalker
-
-      # replacements
-      bat
       eza
-      fd
-      ripgrep
-
-      # https://github.com/coreboot/coreboot/blob/main/util/liveiso/nixos/common.nix
-      acpica-tools
-      btrfs-progs
-      bzip2
-      ccrypt
-      # chipsec
-      coreboot-utils
-      cryptsetup
-      curl
-      ddrescue
-      devmem2
-      dmidecode
-      dosfstools
-      e2fsprogs
-      efibootmgr
-      efivar
-      exfat
-      f2fs-tools
-      fuse
-      fuse3
-      fwts
-      gptfdisk
-      # gitAndTools.gitFull
-      # gitAndTools.tig
-      gzip
-      hdparm
-      hexdump
-      htop
-      i2c-tools
-      # intel-gpu-tools
-      inxi
-      # iotools
-      jfsutils
-      jq
-      lm_sensors
-      mdadm
-      minicom
-      mkpasswd
-      ms-sys
-      msr-tools
-      mtdutils
-      # neovim
-      nixos-install-tools
-      ntfsprogs
-      nvme-cli
-      openssl
-      p7zip
-      pacman
-      parted
-      pcimem
-      pciutils
-      phoronix-test-suite
-      powertop
-      psmisc
-      python3Full
-      rsync
-      screen
-      sdparm
-      smartmontools
-      socat
-      sshfs-fuse
-      testdisk
-      tmate
-      tmux
-      uefitool
-      # uefitoolPackages.old-engine
-      unzip
-      upterm
-      usbutils
-      wget
-      zfs
-      zip
-      zstd
     ];
 
     programs.home-manager.enable = true;
-    home.stateVersion = "23.11";
+    home.stateVersion = "24.05";
   };
 }

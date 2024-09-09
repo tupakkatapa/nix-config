@@ -1,14 +1,12 @@
-{ pkgs
-, config
-, ...
+{ ...
 }: {
   imports = [
     ../.config/openrgb.nix
     ../.config/gaming-amd.nix
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
-    ../.config/retroarch.nix
-    ../.config/virtualisation.nix
+    # ../.config/retroarch.nix
+    # ../.config/virtualisation.nix
     ../.config/yubikey.nix
     ./hardware-configuration.nix
   ];
@@ -46,16 +44,13 @@
   programs.dconf.enable = true;
 
   # Basic font packages
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
-    fira-code
-    fira-code-symbols
-  ];
-
-  # Enable GVfs service for file managers to work properly
-  services.gvfs.enable = true;
+  # fonts.packages = with pkgs; [
+  #   noto-fonts
+  #   noto-fonts-cjk
+  #   noto-fonts-emoji
+  #   fira-code
+  #   fira-code-symbols
+  # ];
 
   # Enable ADB for android development
   programs.adb.enable = true;
@@ -81,12 +76,11 @@
   hardware.logitech.wireless.enableGraphical = true;
 
   # Logitech steering wheel
-  hardware.new-lg4ff.enable = true;
+  # hardware.new-lg4ff.enable = true;
 
   # Host-spesific system packages
-  environment.systemPackages = with pkgs; [
-    # Hardware
-    oversteer
-    solaar
-  ];
+  # environment.systemPackages = with pkgs; [
+  #   oversteer
+  #   solaar
+  # ];
 }

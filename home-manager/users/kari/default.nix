@@ -24,47 +24,12 @@ in
     };
     xdg.configFile."mimeapps.list".force = true;
 
-    # Screenshare
-    programs.obs-studio = {
-      enable = true;
-      plugins = with pkgs.obs-studio-plugins; [
-        wlrobs
-        # obs-backgroundremoval
-        # obs-pipewire-audio-capture
-      ];
-    };
-
-    # Qjackctl presets
-    home.file = {
-      ".config/jack/focusrite_guitarix_v2.xml".source = ./.config/focusrite_guitarix_v2.xml;
-      ".config/jack/focusrite_guitarix_ardour_v2.xml".source = ./.config/focusrite_guitarix_ardour_v2.xml;
-    };
-
     home.packages = with pkgs; [
       monitor-adjust
 
       # GUI
-      # czkawka
       libreoffice-qt
-      # obsidian
-      qemu
-      rpi-imager
       chromium
-      palemoon-bin
-      filezilla
-      arduino-ide
-      discord
-
-      # Fun
-      # cbonsai
-      # cmatrix
-      # cool-retro-term
-      # nudoku
-      # rig
-      # sl
-      # termusic
-      # ttyper
-      # tui-journal
 
       # Media creation and editing
       aseprite
@@ -84,24 +49,7 @@ in
       # osu-lazer
       # runelite
 
-      # CLI
-      android-tools
-      grub2
-      ventoy
-      # chatgpt-cli
-
-      # Lang
-      rustc
-      cargo
-      rustfmt
-      gcc
-      jdk22
-
-      # System Utilities
-      nix-tree
-
       # Networking
-      nmap
       wireguard-go
       wireguard-tools
     ];

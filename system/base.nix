@@ -28,11 +28,11 @@
     btrfs-progs
     file
     fuse-overlayfs
-    nix
+    kexec-tools
     pciutils
     tmux
     vim
-    inetutils
+    wget
   ];
 
   # Set the console keymap and font

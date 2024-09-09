@@ -25,7 +25,6 @@ in
       rbt = "reboot";
       sdn = "shutdown -h now";
       sus = "systemctl suspend";
-      win = "sudo grub-reboot 2 && reboot";
 
       # Changing 'ls' to 'eza'
       ls = mkIf hasEza "eza -agl --color=always --group-directories-first";

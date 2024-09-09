@@ -437,7 +437,7 @@
       }
       {
         name = "ChatGPT";
-        url = "https://chat.openai.com/?model=gpt-4";
+        url = "https://chat.openai.com/?model=gpt-4o";
       }
       {
         name = "Hacker News";

@@ -13,21 +13,8 @@ in
     /etc/ssh/ssh_host_ed25519_key
     /etc/ssh/ssh_host_ed25519_key.pub
     ~/.ssh/id_ed25519
-    ~/.ssh/u2f_keys
+    ~/.config/Yubico/u2f_keys
   */
-
-  # Enable NIC driver for stage-1
-  boot.kernelPatches = [
-    {
-      name = "kernel nic config (torgue)";
-      patch = null;
-      extraConfig = ''
-        IGB y
-        ETHERNET y
-        NET_VENDOR_INTEL y
-      '';
-    }
-  ];
 
   # Extra SSH/SFTP settings
   services.openssh.hostKeys = [

@@ -22,7 +22,7 @@
     base0F = "d65d0e"; # Brown
   };
 
-  # washed-out dracula
+  # washed-out-dracula
   washed-out-dracula = {
     base00 = "282936"; # Background 1
     base01 = "6f7aa3"; # Background 2

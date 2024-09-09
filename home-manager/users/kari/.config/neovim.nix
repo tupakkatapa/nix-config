@@ -152,31 +152,37 @@ in
       # Status line
       lualine = {
         enable = true;
-        theme = "gruvbox-material";
-        iconsEnabled = false;
-        disabledFiletypes.statusline = [ "neo-tree" ];
-        sections = {
-          lualine_a = [ "" ];
-          lualine_b = [ "" ];
-          lualine_c = [
-            "location"
-            {
-              name = "filename";
-              extraConfig.path = 1;
-            }
-            "filetype"
-          ];
-          lualine_x = [ "diagonostics" ];
-          lualine_y = [ "branch" ];
-          lualine_z = [ "mode" ];
-        };
-        componentSeparators = {
-          left = "";
-          right = "";
-        };
-        sectionSeparators = {
-          left = "";
-          right = "";
+        settings = {
+
+          sections = {
+            lualine_a = [ "" ];
+            lualine_b = [ "" ];
+            # lualine_c = [
+            #  "location"
+            #  {
+            #    name = "filename";
+            #    extraConfig.path = 1;
+            #  }
+            #  "filetype"
+            # ];
+            lualine_x = [ "diagonostics" ];
+            lualine_y = [ "branch" ];
+            lualine_z = [ "mode" ];
+          };
+          options = {
+
+            theme = "gruvbox-material";
+            icons_enabled = false;
+            disabled_filetypes.statusline = [ "neo-tree" ];
+            component_separators = {
+              left = "";
+              right = "";
+            };
+            section_separators = {
+              left = "";
+              right = "";
+            };
+          };
         };
       };
 
