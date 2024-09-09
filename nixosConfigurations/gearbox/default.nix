@@ -2,28 +2,6 @@
   networking.hostName = "gearbox";
   console.keyMap = "fi";
 
-  # Enable NIC driver for stage-1
-  boot.kernelPatches = [
-    {
-      name = "enable e1000 for PC";
-      patch = null;
-      extraConfig = ''
-        ETHERNET y
-        NET_VENDOR_INTEL y
-        E1000 y
-      '';
-    }
-    {
-      name = "enable r8169 for laptop";
-      patch = null;
-      extraConfig = ''
-        ETHERNET y
-        NET_VENDOR_REALTEK y
-        R8169 y
-      '';
-    }
-  ];
-
   boot.kernelParams = [
     # Initiates a an interactive shell at Stage 1
     # "boot.debug1"
@@ -66,9 +44,8 @@
     defaultSession = "xfce";
   };
 
-  # Wine
+  # Packages
   environment.systemPackages = with pkgs; [
-    wineWowPackages.staging
     librewolf
   ];
 }
