@@ -1,7 +1,6 @@
 { ...
 }: {
   imports = [
-    ../.config/openrgb.nix
     ../.config/gaming-amd.nix
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
@@ -70,6 +69,9 @@
   # Optimize kernel for low-latency audio
   powerManagement.cpuFreqGovernor = "performance";
   musnix.enable = true;
+
+  # OpenRGB
+  services.hardware.openrgb.enable = true;
 
   # Logitech unifying receiver
   hardware.logitech.wireless.enable = true;
