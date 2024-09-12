@@ -97,6 +97,10 @@ in
       userEmail = "jesse@ponkila.com";
       userName = "tupakkatapa";
     };
+    programs.gpg = {
+      enable = true;
+      settings.default-key = "Tupakkatapa <jesse@ponkila.com>";
+    };
   };
 
   # Wireguard
