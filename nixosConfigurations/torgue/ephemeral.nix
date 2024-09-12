@@ -1,7 +1,8 @@
 _:
 let
   user = "kari";
-  appData = "/mnt/860/appdata";
+  appData = "/mnt/860/appdata/${user}";
+  secretData = "/mnt/860/secrets/${user}";
 in
 {
   # This file is for when I have the hardware and a stable netboot server to go ephemeral
@@ -16,47 +17,84 @@ in
     ~/.config/Yubico/u2f_keys
   */
 
-  # Extra SSH/SFTP settings
-  services.openssh.hostKeys = [
-    {
-      path = "/mnt/860/secrets/ssh/ssh_host_ed25519_key";
-      type = "ed25519";
-    }
-  ];
+  # Host SSH keys
+  services.openssh.hostKeys = [{
+    path = "/mnt/860/secrets/ssh/ssh_host_ed25519_key";
+    type = "ed25519";
+  }];
 
   # Mount drives
-  fileSystems."/mnt/860" = {
-    device = "/dev/disk/by-uuid/a11f36c2-e601-4e6c-b8c2-136c4b07203e";
-    fsType = "btrfs";
-    # options = ["subvolid=420"];
-    neededForBoot = true;
-  };
-  fileSystems."/mnt/boot" = {
-    device = "/dev/disk/by-uuid/AD1A-1390";
-    fsType = "auto";
-  };
-  fileSystems."/mnt/870" = {
-    device = "/dev/disk/by-uuid/74D4CED9D4CE9CAC";
-    fsType = "ntfs-3g";
-    options = [ "rw" ];
-  };
+  # fileSystems."/mnt/860" = {
+  #   device = "/dev/disk/by-uuid/a11f36c2-e601-4e6c-b8c2-136c4b07203e";
+  #   fsType = "btrfs";
+  #   # options = ["subvolid=420"];
+  #   neededForBoot = true;
+  # };
+  # fileSystems."/mnt/boot" = {
+  #   device = "/dev/disk/by-uuid/AD1A-1390";
+  #   fsType = "auto";
+  # };
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
-    "d /mnt/sftp                   755 root root -"
-    "d /mnt/boot                   755 root root -"
-    "d /mnt/860                    755 root root -"
-    "d /mnt/860/games              755 root root -"
-    "d /mnt/860/secrets            755 root root -"
-    "d /mnt/860/nix-config         755 root root -"
-    "d ${appData}                  777 root root -"
-    "d ${appData}/firefox          755 ${user} ${user} -"
-    "d /mnt/870                    755 root root -"
+    "d ${appData}                755 ${user} ${user} -"
+    "d ${appData}/ferdium        755 ${user} ${user} -"
+    "d ${appData}/firefox        755 ${user} ${user} -"
+    "d ${appData}/guitarix       755 ${user} ${user} -"
+    "d ${appData}/plexamp        755 ${user} ${user} -"
+    "d ${appData}/steam          755 ${user} ${user} -"
+    "d ${appData}/sublime-merge  755 ${user} ${user} -"
+
+    "d ${secretData}             700 ${user} ${user} -"
+    "d ${secretData}/gnupg       700 ${user} ${user} -"
+    "d ${secretData}/yubico      755 ${user} ${user} -"
+
+    "d /mnt/860                  755 root root -"
+    "d /mnt/860/appdata          755 root root -"
+    "d /mnt/860/games            755 root root -"
+    "d /mnt/860/nix-config       755 root root -"
+    "d /mnt/860/secrets          755 root root -"
+
+    "d /mnt/boot                 755 root root -"
+    "d /mnt/sftp                 755 root root -"
   ];
 
-  # Bind firefox directory to preserve cookies and such
-  fileSystems."/home/${user}/.mozilla" = {
-    device = "${appData}/firefox";
-    options = [ "bind" "mode=755" ];
+  # Set local flake path to be able to be referenced
+  environment.variables.FLAKE_DIR = "/mnt/860/nix-config";
+
+  # Bind to persistent drive to preserve
+  fileSystems = {
+    "/home/${user}/.mozilla" = {
+      device = "${appData}/firefox";
+      options = [ "bind" "mode=755" ];
+    };
+    "/home/${user}/.steam" = {
+      device = "${appData}/steam";
+      options = [ "bind" "mode=755" ];
+    };
+    "/home/${user}/.config/Ferdium" = {
+      device = "${appData}/ferdium";
+      options = [ "bind" "mode=755" ];
+    };
+    "/home/${user}/.config/Plexamp" = {
+      device = "${appData}/plexamp";
+      options = [ "bind" "mode=755" ];
+    };
+    "/home/${user}/.config/guitarix" = {
+      device = "${appData}/guitarix";
+      options = [ "bind" "mode=755" ];
+    };
+    "/home/${user}/.config/sublime-merge" = {
+      device = "${appData}/sublime-merge";
+      options = [ "bind" "mode=700" ];
+    };
+    "/home/${user}/.config/Yubico" = {
+      device = "${secretData}/yubico";
+      options = [ "bind" "mode=755" ];
+    };
+    "/home/${user}/.gnupg" = {
+      device = "${secretData}/gnupg";
+      options = [ "bind" "mode=700" ];
+    };
   };
 }

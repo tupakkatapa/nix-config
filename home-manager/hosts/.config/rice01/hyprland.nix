@@ -26,7 +26,7 @@ let
   pamixer = "${pkgs.pamixer}/bin/pamixer";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   swaybg = "${pkgs.swaybg}/bin/swaybg";
-  activate-linux = "${pkgs.activate-linux}/bin/activate-linux -v '100' -s '1.05' -t 'Activate NixOS' -m 'Go to nix-config to activate NixOS'";
+  activate-linux = "${pkgs.activate-linux}/bin/activate-linux -V '100' -s '1.05' -t 'Activate NixOS' -m 'Go to nix-config to activate NixOS'";
 in
 {
   home.sessionVariables = {

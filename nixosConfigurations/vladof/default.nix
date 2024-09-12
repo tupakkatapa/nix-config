@@ -21,7 +21,7 @@ in
     # ../.config/motd.nix
   ];
 
-  # Public key
+  # Host SSH keys
   services.openssh.hostKeys = [{
     path = "/mnt/wd-red/secrets/ssh/ssh_host_ed25519_key";
     type = "ed25519";

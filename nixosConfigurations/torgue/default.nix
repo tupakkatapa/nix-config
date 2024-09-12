@@ -7,6 +7,7 @@
     # ../.config/retroarch.nix
     # ../.config/virtualisation.nix
     ../.config/yubikey.nix
+    ./ephemeral.nix
     ./hardware-configuration.nix
   ];
 
