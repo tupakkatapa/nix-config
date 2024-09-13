@@ -155,10 +155,10 @@ in
         "wl-clipboard-history -t"
         "${activate-linux} -s 0.9"
 
-        # "[workspace 4 silent] discord"
-        "[workspace 4 silent] ferdium"
+        "[workspace 4 silent] firefox https://web.whatsapp.com https://app.element.io/ https://web.telegram.org/ https://www.instagram.com/ https://discord.com/channels/@me"
         "[workspace 5 silent] plexamp"
         "solaar -w=hide"
+
       ];
 
       # Key bindings

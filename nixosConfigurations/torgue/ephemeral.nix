@@ -38,7 +38,6 @@ in
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
     "d ${appData}                755 ${user} ${user} -"
-    "d ${appData}/ferdium        755 ${user} ${user} -"
     "d ${appData}/firefox        755 ${user} ${user} -"
     "d ${appData}/guitarix       755 ${user} ${user} -"
     "d ${appData}/plexamp        755 ${user} ${user} -"
@@ -70,10 +69,6 @@ in
     };
     "/home/${user}/.steam" = {
       device = "${appData}/steam";
-      options = [ "bind" "mode=755" ];
-    };
-    "/home/${user}/.config/Ferdium" = {
-      device = "${appData}/ferdium";
       options = [ "bind" "mode=755" ];
     };
     "/home/${user}/.config/Plexamp" = {
