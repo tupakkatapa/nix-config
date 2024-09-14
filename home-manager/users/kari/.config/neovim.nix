@@ -39,12 +39,6 @@ in
 
     # NOTE: Default mode is normal-visual-op
     keymaps = [
-      # Map :W to :w
-      {
-        mode = "c";
-        key = ":W";
-        action = "<cmd>w<cr>";
-      }
       # Do not yank when pasting or deleting
       {
         key = "p";
@@ -53,11 +47,6 @@ in
       {
         key = "x";
         action = ''"_x'';
-      }
-      # Ctrl+s
-      {
-        key = "<C-s>";
-        action = "<cmd>w<cr><esc>";
       }
       # Git status
       {
@@ -86,6 +75,19 @@ in
         key = "<leader>l";
         action = "<C-w>l";
       }
+      # BufferLine navigation
+      {
+        key = "J";
+        action = ":BufferLineCycleNext<CR>";
+      }
+      {
+        key = "K";
+        action = ":BufferLineCyclePrev<CR>";
+      }
+      {
+        key = "Q";
+        action = ":Bdelete<CR>";
+      }
     ];
 
     plugins = {
@@ -95,7 +97,8 @@ in
       comment.enable = true;
       rainbow-delimiters.enable = true;
       fugitive.enable = true;
-      # hardtime.enable = true;
+      hardtime.enable = true;
+      bufdelete.enable = true;
 
       # Tabline plugin
       bufferline = {
@@ -136,14 +139,8 @@ in
         filesystem = {
           useLibuvFileWatcher = true;
           filteredItems = {
-            visible = false;
-            alwaysShow = [
-              ".gitignore"
-              ".envrc"
-              ".config"
-              ".wine"
-              ".sops.yaml"
-            ];
+            visible = true;
+            hideGitignored = true;
           };
           followCurrentFile.enabled = true;
         };
