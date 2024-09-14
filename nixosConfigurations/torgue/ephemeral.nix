@@ -51,7 +51,7 @@ in
     "d /mnt/860                  755 root root -"
     "d /mnt/860/appdata          755 root root -"
     "d /mnt/860/games            755 root root -"
-    "d /mnt/860/nix-config       755 root root -"
+    "d /mnt/860/nix-config       777 root root -"
     "d /mnt/860/secrets          755 root root -"
 
     "d /mnt/boot                 755 root root -"

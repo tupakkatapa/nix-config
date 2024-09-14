@@ -33,6 +33,8 @@
     tmux
     vim
     wget
+    lm_sensors
+    lshw
   ];
 
   # Set the console keymap and font

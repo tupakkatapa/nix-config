@@ -38,12 +38,13 @@ in
       video-trimmer
 
       # Music production
-      qjackctl
       ardour
       audacity
       guitarix
       gxplugins-lv2
       ladspaPlugins
+      qjackctl
+      tuxguitar
 
       # High Quality Games
       # osu-lazer

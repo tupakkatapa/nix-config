@@ -1,7 +1,7 @@
 { pkgs
+, lib
 , config
 , inputs
-, lib
 , ...
 }:
 let
@@ -101,10 +101,10 @@ in
 
     # Default apps
     home.sessionVariables = {
-      BROWSER = lib.mkDefault "none";
-      FILEMANAGER = lib.mkDefault "none";
-      FONT = lib.mkDefault "none";
-      TERMINAL = lib.mkDefault "none";
+      #   BROWSER = lib.mkDefault "none";
+      #   FILEMANAGER = lib.mkDefault "none";
+      #   FONT = lib.mkDefault "none";
+      #   TERMINAL = lib.mkDefault "none";
       THEME = lib.mkDefault "gruvbox-dark-medium";
     };
 
@@ -113,7 +113,6 @@ in
       ping-sweep
 
       ffmpeg
-      lshw
       yt-dlp
       kalker
       eza
