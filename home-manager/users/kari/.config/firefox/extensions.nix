@@ -81,4 +81,8 @@
     uuid = "wayback_machine@mozilla.org";
     shortId = "wayback-machine_new";
   }
+  {
+    uuid = "webextension@metamask.io";
+    shortId = "ether-metamask";
+  }
 ]
