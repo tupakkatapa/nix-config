@@ -6,31 +6,40 @@
 , ...
 }:
 let
+  # Private services access whitelist
+  authorizedIPs = [ "192.168.1.8" "192.168.1.127" "172.16.16.2" ];
+
   # Quick service config
   servicesConfig = {
     transmission = {
       addr = "torrent.${domain}";
       port = 9091;
+      private = true;
     };
     vaultwarden = {
       addr = "vault.${domain}";
       port = 8222;
+      private = true;
     };
     lanraragi = {
       addr = "lanraragi.${domain}";
       port = 3000;
+      private = true;
     };
     plex = {
       addr = "plex.${domain}";
       port = 32400;
+      private = false;
     };
     coditon-md = {
       addr = "blog.${domain}";
       port = 54783;
+      private = false;
     };
     service-index = {
       addr = "index.${domain}";
       port = 53654;
+      private = true;
     };
   };
 
@@ -49,9 +58,18 @@ let
         name = service.addr;
         value = {
           useACMEHost = service.addr;
-          extraConfig = ''
-            reverse_proxy http://127.0.0.1:${toString service.port}
-          '';
+          extraConfig =
+            if service.private then ''
+              @authorized {
+                remote_ip ${lib.concatStringsSep " " authorizedIPs}
+              }
+              handle @authorized {
+                reverse_proxy http://127.0.0.1:${toString service.port}
+              }
+              respond "<h1> Permission denied! </h1>" 403
+            '' else ''
+              reverse_proxy http://127.0.0.1:${toString service.port}
+            '';
         };
       })
       (lib.filterAttrs (name: _: name != "service-index") servicesConfig);

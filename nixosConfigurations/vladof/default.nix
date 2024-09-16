@@ -52,7 +52,7 @@ in
     program = lib.concatStringsSep " \\\n\t" [
       "${config.home-manager.users."${user}".programs.firefox.package}/bin/firefox"
       "https://www.youtube.com"
-      "http://0.0.0.0:32400" # plex
+      "http://127.0.0.1:32400" # plex
     ];
     environment = {
       XKB_DEFAULT_LAYOUT = "fi";
