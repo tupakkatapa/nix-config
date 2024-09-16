@@ -18,7 +18,7 @@ in
 {
   imports = [
     (import ./services extendedArgs)
-    # ../.config/motd.nix
+    ../.config/motd.nix
   ];
 
   # Host SSH keys
