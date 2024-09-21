@@ -4,7 +4,7 @@
     ../.config/gaming-amd.nix
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
-    # ../.config/retroarch.nix
+    ../.config/retroarch.nix
     # ../.config/virtualisation.nix
     ../.config/yubikey.nix
     ./ephemeral.nix
