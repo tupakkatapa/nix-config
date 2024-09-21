@@ -61,10 +61,25 @@
 
   # Connectivity
   networking = {
-    networkmanager.enable = true;
     hostName = "torgue";
     firewall.enable = false;
+    useDHCP = false;
   };
+  systemd.network = {
+    enable = true;
+    networks = {
+      "10-wan" = {
+        linkConfig.RequiredForOnline = "routable";
+        matchConfig.Name = "enp3s0";
+        networkConfig = {
+          DHCP = "no";
+          IPv6AcceptRA = true;
+        };
+        address = [ "192.168.1.7/24" ]; # static IP
+      };
+    };
+  };
+
   hardware.bluetooth.enable = true;
 
   # Optimize kernel for low-latency audio
