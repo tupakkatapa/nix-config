@@ -1,63 +1,35 @@
-{ ...
+{ lib
+, config
+, ...
 }: {
   imports = [
-    # ../.config/gaming-amd.nix
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
-    # ../.config/retroarch.nix
-    # ../.config/virtualisation.nix
     ../.config/yubikey.nix
     ./ephemeral.nix
-    # ./hardware-configuration.nix
   ];
 
   # Nixos-hardware
   hardware.amdgpu = {
     amdvlk.enable = true;
     initrd.enable = true;
-    # opencl.enable = true;
   };
 
-  # # For screensharing via OBS
-  # xdg.portal = {
-  #   enable = true;
-  #   wlr.enable = true;
-  #   config.common.default = "hyprland";
-  # };
-  #
-  # # Mirror android phone automatically
-  # services.autoScrcpy = {
-  #   enable = true;
-  #   user = {
-  #     name = "kari";
-  #     id = 1000;
-  #   };
-  #   waylandDisplay = "wayland-1";
-  # };
+  # Kernel modules
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+  boot.kernelModules = [ "kvm-amd" ];
 
-  # Simple bootloader
-  # boot.loader.systemd-boot.enable = true;
-  # boot.loader.efi.canTouchEfiVariables = true;
+  # Enable blobs
+  hardware.enableRedistributableFirmware = true;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # Support for cross compilation
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
   ];
 
-  # https://github.com/NixOS/nixpkgs/issues/143365
-  # security.pam.services.swaylock = { };
-
   # https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;
-
-  # Basic font packages
-  # fonts.packages = with pkgs; [
-  #   noto-fonts
-  #   noto-fonts-cjk
-  #   noto-fonts-emoji
-  #   fira-code
-  #   fira-code-symbols
-  # ];
 
   # Enable ADB for android development
   programs.adb.enable = true;
@@ -98,14 +70,4 @@
 
   # Logitech unifying receiver
   hardware.logitech.wireless.enable = true;
-  # hardware.logitech.wireless.enableGraphical = true;
-
-  # Logitech steering wheel
-  # hardware.new-lg4ff.enable = true;
-
-  # Host-spesific system packages
-  # environment.systemPackages = with pkgs; [
-  #   oversteer
-  #   solaar
-  # ];
 }
