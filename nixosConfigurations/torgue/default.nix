@@ -11,22 +11,29 @@
     # ./hardware-configuration.nix
   ];
 
-  # For screensharing via OBS
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    config.common.default = "hyprland";
+  # Nixos-hardware
+  hardware.amdgpu = {
+    amdvlk.enable = true;
+    initrd.enable = true;
+    # opencl.enable = true;
   };
 
-  # Mirror android phone automatically
-  services.autoScrcpy = {
-    enable = true;
-    user = {
-      name = "kari";
-      id = 1000;
-    };
-    waylandDisplay = "wayland-1";
-  };
+  # # For screensharing via OBS
+  # xdg.portal = {
+  #   enable = true;
+  #   wlr.enable = true;
+  #   config.common.default = "hyprland";
+  # };
+  #
+  # # Mirror android phone automatically
+  # services.autoScrcpy = {
+  #   enable = true;
+  #   user = {
+  #     name = "kari";
+  #     id = 1000;
+  #   };
+  #   waylandDisplay = "wayland-1";
+  # };
 
   # Simple bootloader
   # boot.loader.systemd-boot.enable = true;
@@ -38,7 +45,7 @@
   ];
 
   # https://github.com/NixOS/nixpkgs/issues/143365
-  security.pam.services.swaylock = { };
+  # security.pam.services.swaylock = { };
 
   # https://github.com/nix-community/home-manager/issues/3113
   # programs.dconf.enable = true;
@@ -91,7 +98,7 @@
 
   # Logitech unifying receiver
   hardware.logitech.wireless.enable = true;
-  hardware.logitech.wireless.enableGraphical = true;
+  # hardware.logitech.wireless.enableGraphical = true;
 
   # Logitech steering wheel
   # hardware.new-lg4ff.enable = true;

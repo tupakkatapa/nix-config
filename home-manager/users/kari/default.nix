@@ -39,8 +39,8 @@ in
 
       # Music production
       # ardour
-      # audacity
-      # guitarix
+      audacity
+      guitarix
       # gxplugins-lv2
       # ladspaPlugins
       # qjackctl

@@ -18,7 +18,6 @@ let
 
   dm = {
     pipewire-out-switcher = "${pkgs.dm-pipewire-out-switcher}/bin/dm-pipewire-out-switcher";
-    quickfile = "${pkgs.dm-quickfile}/bin/dm-quickfile";
     radio = "${pkgs.dm-radio}/bin/dm-radio-wrapper";
   };
 
@@ -26,7 +25,6 @@ let
   pamixer = "${pkgs.pamixer}/bin/pamixer";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   swaybg = "${pkgs.swaybg}/bin/swaybg";
-  activate-linux = "${pkgs.activate-linux}/bin/activate-linux -V '100' -s '1.05' -t 'Activate NixOS' -m 'Go to nix-config to activate NixOS'";
 in
 {
   home.sessionVariables = {
@@ -57,10 +55,6 @@ in
         submap = scripts
         bind = , c, exec, ${hyprpicker} -a -n
         bind = , c, submap, reset
-        bind = , e, exec, ${pkgs.wofi-emoji}/bin/wofi-emoji
-        bind = , e, submap, reset
-        bind = , f, exec, ${dm.quickfile} "/mnt/sftp/docs/tabs" "$HOME/Documents" "$HOME/nix-config"
-        bind = , f, submap, reset
         bind = , p, exec, ${dm.pipewire-out-switcher}
         bind = , p, submap, reset
         bind = , r, exec, ${dm.radio}
@@ -153,12 +147,10 @@ in
         "dunst"
         "swayidle -w"
         "wl-clipboard-history -t"
-        "${activate-linux} -s 0.9"
 
         "[workspace 4 silent] firefox https://web.whatsapp.com https://app.element.io/ https://web.telegram.org/ https://www.instagram.com/ https://discord.com/channels/@me"
-        "[workspace 5 silent] plexamp"
-        "solaar -w=hide"
-
+        "[workspace 5 silent] firefox https://plex.coditon.com"
+        # "solaar -w=hide"
       ];
 
       # Key bindings

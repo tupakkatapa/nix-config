@@ -112,15 +112,7 @@ in
     home.packages = with pkgs; [
       tupakkatapa-utils
       ping-sweep
-
-      ffmpeg
-      yt-dlp
       eza
-
-      # Rust  
-      cargo
-      evcxr
-      rustc
     ];
 
     programs.home-manager.enable = true;

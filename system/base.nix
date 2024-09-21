@@ -24,17 +24,9 @@
   };
 
   environment.systemPackages = with pkgs; [
-    bind
     btrfs-progs
-    file
-    fuse-overlayfs
     kexec-tools
-    pciutils
-    tmux
     vim
-    wget
-    lm_sensors
-    lshw
   ];
 
   # Set the console keymap and font
