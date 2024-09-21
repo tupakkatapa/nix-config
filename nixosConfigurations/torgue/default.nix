@@ -1,7 +1,7 @@
 { ...
 }: {
   imports = [
-    ../.config/gaming-amd.nix
+    # ../.config/gaming-amd.nix
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
     # ../.config/retroarch.nix
