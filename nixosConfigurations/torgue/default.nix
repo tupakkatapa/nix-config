@@ -8,7 +8,7 @@
     # ../.config/virtualisation.nix
     ../.config/yubikey.nix
     ./ephemeral.nix
-    ./hardware-configuration.nix
+    # ./hardware-configuration.nix
   ];
 
   # For screensharing via OBS
@@ -29,8 +29,8 @@
   };
 
   # Simple bootloader
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.systemd-boot.enable = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
 
   # Support for cross compilation
   boot.binfmt.emulatedSystems = [

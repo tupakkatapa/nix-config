@@ -24,16 +24,16 @@ in
   }];
 
   # Mount drives
-  # fileSystems."/mnt/860" = {
-  #   device = "/dev/disk/by-uuid/a11f36c2-e601-4e6c-b8c2-136c4b07203e";
-  #   fsType = "btrfs";
-  #   # options = ["subvolid=420"];
-  #   neededForBoot = true;
-  # };
-  # fileSystems."/mnt/boot" = {
-  #   device = "/dev/disk/by-uuid/AD1A-1390";
-  #   fsType = "auto";
-  # };
+  fileSystems."/mnt/860" = {
+    device = "/dev/disk/by-uuid/20cfc618-e1e9-476e-984e-55326b3b5ca7";
+    fsType = "ext4";
+    # options = ["subvolid=420"];
+    neededForBoot = true;
+  };
+  fileSystems."/mnt/boot" = {
+    device = "/dev/disk/by-uuid/CA7C-5C77";
+    fsType = "auto";
+  };
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [

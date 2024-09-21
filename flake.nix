@@ -160,6 +160,7 @@
               "eridian" = eridian.config.system.build.kexecTree;
               # "jakobs" = jakobs.config.system.build.kexecTree;
               "vladof" = vladof.config.system.build.kexecTree;
+              "torgue" = torgue.config.system.build.kexecTree;
             })
             // packages;
         };
@@ -209,6 +210,7 @@
             modules = [
               ./home-manager/users/kari
               ./nixosConfigurations/torgue
+              ./system/kexec-tree.nix
               inputs.aagl.nixosModules.default
               inputs.musnix.nixosModules.musnix
               inputs.nixos-hardware.nixosModules.common-gpu-amd
