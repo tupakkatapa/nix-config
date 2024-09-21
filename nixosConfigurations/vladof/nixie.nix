@@ -6,6 +6,14 @@ _: {
 
   nixie = {
     enable = true;
+
+    rwStoreMount = {
+      enable = true;
+      what = "/mnt/wd-red/store";
+      type = "none";
+      options = [ "bind" ];
+    };
+
     file-server = {
       # For unreferenced menus
       defaultAddress = "192.168.1.8";

@@ -141,6 +141,7 @@ in
     "d /mnt/boot          755 root root -"
     "d /mnt/wd-red        755 root root -"
     "d /mnt/wd-red/sftp   755 root root -"
+    "d /mnt/wd-red/store  755 root root -"
     "d ${appData}         777 root root -"
     "d ${appData}/firefox 755 ${user} ${user} -"
   ];
