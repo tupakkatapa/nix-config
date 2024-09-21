@@ -14,6 +14,9 @@
         wineWowPackages.waylandFull
       ];
     })
+    # Wine
+    winetricks
+    wineWowPackages.waylandFull
   ];
 
   # Steam and gaming settings
