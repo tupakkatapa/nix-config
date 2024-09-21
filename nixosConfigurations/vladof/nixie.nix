@@ -52,12 +52,12 @@ _: {
           name = "upstream";
           serve = true;
           address = "192.168.1.8";
-          interfaces = [ "enp3s0" ];
+          interfaces = [ "enp0s31f6" ];
           defaultMenu = "minimal";
           clients = [
             {
               menu = "torgue";
-              mac = "00:0e:9a:01:52:20";
+              mac = "d4:5d:64:d1:12:52";
               address = "192.168.1.7";
             }
             {
@@ -72,7 +72,7 @@ _: {
             #   address = "192.168.1.130";
             # }
           ];
-          poolStart = "192.168.1.9";
+          poolStart = "192.168.1.2";
           poolEnd = "192.168.1.29";
         }
       ];
