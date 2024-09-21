@@ -27,7 +27,7 @@ _: {
         }
         {
           name = "torgue";
-          flakeUrl = "github:tupakkatapa/nix-config";
+          flakeUrl = "github:tupakkatapa/nix-config\?ref=ephemeral-torgue";
           hosts = [ "torgue" "bandit" ];
           default = "torgue";
           timeout = 1;
