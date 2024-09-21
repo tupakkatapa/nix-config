@@ -51,7 +51,9 @@ in
     ];
     shell = pkgs.fish;
   };
-  users.groups.${user}.gid = 1000;
+  users.groups.${user} = {
+    gid = 1000;
+  };
   environment.shells = [ pkgs.fish ];
   programs.fish.enable = true;
 
