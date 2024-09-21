@@ -114,8 +114,12 @@ in
 
       ffmpeg
       yt-dlp
-      kalker
       eza
+
+      # Rust  
+      cargo
+      evcxr
+      rustc
     ];
 
     programs.home-manager.enable = true;
