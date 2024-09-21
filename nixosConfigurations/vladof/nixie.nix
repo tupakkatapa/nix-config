@@ -31,7 +31,6 @@ _: {
           hosts = [ "torgue" "bandit" ];
           default = "torgue";
           timeout = 1;
-          buildRequests = true;
         }
         # TODO: These are not yet ephemeral
         # {
