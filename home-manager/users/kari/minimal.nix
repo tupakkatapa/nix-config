@@ -13,7 +13,6 @@ in
 {
   users.users.${user} = {
     isNormalUser = true;
-    uid = 1000;
     group = "${user}";
     extraGroups = optionalGroups [
       "acme"
@@ -51,7 +50,7 @@ in
     ];
     shell = pkgs.fish;
   };
-  users.groups.${user}.gid = 1000;
+  users.groups.${user} = { };
   environment.shells = [ pkgs.fish ];
   programs.fish.enable = true;
 
