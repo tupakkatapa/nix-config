@@ -1,8 +1,9 @@
 _:
 let
   user = "kari";
-  appData = "/mnt/860/appdata/${user}";
-  secretData = "/mnt/860/secrets/${user}";
+  persistentRoot = "/mnt/860/mnt/860";
+  appData = "${persistentRoot}/appdata/${user}";
+  secretData = "${persistentRoot}/secrets/${user}";
 in
 {
   # This file is for when I have the hardware and a stable netboot server to go ephemeral
@@ -19,7 +20,7 @@ in
 
   # Host SSH keys
   services.openssh.hostKeys = [{
-    path = "/mnt/860/secrets/ssh/ssh_host_ed25519_key";
+    path = "${persistentRoot}/secrets/ssh/ssh_host_ed25519_key";
     type = "ed25519";
   }];
 
@@ -48,18 +49,18 @@ in
     "d ${secretData}/gnupg       700 ${user} ${user} -"
     "d ${secretData}/yubico      755 ${user} ${user} -"
 
-    "d /mnt/860                  755 root root -"
-    "d /mnt/860/appdata          755 root root -"
-    "d /mnt/860/games            755 root root -"
-    "d /mnt/860/nix-config       777 root root -"
-    "d /mnt/860/secrets          755 root root -"
+    "d /mnt/860                      755 root root -"
+    "d ${persistentRoot}/appdata     755 root root -"
+    "d ${persistentRoot}/games       755 root root -"
+    "d ${persistentRoot}/nix-config  777 root root -"
+    "d ${persistentRoot}/secrets     755 root root -"
 
     "d /mnt/boot                 755 root root -"
     "d /mnt/sftp                 755 root root -"
   ];
 
   # Set local flake path to be able to be referenced
-  environment.variables.FLAKE_DIR = "/mnt/860/nix-config";
+  environment.variables.FLAKE_DIR = "${persistentRoot}/nix-config";
 
   # Bind to persistent drive to preserve
   fileSystems = {
