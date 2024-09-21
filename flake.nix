@@ -226,6 +226,7 @@
               inputs.coditon-md.nixosModules.default
               # inputs.homestakeros-base.nixosModules.kexecTree
               inputs.nixos-hardware.nixosModules.common-gpu-intel
+              inputs.nixie.nixosModules.nixie
             ];
           };
 
