@@ -48,7 +48,7 @@
   # security.pam.services.swaylock = { };
 
   # https://github.com/nix-community/home-manager/issues/3113
-  # programs.dconf.enable = true;
+  programs.dconf.enable = true;
 
   # Basic font packages
   # fonts.packages = with pkgs; [
