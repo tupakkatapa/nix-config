@@ -8,6 +8,12 @@ Skills from my point of view (rated on a scale from 1 to 5): Bash (4), Ethereum 
 
 ## Work Experience
 
+- **Maanrakennus Lopakka Oy**
+
+  Groundworker, July 2024 - October 2024
+
+  Just to kill some time and grind some money between Nix projects in a familiar workplace. Same tasks as below.
+
 - **Juha Hulkko**
 
   Software Engineer, February 2023 - March 2024
