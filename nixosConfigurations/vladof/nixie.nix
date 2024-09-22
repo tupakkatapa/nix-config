@@ -3,7 +3,7 @@ _: {
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
   ];
-  
+
   # Mount '/nix/.rw-store' and '/tmp' to disk
   services.nixRemount = {
     enable = true;

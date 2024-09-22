@@ -209,6 +209,7 @@
               ./nixosConfigurations/torgue
               ./system/kexec-tree.nix
               inputs.musnix.nixosModules.musnix
+              inputs.nixie.nixosModules.nixRemount
               inputs.nixie.nixosModules.nixie
               inputs.nixos-hardware.nixosModules.common-gpu-amd
             ];
@@ -221,8 +222,9 @@
               ./system/kexec-tree.nix
               inputs.coditon-md.nixosModules.default
               # inputs.homestakeros-base.nixosModules.kexecTree
-              inputs.nixos-hardware.nixosModules.common-gpu-intel
+              inputs.nixie.nixosModules.nixRemount
               inputs.nixie.nixosModules.nixie
+              inputs.nixos-hardware.nixosModules.common-gpu-intel
             ];
           };
 
