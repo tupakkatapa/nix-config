@@ -1,14 +1,11 @@
 # My NixOS Configurations
 
-| Hostname | Architecture | Format       | Users | Details
+| Hostname | Architecture | Deploy | Users | Details
 | :-:       |  :-:    | :-:          | :-:   | :-
 [maliwan](nixosConfigurations/maliwan/default.nix) | x86_64  | persistent | [kari](home-manager/users/kari/default.nix)               | Intel Laptop, Hyprland
 [torgue](nixosConfigurations/torgue/default.nix)   | "       | netboot    | "                                                         | AMD Desktop, Hyprland, [screenshot](https://raw.githubusercontent.com/tupakkatapa/nix-config/main/nixosConfigurations/torgue/screenshot.png)
-[vladof](nixosConfigurations/vladof/default.nix)   | "       | "          | [kari (minimal-gui)](home-manager/users/kari/minimal.nix) | Homelab, Firefox kiosk
 [bandit](nixosConfigurations/bandit/default.nix)   | "       | "          | [core](home-manager/users/core/default.nix)               | Minimal for headless
-[gearbox](nixosConfigurations/eridian/default.nix) | "       | "          | "                                                         | Minimal for graphical
-[eridian](nixosConfigurations/eridian/default.nix) | "       | "          | [kari (minimal)](home-manager/users/kari/minimal.nix)     | Netboot Server ([Nixie](https://github.com/majbacka-labs/nixos.fi))
-[jakobs](nixosConfigurations/jakobs/default.nix)   | aarch64 | "          | "                                                         | Rasberry Pi 4 Model B
+[vladof](nixosConfigurations/vladof/default.nix)   | "       | refind     | [kari (minimal-gui)](home-manager/users/kari/minimal-gui.nix) | Homelab, Firefox kiosk + Netboot Server ([Nixie](https://github.com/majbacka-labs/nixos.fi) 
 
 Most of the hosts here are **truly declarative** by being **ephemeral**. Read more about netbooting NixOS at [my blog post](https://blog.coditon.com/content/posts/Netbooting%20NixOS.md) or documentation of [majbacka-labs/nixos.fi](https://github.com/majbacka-labs/nixos.fi).
 

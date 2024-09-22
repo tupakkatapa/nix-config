@@ -156,9 +156,6 @@
           packages =
             (with flake.nixosConfigurations; {
               "bandit" = bandit.config.system.build.kexecTree;
-              "gearbox" = gearbox.config.system.build.kexecTree;
-              "eridian" = eridian.config.system.build.kexecTree;
-              # "jakobs" = jakobs.config.system.build.kexecTree;
               "vladof" = vladof.config.system.build.kexecTree;
               "torgue" = torgue.config.system.build.kexecTree;
             })
@@ -230,16 +227,6 @@
             ];
           };
 
-          eridian = withExtra {
-            modules = [
-              ./home-manager/users/kari/minimal.nix
-              ./nixosConfigurations/eridian
-              ./system/kexec-tree.nix
-              inputs.nixie.nixosModules.nixie
-              # inputs.homestakeros-base.nixosModules.kexecTree
-            ];
-          };
-
           maliwan = withExtra {
             modules = [
               ./home-manager/users/kari/minimal-gui.nix
@@ -254,35 +241,14 @@
             ./system/kexec-tree.nix
             # inputs.homestakeros-base.nixosModules.kexecTree
           ];
-
-          gearbox.modules = [
-            ./nixosConfigurations/gearbox
-            ./home-manager/users/core
-            ./system/kexec-tree.nix
-            # inputs.homestakeros-base.nixosModules.kexecTree
-            inputs.nixos-hardware.nixosModules.common-gpu-intel
-          ];
-
-          # jakobs = withExtra {
-          #   system = "aarch64-linux";
-          #   modules = [
-          #     ./home-manager/users/kari/minimal.nix
-          #     ./nixosConfigurations/jakobs
-          #     inputs.homestakeros-base.nixosModules.kexecTree
-          #     inputs.nixos-hardware.nixosModules.raspberry-pi-4
-          #   ];
-          # };
         in
         {
           # NixOS configuration entrypoints
           nixosConfigurations = with inputs.nixpkgs.lib;
             {
-              "eridian" = nixosSystem (withDefaults eridian);
-              # "jakobs" = nixosSystem (withDefaults jakobs);
               "maliwan" = nixosSystem (withDefaults maliwan);
               "torgue" = nixosSystem (withDefaults torgue);
               "vladof" = nixosSystem (withDefaults vladof);
-              "gearbox" = nixosSystem (withDefaults gearbox);
               "bandit" = nixosSystem (withDefaults bandit);
             };
 
