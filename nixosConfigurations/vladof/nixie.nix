@@ -3,16 +3,17 @@ _: {
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
   ];
+  
+  # Mount '/nix/.rw-store' and '/tmp' to disk
+  services.nixRemount = {
+    enable = true;
+    what = "/mnt/wd-red/store";
+    type = "none";
+    options = [ "bind" ];
+  };
 
   nixie = {
     enable = true;
-
-    rwStoreMount = {
-      enable = true;
-      what = "/mnt/wd-red/store";
-      type = "none";
-      options = [ "bind" ];
-    };
 
     file-server = {
       # For unreferenced menus
