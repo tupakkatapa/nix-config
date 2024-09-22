@@ -1,7 +1,7 @@
 _:
 let
   user = "kari";
-  dataDir = "/mnt/860/mnt/860";
+  dataDir = "/mnt/860";
   appData = "${dataDir}/appdata/${user}";
   secretData = "${dataDir}/secrets/${user}";
 in
@@ -38,11 +38,11 @@ in
     "d ${secretData}/gnupg       700 ${user} ${user} -"
     "d ${secretData}/yubico      755 ${user} ${user} -"
 
-    "d /mnt/860                      755 root root -"
-    "d ${dataDir}/appdata     755 root root -"
-    "d ${dataDir}/games       755 root root -"
-    "d ${dataDir}/nix-config  777 root root -"
-    "d ${dataDir}/secrets     755 root root -"
+    "d /mnt/860                  755 root root -"
+    "d ${dataDir}/appdata        755 root root -"
+    "d ${dataDir}/games          755 root root -"
+    "d ${dataDir}/nix-config     777 root root -"
+    "d ${dataDir}/secrets        755 root root -"
 
     "d /mnt/boot                 755 root root -"
     "d /mnt/sftp                 755 root root -"
@@ -79,6 +79,10 @@ in
     };
     "/home/${user}/.gnupg" = {
       device = "${secretData}/gnupg";
+      options = [ "bind" "mode=700" ];
+    };
+    "/home/${user}/.ssh" = {
+      device = "${secretData}/ssh";
       options = [ "bind" "mode=700" ];
     };
   };

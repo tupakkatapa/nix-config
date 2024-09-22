@@ -40,15 +40,6 @@ _: {
           default = "torgue";
           timeout = 1;
         }
-        # TODO: These are not yet ephemeral
-        # {
-        #   name = "laptop";
-        #   flakeUrl = "github:tupakkatapa/nix-config";
-        #   hosts = ["maliwan" "bandit"];
-        #   default = "maliwan";
-        #   timeout = 1;
-        #   buildRequests = true;
-        # }
       ];
     };
 
@@ -72,15 +63,9 @@ _: {
               mac = "70:85:c2:b5:be:db";
               address = "192.168.1.25";
             }
-            # TODO: These are not yet ephemeral
-            # {
-            #   menu = "laptop";
-            #   mac = "80:ce:62:39:08:30";
-            #   address = "192.168.1.130";
-            # }
           ];
-          poolStart = "192.168.1.2";
-          poolEnd = "192.168.1.29";
+          poolStart = "192.168.1.30";
+          poolEnd = "192.168.1.59";
         }
       ];
     };
