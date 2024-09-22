@@ -101,25 +101,13 @@ in
 
     # Default apps
     home.sessionVariables = {
-      #   BROWSER = lib.mkDefault "none";
-      #   FILEMANAGER = lib.mkDefault "none";
-      #   FONT = lib.mkDefault "none";
-      #   TERMINAL = lib.mkDefault "none";
       THEME = lib.mkDefault "gruvbox-dark-medium";
     };
 
     home.packages = with pkgs; [
       tupakkatapa-utils
       ping-sweep
-
-      ffmpeg
-      yt-dlp
       eza
-
-      # Rust  
-      cargo
-      evcxr
-      rustc
     ];
 
     programs.home-manager.enable = true;

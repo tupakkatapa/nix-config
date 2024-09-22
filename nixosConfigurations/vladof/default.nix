@@ -5,9 +5,6 @@
 }:
 let
   domain = "coditon.com";
-  localAddress = "192.168.1.8";
-  gateway = "192.168.1.1";
-  interface = "enp0s31f6";
 
   appData = "/mnt/wd-red/appdata";
   user = "kari";
@@ -19,6 +16,7 @@ in
   imports = [
     (import ./services extendedArgs)
     ../.config/motd.nix
+    ./nixie.nix
   ];
 
   # Host SSH keys
@@ -77,23 +75,23 @@ in
   networking = {
     hostName = "vladof";
     domain = "${domain}";
-    useNetworkd = true;
-
-    interfaces.${interface}.ipv4.addresses = [
-      {
-        address = localAddress; # static IP
-        prefixLength = 24;
-      }
-    ];
-    defaultGateway = {
-      address = gateway;
-      inherit interface;
-    };
-    nameservers = [ gateway ];
-    firewall.enable = true;
-    stevenblack.enable = true;
+    # useNetworkd = true;
+    #
+    # interfaces.${interface}.ipv4.addresses = [
+    #   {
+    #     address = localAddress; # static IP
+    #     prefixLength = 24;
+    #   }
+    # ];
+    # defaultGateway = {
+    #   address = gateway;
+    #   inherit interface;
+    # };
+    # nameservers = [ gateway ];
+    # firewall.enable = true;
+    # stevenblack.enable = true;
   };
-  systemd.network.enable = true;
+  # systemd.network.enable = true;
 
   # Extra SSH/SFTP settings (in addition to openssh.nix)
   services.openssh = {
@@ -143,6 +141,7 @@ in
     "d /mnt/boot          755 root root -"
     "d /mnt/wd-red        755 root root -"
     "d /mnt/wd-red/sftp   755 root root -"
+    "d /mnt/wd-red/store  755 root root -"
     "d ${appData}         777 root root -"
     "d ${appData}/firefox 755 ${user} ${user} -"
   ];

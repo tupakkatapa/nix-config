@@ -1,4 +1,6 @@
 { pkgs
+, config
+, lib
 , ...
 }: {
   # Enable clock and voltage adjustment for AMD GPU
@@ -67,4 +69,5 @@
 
   # Firmware blobs
   hardware.enableRedistributableFirmware = true;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

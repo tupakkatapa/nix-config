@@ -28,23 +28,23 @@ in
       monitor-adjust
 
       # GUI
-      libreoffice-qt
-      chromium
+      # libreoffice-qt
+      # chromium
 
       # Media creation and editing
-      aseprite
-      gimp-with-plugins
-      kdenlive
-      video-trimmer
+      # aseprite
+      # gimp-with-plugins
+      # kdenlive
+      # video-trimmer
 
       # Music production
-      ardour
+      # ardour
       audacity
       guitarix
-      gxplugins-lv2
-      ladspaPlugins
-      qjackctl
-      tuxguitar
+      # gxplugins-lv2
+      # ladspaPlugins
+      # qjackctl
+      # tuxguitar
 
       # High Quality Games
       # osu-lazer
