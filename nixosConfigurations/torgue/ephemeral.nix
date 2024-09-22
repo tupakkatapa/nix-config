@@ -1,26 +1,14 @@
 _:
 let
   user = "kari";
-  persistentRoot = "/mnt/860/mnt/860";
-  appData = "${persistentRoot}/appdata/${user}";
-  secretData = "${persistentRoot}/secrets/${user}";
+  dataDir = "/mnt/860/mnt/860";
+  appData = "${dataDir}/appdata/${user}";
+  secretData = "${dataDir}/secrets/${user}";
 in
 {
-  # This file is for when I have the hardware and a stable netboot server to go ephemeral
-
-  /*
-    Persistent file memo
-
-    gpg --list-secret-keys --keyid-format=long
-    /etc/ssh/ssh_host_ed25519_key
-    /etc/ssh/ssh_host_ed25519_key.pub
-    ~/.ssh/id_ed25519
-    ~/.config/Yubico/u2f_keys
-  */
-
   # Host SSH keys
   services.openssh.hostKeys = [{
-    path = "${persistentRoot}/secrets/ssh/ssh_host_ed25519_key";
+    path = "${dataDir}/secrets/ssh/ssh_host_ed25519_key";
     type = "ed25519";
   }];
 
@@ -28,7 +16,6 @@ in
   fileSystems."/mnt/860" = {
     device = "/dev/disk/by-uuid/20cfc618-e1e9-476e-984e-55326b3b5ca7";
     fsType = "ext4";
-    # options = ["subvolid=420"];
     neededForBoot = true;
   };
   fileSystems."/mnt/boot" = {
@@ -38,6 +25,8 @@ in
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
+    "d /home/${user}/.config     755 ${user} ${user} -"
+
     "d ${appData}                755 ${user} ${user} -"
     "d ${appData}/firefox        755 ${user} ${user} -"
     "d ${appData}/guitarix       755 ${user} ${user} -"
@@ -50,17 +39,17 @@ in
     "d ${secretData}/yubico      755 ${user} ${user} -"
 
     "d /mnt/860                      755 root root -"
-    "d ${persistentRoot}/appdata     755 root root -"
-    "d ${persistentRoot}/games       755 root root -"
-    "d ${persistentRoot}/nix-config  777 root root -"
-    "d ${persistentRoot}/secrets     755 root root -"
+    "d ${dataDir}/appdata     755 root root -"
+    "d ${dataDir}/games       755 root root -"
+    "d ${dataDir}/nix-config  777 root root -"
+    "d ${dataDir}/secrets     755 root root -"
 
     "d /mnt/boot                 755 root root -"
     "d /mnt/sftp                 755 root root -"
   ];
 
   # Set local flake path to be able to be referenced
-  environment.variables.FLAKE_DIR = "${persistentRoot}/nix-config";
+  environment.variables.FLAKE_DIR = "${dataDir}/nix-config";
 
   # Bind to persistent drive to preserve
   fileSystems = {

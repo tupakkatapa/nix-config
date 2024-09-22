@@ -29,7 +29,7 @@ in
     fonts.fontconfig.enable = true;
 
     home.packages = with pkgs; [
-      # plexamp
+      plexamp
       sublime-merge
 
       (pkgs.nerdfonts.override {

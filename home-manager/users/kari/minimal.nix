@@ -101,10 +101,6 @@ in
 
     # Default apps
     home.sessionVariables = {
-      #   BROWSER = lib.mkDefault "none";
-      #   FILEMANAGER = lib.mkDefault "none";
-      #   FONT = lib.mkDefault "none";
-      #   TERMINAL = lib.mkDefault "none";
       THEME = lib.mkDefault "gruvbox-dark-medium";
     };
 

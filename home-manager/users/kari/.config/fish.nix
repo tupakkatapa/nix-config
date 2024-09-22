@@ -61,7 +61,7 @@ in
       gc = "nix-collect-garbage -d";
 
       # YouTube-DL
-      yt = "yt-dlp --embed-metadata --sponsorblock-remove all -i --format mp4";
+      yt = ", yt-dlp --embed-metadata --sponsorblock-remove all -i --format mp4";
       yt-pl-urls = yt + "--flat-playlist --print '%(url)s' --no-warnings";
       yta = yt + " -x --embed-thumbnail --audio-format mp3 -f 'ba'";
       yta-ch = yta + " -o '%(channel)s/%(title)s.%(ext)s'";
