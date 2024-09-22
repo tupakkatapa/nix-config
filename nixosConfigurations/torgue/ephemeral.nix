@@ -52,14 +52,6 @@ in
   # Set local flake path to be able to be referenced
   environment.variables.FLAKE_DIR = "${dataDir}/nix-config";
 
-  # Mount '/nix/.rw-store' and '/tmp' to disk
-  services.nixRemount = {
-    enable = true;
-    what = "${dataDir}/store";
-    type = "none";
-    options = [ "bind" ];
-  };
-
   # Bind to persistent drive to preserve
   fileSystems = {
     "/home/${user}/.mozilla" = {
