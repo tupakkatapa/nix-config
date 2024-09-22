@@ -8,6 +8,7 @@
   ];
 
   networking.hostName = "tediore";
+  services.getty.autologinUser = "core";
 
   # Sway
   environment.systemPackages = with pkgs; [
