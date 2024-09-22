@@ -7,19 +7,19 @@
   boot.kernelParams = [ "amdgpu.ppfeaturemask=0xffffffff" ];
 
   # System packages
-  environment.systemPackages = with pkgs; [
-    xow_dongle-firmware
-    (lutris.override {
-      extraPkgs = _pkgs: [
-        # List package dependencies here
-        winetricks
-        wineWowPackages.waylandFull
-      ];
-    })
-    # Wine
-    winetricks
-    wineWowPackages.waylandFull
-  ];
+  # environment.systemPackages = with pkgs; [
+  #   xow_dongle-firmware
+  #   (lutris.override {
+  #     extraPkgs = _pkgs: [
+  #       # List package dependencies here
+  #       winetricks
+  #       wineWowPackages.waylandFull
+  #     ];
+  #   })
+  #   # Wine
+  #   winetricks
+  #   wineWowPackages.waylandFull
+  # ];
 
   # Steam and gaming settings
   nixpkgs.config.allowUnfree = true;
@@ -64,7 +64,7 @@
   hardware.amdgpu = {
     amdvlk.enable = true;
     initrd.enable = true;
-    opencl.enable = true;
+    # opencl.enable = true;
   };
 
   # Firmware blobs
