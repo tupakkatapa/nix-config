@@ -149,7 +149,7 @@ in
         "wl-clipboard-history -t"
 
         "[workspace 4 silent] firefox https://web.whatsapp.com https://app.element.io/ https://web.telegram.org/ https://www.instagram.com/ https://discord.com/channels/@me"
-        "[workspace 5 silent] firefox https://plex.coditon.com"
+        "[workspace 5 silent] plexamp"
       ];
 
       # Key bindings
