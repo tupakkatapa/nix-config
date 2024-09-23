@@ -247,7 +247,7 @@
 
           bandit.modules = [
             ./nixosConfigurations/bandit
-            ./home-manager/users/core
+            ./home-manager/users/core/minimal.nix
             ./system/kexec-tree.nix
             # inputs.homestakeros-base.nixosModules.kexecTree
           ];
