@@ -38,7 +38,7 @@ in
     "d ${secretData}/gnupg       700 ${user} ${user} -"
     "d ${secretData}/yubico      755 ${user} ${user} -"
 
-    "d /mnt/860                  755 root root -"
+    "d ${dataDir}                755 root root -"
     "d ${dataDir}/appdata        755 root root -"
     "d ${dataDir}/games          755 root root -"
     "d ${dataDir}/nix-config     777 root root -"
