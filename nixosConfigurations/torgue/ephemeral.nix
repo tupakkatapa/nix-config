@@ -31,7 +31,6 @@ in
     "d ${appData}/firefox        755 ${user} ${user} -"
     "d ${appData}/guitarix       755 ${user} ${user} -"
     "d ${appData}/plexamp        755 ${user} ${user} -"
-    "d ${appData}/steam          755 ${user} ${user} -"
     "d ${appData}/sublime-merge  755 ${user} ${user} -"
 
     "d ${secretData}             700 ${user} ${user} -"
@@ -40,7 +39,6 @@ in
 
     "d ${dataDir}                755 root root -"
     "d ${dataDir}/appdata        755 root root -"
-    "d ${dataDir}/games          755 root root -"
     "d ${dataDir}/nix-config     777 root root -"
     "d ${dataDir}/secrets        755 root root -"
     "d ${dataDir}/store          755 root root -"
@@ -56,10 +54,6 @@ in
   fileSystems = {
     "/home/${user}/.mozilla" = {
       device = "${appData}/firefox";
-      options = [ "bind" "mode=755" ];
-    };
-    "/home/${user}/.steam" = {
-      device = "${appData}/steam";
       options = [ "bind" "mode=755" ];
     };
     "/home/${user}/.config/Plexamp" = {
