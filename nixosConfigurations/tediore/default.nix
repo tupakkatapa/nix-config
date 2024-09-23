@@ -1,6 +1,10 @@
-{ pkgs
-, ...
-}: {
+_:
+let
+  user = "core";
+  dataDir = "/mnt/860";
+  appData = "${dataDir}/appdata/${user}";
+in
+{
   imports = [
     ../.config/gaming-amd.nix
     ../.config/pipewire.nix
@@ -8,24 +12,29 @@
   ];
 
   networking.hostName = "tediore";
-  services.getty.autologinUser = "core";
 
-  # Sway
-  environment.systemPackages = with pkgs; [
-    grim # screenshot functionality
-    slurp # screenshot functionality
-    wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
-    mako # notification system developed by swaywm maintainer
-  ];
+  # Autologin
+  services.getty.autologinUser = user;
 
-  # Enable the gnome-keyring secrets vault. 
-  # Will be exposed through DBus to programs willing to store secrets.
-  services.gnome.gnome-keyring.enable = true;
+  # Start sway
+  environment.loginShellInit = ''
+    [[ "$(tty)" == /dev/tty? ]] && sudo /run/current-system/sw/bin/lock this 
+    [[ "$(tty)" == /dev/tty1 ]] && sway
+  '';
 
-  # enable sway window manager
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
+  # Mount drives
+  fileSystems."/mnt/860" = {
+    device = "/dev/disk/by-uuid/20cfc618-e1e9-476e-984e-55326b3b5ca7";
+    fsType = "ext4";
+    neededForBoot = true;
   };
+
+  # Create directories, these are persistent
+  systemd.tmpfiles.rules = [
+    "d ${appData}                755 ${user} ${user} -"
+    "d ${appData}/steam          755 ${user} ${user} -"
+    "d ${dataDir}                755 root root -"
+    "d ${dataDir}/games          755 root root -"
+  ];
 }
 
