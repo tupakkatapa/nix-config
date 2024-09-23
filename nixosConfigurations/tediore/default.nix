@@ -29,10 +29,17 @@ in
     neededForBoot = true;
   };
 
+  # Bind to persistent drive to preserve
+  fileSystems."/home/${user}/.steam" = {
+    device = "${appData}/steam";
+    options = [ "bind" "mode=755" ];
+  };
+
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
     "d ${appData}                755 ${user} ${user} -"
     "d ${appData}/steam          755 ${user} ${user} -"
+
     "d ${dataDir}                755 root root -"
     "d ${dataDir}/games          755 root root -"
   ];
