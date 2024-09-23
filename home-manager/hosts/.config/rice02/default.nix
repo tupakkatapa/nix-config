@@ -1,13 +1,13 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 let
-  inherit (config.home.sessionVariables) TERMINAL BROWSER FONT;
+  inherit (config.home.sessionVariables) TERMINAL BROWSER;
   mod = "Mod1"; # Left Alt / Command key
 in
 {
   wayland.windowManager.sway = {
     enable = true;
     config = {
-      modifier = "${mod}";
+      modifier = mod;
 
       # Default apps
       terminal = "${TERMINAL}";
@@ -19,27 +19,27 @@ in
       ];
 
       # Bind keys
-      keybindings = {
+      keybindings = lib.mkOptionDefault{
         "${mod}+b" = "exec ${BROWSER}";
         "${mod}+Return" = "exec ${TERMINAL}";
         "${mod}+Shift+Return" = "exec ${pkgs.wofi}/bin/wofi --show run";
 
         # Window management
-        "${mod}+F" = "fullscreen";
-        "${mod}+Q" = "kill";
-        "${mod}+Space" = "focus mode_toggle";
+        "${mod}+f" = "floating toggle";
+        "${mod}+q" = "kill";
+        "${mod}+Space" = "fullscreen";
 
         # Moves the focus in a direction
-        "${mod}+H" = "focus left";
-        "${mod}+J" = "focus down";
-        "${mod}+K" = "focus up";
-        "${mod}+L" = "focus right";
+        "${mod}+h" = "focus left";
+        "${mod}+j" = "focus down";
+        "${mod}+k" = "focus up";
+        "${mod}+l" = "focus right";
 
         # Moves the active window in a direction
-        "${mod}+Shift+H" = "move left";
-        "${mod}+Shift+J" = "move down";
-        "${mod}+Shift+K" = "move up";
-        "${mod}+Shift+L" = "move right";
+        "${mod}+Shift+h" = "move left";
+        "${mod}+Shift+j" = "move down";
+        "${mod}+Shift+k" = "move up";
+        "${mod}+Shift+l" = "move right";
 
         # Change the workspace
         "${mod}+1" = "workspace 1";
@@ -75,10 +75,21 @@ in
         "${mod}+Ctrl+9" = "move container to workspace 9; workspace 9";
       };
 
-      # Font
-      fonts = {
-        names = [ "${FONT}" ];
-        size = 9.0;
+      # Settings
+      focus.followMouse = true;
+      window = {
+        border = 2;
+      };
+      gaps = {
+        inner = 5;
+        outer = 5;
+        smartBorders = "on";
+        smartGaps = true;
+      };
+      input = {
+        "*" = {
+          xkb_layout = "fi";
+        };
       };
     };
   };

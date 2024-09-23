@@ -17,21 +17,17 @@ in
     # Importing host-spesific home-manager config if it exists
     imports = optionalPaths [ ../../hosts/${config.networking.hostName}/default.nix ];
 
-    # Allow fonts trough home.packages
-    fonts.fontconfig.enable = true;
-
     # Default apps
     home.sessionVariables = {
-      FONT = "JetBrainsMono Nerd Font";
-      TERMINAL = "kitty";
+      TERMINAL = "foot";
       BROWSER = "librewolf";
     };
 
     home.packages = with pkgs; [
       librewolf
-      kitty
     ];
 
+    programs.foot.enable = true;
     programs.home-manager.enable = true;
     home.stateVersion = "24.05";
   };
