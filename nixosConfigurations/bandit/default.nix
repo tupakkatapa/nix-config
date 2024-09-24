@@ -2,7 +2,6 @@
 , ...
 }: {
   networking.hostName = "bandit";
-  console.keyMap = "fi";
 
   # Autologin
   services.getty.autologinUser = "core";
