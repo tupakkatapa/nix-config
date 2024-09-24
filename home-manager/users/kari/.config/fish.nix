@@ -54,7 +54,7 @@ in
       # Nix
       ngd = "nix fmt && git add . && direnv reload";
       nfc = "nix flake check --impure";
-      buidl = "sudo nixos-rebuild switch --flake path:$FLAKE_DIR#$(hostname)";
+      buidl = "sudo nixos-rebuild test --flake path:$FLAKE_DIR#$(hostname)";
       nrs = "sudo nixos-rebuild switch --flake .";
       nrt = "sudo nixos-rebuild test --flake .";
       nrb = "sudo nixos-rebuild boot --flake .";
