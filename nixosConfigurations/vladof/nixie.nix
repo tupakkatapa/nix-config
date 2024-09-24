@@ -11,6 +11,10 @@ _: {
     type = "none";
     options = [ "bind" ];
   };
+  systemd.services.nix-remount = {
+    before = [ "local-fs.target" ];
+    after = [ "systemd-remount-fs.service" ];
+  };
 
   nixie = {
     enable = true;
@@ -32,14 +36,13 @@ _: {
           flakeUrl = "github:ponkila/homestaking-infra\?ref=kaakkuri-ephemeral-alpha";
           hosts = [ "kaakkuri-ephemeral-alpha" ];
           timeout = 1;
-          buildRequests = true;
         }
         {
           name = "torgue";
           flakeUrl = "github:tupakkatapa/nix-config";
           hosts = [ "torgue" "tediore" "bandit" ];
           default = "torgue";
-          timeout = 1;
+          timeout = 3;
         }
       ];
     };
