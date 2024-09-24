@@ -3,7 +3,8 @@
   imports = [
     # ./swayidle.nix
     # ./swaylock.nix
-    ./dunst.nix
+    # ./dunst.nix
+    ./mako.nix
     ./gtk.nix
     ./hyprland.nix
     ./rgb.nix
