@@ -22,7 +22,6 @@ let
   };
 
   hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
-  pamixer = "${pkgs.pamixer}/bin/pamixer";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   swaybg = "${pkgs.swaybg}/bin/swaybg";
 in
@@ -161,7 +160,7 @@ in
         # Volume
         ",XF86AudioRaiseVolume, exec, ${notify.volume} -i 5"
         ",XF86AudioLowerVolume, exec, ${notify.volume} -d 5"
-        ",XF86AudioMute,        exec, ${pamixer} -t"
+        ",XF86AudioMute,        exec, ${notify.volume} -t"
 
         # Media
         ",XF86AudioNext, exec, ${playerctl} -p Plexamp next"
