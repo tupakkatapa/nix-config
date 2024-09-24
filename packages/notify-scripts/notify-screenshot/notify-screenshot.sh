@@ -26,5 +26,3 @@ grim -g "$(slurp)" "$screenshot_path"
 
 notify-send "Screenshot saved in $1" \
   -h string:x-canonical-private-synchronous:anything
-
-xdg-open "$1"
