@@ -26,7 +26,6 @@ in
   users.users.${user} = {
     # echo "password" | mkpasswd -s
     # hashedPasswordFile = config.age.secrets.password.path;
-    initialPassword = "irak";
   };
 
   # Create directories, these are persistent

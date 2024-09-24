@@ -7,8 +7,8 @@ let
   helpers = import ../../helpers.nix args;
 in
 {
-  # This configuration extends the minimal-gui version
-  imports = [ ./minimal-gui.nix ];
+  # This configuration extends the minimal-passwd and minimal-gui versions
+  imports = [ ./minimal-passwd.nix ./minimal-gui.nix ];
 
   # Misc
   # programs.anime-game-launcher.enable = true;
@@ -26,6 +26,9 @@ in
 
     home.packages = with pkgs; [
       monitor-adjust
+
+      sublime-merge
+      plexamp
 
       # GUI
       # libreoffice-qt

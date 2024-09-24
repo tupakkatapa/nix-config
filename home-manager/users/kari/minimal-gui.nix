@@ -5,8 +5,8 @@ let
   user = "kari";
 in
 {
-  # This configuration extends the minimal-passwd version
-  imports = [ ./minimal-passwd.nix ];
+  # This configuration extends the minimal version
+  imports = [ ./minimal.nix ];
 
   # Home-manager config
   home-manager.users."${user}" = {
@@ -17,7 +17,7 @@ in
       ./.config/imv.nix
     ];
 
-    # Default apps
+    # Default apps by user
     home.sessionVariables = {
       BROWSER = "firefox";
       FONT = "JetBrainsMono Nerd Font";
@@ -29,9 +29,6 @@ in
     fonts.fontconfig.enable = true;
 
     home.packages = with pkgs; [
-      plexamp
-      sublime-merge
-
       (pkgs.nerdfonts.override {
         fonts = [ "JetBrainsMono" ];
       })
