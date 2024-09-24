@@ -2,7 +2,7 @@
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) FONT THEME;
+  inherit (config.home.sessionVariables) FONT;
 in
 {
   programs.foot = {
