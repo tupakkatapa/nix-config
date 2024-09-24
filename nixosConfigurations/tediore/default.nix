@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+_:
 let
   user = "core";
   dataDir = "/mnt/860";
@@ -14,18 +14,14 @@ in
   networking.hostName = "tediore";
 
   # OpenRGB
-  services.hardware.openrgb = {
-    enable = true;
-    package = pkgs.openrgb-with-all-plugins;
-    motherboard = "amd";
-  };
+  services.hardware.openrgb.enable = true;
 
   # Autologin
   services.getty.autologinUser = user;
 
   # Start sway
   environment.loginShellInit = ''
-    [[ "$(tty)" == /dev/tty? ]] && sudo /run/current-system/sw/bin/lock this 
+    [[ "$(tty)" == /dev/tty? ]] && sudo /run/current-system/sw/bin/lock this
     [[ "$(tty)" == /dev/tty1 ]] && sway
   '';
 
