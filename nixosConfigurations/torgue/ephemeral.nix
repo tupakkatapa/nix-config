@@ -80,5 +80,9 @@ in
       device = "${secretData}/ssh";
       options = [ "bind" "mode=700" ];
     };
+    "/home/${user}/nix-config" = {
+      device = "${dataDir}/nix-config";
+      options = [ "bind" "mode=777" ];
+    };
   };
 }
