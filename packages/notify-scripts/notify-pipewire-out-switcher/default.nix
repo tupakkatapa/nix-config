@@ -7,9 +7,11 @@ pkgs.stdenv.mkDerivation rec {
   src = ./.;
 
   buildInputs = with pkgs; [
-    notify
+    gawk
     jq
+    notify
     pipewire-out-switcher
+    pulseaudio
   ];
 
   nativeBuildInputs = [ pkgs.makeWrapper ];
