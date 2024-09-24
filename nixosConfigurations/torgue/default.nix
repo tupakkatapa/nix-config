@@ -1,4 +1,5 @@
-{ lib
+{ pkgs
+, lib
 , config
 , ...
 }: {
@@ -66,7 +67,11 @@
   musnix.enable = true;
 
   # OpenRGB
-  services.hardware.openrgb.enable = true;
+  services.hardware.openrgb = {
+    enable = true;
+    package = pkgs.openrgb-with-all-plugins;
+    motherboard = "amd";
+  };
 
   # Logitech unifying receiver
   hardware.logitech.wireless.enable = true;

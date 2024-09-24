@@ -10,7 +10,7 @@
     ../.config/rice01
   ];
 
-  # Default apps
+  # Default apps by host
   home.sessionVariables = {
     FONT = lib.mkDefault "JetBrainsMono Nerd Font";
     THEME = lib.mkDefault "gruvbox-dark-medium";

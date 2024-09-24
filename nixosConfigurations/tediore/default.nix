@@ -1,4 +1,4 @@
-_:
+{ pkgs, ... }:
 let
   user = "core";
   dataDir = "/mnt/860";
@@ -12,6 +12,13 @@ in
   ];
 
   networking.hostName = "tediore";
+
+  # OpenRGB
+  services.hardware.openrgb = {
+    enable = true;
+    package = pkgs.openrgb-with-all-plugins;
+    motherboard = "amd";
+  };
 
   # Autologin
   services.getty.autologinUser = user;
@@ -38,15 +45,24 @@ in
     device = "${appData}/steam/install";
     options = [ "bind" "mode=755" ];
   };
+  fileSystems."/home/${user}/.config/discord" = {
+    device = "${appData}/discord";
+    options = [ "bind" "mode=755" ];
+  };
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
     "d ${appData}                755 ${user} ${user} -"
+    "d ${appData}/discord        755 ${user} ${user} -"
     "d ${appData}/steam          755 ${user} ${user} -"
     "d ${appData}/steam/install  755 ${user} ${user} -"
 
     "d ${dataDir}                755 root root -"
     "d ${dataDir}/games          755 root root -"
+
+    "d /home/${user}/.local        755 ${user} ${user} -"
+    "d /home/${user}/.local/share  755 ${user} ${user} -"
+    "d /home/${user}/.config       755 ${user} ${user} -"
   ];
 }
 

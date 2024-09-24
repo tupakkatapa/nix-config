@@ -14,20 +14,25 @@ in
   home-manager.backupFileExtension = "bak";
 
   home-manager.users."${user}" = {
-    # Importing host-spesific home-manager config if it exists
-    imports = optionalPaths [ ../../hosts/${config.networking.hostName}/default.nix ];
+    imports = [ ./.config/foot.nix ]
+      # Importing host-spesific home-manager config if it exists
+      ++ optionalPaths [ ../../hosts/${config.networking.hostName}/default.nix ];
 
-    # Default apps
+    # Allow fonts trough home.packages
+    fonts.fontconfig.enable = true;
+
+    # Default apps by user
     home.sessionVariables = {
       TERMINAL = "foot";
       BROWSER = "librewolf";
+      FONT = "Noto Sans Mono";
     };
 
     home.packages = with pkgs; [
       librewolf
+      noto-fonts
     ];
 
-    programs.foot.enable = true;
     programs.home-manager.enable = true;
     home.stateVersion = "24.05";
   };

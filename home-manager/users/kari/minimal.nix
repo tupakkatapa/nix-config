@@ -99,7 +99,7 @@ in
       in
       builtins.mapAttrs (name: _: makeScript name) scriptFiles;
 
-    # Default apps
+    # Default apps by user
     home.sessionVariables = {
       THEME = lib.mkDefault "gruvbox-dark-medium";
     };
