@@ -1,7 +1,8 @@
-{ pkgs, config, ... }:
+{ lib, pkgs, config, ... }:
 let
   inherit (config.home.sessionVariables) TERMINAL BROWSER;
   mod = "Mod1";
+  super = "Mod4";
 in
 {
   wayland.windowManager.sway = {
@@ -17,12 +18,19 @@ in
         { command = "steam"; }
         { command = "discord"; }
       ];
+      assigns = {
+        "1" = [{ class = "^steam"; }];
+        "2" = [{ class = "^discord"; }];
+      };
 
       # Bind keys
-      keybindings = {
-        "${mod}+b" = "exec ${BROWSER}";
+      keybindings = lib.mkDefault {
+        # General
         "${mod}+Return" = "exec ${TERMINAL}";
         "${mod}+Shift+Return" = "exec ${pkgs.wofi}/bin/wofi --show run";
+
+        # Programs
+        "${super}+b" = "exec ${BROWSER}";
 
         # Window management
         "${mod}+f" = "floating toggle";
