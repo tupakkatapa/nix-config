@@ -28,12 +28,7 @@ in
 
       # Powerstate
       bios = "systemctl reboot --firmware-setup";
-      rbt = "reboot";
       sdn = "shutdown -h now";
-
-      # Removed home directory once
-      rm = "mv -it /tmp";
-      remove = "rm";
 
       # Changing 'ls' to 'eza'
       ls = "eza -agl --color=always --group-directories-first";
@@ -48,7 +43,6 @@ in
       du = "du -h";
       mv = "mv -i";
       cp = "cp -ia";
-
       free = "free -h";
       grep = "grep --color=auto";
       jctl = "journalctl -p 3 -xb";
@@ -60,13 +54,16 @@ in
       # Misc
       vim = "nvim";
       lsd = "sudo du -Lhc --max-depth=0 *";
-      port = "shuf -i 1024-65535 -n 1";
+      rpg = "shuf -i 1024-65535 -n 1";
     };
   };
 
+  # Autologin
+  services.getty.autologinUser = "core";
+
   # Passwordless sudo
   security.sudo.extraRules = [{
-    users = [ user ];
+    users = [ "core" ];
     commands = [{
       command = "ALL";
       options = [ "NOPASSWD" ];

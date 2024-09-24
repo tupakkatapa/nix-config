@@ -16,9 +16,6 @@ in
   # OpenRGB
   services.hardware.openrgb.enable = true;
 
-  # Autologin
-  services.getty.autologinUser = user;
-
   # Start sway
   environment.loginShellInit = ''
     [[ "$(tty)" == /dev/tty? ]] && sudo /run/current-system/sw/bin/lock this

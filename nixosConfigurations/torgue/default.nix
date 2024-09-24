@@ -15,10 +15,6 @@
     initrd.enable = true;
   };
 
-  # Kernel modules
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-  boot.kernelModules = [ "kvm-amd" ];
-
   # Enable blobs
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
@@ -33,10 +29,6 @@
 
   # Enable ADB for android development
   programs.adb.enable = true;
-
-  # Add support for NTFS file system for mounting Windows drives
-  # https://nixos.wiki/wiki/NTFS
-  boot.supportedFilesystems = [ "ntfs" ];
 
   # Connectivity
   networking = {
@@ -67,7 +59,4 @@
 
   # OpenRGB
   services.hardware.openrgb.enable = true;
-
-  # Logitech unifying receiver
-  hardware.logitech.wireless.enable = true;
 }

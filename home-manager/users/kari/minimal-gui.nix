@@ -17,21 +17,19 @@ in
       ./.config/imv.nix
     ];
 
+    # Allow fonts trough home.packages
+    fonts.fontconfig.enable = true;
+
     # Default apps by user
     home.sessionVariables = {
       BROWSER = "firefox";
       FONT = "JetBrainsMono Nerd Font";
-      FILEMANAGER = "yazi";
       TERMINAL = "foot";
+      THEME = "gruvbox-dark-medium";
     };
 
-    # Allow fonts trough home.packages
-    fonts.fontconfig.enable = true;
-
     home.packages = with pkgs; [
-      (pkgs.nerdfonts.override {
-        fonts = [ "JetBrainsMono" ];
-      })
+      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];
   };
 }

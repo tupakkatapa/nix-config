@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   imports = [
     # ./swayidle.nix
@@ -9,5 +9,9 @@
     ./rgb.nix
     ./waybar.nix
     ./wofi.nix
+  ];
+
+  home.packages = with pkgs; [
+    wl-clipboard
   ];
 }

@@ -9,11 +9,6 @@ let
   colors = (import ../../../colors.nix).${THEME};
 in
 {
-  home.sessionVariables = {
-    EDITOR = lib.mkDefault "nvim";
-    MANPAGER = lib.mkDefault "nvim +Man!";
-  };
-
   programs.nixvim = {
     enable = true;
 
@@ -198,11 +193,11 @@ in
         servers = {
           bashls.enable = true;
           nixd.enable = true;
-          rust-analyzer = {
-            enable = true;
-            installRustc = true;
-            installCargo = true;
-          };
+          # rust-analyzer = {
+          #   enable = true;
+          #   installRustc = true;
+          #   installCargo = true;
+          # };
         };
       };
       lsp-format.enable = true;

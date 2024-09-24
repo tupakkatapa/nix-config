@@ -33,10 +33,6 @@ in
       # Changing 'fm' to 'yazi'
       fm = mkIf hasYazi "yazi";
 
-      # Removed home directory once
-      rm = "mv -it /tmp";
-      remove = "rm";
-
       # Rsync
       rcp = "rsync --exclude='/.git' --filter='dir-merge,-n /.gitignore' -PaL";
       rmv = rcp + " --remove-source-files";
@@ -46,18 +42,13 @@ in
       du = "du -h";
       mv = "mv -i";
       cp = "cp -ia";
-
       free = "free -h";
       grep = "grep --color=auto";
       jctl = "journalctl -p 3 -xb";
 
       # Nix
-      ngd = "nix fmt && git add . && direnv reload";
       nfc = "nix flake check --impure";
       buidl = "sudo nixos-rebuild test --flake path:$FLAKE_DIR#$(hostname)";
-      nrs = "sudo nixos-rebuild switch --flake .";
-      nrt = "sudo nixos-rebuild test --flake .";
-      nrb = "sudo nixos-rebuild boot --flake .";
       gc = "nix-collect-garbage -d";
 
       # YouTube-DL

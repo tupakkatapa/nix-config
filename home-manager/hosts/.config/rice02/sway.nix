@@ -1,6 +1,6 @@
 { lib, pkgs, config, ... }:
 let
-  inherit (config.home.sessionVariables) TERMINAL BROWSER;
+  inherit (config.home.sessionVariables) TERMINAL BROWSER FONT;
   mod = "Mod1";
   super = "Mod4";
 in
@@ -84,6 +84,11 @@ in
       };
 
       # Settings
+      fonts = {
+        names = [ "${FONT}" ];
+        style = "Regular";
+        size = 10.0;
+      };
       focus.followMouse = true;
       window = {
         border = 2;

@@ -41,7 +41,6 @@ in
     "d ${dataDir}/appdata        755 root root -"
     "d ${dataDir}/nix-config     777 root root -"
     "d ${dataDir}/secrets        755 root root -"
-    "d ${dataDir}/store          755 root root -"
 
     "d /mnt/boot                 755 root root -"
     "d /mnt/sftp                 755 root root -"

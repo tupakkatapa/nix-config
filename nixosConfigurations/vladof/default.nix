@@ -5,7 +5,6 @@
 }:
 let
   domain = "coditon.com";
-
   appData = "/mnt/wd-red/appdata";
   user = "kari";
 
@@ -27,18 +26,6 @@ in
 
   # Audio
   hardware.pulseaudio.enable = true;
-
-  # Backup some accident-prone directories
-  # services.rsyncBackup = {
-  #   enable = true;
-  #   backupFrequencyHours = 6;
-  #   paths = [
-  #     {
-  #       src = "/mnt/wd-red/sftp/home/";
-  #       dest = "/mnt/wd-red/backups/home";
-  #     }
-  #   ];
-  # };
 
   # Autologin for 'kari'
   services.getty.autologinUser = user;
@@ -75,23 +62,7 @@ in
   networking = {
     hostName = "vladof";
     domain = "${domain}";
-    # useNetworkd = true;
-    #
-    # interfaces.${interface}.ipv4.addresses = [
-    #   {
-    #     address = localAddress; # static IP
-    #     prefixLength = 24;
-    #   }
-    # ];
-    # defaultGateway = {
-    #   address = gateway;
-    #   inherit interface;
-    # };
-    # nameservers = [ gateway ];
-    # firewall.enable = true;
-    # stevenblack.enable = true;
   };
-  # systemd.network.enable = true;
 
   # Extra SSH/SFTP settings (in addition to openssh.nix)
   services.openssh = {
@@ -142,6 +113,7 @@ in
     "d /mnt/wd-red        755 root root -"
     "d /mnt/wd-red/sftp   755 root root -"
     "d /mnt/wd-red/store  755 root root -"
+
     "d ${appData}         777 root root -"
     "d ${appData}/firefox 755 ${user} ${user} -"
   ];

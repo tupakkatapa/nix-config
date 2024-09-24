@@ -1,7 +1,14 @@
-{ ... }: {
+{ pkgs, ... }: {
   imports = [
     ./sway.nix
-    ./rgb.nix
+    ../rice01/rgb.nix
+  ];
+
+  home.packages = with pkgs; [
+    blueberry
+    mako
+    swaybg
+    wl-clipboard
   ];
 }
 

@@ -1,5 +1,4 @@
 { pkgs
-, lib
 , config
 , inputs
 , ...
@@ -102,7 +101,9 @@ in
 
     # Default apps by user
     home.sessionVariables = {
-      THEME = lib.mkDefault "gruvbox-dark-medium";
+      EDITOR = "nvim";
+      MANPAGER = "nvim +Man!";
+      FILEMANAGER = "yazi";
     };
 
     home.packages = with pkgs; [

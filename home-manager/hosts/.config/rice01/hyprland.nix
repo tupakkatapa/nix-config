@@ -177,7 +177,6 @@ in
         "SUPER, B, exec, ${BROWSER}"
         "SUPER, F, exec, ${TERMINAL} -e sh -c '${FILEMANAGER} ~'"
         "SUPER, V, exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~'"
-        "SUPER, T, exec, ${pkgs.cool-retro-term}/bin/cool-retro-term"
 
         # Misc
         "${mod} SHIFT, R, exec, hyprctl reload && notify-send \"Hyprland reloaded\""

@@ -95,9 +95,6 @@ in
   ];
 
   home = {
-    sessionVariables = {
-      FILEMANAGER = lib.mkDefault "yazi";
-    };
     # https://yazi-rs.github.io/docs/tips/#smart-enter
     file.".config/yazi/plugins/smart-enter.yazi/init.lua".text = ''
       return {
