@@ -2,23 +2,119 @@
 
 | Hostname | Architecture | Deploy | Users | Details
 | :-:       |  :-:    | :-:          | :-:   | :-
-[maliwan](nixosConfigurations/maliwan/default.nix) | x86_64  | persistent | [kari](home-manager/users/kari/default.nix)               | Intel Laptop, Hyprland
-[torgue](nixosConfigurations/torgue/default.nix)   | "       | netboot    | "                                                         | AMD Desktop, Hyprland, [screenshot](https://raw.githubusercontent.com/tupakkatapa/nix-config/main/nixosConfigurations/torgue/screenshot.png)
-[bandit](nixosConfigurations/bandit/default.nix)   | "       | "          | [core](home-manager/users/core/default.nix)               | Minimal for headless
-[vladof](nixosConfigurations/vladof/default.nix)   | "       | refind     | [kari (minimal-gui)](home-manager/users/kari/minimal-gui.nix) | Homelab, Firefox kiosk + Netboot Server ([Nixie](https://github.com/majbacka-labs/nixos.fi) 
+[maliwan](nixosConfigurations/maliwan/default.nix) | x86_64  | persistent | [kari](home-manager/users/kari/default.nix)                    | Intel Laptop, Hyprland
+[torgue](nixosConfigurations/torgue/default.nix)   | "       | netboot    | "                                                              | AMD Desktop, Hyprland, [screenshot](https://raw.githubusercontent.com/tupakkatapa/nix-config/main/nixosConfigurations/torgue/screenshot.png)
+[tediore](nixosConfigurations/tediore/default.nix) | "       | "          | [core](home-manager/users/core/default.nix)                    | Alternative OS for the same AMD Desktop as torgue, Sway
+[bandit](nixosConfigurations/bandit/default.nix)   | "       | "          | [core (minimal)](home-manager/users/core/minimal.nix)          | Minimal for headless
+[vladof](nixosConfigurations/vladof/default.nix)   | "       | refind     | [kari (minimal-gui)](home-manager/users/kari/minimal-gui.nix)  | Homelab, Firefox kiosk + Netboot Server ([Nixie](https://github.com/majbacka-labs/nixos.fi))
 
-Most of the hosts here are **truly declarative** by being **ephemeral**. Read more about netbooting NixOS at [my blog post](https://blog.coditon.com/content/posts/Netbooting%20NixOS.md) or documentation of [majbacka-labs/nixos.fi](https://github.com/majbacka-labs/nixos.fi).
+These hosts are **truly declarative** by being **ephemeral**. Read more about netbooting NixOS at [my blog post](https://blog.coditon.com/content/posts/Netbooting%20NixOS.md) or documentation of [majbacka-labs/nixos.fi](https://github.com/majbacka-labs/nixos.fi).
 
 ## Structure
 
-- **flake.nix**: Entrypoint for hosts configurations.
-- **home-manager**: User and host-specific configurations done via home-manager.
-- **nixosConfigurations**: Host configurations.
-- **nixosModules**: My custom modules.
-- **packages**: My custom packages.
-- **system**: Very common configurations.
+- **./flake.nix**
 
-You may also find `.config` directories in various places; these are used for storing shared configurations in the context indicated by the location.
+  Entry point for host configurations. These host configurations are initialized with `withDefaults` and/or `withExtra`. These provide basic configurations that are almost always wanted. Additional modules, main configuration, host format, and users are imported to each host individually.
+
+- **./nixosConfigurations**
+
+  This directory contains the host-specific configurations, mainly focused on hardware-dependent settings and enabling programs.
+
+- **./home-manager**
+
+  User and host-spesific configurations for Home Manager. Additionally, contains user configurations even without home-manager enabled.
+
+  <details> <summary>View details</summary>
+    &nbsp;
+
+    Configurations under `home-manager/users/<username>` are layered, extending each other incrementally. This approach allows for selecting the appropriate configuration complexity per host. If a user has a home-manager configuration, it conditionally imports host-specific settings from `home-manager/hosts/<hostname>` if it exists. The conditional import looks like this:
+
+    ```nix
+    home-manager.users."${user}" = let
+      optionalPaths = paths: builtins.filter (path: builtins.pathExists path) paths;
+    in {
+      imports = [ ... ] ++ optionalPaths [ ../../hosts/${config.networking.hostName}/default.nix ];
+    };
+    ```
+
+    Graphical layouts, or so-called "rices", are imported into host-specific home-manager configurations from `home-manager/hosts/.config`, and can be enabled on any host with a home-manager user.
+
+  </details>
+
+- **./nixosModules**
+
+  Here are my custom modules. You can use them by adding my flake as an input, and importing the spesific module in your host configuration.
+
+  <details> <summary>Example usage</summary>
+    &nbsp;
+
+    You can find all the modules and their respective names in my `flake.nix`.
+
+    ```nix
+    {
+      inputs = {
+        tupakkatapa.url = "github:tupakkatapa/nix-config";
+        nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+      };
+
+      outputs = { self, ... }@inputs: {
+        nixosConfigurations = {
+          yourhostname = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
+              ./configuration.nix
+              inputs.tupakkatapa.nixosModules.<name>
+              {
+                <name> = { ... };
+              }
+            ];
+          };
+        };
+      };
+    }
+    ```
+
+  </details>
+
+- **./packages**
+
+  My custom packages, these can be accessed similarly to the modules. Add my flake as an input and reference the package in your configuration.
+
+  <details> <summary>Example usage</summary>
+    &nbsp;
+
+    You can find all the packages and their respective names in my `flake.nix`.
+
+    ```nix
+    {
+      inputs = {
+        tupakkatapa.url = "github:tupakkatapa/nix-config";
+        nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+      };
+
+      outputs = { self, ... }@inputs: {
+        nixosConfigurations = {
+          yourhostname = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
+              ./configuration.nix
+              {
+                environment.systemPackages = [
+                  inputs.tupakkatapa.packages.<name>
+                ];
+              }
+            ];
+          };
+        };
+      };
+    }
+    ```
+
+- **./system**
+
+  This directory contains the very common configurations, such as settings in `withDefaults` and host formats, which are imported at the flake level.
+
+You may also find `.config` directories in various locations. These store shared configurations, which are used in context defined by their location.
 
 ## Resources
 
@@ -40,4 +136,3 @@ Must-read blog posts:
 ## License
 
 This repository is licensed under the GNU General Public License v3.0, **except for the blog content hosted under `nixosConfigurations/vladof/services/blog-contents`, which is all rights reserved.**
-
