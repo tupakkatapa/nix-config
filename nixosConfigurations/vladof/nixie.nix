@@ -27,21 +27,24 @@
     dataDir = "${appData}/nixie/netboot";
     logDir = "${appData}/nixie/logs";
 
-    file-server.menus = [
-      {
-        name = "kaakkuri-ephemeral-alpha";
-        flakeUrl = "github:ponkila/homestaking-infra\?ref=kaakkuri-ephemeral-alpha";
-        hosts = [ "kaakkuri-ephemeral-alpha" ];
-        timeout = 1;
-      }
-      {
-        name = "torgue";
-        flakeUrl = "github:tupakkatapa/nix-config";
-        hosts = [ "torgue" "tediore" "bandit" ];
-        default = "torgue";
-        timeout = 3;
-      }
-    ];
+    file-server = {
+      httpPort = 10951;
+      menus = [
+        {
+          name = "kaakkuri-ephemeral-alpha";
+          flakeUrl = "github:ponkila/homestaking-infra\?ref=kaakkuri-ephemeral-alpha";
+          hosts = [ "kaakkuri-ephemeral-alpha" ];
+          timeout = 1;
+        }
+        {
+          name = "torgue";
+          flakeUrl = "github:tupakkatapa/nix-config";
+          hosts = [ "torgue" "tediore" "bandit" ];
+          default = "torgue";
+          timeout = 3;
+        }
+      ];
+    };
 
     dhcp = {
       enable = true;
