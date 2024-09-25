@@ -25,6 +25,7 @@ in
       relativenumber = true;
       laststatus = 0;
       ruler = false;
+      scrolloff = 10;
     };
 
     colorschemes.base16 = {
@@ -83,6 +84,12 @@ in
         key = "Q";
         action = ":Bdelete<CR>";
       }
+      # Markdown preview
+      {
+        mode = "n";
+        key = "<leader>p";
+        action = ":MarkdownPreview<CR>";
+      }
     ];
 
     plugins = {
@@ -94,6 +101,7 @@ in
       fugitive.enable = true;
       hardtime.enable = true;
       bufdelete.enable = true;
+      markdown-preview.enable = true;
 
       # Tabline plugin
       bufferline = {
