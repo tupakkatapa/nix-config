@@ -1,7 +1,7 @@
 { dataDir
 , appData
 , ...
-}:{
+}: {
   # Support for cross compilation
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
@@ -17,16 +17,12 @@
   # Mount '/nix/.rw-store' and '/tmp' to disk
   services.nixRemount = {
     enable = true;
-    what = "${dataDir}/store";
+    where = "${dataDir}/store";
     type = "none";
     options = [ "bind" ];
   };
-  systemd.services.nix-remount = {
-    before = [ "local-fs.target" ];
-    after = [ "systemd-remount-fs.service" ];
-  };
 
-  nixie = {
+  services.nixie = {
     enable = true;
     dataDir = "${appData}/nixie/netboot";
     logDir = "${appData}/nixie/logs";

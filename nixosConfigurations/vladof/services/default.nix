@@ -221,6 +221,8 @@ in
       RootDirectoryStartOnly = lib.mkForce false;
       RootDirectory = lib.mkForce "";
     };
+    # Hotfix, nixRemount runs too late
+    after = [ "nix-remount.service" ];
   };
 
   # Lanraragi (3000)
@@ -241,6 +243,8 @@ in
       User = "lanraragi";
       Group = "lanraragi";
     };
+    # Hotfix, nixRemount runs too late
+    after = [ "nix-remount.service" ];
   };
   # Bind service directories to persistent disk
   fileSystems."/var/lib/private/lanraragi" = {
