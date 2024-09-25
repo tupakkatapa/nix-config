@@ -47,8 +47,8 @@ in
       jctl = "journalctl -p 3 -xb";
 
       # Nix
-      nfc = "nix flake check --impure";
-      buidl = "sudo nixos-rebuild test --flake path:$FLAKE_DIR#$(hostname)";
+      nfc = "nix flake check --impure --accept-flake-config";
+      buidl = "sudo nixos-rebuild test --flake path:$FLAKE_DIR#$(hostname) --accept-flake-config";
       gc = "nix-collect-garbage -d";
 
       # YouTube-DL
