@@ -19,33 +19,21 @@ _: {
   nixie = {
     enable = true;
 
-    file-server = {
-      # For unreferenced menus
-      defaultAddress = "192.168.1.8";
-      httpPort = 10951;
-
-      # Each of these objects represents one iPXE menu
-      menus = [
-        {
-          name = "minimal";
-          flakeUrl = "github:tupakkatapa/nix-config";
-          hosts = [ "bandit" ];
-        }
-        {
-          name = "kaakkuri-ephemeral-alpha";
-          flakeUrl = "github:ponkila/homestaking-infra\?ref=kaakkuri-ephemeral-alpha";
-          hosts = [ "kaakkuri-ephemeral-alpha" ];
-          timeout = 1;
-        }
-        {
-          name = "torgue";
-          flakeUrl = "github:tupakkatapa/nix-config";
-          hosts = [ "torgue" "tediore" "bandit" ];
-          default = "torgue";
-          timeout = 3;
-        }
-      ];
-    };
+    file-server.menus = [
+      {
+        name = "kaakkuri-ephemeral-alpha";
+        flakeUrl = "github:ponkila/homestaking-infra\?ref=kaakkuri-ephemeral-alpha";
+        hosts = [ "kaakkuri-ephemeral-alpha" ];
+        timeout = 1;
+      }
+      {
+        name = "torgue";
+        flakeUrl = "github:tupakkatapa/nix-config";
+        hosts = [ "torgue" "tediore" "bandit" ];
+        default = "torgue";
+        timeout = 3;
+      }
+    ];
 
     dhcp = {
       enable = true;
@@ -55,7 +43,6 @@ _: {
           serve = true;
           address = "192.168.1.8";
           interfaces = [ "enp0s31f6" ];
-          defaultMenu = "minimal";
           clients = [
             {
               menu = "torgue";
