@@ -67,6 +67,7 @@ in
           "zoom.maxPercent" = 90;
           "zoom.minPercent" = 90;
           "browser.startup.homepage" = "https://index.coditon.com";
+          "ui.key.menuAccessKeyFocuses" = false;
         }
         # derived from https://brainfucksec.github.io/firefox-hardening-guide
         // {
