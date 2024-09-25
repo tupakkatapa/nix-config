@@ -3,12 +3,13 @@
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) FONT THEME;
+  inherit (config.home.sessionVariables) FONT THEME TERMINAL;
   colors = (import ../../../colors.nix).${THEME};
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
   blueberry = "${pkgs.blueberry}/bin/blueberry";
+  bat = "${pkgs.bat}/bin/bat";
 in
 {
   home.packages = [ pkgs.font-awesome ];
@@ -29,7 +30,7 @@ in
 
       modules-left = [ "custom/hostname" "cpu" "memory" "disk" "custom/player" ];
 
-      modules-center = [ "hyprland/workspaces" ];
+      modules-center = [ "hyprland/workspaces" "custom/help" ];
 
       modules-right = [
         "custom/ping-sweep"
@@ -174,6 +175,13 @@ in
         return-type = "json";
         format = "  {}";
       };
+
+      "custom/help" = {
+        exec = "echo '?'";
+        on-click = ''
+          ${TERMINAL} -e sh -c "sed -r 's:/nix/store/[a-z0-9]+-[a-zA-Z0-9.-]+/bin/::g' ~/hypr_binds.txt | tr -s ' ' | ${bat} --wrap never"
+        '';
+      };
     };
     style = ''
       /* Global Styles */
@@ -232,6 +240,13 @@ in
       #bluetooth {
         padding: 0 15px;
         color: #${colors.base05};
+        border-radius: 20px;
+        background-color: #${colors.base00};
+      }
+
+      #custom-help {
+        padding: 0 15px;
+        color: #${colors.base02};
         border-radius: 20px;
         background-color: #${colors.base00};
       }

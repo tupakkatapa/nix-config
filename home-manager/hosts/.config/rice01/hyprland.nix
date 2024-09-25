@@ -34,7 +34,10 @@ in
     WLR_RENDERER_ALLOW_SOFTWARE = "1";
   };
 
-  home.file."wallpaper".source = ./wallpaper.png;
+  home.file = {
+    "wallpaper".source = ./wallpaper.png;
+    "hypr_binds.txt".text = lib.concatStringsSep "\n" config.wayland.windowManager.hyprland.settings.bind;
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;

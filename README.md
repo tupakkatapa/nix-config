@@ -14,7 +14,7 @@ These hosts are **truly declarative** by being **ephemeral**. Read more about ne
 
 - **./flake.nix**
 
-  Entry point for host configurations. These host configurations are initialized with `withDefaults` and/or `withExtra`. These provide basic configurations that are almost always wanted. Additional modules, main configuration, host format, and users are imported to each host individually.
+  Entry point for host configurations. These host configurations are initialized with `withDefaults` or `withExtra`. These provide basic configurations that are almost always wanted. Additional modules, main configuration, host format, and users are imported to each host individually.
 
 - **./nixosConfigurations**
 
@@ -27,7 +27,9 @@ These hosts are **truly declarative** by being **ephemeral**. Read more about ne
   <details> <summary>View details</summary>
     &nbsp;
 
-    Configurations under `home-manager/users/<username>` are layered, extending each other incrementally. This approach allows for selecting the appropriate configuration complexity per host. If a user has a home-manager configuration, it conditionally imports host-specific settings from `home-manager/hosts/<hostname>` if it exists. The conditional import looks like this:
+    Configurations under `home-manager/users/<username>` are layered, extending each other incrementally. This approach allows for selecting the appropriate configuration complexity per host. If a user has a home-manager configuration, it conditionally imports host-specific settings from `home-manager/hosts/<hostname>` if it exists.
+
+    The conditional import looks something like this:
 
     ```nix
     home-manager.users."${user}" = let
@@ -37,7 +39,7 @@ These hosts are **truly declarative** by being **ephemeral**. Read more about ne
     };
     ```
 
-    Graphical layouts, or so-called "rices", are imported into host-specific home-manager configurations from `home-manager/hosts/.config`, and can be enabled on any host with a home-manager user.
+    Host-specific home-manager configurations involve enabling certain graphical applications, making the graphical environment more user-friendly. Additionally, a separate graphical layout, or "rice", is imported into the host-specific home-manager configurations from `home-manager/hosts/.config`. These configurations are designed to be modular, allowing them to be enabled on any host for any user, provided the user has home-manager installed. Users can specify environmental variables via `home.sessionVariables` to change the color theme and default apps, such as `THEME`, `BROWSER`, `TERMINAL`, and `FILEMANAGER`. The rice will adapt to these values.
 
   </details>
 
@@ -112,7 +114,7 @@ These hosts are **truly declarative** by being **ephemeral**. Read more about ne
 
 - **./system**
 
-  This directory contains the very common configurations, such as settings in `withDefaults` and host formats, which are imported at the flake level.
+  This directory contains the very common configurations, such as settings in `withDefaults` and host formats, which are all imported at the flake level.
 
 You may also find `.config` directories in various locations. These store shared configurations, which are used in context defined by their location.
 
