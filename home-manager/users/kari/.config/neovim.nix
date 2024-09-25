@@ -102,6 +102,7 @@ in
       hardtime.enable = true;
       bufdelete.enable = true;
       markdown-preview.enable = true;
+      web-devicons.enable = true;
 
       # Tabline plugin
       bufferline = {
