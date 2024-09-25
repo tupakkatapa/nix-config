@@ -11,6 +11,7 @@ let
   blueberry = "${pkgs.blueberry}/bin/blueberry";
 in
 {
+  home.packages = [ pkgs.font-awesome ];
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -31,7 +32,7 @@ in
       modules-center = [ "hyprland/workspaces" ];
 
       modules-right = [
-        # "hyprland/window"
+        "custom/ping-sweep"
         "tray"
         "pulseaudio"
         "bluetooth"
@@ -48,7 +49,7 @@ in
       };
 
       memory = {
-        format = "  {}%";
+        format = " {}%";
         format-alt = " {used:0.1f}G";
         interval = 5;
         max-length = 10;
@@ -75,15 +76,6 @@ in
         on-click = "${playerctl} play-pause";
       };
 
-      # "hyprland/window" = {
-      #   format = "{}";
-      #   "rewrite" = {
-      #     "" = "Desktop";
-      #     "(.*) — Mozilla Firefox"= "Mozilla Firefox";
-      #     "(.*) - (.*)$"= "$2";
-      #   };
-      # };
-
       "hyprland/workspaces" = {
         format = "{icon}";
         on_click = "activate";
@@ -97,15 +89,6 @@ in
           "7" = "7";
           "8" = "8";
           "9" = "9";
-          # "1" = "一";
-          # "2" = "二";
-          # "3" = "三";
-          # "4" = "四";
-          # "5" = "五";
-          # "6" = "六";
-          # "7" = "七";
-          # "8" = "八";
-          # "9" = "九";
         };
       };
 
@@ -172,6 +155,25 @@ in
       };
 
       tray = { spacing = 10; };
+
+      "custom/ping-sweep" = {
+        exec = ''
+          interface_name="enp3s0"
+          local_ip=$(${pkgs.iproute2}/bin/ip -4 addr show $interface_name | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+          ips=$(${pkgs.ping-sweep}/bin/ping-sweep -s 192.168.1.0/24)
+
+          # Filters
+          ips=$(echo "$ips" | grep -v "$local_ip")
+          # ips=$(echo "$ips" | grep -v "192.168.1.1")
+
+          # Format
+          ip_suffixes=$(echo "$ips" | sed 's/192\.168\.1\././' | sort -n)
+          echo '{"text": "'$ip_suffixes'"}'
+        '';
+        interval = 30;
+        return-type = "json";
+        format = "  {}";
+      };
     };
     style = ''
       /* Global Styles */
@@ -225,6 +227,7 @@ in
       #tray,
       #custom-player,
       #custom-hostname,
+      #custom-ping-sweep,
       #window,
       #bluetooth {
         padding: 0 15px;
