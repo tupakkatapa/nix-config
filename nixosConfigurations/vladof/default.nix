@@ -5,22 +5,25 @@
 }:
 let
   domain = "coditon.com";
-  appData = "/mnt/wd-red/appdata";
+
   user = "kari";
+  dataDir = "/mnt/wd-red";
+  appData = "${dataDir}/appdata";
+  secretData = "${dataDir}/secrets";
 
   # Inherit global stuff for imports
-  extendedArgs = { inherit pkgs lib config domain appData; };
+  extendedArgs = { inherit pkgs lib config domain dataDir appData; };
 in
 {
   imports = [
+    (import ./nixie.nix extendedArgs)
     (import ./services extendedArgs)
     ../.config/motd.nix
-    ./nixie.nix
   ];
 
   # Host SSH keys
   services.openssh.hostKeys = [{
-    path = "/mnt/wd-red/secrets/ssh/ssh_host_ed25519_key";
+    path = "${secretData}/ssh/ssh_host_ed25519_key";
     type = "ed25519";
   }];
 
@@ -88,7 +91,7 @@ in
       "sshd"
       "transmission"
     ];
-    home = "/mnt/wd-red/sftp";
+    home = "${dataDir}/sftp";
     homeMode = "770";
     openssh.authorizedKeys.keys = [
       # kari@torgue
@@ -110,16 +113,16 @@ in
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
     "d /mnt/boot          755 root root -"
-    "d /mnt/wd-red        755 root root -"
-    "d /mnt/wd-red/sftp   755 root root -"
-    "d /mnt/wd-red/store  755 root root -"
+    "d ${dataDir}         755 root root -"
+    "d ${dataDir}/sftp    755 root root -"
+    "d ${dataDir}/store   755 root root -"
 
     "d ${appData}         777 root root -"
     "d ${appData}/firefox 755 ${user} ${user} -"
   ];
 
   # Mount drives
-  fileSystems."/mnt/wd-red" = {
+  fileSystems."${dataDir}" = {
     device = "/dev/disk/by-uuid/a11f36c2-e601-4e6c-b8c2-136c4b07203e";
     fsType = "btrfs";
     # options = ["subvolid=420"];

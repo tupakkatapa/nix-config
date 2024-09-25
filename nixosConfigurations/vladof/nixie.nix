@@ -1,13 +1,23 @@
-_: {
+{ dataDir
+, appData
+, ...
+}:{
   # Support for cross compilation
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
   ];
 
+  # Create directories, these are persistent
+  systemd.tmpfiles.rules = [
+    "d ${appData}/nixie          755 root root -"
+    "d ${appData}/nixie/netboot  755 root root -"
+    "d ${appData}/nixie/logs     755 root root -"
+  ];
+
   # Mount '/nix/.rw-store' and '/tmp' to disk
   services.nixRemount = {
     enable = true;
-    what = "/mnt/wd-red/store";
+    what = "${dataDir}/store";
     type = "none";
     options = [ "bind" ];
   };
@@ -18,6 +28,8 @@ _: {
 
   nixie = {
     enable = true;
+    dataDir = "${appData}/nixie/netboot";
+    logDir = "${appData}/nixie/logs";
 
     file-server.menus = [
       {

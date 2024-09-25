@@ -2,6 +2,7 @@
 , lib
 , config
 , domain
+, dataDir
 , appData
 , ...
 }:
@@ -204,8 +205,8 @@ in
     home = "${appData}/transmission";
     settings = {
       umask = 0;
-      download-dir = "/mnt/wd-red/sftp/dnld";
-      incomplete-dir = "/mnt/wd-red/sftp/dnld/.incomplete";
+      download-dir = "${dataDir}/sftp/dnld";
+      incomplete-dir = "${dataDir}/sftp/dnld/.incomplete";
       download-queue-enabled = false;
       rpc-authentication-required = false;
       rpc-bind-address = "127.0.0.1";
@@ -247,7 +248,7 @@ in
     options = [ "bind" ];
   };
   fileSystems."/var/lib/private/lanraragi/content" = {
-    device = "/mnt/wd-red/sftp/media/books/lanraragi";
+    device = "${dataDir}/sftp/media/books/lanraragi";
     options = [ "bind" ];
   };
 

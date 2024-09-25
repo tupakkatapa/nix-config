@@ -13,7 +13,7 @@ in
   }];
 
   # Mount drives
-  fileSystems."/mnt/860" = {
+  fileSystems."${dataDir}" = {
     device = "/dev/disk/by-uuid/20cfc618-e1e9-476e-984e-55326b3b5ca7";
     fsType = "ext4";
     neededForBoot = true;
