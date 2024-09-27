@@ -1,4 +1,5 @@
 { lib
+, pkgs
 , config
 , ...
 }: {
@@ -59,4 +60,13 @@
 
   # OpenRGB
   services.hardware.openrgb.enable = true;
+  boot.kernelParams = [ "acpi_enforce_resources=lax" ];
+  boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
+  hardware.i2c.enable = true;
+
+  # System packages
+  environment.systemPackages = with pkgs; [
+    i2c-tools
+    liquidctl
+  ];
 }
