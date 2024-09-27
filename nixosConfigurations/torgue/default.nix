@@ -59,14 +59,22 @@
   musnix.enable = true;
 
   # OpenRGB
-  services.hardware.openrgb.enable = true;
-  boot.kernelParams = [ "acpi_enforce_resources=lax" ];
+  systemd.services.openrgb = {
+    description = "OpenRGB Daemon";
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.openrgb}/bin/openrgb --server";
+      Restart = "on-failure";
+    };
+  };
+  services.udev.packages = [ pkgs.openrgb-with-all-plugins ];
+  # You must load the i2c-dev module along with the correct i2c driver for your motherboard.
+  # This is usually i2c-piix4 for AMD systems and i2c-i801 for Intel systems.
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
-  hardware.i2c.enable = true;
 
   # System packages
   environment.systemPackages = with pkgs; [
-    i2c-tools
+    openrgb-with-all-plugins
     liquidctl
   ];
 }
