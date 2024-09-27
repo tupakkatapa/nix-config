@@ -32,6 +32,7 @@ in
     "d ${appData}/guitarix       755 ${user} ${user} -"
     "d ${appData}/plexamp        755 ${user} ${user} -"
     "d ${appData}/sublime-merge  755 ${user} ${user} -"
+    "d ${appData}/openrgb        755 ${user} ${user} -"
 
     "d ${secretData}             700 ${user} ${user} -"
     "d ${secretData}/gnupg       700 ${user} ${user} -"
@@ -82,6 +83,10 @@ in
     "/home/${user}/nix-config" = {
       device = "${dataDir}/nix-config";
       options = [ "bind" "mode=777" ];
+    };
+    "/home/${user}/.config/OpenRGB" = {
+      device = "${appData}/openrgb";
+      options = [ "bind" "mode=755" ];
     };
   };
 }
