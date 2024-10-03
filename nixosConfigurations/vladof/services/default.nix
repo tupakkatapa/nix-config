@@ -137,7 +137,7 @@ in
       ];
   };
 
-  # Create directories, these are persistent
+  # Create directories, not necessarily persistent
   systemd.tmpfiles.rules =
     servicesTmpfileRules
     ++ [

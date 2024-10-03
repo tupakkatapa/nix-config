@@ -23,7 +23,7 @@ in
     fsType = "auto";
   };
 
-  # Create directories, these are persistent
+  # Create directories, not necessarily persistent
   systemd.tmpfiles.rules = [
     "d /home/${user}/.config     755 ${user} ${user} -"
 

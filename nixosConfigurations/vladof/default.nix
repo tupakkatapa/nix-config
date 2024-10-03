@@ -110,7 +110,7 @@ in
   };
   users.groups."sftp" = { };
 
-  # Create directories, these are persistent
+  # Create directories, not necessarily persistent
   systemd.tmpfiles.rules = [
     "d /mnt/boot          755 root root -"
     "d ${dataDir}         755 root root -"

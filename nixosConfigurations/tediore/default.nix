@@ -43,7 +43,7 @@ in
     options = [ "bind" "mode=755" ];
   };
 
-  # Create directories, these are persistent
+  # Create directories, not necessarily persistent
   systemd.tmpfiles.rules = [
     "d ${appData}                755 ${user} ${user} -"
     "d ${appData}/discord        755 ${user} ${user} -"
