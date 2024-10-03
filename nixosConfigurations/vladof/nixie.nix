@@ -1,5 +1,6 @@
 { dataDir
 , appData
+, secretData
 , ...
 }: {
   # Support for cross compilation
@@ -7,8 +8,18 @@
     "aarch64-linux"
   ];
 
-  # Create directories, these are persistent
+  # For compiling hosts that contain or are sourced from private inputs
+  # Potentially required by the 'nixie' or 'refindGenerate' modules
+  # You can remove this when Nixie is someday open-sourced
+  fileSystems."/root/.ssh" = {
+    device = "${secretData}/kari/ssh";
+    options = [ "bind" "mode=700" ];
+  };
+
+  # Create directories, not necessarily persistent
   systemd.tmpfiles.rules = [
+    "d /root/.ssh                700 root root -"
+
     "d ${appData}/nixie          755 root root -"
     "d ${appData}/nixie/netboot  755 root root -"
     "d ${appData}/nixie/logs     755 root root -"
@@ -22,13 +33,27 @@
     options = [ "bind" ];
   };
 
+  # Update the rEFInd boot manager
+  services.refindGenerate = {
+    enable = true;
+    where = "/dev/sda1";
+    flakeUrl = "github:tupakkatapa/nix-config";
+    hosts = [ "vladof" "bandit" ];
+    default = "vladof";
+    timeout = 1;
+  };
+
   services.nixie = {
     enable = true;
     dataDir = "${appData}/nixie/netboot";
     logDir = "${appData}/nixie/logs";
 
     file-server = {
-      httpPort = 10951;
+      https = {
+        enable = false;
+        address = "ipxe.coditon.com";
+      };
+
       menus = [
         {
           name = "kaakkuri-ephemeral-alpha";

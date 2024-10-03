@@ -232,6 +232,7 @@
               inputs.coditon-md.nixosModules.default
               # inputs.homestakeros-base.nixosModules.kexecTree
               inputs.nixie.nixosModules.nixRemount
+              inputs.nixie.nixosModules.refindGenerate
               inputs.nixie.nixosModules.nixie
               inputs.nixos-hardware.nixosModules.common-gpu-intel
             ];

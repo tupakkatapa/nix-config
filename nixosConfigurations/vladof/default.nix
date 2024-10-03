@@ -12,7 +12,7 @@ let
   secretData = "${dataDir}/secrets";
 
   # Inherit global stuff for imports
-  extendedArgs = { inherit pkgs lib config domain dataDir appData; };
+  extendedArgs = { inherit pkgs lib config domain dataDir appData secretData; };
 in
 {
   imports = [
