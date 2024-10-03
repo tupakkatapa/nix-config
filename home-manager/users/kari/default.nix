@@ -46,7 +46,7 @@ in
       guitarix
       # gxplugins-lv2
       # ladspaPlugins
-      # qjackctl
+      qjackctl
       # tuxguitar
 
       # High Quality Games
