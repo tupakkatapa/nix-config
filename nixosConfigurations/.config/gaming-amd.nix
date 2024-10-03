@@ -3,6 +3,10 @@
 , lib
 , ...
 }: {
+  imports = [
+    ./virtualization/wine.nix
+  ];
+
   # Enable clock and voltage adjustment for AMD GPU
   boot.kernelParams = [ "amdgpu.ppfeaturemask=0xffffffff" ];
 
@@ -19,10 +23,6 @@
     #     wineWowPackages.waylandFull
     #   ];
     # })
-
-    # Wine
-    winetricks
-    wineWowPackages.waylandFull
   ];
 
   # Steam and gaming settings
