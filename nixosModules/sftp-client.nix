@@ -60,12 +60,17 @@ in
           device = mount.what;
           fsType = "sshfs";
           options = [
+            "nodev"
+            "noatime"
+            "idmap=user"
             "IdentityFile=${mount.identityFile}"
             "ServerAliveInterval=15"
             "_netdev"
             "allow_other"
             "reconnect"
             "x-systemd.automount"
+            "x-systemd.idle-timeout=600"
+            "port=22"
           ];
         })
       cfg.mounts);
