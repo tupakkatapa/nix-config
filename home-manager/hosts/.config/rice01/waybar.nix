@@ -10,6 +10,8 @@ let
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
   blueberry = "${pkgs.blueberry}/bin/blueberry";
   bat = "${pkgs.bat}/bin/bat";
+  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  jq = "${pkgs.jq}/bin/jq";
 in
 {
   home.packages = [ pkgs.font-awesome ];
@@ -28,9 +30,20 @@ in
       layer = "top";
       spacing = 5;
 
-      modules-left = [ "custom/hostname" "cpu" "memory" "disk" "custom/player" ];
+      modules-left = [
+        # "custom/menu"
+        "custom/hostname"
+        "cpu"
+        "memory"
+        "disk"
+        "custom/player"
+      ];
 
-      modules-center = [ "hyprland/workspaces" "custom/help" ];
+      modules-center = [
+        # "custom/prev"
+        "hyprland/workspaces"
+        # "custom/next"
+      ];
 
       modules-right = [
         "custom/ping-sweep"
@@ -41,6 +54,7 @@ in
         "battery"
         "clock#date"
         "clock#time"
+        # "custom/help"
       ];
 
       cpu = {
@@ -176,8 +190,31 @@ in
         format = "  {}";
       };
 
+      "custom/prev" = {
+        format = "";
+        on-click = ''
+          current_ws=$(${hyprctl} monitors -j | ${jq} -r '.[0].activeWorkspace.id')
+          ${hyprctl} dispatch workspace $(( current_ws - 1 ))
+        '';
+      };
+
+      "custom/next" = {
+        format = "";
+        on-click = ''
+          current_ws=$(${hyprctl} monitors -j | ${jq} -r '.[0].activeWorkspace.id')
+          [ $(( current_ws + 1 )) -le 9 ] && ${hyprctl} dispatch workspace $(( current_ws + 1 ))
+        '';
+      };
+
+      "custom/menu" = {
+        format = "+";
+        on-click = ''
+          wofi
+        '';
+      };
+
       "custom/help" = {
-        exec = "echo '?'";
+        format = "?";
         on-click = ''
           ${TERMINAL} -e sh -c "sed -r 's:/nix/store/[a-z0-9]+-[a-zA-Z0-9.-]+/bin/::g' ~/hypr_binds.txt | tr -s ' ' | ${bat} --wrap never"
         '';
@@ -244,8 +281,11 @@ in
         background-color: #${colors.base00};
       }
 
+      #custom-menu,
+      #custom-prev,
+      #custom-next,
       #custom-help {
-        padding: 0 15px;
+        padding: 0 7px;
         color: #${colors.base02};
         border-radius: 20px;
         background-color: #${colors.base00};
