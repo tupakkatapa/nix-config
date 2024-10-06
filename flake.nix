@@ -36,6 +36,8 @@
     # Hyprland
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
     hyprwm-contrib.url = "github:hyprwm/contrib";
+    hyprland-plugins.url = "github:hyprwm/hyprland-plugins";
+    hyprland-plugins.inputs.nixpkgs.follows = "nixpkgs";
 
     # Genshin Impact
     aagl.inputs.nixpkgs.follows = "nixpkgs";
@@ -96,7 +98,7 @@
             inherit (inputs'.nixie.packages) pxe-generate;
             inherit (inputs'.agenix.packages) agenix;
             inherit (inputs'.mozid.packages) mozid;
-
+            inherit (inputs'.hyprland-plugins.packages) hyprbars;
           };
         in
         {

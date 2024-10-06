@@ -113,6 +113,10 @@ in
 {
   inherit mimes;
 
+  # Functions
+  rgb = color: "rgb(${lib.removePrefix "#" color})";
+  rgba = color: alpha: "rgba(${lib.removePrefix "#" color}${alpha})";
+
   # Function to create MIME associations
   createMimes = option:
     lib.listToAttrs (lib.flatten (lib.mapAttrsToList

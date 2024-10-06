@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
+    # ./hyprbars.nix
     # ./swayidle.nix
     # ./swaylock.nix
     # ./dunst.nix
