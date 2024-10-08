@@ -65,6 +65,11 @@ in
           }
         ];
     };
+  # Add SFTP host to root's known hosts for non-interactive authentication
+  services.openssh.knownHosts.vladof = {
+    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEJktZ00i+OxH4Azi1tLkwoYrJ0qo2RIZ5huzzK+g2w";
+    extraHostNames = [ "192.168.1.8" ];
+  };
 
   home-manager.users."${user}" = {
     # Extra SSH config
