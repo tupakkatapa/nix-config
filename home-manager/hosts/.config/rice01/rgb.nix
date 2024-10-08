@@ -1,7 +1,11 @@
 { pkgs, lib, ... }: {
   systemd.user.services.rgb =
     let
-      setColor = color: "${lib.getExe pkgs.openrgb} --client -c ${lib.removePrefix "#"color} -m static";
+      setColor = color: builtins.concatStringsSep " " [
+        "${lib.getExe pkgs.openrgb} --client"
+        "-d 'Corsair Lightning Node' -z 0 -s 18 -c ${lib.removePrefix "#"color} -m direct"
+        "-d 'Corsair Lightning Node' -z 1 -s 30 -c ${lib.removePrefix "#"color} -m direct"
+      ];
     in
     {
       Unit.Description = "Set RGB colors to match scheme. Requires openrgb.";

@@ -26,6 +26,7 @@ in
       "jackaudio"
       "libvirtd"
       "podman"
+      "plugdev"
       "rtkit"
       "sftp"
       "sshd"
