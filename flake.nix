@@ -173,7 +173,6 @@
             specialArgs = { inherit inputs outputs; };
             system = config.system or "x86_64-linux";
             modules = config.modules or [ ] ++ [
-              inputs.nix-extras.nixosModules.all
               ./system/base.nix
               ./system/nix-settings.nix
               ./system/openssh.nix
@@ -232,7 +231,7 @@
               ./nixosConfigurations/vladof
               ./system/kexec-tree.nix
               inputs.coditon-md.nixosModules.default
-              # inputs.homestakeros-base.nixosModules.kexecTree
+              inputs.nix-extras.nixosModules.common
               inputs.nixie.nixosModules.nixRemount
               inputs.nixie.nixosModules.refindGenerate
               inputs.nixie.nixosModules.nixie

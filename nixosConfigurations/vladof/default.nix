@@ -21,6 +21,9 @@ in
     ../.config/motd.nix
   ];
 
+  # Saiko's automatic gc
+  sys2x.gc.useDiskAware = true;
+
   # Host SSH keys
   services.openssh.hostKeys = [{
     path = "${secretData}/ssh/ssh_host_ed25519_key";
