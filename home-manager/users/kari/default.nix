@@ -1,5 +1,6 @@
 # https://github.com/hyper-dot/Arch-Hyprland
 { pkgs
+, config
 , ...
 }@args:
 let
@@ -13,6 +14,14 @@ in
   # Misc
   # programs.anime-game-launcher.enable = true;
 
+  # Secrets
+  age.secrets."openai-api-key" = {
+    file = ./secrets/openai-api-key.age;
+    mode = "600";
+    owner = user;
+    group = "users";
+  };
+
   # Home-manager config
   home-manager.users."${user}" = {
     # Default apps
@@ -24,11 +33,22 @@ in
     };
     xdg.configFile."mimeapps.list".force = true;
 
+    # Configure chatgpt-cli
+    home.sessionVariables = {
+      OPENAI_API_KEY = "$(cat ${config.age.secrets.openai-api-key.path})";
+    };
+    home.file.".chatgpt-cli/config.yaml".text = builtins.toJSON {
+      "name" = "openai";
+      "model" = "gpt-4o-mini ";
+      "track_token_usage" = true;
+    };
+
     home.packages = with pkgs; [
       monitor-adjust
 
       sublime-merge
       plexamp
+      chatgpt-cli
 
       # GUI
       # libreoffice-qt

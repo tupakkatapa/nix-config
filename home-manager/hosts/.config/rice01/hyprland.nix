@@ -177,6 +177,7 @@ in
 
         # Programs
         "SUPER, B, exec, ${BROWSER}"
+        "SUPER, G, exec, ${TERMINAL} -e sh -c 'chatgpt'"
         "SUPER, F, exec, ${TERMINAL} -e sh -c '${FILEMANAGER} ~'"
         "SUPER, V, exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~'"
 

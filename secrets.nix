@@ -15,6 +15,7 @@ in
   "${kariPath}/password.age".publicKeys = allSystems ++ [ kari ];
   "${kariPath}/wg-dinar.age".publicKeys = allSystems ++ [ kari ];
   "${kariPath}/yubico-u2f-keys.age".publicKeys = allSystems ++ [ kari ];
+  "${kariPath}/openai-api-key.age".publicKeys = allSystems ++ [ kari ];
 
   # Vladof
   "${vladofPath}/acme-cf-dns-token.age".publicKeys = [ kari vladof ];
