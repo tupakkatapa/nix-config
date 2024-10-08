@@ -2,83 +2,40 @@
 , pkgs
 , ...
 }: {
-  boot = {
-    kernelParams = [
-      "boot.shell_on_fail"
+  # Use the latest kernel
+  boot.kernelParams = [ "boot.shell_on_fail" ];
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
-      "mitigations=off"
-      "l1tf=off"
-      "mds=off"
-      "no_stf_barrier"
-      "noibpb"
-      "noibrs"
-      "nopti"
-      "nospec_store_bypass_disable"
-      "nospectre_v1"
-      "nospectre_v2"
-      "tsx=on"
-      "tsx_async_abort=off"
-    ];
-    kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-    tmp.tmpfsSize = "80%"; # default is 50%
+  # Set the console keymap
+  console.keyMap = "fi";
+
+  # Localization
+  time.timeZone = "Europe/Helsinki";
+  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.extraLocaleSettings = {
+    LC_TIME = "fi_FI.UTF-8";
   };
 
+  # Reset the user and group files on system activation
+  users.mutableUsers = false;
+
+  # Only generate an ed25519 key
+  services.openssh.hostKeys = lib.mkDefault [{
+    path = "/etc/ssh/ssh_host_ed25519_key";
+    type = "ed25519";
+  }];
+
+  # Essential packages
   environment.systemPackages = with pkgs; [
     btrfs-progs
     kexec-tools
     vim
   ];
 
-  # Set the console keymap and font
-  console.keyMap = "fi";
-  console.font = "${pkgs.terminus_font}/share/consolefonts/ter-c24n.psf.gz";
+  # Enable sudo
+  security.sudo.enable = true;
+  security.polkit.enable = true;
 
-  # Timezone, system version and locale
-  time.timeZone = "Europe/Helsinki";
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "fi_FI.UTF-8";
-    LC_IDENTIFICATION = "fi_FI.UTF-8";
-    LC_MEASUREMENT = "fi_FI.UTF-8";
-    LC_MONETARY = "fi_FI.UTF-8";
-    LC_NAME = "fi_FI.UTF-8";
-    LC_NUMERIC = "fi_FI.UTF-8";
-    LC_PAPER = "fi_FI.UTF-8";
-    LC_TELEPHONE = "fi_FI.UTF-8";
-    LC_TIME = "fi_FI.UTF-8";
-  };
-  time.hardwareClockInLocalTime = true;
-
-  # Saiko's automatic gc
-  sys2x.gc.useDiskAware = true;
-
-  # Reset the user and group files on system activation
-  users.mutableUsers = false;
-
-  # Reboots hanged system
-  systemd.watchdog.device = "/dev/watchdog";
-  systemd.watchdog.runtimeTime = "30s";
-
-  # Avoid locking up in low memory situations
-  services.earlyoom = {
-    enable = true;
-    freeMemThreshold = 5;
-  };
-
-  # Zram swap
-  zramSwap.enable = true;
-  zramSwap.algorithm = "zstd";
-  zramSwap.memoryPercent = 100;
-
-  # Public key
-  services.openssh.hostKeys = lib.mkDefault [{
-    path = "/etc/ssh/ssh_host_ed25519_key";
-    type = "ed25519";
-  }];
-
-  # Sudo
-  security = {
-    sudo.enable = true;
-    polkit.enable = true;
-  };
+  # System version
+  system.stateVersion = "24.05";
 }
