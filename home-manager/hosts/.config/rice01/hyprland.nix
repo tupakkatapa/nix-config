@@ -179,7 +179,7 @@ in
         "SUPER, B, exec, ${BROWSER}"
         "SUPER, G, exec, ${TERMINAL} -e sh -c 'chatgpt'"
         "SUPER, F, exec, ${TERMINAL} -e sh -c '${FILEMANAGER} ~'"
-        "SUPER, V, exec, [tile]${TERMINAL} -e sh -c '${EDITOR} ~'"
+        "SUPER, V, exec, ${TERMINAL} -e sh -c '${EDITOR} ~'"
 
         # Misc
         "${mod} SHIFT, R, exec, hyprctl reload && notify-send \"Hyprland reloaded\""
@@ -272,6 +272,7 @@ in
         "workspace 4 silent, discord"
 
         # Floats a window
+        "float, title:Bitwarden Password Manager"
         "float, LosslessCut"
         "float, Lxappearance"
         "float, Rofi"

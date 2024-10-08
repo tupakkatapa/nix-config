@@ -31,11 +31,4 @@
     kexec-tools
     vim
   ];
-
-  # Enable sudo
-  security.sudo.enable = true;
-  security.polkit.enable = true;
-
-  # System version
-  system.stateVersion = "24.05";
 }

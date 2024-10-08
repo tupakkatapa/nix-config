@@ -58,6 +58,10 @@ in
   };
   hardware.graphics.enable = true;
 
+  # Enable blobs
+  hardware.enableRedistributableFirmware = true;
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
   # Bind firefox directory to preserve cookies and such
   fileSystems."/home/${user}/.mozilla" = {
     device = "${appData}/firefox";

@@ -1,4 +1,6 @@
 { pkgs
+, config
+, lib
 , ...
 }: {
   imports = [
@@ -50,6 +52,7 @@
 
   # Firmware blobs
   hardware.enableRedistributableFirmware = true;
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # Enable OpenGL drivers
   hardware.graphics.enable = true;
