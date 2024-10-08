@@ -126,15 +126,6 @@
 
           # Development shell -> 'nix develop' or 'direnv allow'
           devenv.shells.default = {
-            packages = with pkgs; [
-              ssh-to-age
-              pxe-generate
-              nix-tree
-              agenix
-              mozid
-              lkddb-filter
-              pinit
-            ];
             env = {
               NIX_CONFIG = ''
                 accept-flake-config = true
@@ -142,13 +133,9 @@
                 warn-dirty = false
               '';
             };
-            pre-commit.hooks = {
-              rustfmt.enable = false;
-              shellcheck.enable = true;
-              treefmt = {
-                enable = true;
-                package = config.treefmt.build.wrapper;
-              };
+            pre-commit.hooks.treefmt = {
+              enable = true;
+              package = config.treefmt.build.wrapper;
             };
             # Workaround for https://github.com/cachix/devenv/issues/760
             containers = pkgs.lib.mkForce { };
