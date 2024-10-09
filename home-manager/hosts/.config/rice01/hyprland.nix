@@ -177,9 +177,9 @@ in
 
         # Programs
         "SUPER, B, exec, ${BROWSER}"
-        "SUPER, G, exec, ${TERMINAL} -e sh -c 'chatgpt'"
-        "SUPER, F, exec, ${TERMINAL} -e sh -c '${FILEMANAGER} ~'"
-        "SUPER, V, exec, ${TERMINAL} -e sh -c '${EDITOR} ~'"
+        "SUPER, G, exec, ${TERMINAL} -e $SHELL -c 'chatgpt -d'"
+        "SUPER, F, exec, ${TERMINAL} -e $SHELL -c '${FILEMANAGER} ~'"
+        "SUPER, V, exec, ${TERMINAL} -e $SHELL -c '${EDITOR} ~'"
 
         # Misc
         "${mod} SHIFT, R, exec, hyprctl reload && notify-send \"Hyprland reloaded\""
