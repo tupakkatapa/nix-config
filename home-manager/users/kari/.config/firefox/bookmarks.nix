@@ -483,6 +483,22 @@
         name = "Kansalliskirjasto";
         url = "https://digi.kansalliskirjasto.fi/etusivu";
       }
+      {
+        name = "CroxyProxy";
+        url = "https://www.croxyproxy.com/";
+      }
+      {
+        name = "Spaceship";
+        url = "https://www.spaceship.com/";
+      }
+      {
+        name = "Domaincompare";
+        url = "https://www.domaincompare.io/";
+      }
+      # {
+      #   name = "";
+      #   url = "";
+      # }
     ];
   }
 ]
