@@ -19,6 +19,7 @@ in
     (import ./nixie.nix extendedArgs)
     (import ./services extendedArgs)
     ../.config/motd.nix
+    ../.config/pipewire.nix
   ];
 
   # Saiko's automatic gc
@@ -29,9 +30,6 @@ in
     path = "${secretData}/ssh/ssh_host_ed25519_key";
     type = "ed25519";
   }];
-
-  # Audio
-  hardware.pulseaudio.enable = true;
 
   # Autologin for 'kari'
   services.getty.autologinUser = user;
@@ -56,7 +54,6 @@ in
     wants = [ "network-online.target" ];
     after = [ "network-online.target" ];
   };
-  hardware.graphics.enable = true;
 
   # Enable blobs
   hardware.enableRedistributableFirmware = true;
