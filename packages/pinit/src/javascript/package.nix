@@ -1,6 +1,6 @@
 { pkgs }:
 pkgs.mkYarnPackage {
-  name = "foo";
+  name = "foobar";
   version = "0.1.0";
 
   src = ./.;

@@ -79,12 +79,13 @@
         }:
         let
           packages = {
-            "tupakkatapa-utils" = pkgs.callPackage ./packages/tupakkatapa-utils { };
+            "tt-utils" = pkgs.callPackage ./packages/tt-utils { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
             "ping-sweep" = pkgs.callPackage ./packages/ping-sweep { };
             "pipewire-out-switcher" = pkgs.callPackage ./packages/pipewire-out-switcher { };
             "pinit" = pkgs.callPackage ./packages/pinit { };
             "musrand" = pkgs.callPackage ./packages/musrand { };
+            "2mp3" = pkgs.callPackage ./packages/2mp3 { };
             # Wofi scripts
             "dm-pipewire-out-switcher" = pkgs.callPackage ./packages/wofi-scripts/dm-pipewire-out-switcher { };
             "dm-quickfile" = pkgs.callPackage ./packages/wofi-scripts/dm-quickfile { };

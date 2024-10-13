@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+trap 'exit 0' SIGINT
+
+search_path=()
+
+# Display usage information
+display_usage() {
+  cat <<USAGE
+Usage: cathead [OPTIONS...] [FILES...]
+
+Description:
+  Display the contents of multiple files with headers.
+
+Arguments:
+  FILES
+    One or more files to display.
+
+Options:
+  -r, --recursive
+    Recursively search for files.
+
+  -h, --help
+    Show this help message
+
+Examples:
+  cathead file1.txt file2.txt
+
+USAGE
+}
+
+# Print file contents with headers
+print_file() {
+  GREEN='\033[0;32m'
+  RESET='\033[0m'
+  echo -e "${GREEN}==> $1 <==${RESET}"
+  cat "$1"
+  echo # newline
+}
+
+# Main function
+main() {
+  local recursive=false
+
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+    -r | --recursive)
+      recursive=true
+      shift
+      ;;
+    -h | --help)
+      display_usage
+      exit 0
+      ;;
+    *)
+      search_path+=("$1")
+      shift
+      ;;
+    esac
+  done
+
+  if [[ "${#search_path[@]}" -eq 0 ]]; then
+    search_path=(".")
+  fi
+
+  if [[ "$recursive" = true ]]; then
+    find "${search_path[@]}" -type f -print0 | while IFS= read -r -d '' file; do
+      print_file "$file"
+    done
+  else
+    for file in "${search_path[@]}"; do
+      if [[ -f "$file" ]]; then
+        print_file "$file"
+      fi
+    done
+  fi
+}
+
+main "$@"

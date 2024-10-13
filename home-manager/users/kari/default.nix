@@ -53,10 +53,12 @@ in
       # GUI
       # libreoffice-qt
       # chromium
+      nautilus
+      # rpi-imager
 
       # Media creation and editing
       # aseprite
-      # gimp-with-plugins
+      # gimp
       # kdenlive
       # video-trimmer
 

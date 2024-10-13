@@ -3,30 +3,26 @@
 set -o pipefail
 trap 'exit 0' SIGINT
 
-# Initial argument values
-name=""
+nix_command="nix shell"
 
 # Display usage information
 display_usage() {
   cat <<USAGE
-Usage: foobar [OPTIONS...] [ARGUMENT]
+Usage: ns [PACKAGE...]
 
 Description:
-  Brief description of what the script does
+  Launch nix-shell with the specified Nix packages.
 
 Arguments:
-  ARGUMENT
-    Description of any required or optional positional arguments
+  PACKAGE
+    One or more Nix packages.
 
 Options:
-  -n, --name VALUE
-    Description of the name option
-
   -h, --help
     Show this help message
 
 Examples:
-  foobar -n name
+  ns git curl
 
 USAGE
 }
@@ -35,19 +31,13 @@ USAGE
 parse_arguments() {
   while [[ $# -gt 0 ]]; do
     case $1 in
-    -n | --name)
-      name="$2"
-      shift 2
-      ;;
     -h | --help)
       display_usage
       exit 0
       ;;
     *)
-      echo "error: unknown option '$1'"
-      echo "try '--help' for more information."
-      display_usage
-      exit 1
+      nix_command+=" nixpkgs#$1"
+      shift
       ;;
     esac
   done
@@ -57,7 +47,12 @@ parse_arguments() {
 main() {
   parse_arguments "$@"
 
-  echo "Hello, $name!"
+  if [[ -z "$nix_command" ]]; then
+    display_usage
+    exit 1
+  fi
+
+  eval "$nix_command"
 }
 
 main "$@"

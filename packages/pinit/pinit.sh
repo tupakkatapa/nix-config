@@ -1,54 +1,204 @@
 #!/usr/bin/env bash
 
-create_project() {
-    local lang=$1
-    local project_name=$2
+set -o pipefail
+trap 'exit 0' SIGINT
 
-    # Create project directory with the given name
-    mkdir -p "${project_name}"
+# Initial argument values
+output_path="$(pwd)"
+project_name="$(basename "$(pwd)")"
+mode=""
+lang=""
 
-    # Languages without project files in ./src
-    if [ "${lang}" == "flutter" ]; then
-        git clone -b fix https://github.com/MikiVanousek/flutter-nix-hello-world.git "${project_name}"
-        rm -f "${project_name}/README.md"
-        # TODO: rename project within files
-    elif [ "${lang}" == "flake" ]; then
-        cd "${project_name}" || exit
-        nix flake init --template github:cachix/devenv#flake-parts
-        echo 'use flake . --impure --accept-flake-config' > "${project_name}/.envrc"
-    else
-        # Create .envrc and copy project files
-        echo 'use nix' > "${project_name}/.envrc"
-        cp -r src/"${lang}"/* "${project_name}/"
-    fi
+# Source directory, will be substituted in place during the build
+src_dir="src"
 
-    # Languages with project files in ./src
-    if [ "${lang}" == "rust" ]; then
-        (cd "${project_name}" && cargo init --name "${project_name}")
-    elif [ "${lang}" == "node" ]; then
-        (cd "${project_name}" && npm init -y && yarn install)
-    fi
+# Display usage information
+display_usage() {
+  cat <<USAGE
+Usage: pinit [OPTIONS...] LANG
 
-    # Automatically allow the .envrc file with direnv, if direnv is installed
-    if command -v direnv >/dev/null 2>&1; then
-        (cd "${project_name}" && direnv allow)
-    fi
+Description:
+  Initialize a project environment for a given language.
 
-    cd "${project_name}" || exit
+Arguments:
+  LANG
+    Supported languages: rust, python, bash, javascript
+    Shorthands: rs (for rust), py (for python), sh (for bash), js (for javascript)
+
+Options:
+  -o, --output VALUE
+    Output path for the project (default: current directory)
+
+  -n, --name VALUE
+    Name of the project (default: parent directory name)
+
+  --flake
+    Initialize a flake project with git
+
+  --package
+    Initialize a package project
+
+  -h, --help
+    Show this help message
+
+Examples:
+  pinit --output /path/to/dir --name my_rust_project rust --flake
+
+USAGE
 }
 
-if [ "$#" -ne 2 ]; then
-    echo "usage: $0 <lang> <project_name>"
-    echo "example: $0 flutter my_flutter_project"
-    exit 1
-fi
-
-case "$1" in
-    rust|python|bash|flake|flutter|node)
-        create_project "$1" "$2"
-        ;;
+# Parse and validate command line arguments
+parse_arguments() {
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+    -o|--output)
+      output_path="$2"
+      project_name="$(basename "$output_path")"  # Set project name to output dir name by default
+      shift 2
+      ;;
+    -n|--name)
+      project_name="$2"
+      shift 2
+      ;;
+    --flake|--package)
+      mode="$1"
+      shift
+      ;;
+    -h|--help)
+      display_usage
+      exit 0
+      ;;
     *)
-        echo "unsupported language. supported languages: rust, python, bash, flake, flutter, node"
+      if [ -z "$lang" ]; then
+        lang="$1"
+        # Normalize shorthand language names to full names
+        case "$lang" in
+          sh) lang="bash" ;;
+          py) lang="python" ;;
+          rs) lang="rust" ;;
+          js) lang="javascript" ;;
+        esac
+      else
+        echo "error: unknown option '$1'"
+        echo "try '--help' for more information"
+        display_usage
         exit 1
-        ;;
-esac
+      fi
+      shift
+      ;;
+    esac
+  done
+}
+
+# Create the project based on the provided language and mode
+create_project() {
+    # Create the output directory
+    mkdir -p "${output_path}"
+    chmod 755 "${output_path}"
+
+    # Handle mode-specific logic
+    case "$mode" in
+        --flake)
+            echo "status: setting up flake project in ${output_path}.."
+            if [ -d "${src_dir}/${lang}" ]; then
+
+                cp -vr "${src_dir}/${lang}/." "${output_path}/"
+                cp -v "${src_dir}/module.nix" "${output_path}/module.nix"
+                cp -v "${src_dir}/flake.nix" "${output_path}/flake.nix"
+
+                find "${output_path}" -type d -exec chmod 755 {} \;
+                find "${output_path}" -type f -exec chmod 644 {} \;
+
+                echo '.direnv/' >> "${output_path}/.gitignore"
+                echo 'use flake . --impure --accept-flake-config' > "${output_path}/.envrc"
+                chmod 644 "${output_path}/.gitignore" "${output_path}/.envrc"
+
+                # Substitute project name in flake.nix
+                if [ -f "${output_path}/flake.nix" ]; then
+                    sed -i "s/foobar/${project_name}/g" "${output_path}/flake.nix"
+                fi
+            else
+                echo "error: no source files available for ${lang}"
+                exit 1
+            fi
+            ;;
+        --package)
+            echo "status: setting up package project in ${output_path}..."
+            if [ -d "${src_dir}/${lang}" ]; then
+
+                cp -vr "${src_dir}/${lang}/." "${output_path}/"
+
+                find "${output_path}" -type d -exec chmod 755 {} \;
+                find "${output_path}" -type f -exec chmod 644 {} \;
+
+                echo 'use nix' > "${output_path}/.envrc"
+                chmod 644 "${output_path}/.envrc"
+
+                # Substitute project name in default.nix
+                if [ -f "${output_path}/package.nix" ]; then
+                    mv "${output_path}/package.nix" "${output_path}/default.nix"
+                    sed -i "s/foobar/${project_name}/g" "${output_path}/default.nix"
+                fi
+            else
+                echo "error: no source files available for ${lang}"
+                exit 1
+            fi
+            ;;
+        *)
+            echo "error: invalid mode; use --flake or --package"
+            exit 1
+            ;;
+    esac
+
+    # Set permissions for directories (755) and files (644)
+    find "${output_path}" -type d -exec chmod 755 {} \;
+    find "${output_path}" -type f -exec chmod 644 {} \;
+
+    # Initialize the project based on the language
+    if [ "${lang}" == "rust" ]; then
+        cargo init --name "${project_name}" "${output_path}" --vcs "none"
+        ( cd "${output_path}" && cargo build )
+    elif [ "${lang}" == "javascript" ]; then
+        ( cd "${output_path}" && npm init -y && yarn install )
+    fi
+
+    # Automatically allow the .envrc file if direnv is installed
+    if command -v direnv >/dev/null 2>&1; then
+        direnv allow "${output_path}"
+    fi
+
+    # Initialize a git repository at the end if --flake is used
+    if [ "$mode" == "--flake" ]; then
+        nix flake lock path:"${output_path}"
+        git init "${output_path}" --initial-branch=main
+        git -C "${output_path}" add -A
+        git -C "${output_path}" commit -m "init"
+    fi
+}
+
+# Main function
+main() {
+  # Parse arguments
+  parse_arguments "$@"
+
+  # Validate language
+  if [ -z "$lang" ]; then
+      echo "error: no language specified"
+      display_usage
+      exit 1
+  fi
+
+  # Supported languages
+  case "$lang" in
+      rust|python|bash|javascript)
+          create_project
+          ;;
+      *)
+          echo "error: unsupported language '${lang}'"
+          echo "supported languages: rust, python, bash, javascript"
+          exit 1
+          ;;
+  esac
+}
+
+main "$@"

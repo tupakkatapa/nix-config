@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# Script to wrap 'du' command
-
-du -Lhc --max-depth=0 ./*

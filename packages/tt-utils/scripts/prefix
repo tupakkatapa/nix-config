@@ -3,51 +3,43 @@
 set -o pipefail
 trap 'exit 0' SIGINT
 
-# Initial argument values
-name=""
-
 # Display usage information
 display_usage() {
   cat <<USAGE
-Usage: foobar [OPTIONS...] [ARGUMENT]
+Usage: prefix COMMAND
 
 Description:
-  Brief description of what the script does
+  Prefix output with color-coded labels for stdout and stderr.
 
 Arguments:
-  ARGUMENT
-    Description of any required or optional positional arguments
+  COMMAND
+    The command to run.
 
 Options:
-  -n, --name VALUE
-    Description of the name option
-
   -h, --help
     Show this help message
 
 Examples:
-  foobar -n name
+  prefix ls -l
 
 USAGE
 }
 
 # Parse and validate command line arguments
 parse_arguments() {
+  if [[ $# -eq 0 ]]; then
+    display_usage
+    exit 1
+  fi
+
   while [[ $# -gt 0 ]]; do
     case $1 in
-    -n | --name)
-      name="$2"
-      shift 2
-      ;;
     -h | --help)
       display_usage
       exit 0
       ;;
     *)
-      echo "error: unknown option '$1'"
-      echo "try '--help' for more information."
-      display_usage
-      exit 1
+      break
       ;;
     esac
   done
@@ -57,7 +49,15 @@ parse_arguments() {
 main() {
   parse_arguments "$@"
 
-  echo "Hello, $name!"
+  RED='\033[0;31m'
+  GREEN='\033[0;32m'
+  RESET='\033[0m'
+
+  {
+    {
+      "$@"
+    } 2>&3 | sed "s/^/$(echo -e "${GREEN}STDOUT:${RESET}") /"
+  } 3>&1 1>&2 | sed "s/^/$(echo -e "${RED}STDERR:${RESET}") /"
 }
 
 main "$@"

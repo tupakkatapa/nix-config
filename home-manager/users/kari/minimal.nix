@@ -108,7 +108,7 @@ in
     };
 
     home.packages = with pkgs; [
-      tupakkatapa-utils
+      tt-utils
       ping-sweep
       eza
     ];

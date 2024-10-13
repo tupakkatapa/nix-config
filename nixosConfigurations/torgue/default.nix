@@ -6,6 +6,8 @@
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
+    # ../.config/virtualization/podman.nix
+    # ../.config/virtualization/wine.nix
     ./ephemeral.nix
   ];
 

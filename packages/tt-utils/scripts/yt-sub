@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+trap 'exit 0' SIGINT
+
+youtube_url=""
+
+# Display usage information
+display_usage() {
+  cat <<USAGE
+Usage: yt-sub YOUTUBE_URL
+
+Description:
+  Download and print the transcript of a YouTube video.
+
+Arguments:
+  YOUTUBE_URL
+    The URL of the YouTube video.
+
+Options:
+  -h, --help
+    Show this help message
+
+Examples:
+  yt-sub https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+USAGE
+}
+
+# Parse and validate command line arguments
+parse_arguments() {
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+    -h | --help)
+      display_usage
+      exit 0
+      ;;
+    *)
+      youtube_url="$1"
+      shift
+      ;;
+    esac
+  done
+}
+
+# Main function
+main() {
+  parse_arguments "$@"
+
+  if [[ -z "$youtube_url" ]]; then
+    display_usage
+    exit 1
+  fi
+
+  temp_dir=$(mktemp -d)
+  cd "$temp_dir" || exit 1
+
+  # Download the subtitles quietly
+  yt-dlp --skip-download --write-auto-sub "$youtube_url" &>/dev/null
+
+  # Process the downloaded VTT file(s)
+  for vtt_file in *.vtt; do
+    if [[ -f "$vtt_file" ]]; then
+      sed '1,/^$/d' "$vtt_file" |
+      sed 's/<[^>]*>//g' |
+      awk -F. 'NR%4==1{printf "%s ", $1} NR%4==3' |
+      awk 'NF>1'
+    else
+      echo "No subtitles downloaded."
+      break
+    fi
+  done
+
+  # Cleanup and return
+  cd - &>/dev/null || exit 1
+  rm -rf "$temp_dir"
+}
+
+main "$@"
+

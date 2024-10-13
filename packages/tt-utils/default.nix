@@ -3,22 +3,45 @@
 ,
 }:
 pkgs.stdenv.mkDerivation rec {
-  pname = "tupakkatapa-utils";
+  pname = "tt-utils";
   version = "0.1";
   src = ./.;
 
-  buildInputs = with pkgs; [ ]; # Add dependencies here
+  buildInputs = with pkgs; [
+    coreutils # various
+    gawk # yt-sub, git-ffwd-update
+    git # git-ffwd-update
+    nix # ns
+    gnused # yt-sub, prefix
+    zstd # raidgrep
+    parallel # raidgrep
+    curl # filemon
+    libnotify # filemon
+    yt-dlp # yt-sub
+  ];
 
   nativeBuildInputs = [ pkgs.makeWrapper ];
 
   # List of scripts to be installed
-  scripts = [ "cathead" "prefix" "rmc" "ns" "rpg" "lsd" "git-ffwd-update" ];
+  scripts = [
+    "cathead"
+    "prefix"
+    "rmc"
+    "ns"
+    "rpg"
+    "lsd"
+    "git-ffwd-update"
+    "myip"
+    "filemon"
+    "raidgrep"
+    "yt-sub"
+  ];
 
   installPhase = ''
     mkdir -p $out/bin
 
     ${lib.concatMapStrings (name: ''
-        cp ${src}/${name} $out/bin/${name}
+        cp ${src}/scripts/${name} $out/bin/${name}
         chmod +x $out/bin/${name}
         wrapProgram $out/bin/${name} \
           --prefix PATH : ${lib.makeBinPath buildInputs}

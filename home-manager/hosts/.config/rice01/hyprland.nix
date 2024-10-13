@@ -192,7 +192,7 @@ in
         "${mod}, F,     togglefloating"
         "${mod}, P,     pin"
         "${mod}, Q,     killactive"
-        "${mod}, Space, fullscreen, 1"
+        "${mod}, Space, fullscreen"
 
         # Moves the focus in a direction
         "${mod}, H, movefocus, l"
