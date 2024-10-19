@@ -1,6 +1,5 @@
 { pkgs
 , lib
-,
 }:
 let
   packageName = "2mp3";

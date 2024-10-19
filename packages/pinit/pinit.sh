@@ -6,7 +6,7 @@ trap 'exit 0' SIGINT
 # Initial argument values
 output_path="$(pwd)"
 project_name="$(basename "$(pwd)")"
-mode=""
+mode="package"  # Set default mode to "package"
 lang=""
 
 # Source directory, will be substituted in place during the build
@@ -32,17 +32,15 @@ Options:
   -n, --name VALUE
     Name of the project (default: parent directory name)
 
-  --flake
-    Initialize a flake project with git
-
-  --package
-    Initialize a package project
+  -m, --mode VALUE
+    Mode of project initialization (default: package)
+    Supported modes: package, flake
 
   -h, --help
     Show this help message
 
 Examples:
-  pinit --output /path/to/dir --name my_rust_project rust --flake
+  pinit --output /path/to/dir --name my_rust_project rust --mode flake
 
 USAGE
 }
@@ -60,9 +58,9 @@ parse_arguments() {
       project_name="$2"
       shift 2
       ;;
-    --flake|--package)
-      mode="$1"
-      shift
+    -m|--mode)
+      mode="$2"
+      shift 2
       ;;
     -h|--help)
       display_usage
@@ -96,9 +94,31 @@ create_project() {
     mkdir -p "${output_path}"
     chmod 755 "${output_path}"
 
-    # Handle mode-specific logic
     case "$mode" in
-        --flake)
+        package)
+            echo "status: setting up package project in ${output_path}..."
+            if [ -d "${src_dir}/${lang}" ]; then
+
+                cp -vr "${src_dir}/${lang}/." "${output_path}/"
+
+                find "${output_path}" -type d -exec chmod 755 {} \;
+                find "${output_path}" -type f -exec chmod 644 {} \;
+
+                echo 'use nix' > "${output_path}/.envrc"
+                chmod 644 "${output_path}/.envrc"
+
+                # Rename to default.nix and substitute project name in it
+                if [ -f "${output_path}/package.nix" ]; then
+                    mv "${output_path}/package.nix" "${output_path}/default.nix"
+                    sed -i "s|./package.nix|./default.nix|g" "${output_path}/shell.nix"
+                    sed -i "s/foobar/${project_name}/g" "${output_path}/default.nix"
+                fi
+            else
+                echo "error: no source files available for ${lang}"
+                exit 1
+            fi
+            ;;
+        flake)
             echo "status: setting up flake project in ${output_path}.."
             if [ -d "${src_dir}/${lang}" ]; then
 
@@ -122,30 +142,8 @@ create_project() {
                 exit 1
             fi
             ;;
-        --package)
-            echo "status: setting up package project in ${output_path}..."
-            if [ -d "${src_dir}/${lang}" ]; then
-
-                cp -vr "${src_dir}/${lang}/." "${output_path}/"
-
-                find "${output_path}" -type d -exec chmod 755 {} \;
-                find "${output_path}" -type f -exec chmod 644 {} \;
-
-                echo 'use nix' > "${output_path}/.envrc"
-                chmod 644 "${output_path}/.envrc"
-
-                # Substitute project name in default.nix
-                if [ -f "${output_path}/package.nix" ]; then
-                    mv "${output_path}/package.nix" "${output_path}/default.nix"
-                    sed -i "s/foobar/${project_name}/g" "${output_path}/default.nix"
-                fi
-            else
-                echo "error: no source files available for ${lang}"
-                exit 1
-            fi
-            ;;
         *)
-            echo "error: invalid mode; use --flake or --package"
+            echo "error: invalid mode; supported modes are package, flake"
             exit 1
             ;;
     esac
@@ -167,8 +165,8 @@ create_project() {
         direnv allow "${output_path}"
     fi
 
-    # Initialize a git repository at the end if --flake is used
-    if [ "$mode" == "--flake" ]; then
+    # Initialize a git repository at the end if flake mode is used
+    if [ "$mode" == "flake" ]; then
         nix flake lock path:"${output_path}"
         git init "${output_path}" --initial-branch=main
         git -C "${output_path}" add -A

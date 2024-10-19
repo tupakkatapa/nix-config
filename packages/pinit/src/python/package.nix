@@ -1,6 +1,5 @@
 { pkgs
 , lib
-,
 }:
 let
   packageName = "foobar";
@@ -10,7 +9,9 @@ pkgs.stdenv.mkDerivation rec {
   src = ./.;
 
   buildInputs = with pkgs; [
-    pkgs.python3
+    (python3.withPackages (ps: with ps; [
+      # python packages
+    ]))
     # other deps
   ];
 

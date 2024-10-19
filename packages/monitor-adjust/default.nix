@@ -1,6 +1,5 @@
 { pkgs
 , lib
-,
 }:
 pkgs.stdenv.mkDerivation rec {
   name = "monitor-adjust";

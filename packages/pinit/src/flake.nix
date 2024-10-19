@@ -1,7 +1,7 @@
 {
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
@@ -33,7 +33,7 @@
           overlayAttrs = packages;
 
           # Development shell -> 'nix develop' or 'direnv allow'
-          devShells.default = pkgs.callPackage ./shell.nix {};
+          devShells.default = pkgs.callPackage ./shell.nix { inherit pkgs; };
 
           # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
           packages = packages // { default = packages.foobar; };

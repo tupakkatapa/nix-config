@@ -2,8 +2,10 @@
 pkgs.mkShell {
   buildInputs = with pkgs; [
     rustc
+    rust-analyzer
+    rustfmt
+    clippy
     cargo
-    # other deps
   ];
 
   shellHook = ''
