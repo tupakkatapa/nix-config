@@ -57,7 +57,7 @@
       menus = [
         {
           name = "kaakkuri-ephemeral-alpha";
-          flakeUrl = "github:ponkila/homestaking-infra\?ref=kaakkuri-ephemeral-alpha";
+          flakeUrl = "github:ponkila/homestaking-infra\?ref=jesse/kaakkuri-mainnet";
           hosts = [ "kaakkuri-ephemeral-alpha" ];
           timeout = 1;
         }
