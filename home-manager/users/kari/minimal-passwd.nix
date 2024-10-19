@@ -89,6 +89,11 @@ in
           hostname = "192.168.1.8";
           extraOptions."StrictHostKeyChecking" = "no";
         };
+        "node2" = {
+          proxyJump = "core@192.168.1.25";
+          hostname = "node2.simple";
+          user = "core";
+        };
       };
       forwardAgent = true;
       addKeysToAgent = "yes";
