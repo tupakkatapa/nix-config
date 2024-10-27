@@ -41,8 +41,12 @@ in
         action = "P";
       }
       {
-        key = "x";
-        action = ''"_x'';
+        key = "d";
+        action = "\"_d";
+      }
+      {
+        key = "dd";
+        action = "\"_dd";
       }
       # Git status
       {
