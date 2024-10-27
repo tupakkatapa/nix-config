@@ -9,7 +9,7 @@ display_usage() {
 Usage: lsd
 
 Description:
-  Show disk usage for files and directories in the current directory.
+  Show disk usage for files and directories in the current directory, sorted by size.
 
 Options:
   -h, --help
@@ -37,7 +37,7 @@ main() {
     esac
   done
 
-  du -Lhc --max-depth=0 ./*
+  du -Lhc --max-depth=0 ./* | sort -h
 }
 
 main "$@"
