@@ -248,6 +248,55 @@
             name = "rEFInd Boot Manager";
             url = "http://www.rodsbooks.com/refind/index.html";
           }
+          {
+            name = "ethereum";
+            bookmarks = [
+              {
+                name = "Prysm CLI";
+                url = "https://docs.prylabs.network/docs/prysm-usage/parameters";
+              }
+              {
+                name = "Reth CLI";
+                url = "https://reth.rs/cli/reth/node.html";
+              }
+              {
+                name = "Nimbus CLI";
+                url = "https://nimbus.guide/options.html";
+              }
+              {
+                name = "Teku CLI";
+                url = "https://docs.teku.consensys.io/reference/cli";
+              }
+              {
+                name = "Lighthouse CLI";
+                url = "https://lighthouse-book.sigmaprime.io/api-bn.html";
+              }
+              {
+                name = "MEV-Boost CLI";
+                url = "https://github.com/flashbots/mev-boost#mev-boost-cli-arguments";
+              }
+              {
+                name = "Besu CLI";
+                url = "https://besu.hyperledger.org/stable/public-networks/reference/cli/options";
+              }
+              {
+                name = "Nethermind CLI";
+                url = "https://docs.nethermind.io/nethermind/ethereum-client/configuration";
+              }
+              {
+                name = "Geth CLI";
+                url = "https://geth.ethereum.org/docs/fundamentals/command-line-options";
+              }
+              {
+                name = "Erigon CLI";
+                url = "https://erigon.gitbook.io/erigon/advanced-usage/command-line-options";
+              }
+              {
+                name = "SSV node";
+                url = "https://docs.ssv.network/run-a-node/operator-node/installation#create-configuration-file";
+              }
+            ];
+          }
         ];
       }
       {
