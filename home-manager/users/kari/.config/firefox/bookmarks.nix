@@ -450,6 +450,10 @@
             name = "Jofaboard";
             url = "https://jofaboard.com/";
           }
+          {
+            name = "4chan";
+            url = "https://www.4chan.org/";
+          }
         ];
       }
       {
