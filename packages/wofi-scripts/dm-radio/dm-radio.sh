@@ -4,11 +4,12 @@
 DMENU="wofi --dmenu -w 1"
 DMRADIOVOLUME="30"
 VIDEO=false
+RADIO_STATIONS_FILE="@STATIONS_FILE@"
 
 # Display usage information
 display_usage() {
   cat <<USAGE
-Usage: dm-radio [OPTIONS] <path_to_stations_json>
+Usage: dm-radio [OPTIONS]
 
 Description:
   Opens an interactive menu to select and play radio stations from a specified JSON file.
@@ -33,23 +34,12 @@ parse_arguments() {
       exit 0
       ;;
     *)
-      if [[ -n $1 ]] && [[ ! $1 =~ ^- ]]; then
-        RADIO_STATIONS_FILE="$1"
-        shift
-      else
-        echo "Unknown option: $1"
-        display_usage
-        exit 1
-      fi
+      echo "Unknown option: $1"
+      display_usage
+      exit 1
       ;;
     esac
   done
-
-  if [[ -z $RADIO_STATIONS_FILE ]]; then
-    echo "Error: You must specify the path to the stations JSON file."
-    display_usage
-    exit 1
-  fi
 }
 
 parse_arguments "$@"

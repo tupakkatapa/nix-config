@@ -27,7 +27,7 @@ pkgs.stdenv.mkDerivation rec {
 
     # Substitute the src directory path with the actual path
     substituteInPlace $out/bin/${packageName} \
-      --replace "src_dir=\"src\"" "src_dir=\"$src/src\""
+      --replace "@SRC_DIR@" "$src/src"
 
     wrapProgram $out/bin/${packageName} \
       --prefix PATH : ${lib.makeBinPath buildInputs}

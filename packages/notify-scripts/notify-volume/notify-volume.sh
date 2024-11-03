@@ -8,24 +8,23 @@ pamixer "$@"
 volume=$(pamixer --get-volume)
 muted=$(pamixer --get-mute)
 
-# Choose the content
+# Choose the icon and message
 if [ "$muted" == "true" ]; then
-  icon="audio-volume-muted-blocking-panel.svg"
+  icon="@ICON_MUTED@"
   message="Muted"
 else
   if [ "$volume" -ge 66 ]; then
-    icon="audio-volume-high-panel.svg"
+    icon="@ICON_HIGH@"
   elif [ "$volume" -ge 33 ]; then
-    icon="audio-volume-medium-panel.svg"
+    icon="@ICON_MEDIUM@"
   else
-    icon="audio-volume-low-panel.svg"
+    icon="@ICON_LOW@"
   fi
   message="${volume}%"
 fi
 
 # Send the notification
-notify-send -i $icon \
+notify-send -i "$icon" \
   "Volume" \
   "$message" \
   -h string:x-canonical-private-synchronous:anything
-

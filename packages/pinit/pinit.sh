@@ -10,7 +10,7 @@ mode="package"  # Set default mode to "package"
 lang=""
 
 # Source directory, will be substituted in place during the build
-src_dir="src"
+src_dir="@SRC_DIR@"
 
 # Display usage information
 display_usage() {

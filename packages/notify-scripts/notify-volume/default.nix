@@ -1,6 +1,5 @@
 { pkgs
 , lib
-,
 }:
 pkgs.stdenv.mkDerivation rec {
   name = "notify-volume";
@@ -23,10 +22,10 @@ pkgs.stdenv.mkDerivation rec {
 
     # Substitute icon paths in the script
     substituteInPlace $out/bin/${name} \
-      --replace "audio-volume-high-panel.svg" "$out/share/icons/audio-volume-high-panel.svg" \
-      --replace "audio-volume-medium-panel.svg" "$out/share/icons/audio-volume-medium-panel.svg" \
-      --replace "audio-volume-low-panel.svg" "$out/share/icons/audio-volume-low-panel.svg" \
-      --replace "audio-volume-muted-blocking-panel.svg" "$out/share/icons/audio-volume-muted-blocking-panel.svg"
+      --replace "@ICON_HIGH@" "$out/share/icons/audio-volume-high-panel.svg" \
+      --replace "@ICON_MEDIUM@" "$out/share/icons/audio-volume-medium-panel.svg" \
+      --replace "@ICON_LOW@" "$out/share/icons/audio-volume-low-panel.svg" \
+      --replace "@ICON_MUTED@" "$out/share/icons/audio-volume-muted-blocking-panel.svg"
 
     wrapProgram $out/bin/${name} \
       --prefix PATH : ${lib.makeBinPath buildInputs}

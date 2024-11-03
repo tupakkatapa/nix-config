@@ -1,6 +1,5 @@
 { pkgs
 , lib
-,
 }:
 pkgs.stdenv.mkDerivation rec {
   name = "notify-brightness";
@@ -23,8 +22,9 @@ pkgs.stdenv.mkDerivation rec {
     mkdir -p $out/share/icons
     cp $src/display-brightness-symbolic.svg $out/share/icons
 
+    # Substitute icon path in script
     substituteInPlace $out/bin/${name} \
-      --replace "display-brightness-symbolic.svg" "$out/share/icons/display-brightness-symbolic.svg"
+      --replace "@ICON_PATH@" "$out/share/icons/display-brightness-symbolic.svg"
 
     wrapProgram $out/bin/${name} \
       --prefix PATH : ${lib.makeBinPath buildInputs}

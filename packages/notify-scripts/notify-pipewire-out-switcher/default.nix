@@ -1,6 +1,5 @@
 { pkgs
 , lib
-,
 }:
 pkgs.stdenv.mkDerivation rec {
   name = "notify-pipewire-out-switcher";
@@ -25,9 +24,10 @@ pkgs.stdenv.mkDerivation rec {
     cp $src/audio-volume-high-panel.svg $out/share
     cp $src/devices.json $out/share
 
+    # Substitute placeholders with actual paths
     substituteInPlace $out/bin/${name} \
-      --replace "audio-volume-high-panel.svg" "$out/share/audio-volume-high-panel.svg" \
-      --replace "devices.json" "$out/share/devices.json"
+      --replace "@ICON_PATH@" "$out/share/audio-volume-high-panel.svg" \
+      --replace "@CONFIG_PATH@" "$out/share/devices.json"
 
     wrapProgram $out/bin/${name} \
       --prefix PATH : ${lib.makeBinPath buildInputs}
