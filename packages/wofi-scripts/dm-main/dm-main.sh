@@ -14,7 +14,7 @@ sqlite_params="-separator ^"
 # Function definitions
 fetch_bookmarks() {
   query="SELECT b.title, p.url FROM moz_bookmarks AS b LEFT JOIN moz_places AS p ON b.fk=p.id WHERE b.type=1 AND p.hidden=0 AND b.title IS NOT NULL"
-  $sqlite_path "$sqlite_params" "$places_backup" "$query" | \
+  $sqlite_path $sqlite_params "$places_backup" "$query" | \
   sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' | \
   awk -F'^' '{print ($1 == "" ? $2 : $1) " [" $2 "]"}'
 }
