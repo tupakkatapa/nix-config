@@ -1,0 +1,80 @@
+{
+  "shortcuts": [
+    {
+      "name": "Translate DeepL",
+      "shortcut": "dl",
+      "url": "https://www.deepl.com/translator#fi/en/%s"
+    },
+    {
+      "name": "Translate Google",
+      "shortcut": "gt",
+      "url": "https://translate.google.com/?sl=fi&tl=en&text=%s&op=translate"
+    },
+    {
+      "name": "Search Google",
+      "shortcut": "g",
+      "url": "https://www.google.com/search?q=%s"
+    },
+    {
+      "name": "Search DuckDuckGo",
+      "shortcut": "d",
+      "url": "https://duckduckgo.com/?q=%s"
+    },
+    {
+      "name": "GitHub Nix Code",
+      "shortcut": "ghn",
+      "url": "https://github.com/search?q=language%3Anix+%s&type=code"
+    },
+    {
+      "name": "GitHub Code",
+      "shortcut": "ghc",
+      "url": "https://github.com/search?q=%s&type=code"
+    },
+    {
+      "name": "GitHub Users",
+      "shortcut": "ghu",
+      "url": "https://github.com/search?q=%s&type=users"
+    },
+    {
+      "name": "GitHub Repo",
+      "shortcut": "ghr",
+      "url": "https://github.com/search?q=%s&type=repositories"
+    },
+    {
+      "name": "Search Crates",
+      "shortcut": "rs",
+      "url": "https://crates.io/search?q=%s"
+    },
+    {
+      "name": "Search Node",
+      "shortcut": "js",
+      "url": "https://www.npmjs.com/search?q=%s"
+    },
+    {
+      "name": "Search PyPi",
+      "shortcut": "py",
+      "url": "https://pypi.org/search/?q=%s"
+    },
+    {
+      "name": "NixOS Options",
+      "shortcut": "no",
+      "url": "https://search.nixos.org/options?channel=unstable&size=50&sort=relevance&type=packages&query=%s"
+    },
+    {
+      "name": "NixOS Packages",
+      "shortcut": "np",
+      "url": "https://search.nixos.org/packages?channel=unstable&size=50&sort=relevance&type=packages&query=%s"
+    },
+    {
+      "name": "YouTube",
+      "shortcut": "yt",
+      "url": "https://www.youtube.com/results?search_query=%s"
+    },
+    {
+      "name": "Google Maps",
+      "shortcut": "gm",
+      "url": "https://www.google.com/maps?q=%s"
+    }
+  ]
+}
+
