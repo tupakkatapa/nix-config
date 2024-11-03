@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Run pipewire-out-switcher and capture the output alias
-current_alias=$(pipewire-out switch @CONFIG_PATH@)
+current_alias=$(pipewire-out-switcher @CONFIG_PATH@)
 
 # Notify
 notify-send -i @ICON_PATH@ \
