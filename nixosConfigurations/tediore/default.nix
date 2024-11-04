@@ -1,4 +1,4 @@
-_:
+{ pkgs, ... }:
 let
   user = "core";
   dataDir = "/mnt/860";
@@ -15,6 +15,13 @@ in
 
   # OpenRGB
   services.hardware.openrgb.enable = true;
+
+  # High Quality Games
+  environment.systemPackages = with pkgs; [
+    osu-lazer
+    runelite
+  ];
+  programs.anime-game-launcher.enable = true;
 
   # Start sway
   environment.loginShellInit = ''
@@ -36,6 +43,18 @@ in
   };
   fileSystems."/home/${user}/.local/share/Steam" = {
     device = "${appData}/steam/install";
+    options = [ "bind" "mode=755" ];
+  };
+  fileSystems."/home/${user}/.local/share/anime-game-launcher" = {
+    device = "${dataDir}/games/anime-game-launcher";
+    options = [ "bind" "mode=755" ];
+  };
+  fileSystems."/home/${user}/.local/share/osu" = {
+    device = "${dataDir}/games/osu";
+    options = [ "bind" "mode=755" ];
+  };
+  fileSystems."/home/${user}/.runelite" = {
+    device = "${dataDir}/games/runelite";
     options = [ "bind" "mode=755" ];
   };
   fileSystems."/home/${user}/.config/discord" = {

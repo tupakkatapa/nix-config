@@ -11,9 +11,6 @@ in
   # This configuration extends the minimal-passwd and minimal-gui versions
   imports = [ ./minimal-passwd.nix ./minimal-gui.nix ];
 
-  # Misc
-  # programs.anime-game-launcher.enable = true;
-
   # Secrets
   age.secrets."openai-api-key" = {
     file = ./secrets/openai-api-key.age;
@@ -70,10 +67,6 @@ in
       # ladspaPlugins
       qjackctl
       # tuxguitar
-
-      # High Quality Games
-      # osu-lazer
-      # runelite
 
       # Networking
       wireguard-go

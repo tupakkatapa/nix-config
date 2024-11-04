@@ -4,7 +4,7 @@
 | :-:       |  :-:    | :-:          | :-:   | :-
 [maliwan](nixosConfigurations/maliwan/default.nix) | x86_64  | persistent | [kari](home-manager/users/kari/default.nix)                    | Intel Laptop, Hyprland
 [torgue](nixosConfigurations/torgue/default.nix)   | "       | netboot    | "                                                              | AMD Desktop, Hyprland, [screenshot](https://raw.githubusercontent.com/tupakkatapa/nix-config/main/nixosConfigurations/torgue/screenshot.png)
-[tediore](nixosConfigurations/tediore/default.nix) | "       | "          | [core](home-manager/users/core/default.nix)                    | Alternative OS for the same AMD Desktop as torgue, Sway
+[tediore](nixosConfigurations/tediore/default.nix) | "       | "          | [core](home-manager/users/core/default.nix)                    | Alternative gaming OS to torgue, Sway
 [bandit](nixosConfigurations/bandit/default.nix)   | "       | "          | [core (minimal)](home-manager/users/core/minimal.nix)          | Minimal for headless
 [vladof](nixosConfigurations/vladof/default.nix)   | "       | refind     | [kari (minimal-gui)](home-manager/users/kari/minimal-gui.nix)  | Homelab, Firefox kiosk + Netboot Server ([Nixie](https://github.com/majbacka-labs/nixos.fi))
 
