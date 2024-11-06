@@ -4,7 +4,7 @@
 , ...
 }: {
   imports = [
-    ./virtualization/wine.nix
+    # ./virtualization/wine.nix
   ];
 
   # Enable clock and voltage adjustment for AMD GPU

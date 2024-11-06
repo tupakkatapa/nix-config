@@ -1,11 +1,14 @@
 { lib
 , config
+, pkgs
 , ...
 }: {
   imports = [
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
+    ../.config/gaming-amd.nix
+    # ../.config/retroarch.nix
     # ../.config/virtualization/podman.nix
     # ../.config/virtualization/wine.nix
     ./ephemeral.nix
@@ -16,6 +19,13 @@
     amdvlk.enable = true;
     initrd.enable = true;
   };
+
+  # High quality games
+  environment.systemPackages = with pkgs; [
+    runelite
+    osu-lazer
+  ];
+  programs.anime-game-launcher.enable = true;
 
   # Enable blobs
   hardware.enableRedistributableFirmware = true;

@@ -151,7 +151,6 @@
               "bandit" = bandit.config.system.build.kexecTree;
               "vladof" = vladof.config.system.build.kexecTree;
               "torgue" = torgue.config.system.build.kexecTree;
-              "tediore" = tediore.config.system.build.kexecTree;
             })
             // packages;
         };
@@ -201,17 +200,8 @@
               ./home-manager/users/kari
               ./nixosConfigurations/torgue
               ./system/kexec-tree.nix
-              inputs.musnix.nixosModules.musnix
-              inputs.nixos-hardware.nixosModules.common-gpu-amd
-            ];
-          };
-
-          tediore = withExtra {
-            modules = [
-              ./home-manager/users/core
-              ./nixosConfigurations/tediore
-              ./system/kexec-tree.nix
               inputs.aagl.nixosModules.default
+              inputs.musnix.nixosModules.musnix
               inputs.nixos-hardware.nixosModules.common-gpu-amd
             ];
           };
@@ -250,7 +240,6 @@
             {
               "maliwan" = nixosSystem (withDefaults maliwan);
               "torgue" = nixosSystem (withDefaults torgue);
-              "tediore" = nixosSystem (withDefaults tediore);
               "vladof" = nixosSystem (withDefaults vladof);
               "bandit" = nixosSystem (withDefaults bandit);
             };
