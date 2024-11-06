@@ -12,6 +12,7 @@ in
       columns = 5;
       show = "drun";
       layer = "overlay";
+      insensitive = true;
       normal_window = true;
       prompt = " Search ... ";
       term = "${TERMINAL}";
