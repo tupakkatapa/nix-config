@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# wofi - flat list bookmarks, custom search shortcuts, and installed programs
+# wofi - flat list bookmarks, custom search shortcuts, installed programs, and power state commands
 
 profile_dir_name="personal"
 places_file="/home/$USER/.mozilla/firefox/${profile_dir_name}/places.sqlite"
@@ -39,14 +39,23 @@ fetch_shortcuts() {
   jq -r '.shortcuts[] | "\(.shortcut): \(.description) [shortcut]"' "$search_shortcuts_file" 2>/dev/null
 }
 
+fetch_power_state_commands() {
+  echo "Shutdown [power:shutdown]"
+  echo "Reboot [power:reboot]"
+  echo "Suspend [power:suspend]"
+  echo "Hibernate [power:hibernate]"
+  echo "Boot to BIOS/UEFI [power:firmware]"
+}
+
 # Run fetching functions in parallel
 bookmarks_output=$(fetch_bookmarks &)
 desktop_entries_output=$(fetch_desktop_entries &)
 shortcuts_output=$(fetch_shortcuts &)
+power_commands_output=$(fetch_power_state_commands &)
 wait
 
 # Combine and display entries
-selection=$( (echo "$bookmarks_output"; echo "$desktop_entries_output"; echo "$shortcuts_output") | sort -u | wofi --dmenu --prompt "Select a bookmark, app, or enter search shortcut")
+selection=$( (echo "$bookmarks_output"; echo "$desktop_entries_output"; echo "$shortcuts_output"; echo "$power_commands_output") | sort -u | wofi --dmenu --prompt "Select a bookmark, app, or enter search shortcut")
 
 # Handle selection
 if [[ "$selection" =~ ^([a-z]+):\ (.+) ]]; then
@@ -54,6 +63,14 @@ if [[ "$selection" =~ ^([a-z]+):\ (.+) ]]; then
   query="${BASH_REMATCH[2]}"
   url_template=$(jq -r ".shortcuts[] | select(.shortcut == \"$search_engine\") | .url" "$search_shortcuts_file")
   firefox "${url_template//%s/$query}" &
+elif [[ "$selection" =~ \[power:(.+)\]$ ]]; then
+  case "${BASH_REMATCH[1]}" in
+    shutdown) systemctl poweroff ;;
+    reboot) systemctl reboot ;;
+    suspend) systemctl suspend ;;
+    hibernate) systemctl hibernate ;;
+    firmware) systemctl reboot --firmware-setup ;;
+  esac
 elif [ -n "$selection" ]; then
   entry=$(echo "$selection" | awk -F'[][]' '{print $2}')
   if [[ "$entry" =~ ^run:(.+)$ ]]; then
