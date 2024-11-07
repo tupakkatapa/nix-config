@@ -96,6 +96,12 @@ in
         no_border_on_floating = "false";
       };
 
+      group = {
+        "col.border_active" = "rgb(${colors.base06})";
+        "col.border_inactive" = "rgb(${colors.base02})";
+        groupbar.font_size = 11;
+      };
+
       misc = {
         disable_hyprland_logo = "true";
         disable_splash_rendering = "true";
@@ -228,6 +234,7 @@ in
         # Grouped windows
         "${mod}, g,   togglegroup"
         "${mod}, tab, changegroupactive"
+        "${mod} SHIFT, g, moveoutofgroup, d"
 
         # workspaces
         "${mod}, x,       togglespecialworkspace"
