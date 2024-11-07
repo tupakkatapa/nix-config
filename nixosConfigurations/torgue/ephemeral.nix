@@ -47,6 +47,7 @@ in
     "d ${appData}/plexamp        755 ${user} ${user} -"
     "d ${appData}/sublime-merge  755 ${user} ${user} -"
     "d ${appData}/openrgb        755 ${user} ${user} -"
+    "d ${appData}/discord        755 ${user} ${user} -"
 
     # Games
     "d ${gameData}                      755 ${user} ${user} -"
@@ -90,6 +91,10 @@ in
     };
     "/home/${user}/.config/OpenRGB" = {
       device = "${appData}/openrgb";
+      options = [ "bind" "mode=755" ];
+    };
+    "/home/${user}/.config/discord" = {
+      device = "${appData}/discord";
       options = [ "bind" "mode=755" ];
     };
     # Games
