@@ -440,7 +440,7 @@
         bookmarks = [
           {
             name = "Ylilauta";
-            url = "https://ylilauta.org";
+            url = "https://ylilauta.org/thread/";
           }
           {
             name = "Ebinlauta";
