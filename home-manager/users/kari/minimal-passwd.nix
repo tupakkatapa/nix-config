@@ -14,6 +14,7 @@ in
     "password".file = ./secrets/password.age;
     "wg-dinar".file = ./secrets/wg-dinar.age;
     "wg-home".file = ./secrets/wg-home.age;
+    "wpa-psk".file = ./secrets/wpa-psk.age;
     "ed25519-sk" = {
       file = ./secrets/ed25519-sk.age;
       path = "/home/${user}/.ssh/id_ed25519_sk";
@@ -112,6 +113,14 @@ in
       enable = true;
       settings.default-key = "Tupakkatapa <jesse@ponkila.com>";
     };
+  };
+
+  # WPA PSK's
+  networking.wireless = {
+    networks = {
+      "OP9".pskRaw = "ext:psk_op9";
+    };
+    secretsFile = config.age.secrets.wpa-psk.path;
   };
 
   # Wireguard

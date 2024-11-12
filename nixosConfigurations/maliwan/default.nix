@@ -24,6 +24,7 @@ _: {
     hostName = "maliwan";
     firewall.enable = false;
     useDHCP = false;
+    wireless.enable = true;
   };
   systemd.network = {
     enable = true;
