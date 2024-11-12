@@ -30,11 +30,12 @@ _: {
     networks = {
       "10-wan" = {
         linkConfig.RequiredForOnline = "routable";
-        matchConfig.Name = [ "enp*" "wlan*" "wlp*" ];
+        matchConfig.Name = [ "enp2s0" "wlp3s0" ];
         networkConfig = {
           DHCP = "ipv4";
           IPv6AcceptRA = true;
         };
+        address = [ "192.168.1.6/24" ]; # static IP
       };
     };
   };

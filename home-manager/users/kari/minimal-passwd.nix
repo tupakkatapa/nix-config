@@ -13,6 +13,7 @@ in
   age.secrets = {
     "password".file = ./secrets/password.age;
     "wg-dinar".file = ./secrets/wg-dinar.age;
+    "wg-home".file = ./secrets/wg-home.age;
     "ed25519-sk" = {
       file = ./secrets/ed25519-sk.age;
       path = "/home/${user}/.ssh/id_ed25519_sk";
@@ -114,8 +115,56 @@ in
   };
 
   # Wireguard
-  networking.wg-quick.interfaces."wg0" = {
-    autostart = true;
-    configFile = config.age.secrets.wg-dinar.path;
+  systemd.network = {
+    netdevs = {
+      "99-home" = {
+        netdevConfig = {
+          Kind = "wireguard";
+          Name = "home";
+        };
+        wireguardConfig.PrivateKeyFile = config.age.secrets.wg-home.path;
+        wireguardPeers = [{
+          PublicKey = "UtZe3/06A4jT8BU8C4LhJZnZ+/vqKtw6S/RLScGgU14=";
+          AllowedIPs = [ "192.168.1.0/24" "172.16.16.0/24" ];
+          Endpoint = [ "coditon.com:51820" ];
+          PersistentKeepalive = 25;
+        }];
+      };
+      "99-dinar" = {
+        netdevConfig = {
+          Kind = "wireguard";
+          Name = "dinar";
+        };
+        wireguardConfig.PrivateKeyFile = config.age.secrets.wg-dinar.path;
+        wireguardPeers = [{
+          PublicKey = "s7XsWWxjl8zi6DTx4KkhjmI1jVseV9KVlc+cInFNyzE";
+          AllowedIPs = [ "192.168.100.0/24" ];
+          Endpoint = [ "coin.dinar.fi:51820" ];
+          PersistentKeepalive = 25;
+        }];
+      };
+    };
+    networks = {
+      "99-home" = {
+        matchConfig.name = "home";
+        address = [ "172.16.16.3/32" ];
+        linkConfig.ActivationPolicy = "manual";
+        routes = [{
+          Gateway = "172.16.16.1";
+          GatewayOnLink = true;
+          Destination = "172.16.16.0/24";
+        }];
+      };
+      "99-dinar" = {
+        matchConfig.name = "dinar";
+        address = [ "192.168.100.121/32" ];
+        linkConfig.ActivationPolicy = "manual";
+        routes = [{
+          Gateway = "192.168.100.1";
+          GatewayOnLink = true;
+          Destination = "192.168.100.0/24";
+        }];
+      };
+    };
   };
 }
