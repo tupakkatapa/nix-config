@@ -222,7 +222,7 @@
 
           maliwan = withExtra {
             modules = [
-              ./home-manager/users/kari/minimal-gui.nix
+              ./home-manager/users/kari
               ./nixosConfigurations/maliwan
               inputs.nixos-hardware.nixosModules.common-gpu-intel
             ];

@@ -1,14 +1,13 @@
-{ pkgs
-, config
-, lib
-, ...
-}: {
+_: {
   imports = [
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
     ./hardware-configuration.nix
   ];
+
+  # Set local flake path to be able to be referenced
+  environment.variables.FLAKE_DIR = "/home/kari/nix-config";
 
   # Bootloader for x86_64-linux / aarch64-linux
   boot.loader.systemd-boot = {
@@ -17,43 +16,27 @@
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # https://github.com/NixOS/nixpkgs/issues/143365
-  security.pam.services.swaylock = { };
-
   # https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;
 
-  # Basic font packages
-  fonts.packages = with pkgs; [
-    fira-code
-    fira-code-symbols
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
-  ];
-
-  # Enable GVfs service for file managers to work properly
-  services.gvfs.enable = true;
-
-  # Enable ADB for android development
-  programs.adb.enable = true;
-
-  # Enable sshfs package for mounting SSH drives
-  # https://nixos.org/manual/nixos/stable/#sec-sshfs-non-interactive
-  system.fsPackages = [ pkgs.sshfs ];
-
   # Connectivity
   networking = {
-    networkmanager.enable = true;
     hostName = "maliwan";
     firewall.enable = false;
+    useDHCP = false;
+  };
+  systemd.network = {
+    enable = true;
+    networks = {
+      "10-wan" = {
+        linkConfig.RequiredForOnline = "routable";
+        matchConfig.Name = [ "enp*" "wlan*" "wlp*" ];
+        networkConfig = {
+          DHCP = "ipv4";
+          IPv6AcceptRA = true;
+        };
+      };
+    };
   };
   hardware.bluetooth.enable = true;
-
-  # Firmware blobs
-  hardware.enableRedistributableFirmware = true;
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-  # Enable OpenGL drivers
-  hardware.graphics.enable = true;
 }

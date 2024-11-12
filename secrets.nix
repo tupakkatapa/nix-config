@@ -6,8 +6,9 @@ let
   # Systems
   torgue = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIEbmDddLZ2QyGJZWsTVcev4hlzrQFt19+HOLLV14H5B root@torgue";
   vladof = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEJktZ00i+OxH4Azi1tLkwoYrJ0qo2RIZ5huzzK+g2w root@vladof";
+  maliwan = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJcbYE9n5NE8EhxIrlR9tc4ZredoxvTPubQniNGQWH+s root@maliwan";
   vladofPath = "nixosConfigurations/vladof/secrets";
-  allSystems = [ torgue vladof ];
+  allSystems = [ torgue vladof maliwan ];
 in
 {
   # Kari
