@@ -151,7 +151,6 @@
               "bandit" = bandit.config.system.build.kexecTree;
               "vladof" = vladof.config.system.build.kexecTree;
               "torgue" = torgue.config.system.build.kexecTree;
-              "maliwan" = maliwan.config.system.build.kexecTree;
             })
             // packages;
         };
@@ -223,9 +222,8 @@
 
           maliwan = withExtra {
             modules = [
-              ./home-manager/users/kari
+              ./home-manager/users/kari/minimal-gui.nix
               ./nixosConfigurations/maliwan
-              ./system/kexec-tree.nix
               inputs.nixos-hardware.nixosModules.common-gpu-intel
             ];
           };

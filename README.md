@@ -2,7 +2,7 @@
 
 | Hostname | Architecture | Deploy | Users | Details
 | :-:       |  :-:    | :-:          | :-:   | :-
-[maliwan](nixosConfigurations/maliwan/default.nix) | x86_64  | refind     | [kari](home-manager/users/kari/default.nix)                    | Intel Laptop, Hyprland
+[maliwan](nixosConfigurations/maliwan/default.nix) | x86_64  | persistent | [kari](home-manager/users/kari/default.nix)                    | Intel Laptop, Hyprland
 [torgue](nixosConfigurations/torgue/default.nix)   | "       | netboot    | "                                                              | AMD Desktop, Hyprland, [screenshot](https://raw.githubusercontent.com/tupakkatapa/nix-config/main/nixosConfigurations/torgue/screenshot.png)
 [bandit](nixosConfigurations/bandit/default.nix)   | "       | "          | [core (minimal)](home-manager/users/core/minimal.nix)          | Minimal for headless
 [vladof](nixosConfigurations/vladof/default.nix)   | "       | refind     | [kari (minimal-gui)](home-manager/users/kari/minimal-gui.nix)  | Homelab, Firefox kiosk + Netboot Server ([Nixie](https://github.com/majbacka-labs/nixos.fi))
