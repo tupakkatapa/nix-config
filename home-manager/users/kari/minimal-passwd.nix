@@ -12,8 +12,14 @@ in
   # Secrets
   age.secrets = {
     "password".file = ./secrets/password.age;
-    "wg-dinar".file = ./secrets/wg-dinar.age;
-    "wg-home".file = ./secrets/wg-home.age;
+    "wg-dinar" = {
+      file = ./secrets/wg-dinar.age;
+      owner = "systemd-network";
+    };
+    "wg-home" = {
+      file = ./secrets/wg-home.age;
+      owner = "systemd-network";
+    };
     "wpa-psk".file = ./secrets/wpa-psk.age;
     "ed25519-sk" = {
       file = ./secrets/ed25519-sk.age;
