@@ -6,9 +6,7 @@ pkgs.stdenv.mkDerivation rec {
   src = ./.;
 
   buildInputs = with pkgs; [
-    # monitor-adjust
     brightnessctl
-    ddcutil
     gawk
     notify
   ];
