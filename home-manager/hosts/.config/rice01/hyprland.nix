@@ -164,8 +164,8 @@ in
       # Key bindings
       bind = [
         # Brightness
-        ",XF86MonBrightnessUp,   exec, ${notify.brightness} -b +5"
-        ",XF86MonBrightnessDown, exec, ${notify.brightness} -b -5"
+        ",XF86MonBrightnessUp,   exec, ${notify.brightness} set +5%"
+        ",XF86MonBrightnessDown, exec, ${notify.brightness} set 5%-"
 
         # Volume
         ",XF86AudioRaiseVolume, exec, ${notify.volume} -i 5"

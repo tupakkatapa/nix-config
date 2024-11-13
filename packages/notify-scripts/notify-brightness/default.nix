@@ -6,10 +6,11 @@ pkgs.stdenv.mkDerivation rec {
   src = ./.;
 
   buildInputs = with pkgs; [
-    notify
+    # monitor-adjust
+    brightnessctl
     ddcutil
-    monitor-adjust
     gawk
+    notify
   ];
 
   nativeBuildInputs = [ pkgs.makeWrapper ];
