@@ -161,7 +161,7 @@ in
     };
     networks = {
       "99-home" = {
-        matchConfig.name = "home";
+        matchConfig.Name = "home";
         address = [ "172.16.16.3/32" ];
         linkConfig.ActivationPolicy = "manual";
         routes = [{
@@ -171,7 +171,7 @@ in
         }];
       };
       "99-dinar" = {
-        matchConfig.name = "dinar";
+        matchConfig.Name = "dinar";
         address = [ "192.168.100.121/32" ];
         linkConfig.ActivationPolicy = "manual";
         routes = [{
