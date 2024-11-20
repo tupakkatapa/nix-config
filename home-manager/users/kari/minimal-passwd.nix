@@ -152,7 +152,7 @@ in
         };
         wireguardConfig.PrivateKeyFile = config.age.secrets.wg-dinar.path;
         wireguardPeers = [{
-          PublicKey = "s7XsWWxjl8zi6DTx4KkhjmI1jVseV9KVlc+cInFNyzE";
+          PublicKey = "s7XsWWxjl8zi6DTx4KkhjmI1jVseV9KVlc+cInFNyzE=";
           AllowedIPs = [ "192.168.100.0/24" ];
           Endpoint = [ "coin.dinar.fi:51820" ];
           PersistentKeepalive = 25;
