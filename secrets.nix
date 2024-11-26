@@ -22,6 +22,6 @@ in
 
   # Vladof
   "${vladofPath}/acme-cf-dns-token.age".publicKeys = [ kari vladof ];
-  "${vladofPath}/lanraragi-admin-password.age".publicKeys = [ kari vladof ];
   "${vladofPath}/vaultwarden-env.age".publicKeys = [ kari vladof ];
+  "${vladofPath}/kavita-token.age".publicKeys = [ kari vladof ];
 }

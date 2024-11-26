@@ -48,6 +48,11 @@ let
       port = 53654;
       private = true;
     };
+    kavita = {
+      addr = "lib.${domain}";
+      port = 37600;
+      private = true;
+    };
   };
 
   # Define the derivation for blog contents
@@ -153,15 +158,12 @@ in
   # Secrets
   age.secrets = {
     "vaultwarden-env".file = ../secrets/vaultwarden-env.age;
-    "lanraragi-admin-password" = {
-      file = ../secrets/lanraragi-admin-password.age;
-      mode = "444";
-    };
     "acme-cf-dns-token" = {
       file = ../secrets/acme-cf-dns-token.age;
       group = "acme";
       mode = "440";
     };
+    "kavita-token".file = ../secrets/kavita-token.age;
   };
 
   # IPFS seed for Jhvst
@@ -232,38 +234,6 @@ in
     requires = [ "nix-remount.service" ];
   };
 
-  # Lanraragi (3000)
-  services.lanraragi = {
-    enable = true;
-    passwordFile = config.age.secrets.lanraragi-admin-password.path;
-  };
-  # Create user/group
-  users.users.lanraragi = {
-    group = "lanraragi";
-    home = "${appData}/lanraragi";
-    isSystemUser = true;
-  };
-  users.groups.lanraragi = { };
-  # Append to systemd service
-  systemd.services.lanraragi = {
-    serviceConfig = {
-      User = "lanraragi";
-      Group = "lanraragi";
-    };
-    # Hotfix, nixRemount runs too late
-    after = [ "nix-remount.service" ];
-    requires = [ "nix-remount.service" ];
-  };
-  # Bind service directories to persistent disk
-  fileSystems."/var/lib/private/lanraragi" = {
-    device = "${appData}/lanraragi";
-    options = [ "bind" ];
-  };
-  fileSystems."/var/lib/private/lanraragi/content" = {
-    device = "${dataDir}/sftp/media/books/lanraragi";
-    options = [ "bind" ];
-  };
-
   # Vaultwarden
   # https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
   services.vaultwarden = {
@@ -311,5 +281,13 @@ in
   services.plex = {
     enable = true;
     dataDir = "${appData}/plex";
+  };
+
+  # Kavita
+  services.kavita = {
+    enable = true;
+    dataDir = "${appData}/kavita";
+    tokenKeyFile = config.age.secrets.kavita-token.path;
+    settings.Port = servicesConfig.kavita.port;
   };
 }
