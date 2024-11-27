@@ -94,6 +94,18 @@ let
 
     pdf = [ "application/pdf" ];
 
+    ebook = [
+      "application/epub+zip"
+      "application/vnd.amazon.ebook"
+    ];
+
+    comic = [
+      "application/vnd.comicbook+rar"
+      "application/vnd.comicbook+zip"
+      "application/x-cbr"
+      "application/x-cbz"
+    ];
+
     text = [ "text/plain" ];
 
     video = [
