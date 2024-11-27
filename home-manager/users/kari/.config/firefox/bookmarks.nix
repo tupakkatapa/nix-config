@@ -501,12 +501,21 @@
         url = "https://wolt.com/fi/discovery";
       }
       {
-        name = "Outlook";
-        url = "https://outlook.live.com/mail";
-      }
-      {
-        name = "Protonmail";
-        url = "https://account.proton.me/mail";
+        name = "Email";
+        bookmarks = [
+          {
+            name = "Outlook";
+            url = "https://outlook.live.com/mail";
+          }
+          {
+            name = "Ponkila Mail";
+            url = "https://mail.ponkila.com/";
+          }
+          {
+            name = "Protonmail";
+            url = "https://account.proton.me/mail";
+          }
+        ];
       }
       {
         name = "Hetzner";
