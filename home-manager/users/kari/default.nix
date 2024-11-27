@@ -50,7 +50,7 @@ in
       # GUI
       # libreoffice-qt
       # chromium
-      nautilus
+      # nautilus
       # rpi-imager
 
       # Media creation and editing
