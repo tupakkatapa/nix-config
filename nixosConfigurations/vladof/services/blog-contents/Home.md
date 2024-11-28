@@ -11,8 +11,10 @@ Hello there! I'm Jesse, and I have booked this little corner of the world wide w
 
 ### Ready to Explore?
 
-  - 2024-03-27 - [Netbooting NixOS](./posts/Netbooting%20NixOS.md)
-  - 2024-03-01 - [My First Year as a Developer](./posts/My%20First%20Year%20as%20a%20Developer.md)
+  - 2024-11-28 - [Paint A Thing](./dreams/Paint%20A%20Thing.md) *(Dream)*
+  - 2024-04-04 - [Mango Cheesecake](./recipes/Mango%20Cheesecake.md) *(Recipe)*
+  - 2024-03-27 - [Netbooting NixOS](./posts/Netbooting%20NixOS.md) *(Post)*
+  - 2024-03-01 - [My First Year as a Developer](./posts/My%20First%20Year%20as%20a%20Developer.md) *(Post)*
 
 ### Check these out
 
