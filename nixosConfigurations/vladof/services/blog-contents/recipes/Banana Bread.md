@@ -17,11 +17,11 @@ This easy banana bread recipe is perfect for using up those overripe bananas tha
 - Butter: 75g (2.65 oz), melted
 - Baking soda: 1 tsp
 - Salt: 1/4 tsp
-- Sugar: 1.5 dl (0.63 cup)
+- Sugar: 1.5 dl (1/2 cup)
 - Eggs: 2
 - Vanilla sugar: 1 tsp
 - Cinnamon: 1 tsp
-- All-purpose flour: 3.5 dl (1.75 cups)
+- All-purpose flour: 3.5 dl (1.25 cups)
 
 ## Preparation
 1. Preheat the oven to 175°C (347°F).

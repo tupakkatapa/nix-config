@@ -14,7 +14,7 @@ A simple "mix everything" dish, perfect for those seeking something uncomplicate
 - Diced ham: 200g (7 oz)
 - Crème fraîche (garlic and herbs flavor): 200g (7 oz)
 - Onion: 1 medium
-- Cooking cream: 2dl (0.85 cup)
+- Cooking cream: 2dl (0.7 cup)
 - Basil & Black pepper
 
 ## Preparation

@@ -15,7 +15,7 @@ This was a viral food trend from 2019. I should try this with some meat; maybe y
 ## Ingredients
 - Penne pasta: 250g (8.8 oz)
 - Feta cheese: 200g (7 oz)
-- Olive oil: 1dl (1/2 cup)
+- Olive oil: 1dl (0.35 cup)
 - Red chili pepper: 1-2, to taste
 - Cherry tomatoes: 200g (7 oz)
 - Basil, Salt & Black pepper

@@ -6,7 +6,7 @@ date: "2024-04-10"
 
 ![](../assets/the_serpent_sauna.jpg)
 
-*Imagined 2023-09-25, Transcribed by AI*
+*Imagined 2023-09-25, transcribed by AI*
 
 ## Chapter 1: Departure Preparations
 

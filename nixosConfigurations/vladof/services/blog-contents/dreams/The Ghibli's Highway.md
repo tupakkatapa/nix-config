@@ -6,7 +6,7 @@ date: "2024-04-10"
 
 ![](../assets/the_ghiblis_highroad.jpg)
 
-*Imagined 2024-04-10, Transcribed by AI*
+*Imagined 2024-04-10, transcribed by AI*
 
 ## Chapter 1: The Unplanned Departure
 

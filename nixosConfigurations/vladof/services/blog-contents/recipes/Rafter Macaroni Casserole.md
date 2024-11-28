@@ -17,7 +17,7 @@ This is a beloved recipe in Finland, due to the "Koskenlaskija" (translates as R
 - Onion: 1 medium
 - Tomato paste: 3 tbsp
 - Oregano: 1 tbsp
-- Water: 1.5l (6 1/3 cups)
+- Water: 1.5l (5.3 cups)
 - Beef broth cubes: 2
 - Elbow macaroni: 400g (14 oz)
 - Processed cheese (strong): 150g (5.3 oz)
