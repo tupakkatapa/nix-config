@@ -42,6 +42,10 @@
             name = "Vaultwarden";
             url = "https://vault.coditon.com";
           }
+          {
+            name = "Kavita";
+            url = "https://lib.coditon.com";
+          }
         ];
       }
       {
@@ -126,7 +130,7 @@
               }
               {
                 name = "musmath";
-                url = "https://musmath.com/";
+                url = "https://www.musmath.com/tools/scale-lookup/bass-guitar";
               }
               {
                 name = "backtracks";
