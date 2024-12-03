@@ -28,11 +28,6 @@ let
       port = 8222;
       private = true;
     };
-    lanraragi = {
-      addr = "lanraragi.${domain}";
-      port = 3000;
-      private = true;
-    };
     plex = {
       addr = "plex.${domain}";
       port = 32400;
