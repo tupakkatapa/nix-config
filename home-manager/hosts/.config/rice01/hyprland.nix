@@ -111,15 +111,10 @@ in
       };
 
       decoration = {
-        "col.shadow" = "0x66000000";
         active_opacity = "1.0";
-        drop_shadow = "false";
         inactive_opacity = "1.0";
         rounding = "8";
-        shadow_ignore_window = "true";
-        shadow_offset = "0 0";
-        shadow_range = "0";
-        shadow_render_power = "2";
+        shadow.enabled = "false";
       };
 
       animations = {
@@ -143,7 +138,6 @@ in
       # Layouts
       dwindle = {
         force_split = "2"; # always split to the right
-        no_gaps_when_only = "false";
         preserve_split = "true";
         pseudotile = "true";
         split_width_multiplier = "2.0";
