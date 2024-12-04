@@ -76,49 +76,30 @@ in
       '';
 
     settings = {
+      monitor = ",preferred,auto,1";
+
       input = {
-        follow_mouse = "1";
         kb_layout = "fi";
         kb_options = "caps:escape";
-        repeat_delay = "300";
-        repeat_rate = "50";
-        sensitivity = "0"; # -1.0 - 1.0, 0 means no modification.
+        repeat_delay = 300;
+        repeat_rate = 50;
       };
-      monitor = ",preferred,auto,1";
 
       general = {
         "col.active_border" = "rgb(${colors.base06})";
         "col.inactive_border" = "rgb(${colors.base02})";
-        border_size = "2";
-        gaps_in = "5";
-        gaps_out = "5";
-        layout = "dwindle";
-        no_border_on_floating = "false";
-      };
-
-      group = {
-        "col.border_active" = "rgb(${colors.base06})";
-        "col.border_inactive" = "rgb(${colors.base02})";
-        groupbar.font_size = 11;
-      };
-
-      misc = {
-        disable_hyprland_logo = "true";
-        disable_splash_rendering = "true";
-        enable_swallow = "true";
-        mouse_move_enables_dpms = "true";
-        swallow_regex = "^(wezterm)$";
+        border_size = 2;
+        gaps_out = 5;
       };
 
       decoration = {
-        active_opacity = "1.0";
-        inactive_opacity = "1.0";
-        rounding = "8";
-        shadow.enabled = "false";
+        rounding = 8;
+        shadow.enabled = false;
+        blur.enabled = false;
       };
 
       animations = {
-        enabled = "true";
+        enabled = true;
         bezier = [
           "overshot,  0.05, 0.9, 0.1,   1.05"
           "smoothIn,  0.25, 1,   0.5,   1"
@@ -135,14 +116,26 @@ in
         ];
       };
 
-      # Layouts
+      group = {
+        "col.border_active" = "rgb(${colors.base06})";
+        "col.border_inactive" = "rgb(${colors.base02})";
+        groupbar.font_size = 11;
+      };
+
+      misc = {
+        disable_hyprland_logo = true;
+        disable_splash_rendering = true;
+        enable_swallow = true;
+        mouse_move_enables_dpms = true;
+        swallow_regex = "^(wezterm)$";
+      };
+
       dwindle = {
-        force_split = "2"; # always split to the right
-        preserve_split = "true";
-        pseudotile = "true";
+        force_split = 2; # Always split to the right
+        preserve_split = true;
+        pseudotile = true;
         split_width_multiplier = "2.0";
       };
-      master.new_status = "slave";
 
       # Startup
       exec-once = [
@@ -151,11 +144,11 @@ in
         "swayidle -w"
         "wl-clipboard-history -t"
 
+        # Open programs on spesific workspaces
         "[workspace 4 silent] ${BROWSER} https://web.whatsapp.com https://app.element.io/ https://web.telegram.org/ https://www.instagram.com/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
         "[workspace 5 silent] plexamp"
       ];
 
-      # Key bindings
       bind = [
         # Brightness
         ",XF86MonBrightnessUp,   exec, ${notify.brightness} set +5%"
@@ -273,47 +266,14 @@ in
         # Sets the workspace on which a window should open
         "workspace 4 silent, discord"
 
-        # Floats a window
-        "float, title:Bitwarden Password Manager"
-        "float, LosslessCut"
-        "float, Lxappearance"
-        "float, Rofi"
-        "float, Viewnior"
+        # Program specific (float, position and size etc.)
         "float, blueberry"
-        "float, blueman"
-        "float, confirm"
-        "float, confirmreset"
-        "float, dialog"
-        "float, download"
-        "float, error"
-        "float, feh"
-        "float, file-roller"
-        "float, file_progress"
         "float, imv"
-        "float, moe.launcher.an-anime-game-launcher" # Genshin Impact
+        "float, moe.launcher.an-anime-game-launcher"
         "float, mpv"
-        "float, notification"
-        "float, org.kde.polkit-kde-authentication-agent-1"
         "float, org.pwmt.zathura"
         "float, org.raspberrypi.rpi-imager"
-        "float, putty"
-        "float, solaar"
-        "float, splash"
-        "float, title:Confirm to replace files"
-        "float, title:File Operation Progress"
-        "float, title:Open File"
-        "float, title:^(Media viewer)$"
-        "float, title:branchdialog"
-        "float, title:wlogout"
-        "float, viewnior"
-        "float, yad"
-        "float, .scrcpy-wrapped"
 
-        # Pseudo
-        "pseudo, QjackCtl"
-        "pseudo, guitarix"
-
-        # Program specific (float, position and size etc.)
         "center, title:Runelite"
         "float, title:RuneLite"
         "size 800 500, title:RuneLite"
@@ -331,9 +291,7 @@ in
         "pin, title:^(Picture-in-Picture)$"
 
         "center, title:^(Properties)$"
-        "size 480 648, title:^(Properties)$"
-
-        "center, title:^(Close Virtual Machine)$"
+        "size 480 650, title:^(Properties)$"
 
         "center, foot"
         "float, foot"
@@ -346,18 +304,6 @@ in
         # Sets an idle inhibit rule for the window
         "idleinhibit focus, mpv"
         "idleinhibit fullscreen, ${BROWSER}"
-
-        # Fullscreens a window
-        "fullscreen, wlogout"
-        "fullscreen, title:wlogout"
-
-        # Fake fullscreens a window
-        # "fakefullscreen, Ferdium"
-        # "fakefullscreen, discord"
-        # "fakefullscreen, firefox"
-
-        # Forces an animation onto a window
-        "animation none, Rofi"
 
         # Additional opacity multiplier
         "opacity 0.9 override 0.9 override, ^(foot)$"
