@@ -306,8 +306,8 @@ in
         "idleinhibit fullscreen, ${BROWSER}"
 
         # Additional opacity multiplier
-        "opacity 0.9 override 0.9 override, ^(foot)$"
-        "opacity 0.9 override 0.9 override, ^(Plexamp)$"
+        "opacity 0.95 override 0.95 override, ^(foot)$"
+        "opacity 0.95 override 0.95 override, ^(Plexamp)$"
       ];
     };
   };
