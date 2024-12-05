@@ -57,12 +57,18 @@ wait
 # Combine and display entries
 selection=$( (echo "$bookmarks_output"; echo "$desktop_entries_output"; echo "$shortcuts_output"; echo "$power_commands_output") | sort -u | wofi --dmenu --prompt "Select a bookmark, app, or enter search shortcut")
 
-# Handle selection
-if [[ "$selection" =~ ^([a-z]+):\ (.+) ]]; then
+# Comma
+if [[ "$selection" =~ ^, ]]; then
+  eval "$selection" &
+
+# Query
+elif [[ "$selection" =~ ^([a-z]+):\ (.+) ]]; then
   search_engine="${BASH_REMATCH[1]}"
   query="${BASH_REMATCH[2]}"
   url_template=$(jq -r ".shortcuts[] | select(.shortcut == \"$search_engine\") | .url" "$search_shortcuts_file")
   firefox "${url_template//%s/$query}" &
+
+# Power State
 elif [[ "$selection" =~ \[power:(.+)\]$ ]]; then
   case "${BASH_REMATCH[1]}" in
     shutdown) systemctl poweroff ;;
@@ -71,6 +77,8 @@ elif [[ "$selection" =~ \[power:(.+)\]$ ]]; then
     hibernate) systemctl hibernate ;;
     firmware) systemctl reboot --firmware-setup ;;
   esac
+
+# Program/Bookmark
 elif [ -n "$selection" ]; then
   entry=$(echo "$selection" | awk -F'[][]' '{print $2}')
   if [[ "$entry" =~ ^run:(.+)$ ]]; then
