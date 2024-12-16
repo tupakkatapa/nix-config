@@ -164,11 +164,19 @@ in
         matchConfig.Name = "home";
         address = [ "172.16.16.3/32" ];
         linkConfig.ActivationPolicy = "manual";
-        routes = [{
-          Gateway = "172.16.16.1";
-          GatewayOnLink = true;
-          Destination = "172.16.16.0/24";
-        }];
+        routes = [
+          {
+            Gateway = "172.16.16.1";
+            GatewayOnLink = true;
+            Destination = "172.16.16.0/24";
+          }
+          {
+            Gateway = "172.16.16.1";
+            GatewayOnLink = true;
+            Destination = "192.168.1.0/24";
+          }
+        ];
+        dns = [ "172.16.16.1" ];
       };
       "99-dinar" = {
         matchConfig.Name = "dinar";

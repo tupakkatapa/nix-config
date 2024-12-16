@@ -36,7 +36,6 @@ _: {
           DHCP = "ipv4";
           IPv6AcceptRA = true;
         };
-        address = [ "192.168.1.6/24" ]; # static IP
       };
     };
   };
