@@ -14,7 +14,6 @@ let
   jq = "${pkgs.jq}/bin/jq";
 in
 {
-  home.packages = [ pkgs.font-awesome ];
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -58,14 +57,14 @@ in
       ];
 
       cpu = {
-        format = " {usage}%";
+        format = " {usage}%";
         max-length = 100;
         interval = 1;
       };
 
       memory = {
-        format = " {}%";
-        format-alt = " {used:0.1f}G";
+        format = " {}%";
+        format-alt = " {used:0.1f}G";
         interval = 5;
         max-length = 10;
       };
@@ -84,9 +83,9 @@ in
         max-length = 50;
         format = "{icon} {}";
         format-icons = {
-          "Playing" = " ";
-          "Paused" = " ";
-          "Stopped" = " ";
+          "Playing" = "";
+          "Paused" = "";
+          "Stopped" = "";
         };
         on-click = "${playerctl} play-pause";
       };
@@ -111,21 +110,21 @@ in
 
       pulseaudio = {
         format = "{icon} {volume}%";
-        format-muted = " 0%";
+        format-muted = "  0%";
         format-icons = {
-          "bluez_output.80_7B_1E_02_53_95.1" = ""; # CORSAIR VIRTUOSO XT Bluetooth
-          "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo" = "";
-          "alsa_output.pci-0000_0a_00.1.hdmi-stereo" = "";
-          headphone = "";
-          headset = "";
+          "bluez_output.80_7B_1E_02_53_95.1" = ""; # CORSAIR VIRTUOSO XT Bluetooth
+          "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo" = "";
+          "alsa_output.pci-0000_0a_00.1.hdmi-stereo" = "󰍹";
+          headphone = "";
+          headset = "";
           default = [ "" "" "" ];
         };
         on-click = pavucontrol;
       };
 
       bluetooth = {
-        format = " {status}";
-        format-connected = " {num_connections} connected";
+        format = "󰂯 {status}";
+        format-connected = "󰂯 {num_connections} connected";
         tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
         tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
         tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
@@ -135,7 +134,7 @@ in
 
       network = {
         format-wifi = " {signalStrength}%";
-        format-ethernet = " wired";
+        format-ethernet = " wired";
         format-disconnected = "";
       };
 
@@ -163,7 +162,7 @@ in
       battery = {
         bat = "BAT0";
         interval = 10;
-        format-icons = [ "" "" "" "" "" ];
+        format-icons = [ "󰂎" "󱊡" "󱊢" "󱊣" ];
         format = "{icon} {capacity}%";
         format-charging = "󰂄 {capacity}%";
         onclick = "";
@@ -187,7 +186,7 @@ in
         '';
         interval = 30;
         return-type = "json";
-        format = "  {}";
+        format = " {}";
       };
 
       "custom/prev" = {
