@@ -29,7 +29,7 @@
     home-manager.url = "github:nix-community/home-manager";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -170,7 +170,7 @@
                 nixpkgs.overlays = [
                   self.overlays.default
                 ];
-                system.stateVersion = "24.05";
+                system.stateVersion = "24.11";
               }
             ];
           };
