@@ -10,12 +10,6 @@
     ./ephemeral.nix
   ];
 
-  # Nixos-hardware
-  hardware.amdgpu = {
-    amdvlk.enable = true;
-    initrd.enable = true;
-  };
-
   # Enable blobs
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

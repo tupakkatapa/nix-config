@@ -41,6 +41,7 @@ in
 
   wayland.windowManager.hyprland = {
     enable = true;
+    xwayland.enable = false;
     systemd = {
       enable = true;
       # Same as default, but stop graphical-session too
