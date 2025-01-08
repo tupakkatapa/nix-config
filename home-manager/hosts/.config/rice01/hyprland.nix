@@ -19,7 +19,6 @@ let
   dm = {
     pipewire-out-switcher = "${pkgs.dm-pipewire-out-switcher}/bin/dm-pipewire-out-switcher";
     radio = "${pkgs.dm-radio}/bin/dm-radio-wrapper";
-    main = "${pkgs.dm-main}/bin/dm-main";
   };
 
   hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
@@ -165,7 +164,7 @@ in
         ",XF86AudioPlay, exec, ${playerctl} -p Plexamp play-pause"
 
         # General
-        "${mod} SHIFT, Return, exec, ${dm.main}"
+        "${mod} SHIFT, Return, exec, wofi"
         "${mod}, Backspace, exec, ${TERMINAL}"
         "${mod}, Return, exec, [tile]${TERMINAL}"
 
