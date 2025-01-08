@@ -133,6 +133,7 @@ Must-read blog posts:
 - [Paranoid NixOS Setup](https://xeiaso.net/blog/paranoid-nixos-2021-07-18/)
 - [Using NixOS as a router](https://francis.begyn.be/blog/nixos-home-router)
 - [NixOS Wireguard VPN setup](https://alberand.com/nixos-wireguard-vpn.html)
+- [NixOS is a good server OS, except when it isn’t](https://sidhion.com/blog/nixos_server_issues/)
 
 ## License
 
