@@ -1,6 +1,7 @@
 # https://github.com/hyper-dot/Arch-Hyprland
 { pkgs
 , config
+, lib
 , ...
 }@args:
 let
@@ -30,10 +31,13 @@ in
     };
     xdg.configFile."mimeapps.list".force = true;
 
-    # Configure chatgpt-cli
+    # Default apps by user
     home.sessionVariables = {
       OPENAI_API_KEY = "$(cat ${config.age.secrets.openai-api-key.path})";
+      FILEMANAGER = lib.mkForce "nautilus";
     };
+
+    # Configure chatgpt-cli
     home.file.".chatgpt-cli/config.yaml".text = builtins.toJSON {
       "name" = "openai";
       "model" = "gpt-4o-mini ";
@@ -50,7 +54,7 @@ in
       # GUI
       # libreoffice-qt
       # chromium
-      # nautilus
+      nautilus
       # rpi-imager
 
       # Media creation and editing
