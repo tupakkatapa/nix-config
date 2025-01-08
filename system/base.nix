@@ -1,7 +1,12 @@
 { lib
 , pkgs
+, modulesPath
 , ...
 }: {
+  imports = [
+    (modulesPath + "/profiles/minimal.nix")
+  ];
+
   # Use the latest kernel
   boot.kernelParams = [ "boot.shell_on_fail" ];
   boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
