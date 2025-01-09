@@ -20,10 +20,10 @@ in
 
       # Powerstate
       bios = "systemctl reboot --firmware-setup";
-      lock = "swaylock -S --daemonize";
+      lock = "swaylock --daemonize";
       logout = "hyprctl dispatch exit";
       rbt = "systemctl reboot";
-      sdn = "shutdown -h now";
+      sdn = "systemctl poweroff";
       sus = "systemctl suspend";
 
       # Changing 'ls' to 'eza'
