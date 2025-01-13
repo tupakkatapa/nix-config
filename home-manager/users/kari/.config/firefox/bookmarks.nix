@@ -15,24 +15,12 @@
             url = "https://plex.coditon.com";
           }
           {
-            name = "Radarr";
-            url = "https://radarr.coditon.com";
-          }
-          {
             name = "Torrent";
             url = "https://torrent.coditon.com";
           }
           {
             name = "Blog";
             url = "https://blog.coditon.com";
-          }
-          {
-            name = "Jackett";
-            url = "https://jackett.coditon.com";
-          }
-          {
-            name = "Lanraragi";
-            url = "https://lanraragi.coditon.com";
           }
           {
             name = "Index";
@@ -68,16 +56,8 @@
             url = "https://yts.mx/";
           }
           {
-            name = "BTDigg";
-            url = "https://btdig.com/index.htm";
-          }
-          {
             name = "FitGirl Repacks";
             url = "https://fitgirl-repacks.site";
-          }
-          {
-            name = "Libgen";
-            url = "https://libgen.is/";
           }
           {
             name = "1337x";
@@ -98,6 +78,10 @@
               {
                 name = "Icons";
                 url = "https://techicons.dev/";
+              }
+              {
+                name = "Nerdfonts Symbols";
+                url = "https://www.nerdfonts.com/cheat-sheet";
               }
               {
                 name = "Excalidraw";
@@ -203,6 +187,14 @@
             name = "DeepL";
             url = "https://www.deepl.com/translator";
           }
+          {
+            name = "CroxyProxy";
+            url = "https://www.croxyproxy.com/";
+          }
+          {
+            name = "Have I Been Pwned";
+            url = "https://haveibeenpwned.com/";
+          }
         ];
       }
       {
@@ -306,6 +298,10 @@
       {
         name = "git";
         bookmarks = [
+          {
+            name = "GitHub";
+            url = "https://github.com/";
+          }
           {
             name = "Users";
             bookmarks = [
@@ -440,69 +436,25 @@
         ];
       }
       {
-        name = "lauta";
+        name = "Forums";
         bookmarks = [
           {
             name = "Ylilauta";
             url = "https://ylilauta.org/thread/";
           }
           {
-            name = "Ebinlauta";
-            url = "https://ebinlauta.org/b/";
+            name = "Reddit";
+            url = "https://www.reddit.com/";
           }
           {
-            name = "Jofaboard";
-            url = "https://jofaboard.com/";
+            name = "Hacker News";
+            url = "https://news.ycombinator.com/news";
           }
           {
             name = "4chan";
             url = "https://www.4chan.org/";
           }
         ];
-      }
-      {
-        name = "NAPALM FTP Indexer";
-        url = "https://www.searchftps.net/";
-      }
-      {
-        name = "Exploit-DB";
-        url = "https://www.exploit-db.com/";
-      }
-      {
-        name = "Hackaday";
-        url = "https://hackaday.com/";
-      }
-      {
-        name = "YouTube";
-        url = "https://www.youtube.com/feed/subscriptions";
-      }
-      {
-        name = "Twitch";
-        url = "https://www.twitch.tv/";
-      }
-      {
-        name = "Kick";
-        url = "https://kick.com/";
-      }
-      {
-        name = "GitHub";
-        url = "https://github.com/";
-      }
-      {
-        name = "Cloudflare";
-        url = "https://dash.cloudflare.com/";
-      }
-      {
-        name = "ChatGPT";
-        url = "https://chat.openai.com/?model=gpt-4o";
-      }
-      {
-        name = "Hacker News";
-        url = "https://news.ycombinator.com/news";
-      }
-      {
-        name = "Wolt";
-        url = "https://wolt.com/fi/discovery";
       }
       {
         name = "Email";
@@ -522,16 +474,92 @@
         ];
       }
       {
-        name = "Hetzner";
-        url = "https://console.hetzner.cloud";
+        name = "News";
+        bookmarks = [
+          {
+            name = "Reuters";
+            url = "https://www.reuters.com/";
+          }
+        ];
       }
       {
-        name = "Reuters";
-        url = "https://www.reuters.com/";
+        name = "Literature";
+        bookmarks = [
+          {
+            name = "ResearchGate";
+            url = "https://www.researchgate.net/";
+          }
+          {
+            name = "Kansalliskirjasto";
+            url = "https://digi.kansalliskirjasto.fi/etusivu";
+          }
+        ];
       }
       {
-        name = "Reddit";
-        url = "https://old.reddit.com/";
+        name = "Videos & Streaming";
+        bookmarks = [
+          {
+            name = "YouTube";
+            url = "https://www.youtube.com/feed/subscriptions";
+          }
+          {
+            name = "Twitch";
+            url = "https://www.twitch.tv/";
+          }
+          {
+            name = "Kick";
+            url = "https://kick.com/";
+          }
+        ];
+      }
+      {
+        name = "Infrastructure";
+        bookmarks = [
+          {
+            name = "Cloudflare";
+            url = "https://dash.cloudflare.com/";
+          }
+          {
+            name = "Hetzner";
+            url = "https://console.hetzner.cloud";
+          }
+          {
+            name = "Spaceship";
+            url = "https://www.spaceship.com/";
+          }
+          {
+            name = "Domaincompare";
+            url = "https://www.domaincompare.io/";
+          }
+          {
+            name = "GoDaddy";
+            url = "https://www.godaddy.com/";
+          }
+        ];
+      }
+      {
+        name = "NAPALM FTP Indexer";
+        url = "https://www.searchftps.net/";
+      }
+      {
+        name = "Exploit-DB";
+        url = "https://www.exploit-db.com/";
+      }
+      {
+        name = "Hackaday";
+        url = "https://hackaday.com/";
+      }
+      {
+        name = "Qwant";
+        url = "https://www.qwant.com/";
+      }
+      {
+        name = "ChatGPT";
+        url = "https://chat.openai.com/?model=gpt-4o";
+      }
+      {
+        name = "Wolt";
+        url = "https://wolt.com/fi/discovery";
       }
       {
         name = "EverythingMoe";
@@ -544,22 +572,6 @@
       {
         name = "Zophar";
         url = "https://www.zophar.net/";
-      }
-      {
-        name = "Kansalliskirjasto";
-        url = "https://digi.kansalliskirjasto.fi/etusivu";
-      }
-      {
-        name = "CroxyProxy";
-        url = "https://www.croxyproxy.com/";
-      }
-      {
-        name = "Spaceship";
-        url = "https://www.spaceship.com/";
-      }
-      {
-        name = "Domaincompare";
-        url = "https://www.domaincompare.io/";
       }
       # {
       #   name = "";
