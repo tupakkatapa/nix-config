@@ -93,7 +93,7 @@ in
       };
 
       decoration = {
-        rounding = 8;
+        rounding = 7;
         shadow.enabled = false;
         blur.enabled = false;
       };
@@ -101,19 +101,32 @@ in
       animations = {
         enabled = true;
         bezier = [
-          "overshot,  0.05, 0.9, 0.1,   1.05"
-          "smoothIn,  0.25, 1,   0.5,   1"
-          "smoothOut, 0.36, 0,   0.66, -0.56"
+          "easein,0.1,0,0.5,0"
+          "easeout,0.5,1,0.9,1"
+          "easeinout,0.45,0,0.55,1"
         ];
-        animation = [
-          "border,      1, 3, default"
-          "fade,        1, 3, smoothIn"
-          "fadeDim,     1, 3, smoothIn"
-          "windows,     1, 3, overshot, slide"
-          "windowsMove, 1, 3, default"
-          "windowsOut,  1, 3, smoothOut, slide"
-          "workspaces,  1, 3, default"
-        ];
+        animation =
+          let
+            duration = "1";
+          in
+          [
+            "fadeIn,1,${duration},easeout"
+            "fadeLayersIn,1,${duration},easeout"
+            "layersIn,1,${duration},easeout"
+            "windowsIn,1,${duration},easeout"
+
+            "fadeLayersOut,1,${duration},easein"
+            "fadeOut,1,${duration},easein"
+            "layersOut,1,${duration},easein"
+            "windowsOut,1,${duration},easein"
+
+            "border,1,${duration},easeout"
+            "fadeDim,1,${duration},easeinout"
+            "fadeShadow,1,${duration},easeinout"
+            "fadeSwitch,1,${duration},easeinout"
+            "windowsMove,1,${duration},easeout"
+            "workspaces,1,${duration},easeout"
+          ];
       };
 
       group = {
