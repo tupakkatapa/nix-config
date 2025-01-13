@@ -25,6 +25,9 @@
   # Enable ADB for android development
   programs.adb.enable = true;
 
+  # Required if swaylock is installed via home-manager
+  security.pam.services.swaylock = { };
+
   # Connectivity
   networking = {
     hostName = "torgue";

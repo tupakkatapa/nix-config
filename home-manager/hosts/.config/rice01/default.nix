@@ -6,6 +6,7 @@
     ./hyprland.nix
     ./waybar.nix
     ./wofi.nix
+    ./swaylock.nix
   ];
 
   home.packages = with pkgs; [
