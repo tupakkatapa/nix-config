@@ -48,7 +48,6 @@ in
     "d ${appData}/sublime-merge  755 ${user} ${user} -"
     "d ${appData}/openrgb        755 ${user} ${user} -"
     "d ${appData}/discord        755 ${user} ${user} -"
-    "d ${appData}/direnv         755 ${user} ${user} -"
 
     # Games
     "d ${gameData}                      755 ${user} ${user} -"
@@ -131,10 +130,6 @@ in
     "/home/${user}/.ssh" = {
       device = "${secretData}/ssh";
       options = [ "bind" "mode=700" ];
-    };
-    "/home/${user}/.config/direnv" = {
-      device = "${appData}/direnv";
-      options = [ "bind" "mode=755" ];
     };
   };
 }
