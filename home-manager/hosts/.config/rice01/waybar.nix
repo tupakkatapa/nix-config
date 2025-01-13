@@ -3,13 +3,12 @@
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) FONT THEME TERMINAL;
+  inherit (config.home.sessionVariables) FONT THEME;
   colors = (import ../../../colors.nix).${THEME};
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
   blueberry = "${pkgs.blueberry}/bin/blueberry";
-  bat = "${pkgs.bat}/bin/bat";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   jq = "${pkgs.jq}/bin/jq";
 in
@@ -30,7 +29,7 @@ in
       spacing = 5;
 
       modules-left = [
-        # "custom/menu"
+        "custom/menu"
         "custom/hostname"
         "cpu"
         "memory"
@@ -39,9 +38,9 @@ in
       ];
 
       modules-center = [
-        # "custom/prev"
+        "custom/prev"
         "hyprland/workspaces"
-        # "custom/next"
+        "custom/next"
       ];
 
       modules-right = [
@@ -53,7 +52,7 @@ in
         "battery"
         "clock#date"
         "clock#time"
-        # "custom/help"
+        "custom/help"
       ];
 
       cpu = {
@@ -206,27 +205,28 @@ in
       };
 
       "custom/menu" = {
-        format = "+";
+        format = "󰍜";
         on-click = ''
           wofi
         '';
       };
 
       "custom/help" = {
-        format = "?";
+        format = "󰋖";
         on-click = ''
-          ${TERMINAL} -e sh -c "sed -r 's:/nix/store/[a-z0-9]+-[a-zA-Z0-9.-]+/bin/::g' ~/hypr_binds.txt | tr -s ' ' | ${bat} --wrap never"
+          sed -r 's:/nix/store/[a-z0-9]+-[a-zA-Z0-9.-]+/bin/::g' ~/hypr_binds.txt |
+          tr -s ' ' |
+          wofi --show dmenu
         '';
       };
     };
     style = ''
       /* Global Styles */
       * {
+        border-radius: 7px;
         font-family: ${FONT};
         font-size: 11px;
         font-weight: 900;
-        margin: 0;
-        padding: 0;
       }
 
       /* Waybar Styles */
@@ -235,25 +235,20 @@ in
         color: #${colors.base05};
         transition-property: background-color;
         transition-duration: 0.5s;
-        border-radius: 0;
-        margin: 0;
       }
 
       /* Workspace Styles */
       #workspaces {
-        border-radius: 20px;
         padding: 0 10px;
         background-color: #${colors.base00};
       }
 
       /* Workspace Button Styles */
       #workspaces button {
-        padding: 0 0;
         color: #${colors.base02};
         background-color: transparent;
         box-shadow: inset 0 -3px transparent;
         border: none;
-        border-radius: 0;
       }
 
       #workspaces button.active {
@@ -276,17 +271,15 @@ in
       #bluetooth {
         padding: 0 15px;
         color: #${colors.base05};
-        border-radius: 20px;
         background-color: #${colors.base00};
       }
 
-      #custom-menu,
       #custom-prev,
       #custom-next,
+      #custom-menu,
       #custom-help {
-        padding: 0 7px;
+        padding: 0 8px;
         color: #${colors.base02};
-        border-radius: 20px;
         background-color: #${colors.base00};
       }
 
