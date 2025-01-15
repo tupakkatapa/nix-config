@@ -48,27 +48,38 @@ in
     in
     lib.mkIf (config.networking.hostName != "vladof") {
       enable = true;
-      defaultIdentityFile = "/home/${user}/.ssh/id_ed25519";
+
+      # Define the YubiKey resident key as the identifier and disable automount
+      defaults = {
+        identityFile = "/home/${user}/.ssh/id_ed25519_sk";
+        autoMount = false;
+      };
+
       mounts =
         [
           {
             what = "${sftpPrefix}/";
             where = "/mnt/sftp";
           }
+        ];
+
+      # Bind mounts are always done after the SFTP mounts
+      binds =
+        [
           {
-            what = "${sftpPrefix}/docs";
+            what = "/mnt/sftp/docs";
             where = "/home/${user}/Documents";
           }
           {
-            what = "${sftpPrefix}/media";
+            what = "/mnt/sftp/media";
             where = "/home/${user}/Media";
           }
           {
-            what = "${sftpPrefix}/code/workspace";
+            what = "/mnt/sftp/code/workspace";
             where = "/home/${user}/Workspace";
           }
           {
-            what = "${sftpPrefix}/dnld";
+            what = "/mnt/sftp/dnld";
             where = "/home/${user}/Downloads";
           }
         ];
