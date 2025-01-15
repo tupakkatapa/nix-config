@@ -33,7 +33,11 @@
   # Essential packages
   environment.systemPackages = with pkgs; [
     btrfs-progs
+    htop
     kexec-tools
+    rsync
+    tmux
     vim
+    wget
   ];
 }
