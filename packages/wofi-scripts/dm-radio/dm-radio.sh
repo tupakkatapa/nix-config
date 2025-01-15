@@ -3,7 +3,7 @@
 
 DMENU="wofi --dmenu -w 1"
 DMRADIOVOLUME="30"
-VIDEO=false
+VIDEO=true
 RADIO_STATIONS_FILE="@STATIONS_FILE@"
 
 # Display usage information
