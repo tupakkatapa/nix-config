@@ -161,43 +161,86 @@ in
       bindFileSystems
     ];
 
-    # If autoMount = false, generate a script to be able to mount them manually
+    # Create local mount points
+    systemd.tmpfiles.rules = lib.concatLists [
+      (map
+        (mount:
+          "d ${mount.where} 755 root root -"
+        )
+        cfg.mounts)
+      (map
+        (bind:
+          "d ${bind.where} 755 root root -"
+        )
+        cfg.binds)
+    ];
+
+    # Scripts for mounting and unmounting
     environment.systemPackages = lib.optional
       ((cfg.mounts != [ ] || cfg.binds != [ ]) && (!cfg.defaults.autoMount))
-      (pkgs.writeShellScriptBin "sftp-mount" ''
-        #!/usr/bin/env bash
-        set -euo pipefail
+      (pkgs.runCommand "sftp-utils" { }
+        ''
+              mkdir -p $out/bin
 
-        echo "Mounting SFTP filesystems..."
+              # sftp-mount script
+              cat > $out/bin/sftp-mount <<EOF
+          #!/usr/bin/env bash
+          set -euo pipefail
 
-        # For each mount, we pass "where=identityFile" as "WHERE=IDENT"
-        for info in ${lib.concatStringsSep " " (map (m:
-          "${lib.escapeShellArg m.where}=${lib.escapeShellArg m.identityFile}"
-        ) cfg.mounts)}; do
+          echo "Mounting SFTP filesystems..."
 
-          # Split "WHERE=IDENT"
-          path=$(expr "$info" : '\([^=]*\)')
-          ident=$(expr "$info" : '[^=]*=\(.*\)')
+          for info in ${lib.concatStringsSep " " (map (m:
+            "${lib.escapeShellArg m.where}=${lib.escapeShellArg m.identityFile}"
+          ) cfg.mounts)}; do
 
-          # Check identity file if not empty
-          if [ -n "$ident" ] && [ ! -f "$ident" ]; then
-            echo "WARNING: Identity file '$ident' does not exist."
-          fi
+            path=\$(expr "\$info" : '\([^=]*\)')
+            ident=\$(expr "\$info" : '[^=]*=\(.*\)')
 
-          echo " -> Mounting $path"
-          mount "$path"
-        done
+            if [ -n "\$ident" ] && [ ! -f "\$ident" ]; then
+              echo "WARNING: Identity file '\$ident' does not exist."
+            fi
 
-        echo
-        echo "Mounting bind filesystems..."
+            echo " -> Mounting \$path"
+            mount "\$path"
+          done
 
-        for bp in ${lib.concatStringsSep " " (map (b: lib.escapeShellArg b.where) cfg.binds)}; do
-          echo " -> $bp"
-          mount "$bp"
-        done
+          echo
+          echo "Mounting bind filesystems..."
 
-        echo
-        echo "All done."
-      '');
+          for bp in ${lib.concatStringsSep " " (map (b: lib.escapeShellArg b.where) cfg.binds)}; do
+            echo " -> \$bp"
+            mount "\$bp"
+          done
+
+          echo
+          echo "All done."
+          EOF
+              chmod +x $out/bin/sftp-mount
+
+              # sftp-unmount script
+              cat > $out/bin/sftp-unmount <<EOF
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          echo "Unmounting bind filesystems..."
+
+          for bp in ${lib.concatStringsSep " " (lib.lists.reverseList (map (b: lib.escapeShellArg b.where) cfg.binds))}; do
+            echo " -> \$bp"
+            umount "\$bp" || echo "WARNING: Failed to unmount \$bp"
+          done
+
+          echo
+          echo "Unmounting SFTP filesystems..."
+
+          for info in ${lib.concatStringsSep " " (lib.lists.reverseList (map (m: lib.escapeShellArg m.where) cfg.mounts))}; do
+            echo " -> \$info"
+            umount "\$info" || echo "WARNING: Failed to unmount \$info"
+          done
+
+          echo
+          echo "All done."
+          EOF
+              chmod +x $out/bin/sftp-unmount
+        '');
   };
 }
