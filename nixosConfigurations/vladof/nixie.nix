@@ -12,7 +12,7 @@
   # Potentially required by the 'nixie' or 'refindGenerate' modules
   # You can remove this when Nixie is someday open-sourced
   fileSystems."/root/.ssh" = {
-    device = "${secretData}/kari/ssh";
+    device = "${secretData}/root/ssh";
     options = [ "bind" "mode=700" ];
   };
 
