@@ -1,7 +1,6 @@
 # https://github.com/hyper-dot/Arch-Hyprland
 { pkgs
 , config
-, lib
 , ...
 }@args:
 let
@@ -34,7 +33,7 @@ in
     # Default apps by user
     home.sessionVariables = {
       OPENAI_API_KEY = "$(cat ${config.age.secrets.openai-api-key.path})";
-      FILEMANAGER = lib.mkForce "nautilus";
+      # FILEMANAGER = lib.mkForce "nautilus";
     };
 
     # Configure chatgpt-cli
@@ -45,32 +44,17 @@ in
     };
 
     home.packages = with pkgs; [
-      # monitor-adjust
+      monitor-adjust
 
-      # sublime-merge
-      # plexamp
+      sublime-merge
+      plexamp
       chatgpt-cli
 
       # GUI
       # libreoffice-qt
       # chromium
-      nautilus
+      # nautilus
       # rpi-imager
-
-      # Media creation and editing
-      # aseprite
-      # gimp
-      # kdenlive
-      # video-trimmer
-
-      # Music production
-      # ardour
-      # audacity
-      # guitarix
-      # gxplugins-lv2
-      # ladspaPlugins
-      qjackctl
-      # tuxguitar
 
       # Networking
       wireguard-go

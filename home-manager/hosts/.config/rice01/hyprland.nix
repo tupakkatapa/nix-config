@@ -184,7 +184,7 @@ in
         # Programs
         "SUPER, B, exec, ${BROWSER}"
         "SUPER, G, exec, ${TERMINAL} -e $SHELL -c 'chatgpt -d'"
-        "SUPER, F, exec, ${FILEMANAGER}"
+        "SUPER, F, exec, ${TERMINAL} -e $SHELL -c '${FILEMANAGER} ~'"
         "SUPER, V, exec, ${TERMINAL} -e $SHELL -c '${EDITOR} ~'"
 
         # Misc

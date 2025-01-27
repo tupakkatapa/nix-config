@@ -11,7 +11,7 @@ in
 
   # Secrets
   age.secrets = {
-    "password".file = ./secrets/password.age;
+    # "password".file = ./secrets/password.age;
     "wg-dinar" = {
       file = ./secrets/wg-dinar.age;
       owner = "systemd-network";

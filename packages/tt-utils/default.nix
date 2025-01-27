@@ -9,15 +9,11 @@ pkgs.stdenv.mkDerivation rec {
 
   buildInputs = with pkgs; [
     coreutils # various
-    gawk # yt-sub, git-ffwd-update
-    git # git-ffwd-update
-    nix # ns
-    gnused # yt-sub, prefix
-    zstd # raidgrep
-    parallel # raidgrep
     curl # filemon
+    gnused # prefix
     libnotify # filemon
-    yt-dlp # yt-sub
+    parallel # raidgrep
+    zstd # raidgrep
   ];
 
   nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -27,14 +23,8 @@ pkgs.stdenv.mkDerivation rec {
     "cathead"
     "prefix"
     "rmc"
-    "ns"
-    "rpg"
-    "lsd"
-    "git-ffwd-update"
-    "myip"
     "filemon"
     "raidgrep"
-    "yt-sub"
   ];
 
   installPhase = ''

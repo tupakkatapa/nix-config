@@ -46,10 +46,15 @@ in
       grep = "grep --color=auto";
       jctl = "journalctl -p 3 -xb";
 
+      # Utils
+      lsd = "du -Lhc --max-depth=0 ./* | sort -h";
+      rpg = "shuf -i 1024-65535 -n 1";
+
       # Nix
       nfc = "nix flake check --impure --accept-flake-config";
       buidl = "sudo nixos-rebuild test --flake path:$FLAKE_DIR#$(hostname) --accept-flake-config";
       gc = "nix-collect-garbage -d";
+      ns = "nix-shell -p";
 
       # YouTube-DL
       yt = ", yt-dlp --embed-metadata --sponsorblock-remove all -i --format mp4";

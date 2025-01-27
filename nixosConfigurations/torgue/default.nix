@@ -6,8 +6,10 @@
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
-    # ./gaming.nix
     ./ephemeral.nix
+    # ./gaming.nix
+    # ./media-production.nix
+    # ./music-production.nix
   ];
 
   # Enable blobs
