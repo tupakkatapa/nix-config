@@ -163,6 +163,7 @@
             system = config.system or "x86_64-linux";
             modules = config.modules or [ ] ++ [
               ./system/base.nix
+              ./system/minimal.nix
               ./system/nix-settings.nix
               ./system/openssh.nix
               {
