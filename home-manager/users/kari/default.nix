@@ -45,10 +45,10 @@ in
     };
 
     home.packages = with pkgs; [
-      monitor-adjust
+      # monitor-adjust
 
-      sublime-merge
-      plexamp
+      # sublime-merge
+      # plexamp
       chatgpt-cli
 
       # GUI
@@ -65,8 +65,8 @@ in
 
       # Music production
       # ardour
-      audacity
-      guitarix
+      # audacity
+      # guitarix
       # gxplugins-lv2
       # ladspaPlugins
       qjackctl
