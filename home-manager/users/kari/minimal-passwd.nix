@@ -1,5 +1,6 @@
 { config
 , lib
+, pkgs
 , ...
 }:
 let
@@ -21,9 +22,16 @@ in
       owner = "systemd-network";
     };
     "wpa-psk".file = ./secrets/wpa-psk.age;
-    "ed25519-sk" = {
-      file = ./secrets/ed25519-sk.age;
-      path = "/home/${user}/.ssh/id_ed25519_sk";
+    "ed25519-sk-yubikey" = {
+      file = ./secrets/ed25519-sk-yubikey.age;
+      path = "/home/${user}/.ssh/id_ed25519_sk_yubikey";
+      mode = "600";
+      owner = user;
+      group = "users";
+    };
+    "ed25519-sk-trezor" = {
+      file = ./secrets/ed25519-sk-trezor.age;
+      path = "/home/${user}/.ssh/id_ed25519_sk_trezor";
       mode = "600";
       owner = user;
       group = "users";
@@ -35,6 +43,9 @@ in
     # echo "password" | mkpasswd -s
     # hashedPasswordFile = config.age.secrets.password.path;
   };
+
+  # Enable Trezor support
+  services.trezord.enable = true;
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
@@ -95,6 +106,12 @@ in
     programs.ssh = {
       enable = true;
       matchBlocks = {
+        "*" = {
+          identityFile = [
+            config.age.secrets.ed25519-sk-yubikey.path
+            config.age.secrets.ed25519-sk-trezor.path
+          ];
+        };
         "192.168.1.*".extraOptions."StrictHostKeyChecking" = "no";
         "192.168.100.*" = {
           user = "core";
@@ -121,15 +138,24 @@ in
 
     # Signing commits
     programs.git = {
-      signing.key = "773DC99EDAF29D356155DC91269CF32D790D1789";
+      signing.key = "A3B346665514836DCE851842A2429183508FCEFF";
       signing.signByDefault = true;
       userEmail = "jesse@ponkila.com";
       userName = "tupakkatapa";
     };
     programs.gpg = {
       enable = true;
-      settings.default-key = "Tupakkatapa <jesse@ponkila.com>";
+      homedir = "/home/${user}/.gnupg/trezor";
+      settings = {
+        default-key = "Tupakkatapa <jesse@ponkila.com>";
+        agent-program = "${pkgs.trezor_agent}/bin/trezor-gpg-agent";
+      };
     };
+    home.packages = with pkgs; [
+      trezor-agent
+      # trezor-suite
+      trezorctl
+    ];
   };
 
   # WPA PSK's

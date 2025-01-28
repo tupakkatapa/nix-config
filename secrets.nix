@@ -12,7 +12,8 @@ let
 in
 {
   # Kari
-  "${kariPath}/ed25519-sk.age".publicKeys = allSystems ++ [ kari ];
+  "${kariPath}/ed25519-sk-yubikey.age".publicKeys = allSystems ++ [ kari ];
+  "${kariPath}/ed25519-sk-trezor.age".publicKeys = allSystems ++ [ kari ];
   "${kariPath}/password.age".publicKeys = allSystems ++ [ kari ];
   "${kariPath}/wg-dinar.age".publicKeys = allSystems ++ [ kari ];
   "${kariPath}/wg-home.age".publicKeys = allSystems ++ [ kari ];
