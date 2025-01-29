@@ -4,7 +4,7 @@
     toolbar = true;
     bookmarks = [
       {
-        name = "home";
+        name = "Home";
         bookmarks = [
           {
             name = "Pfsense";
@@ -37,7 +37,7 @@
         ];
       }
       {
-        name = "torrent";
+        name = "Torrent";
         bookmarks = [
           {
             name = "TorrentDay";
@@ -63,10 +63,14 @@
             name = "1337x";
             url = "https://1337x.to/";
           }
+          {
+            name = "Anna's Archive";
+            url = "https://annas-archive.org/";
+          }
         ];
       }
       {
-        name = "tools";
+        name = "Tools";
         bookmarks = [
           {
             name = "Assets";
@@ -117,7 +121,7 @@
                 url = "https://www.musmath.com/tools/scale-lookup/bass-guitar";
               }
               {
-                name = "backtracks";
+                name = "Backtracks";
                 bookmarks = [
                   {
                     name = "63 BPM";
@@ -198,7 +202,7 @@
         ];
       }
       {
-        name = "docs";
+        name = "Docs";
         bookmarks = [
           {
             name = "Kernel Config Search";
@@ -229,14 +233,6 @@
             url = "https://ipxe.org/docs";
           }
           {
-            name = "The Rust community’s crate registry";
-            url = "https://crates.io/";
-          }
-          {
-            name = "Rust Language Cheat Sheet";
-            url = "https://cheats.rs/";
-          }
-          {
             name = "Bash Reference Manual";
             url = "https://www.gnu.org/software/bash/manual/html_node/index.html#SEC_Contents";
           }
@@ -245,7 +241,24 @@
             url = "http://www.rodsbooks.com/refind/index.html";
           }
           {
-            name = "ethereum";
+            name = "Rust";
+            bookmarks = [
+              {
+                name = "The Rust community’s crate registry";
+                url = "https://crates.io/";
+              }
+              {
+                name = "Rust Language Cheat Sheet";
+                url = "https://cheats.rs/";
+              }
+              {
+                name = "Learn Rust";
+                url = "https://www.rust-lang.org/learn";
+              }
+            ];
+          }
+          {
+            name = "Ethereum";
             bookmarks = [
               {
                 name = "Prysm CLI";
@@ -291,12 +304,16 @@
                 name = "SSV node";
                 url = "https://docs.ssv.network/run-a-node/operator-node/installation#create-configuration-file";
               }
+              {
+                name = "Client Diversity";
+                url = "https://clientdiversity.org/";
+              }
             ];
           }
         ];
       }
       {
-        name = "git";
+        name = "Git";
         bookmarks = [
           {
             name = "GitHub";
@@ -343,7 +360,7 @@
         ];
       }
       {
-        name = "nix";
+        name = "Nix";
         bookmarks = [
           {
             name = "Nix Reference Manual";
@@ -402,7 +419,7 @@
         ];
       }
       {
-        name = "blogs";
+        name = "Blogs";
         bookmarks = [
           {
             name = "Juuso Haavisto";
@@ -415,7 +432,7 @@
         ];
       }
       {
-        name = "sol";
+        name = "Sol";
         bookmarks = [
           {
             name = "SpaceWeatherLive";
