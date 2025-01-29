@@ -244,7 +244,7 @@ in
     };
   };
   # Bind service directories to persistent disk
-  fileSystems."/var/lib/bitwarden_rs" = {
+  fileSystems."/var/lib/vaultwarden" = {
     device = "${appData}/vaultwarden";
     options = [ "bind" ];
   };
