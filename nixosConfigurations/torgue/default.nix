@@ -1,15 +1,23 @@
 { lib
 , config
+, pkgs
 , ...
 }: {
+  age.rekey = {
+    hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIEbmDddLZ2QyGJZWsTVcev4hlzrQFt19+HOLLV14H5B root@torgue";
+    agePlugins = [ pkgs.age-plugin-fido2-hmac ];
+    localStorageDir = ./secrets/rekeyed;
+    storageMode = "local";
+  };
+
   imports = [
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
     ./ephemeral.nix
-    # ./gaming.nix
+    ./gaming.nix
     # ./media-production.nix
-    # ./music-production.nix
+    ./music-production.nix
   ];
 
   # Enable blobs

@@ -15,6 +15,13 @@ let
   extendedArgs = { inherit pkgs lib config domain dataDir appData secretData; };
 in
 {
+  age.rekey = {
+    hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEJktZ00i+OxH4Azi1tLkwoYrJ0qo2RIZ5huzzK+g2w root@vladof";
+    agePlugins = [ pkgs.age-plugin-fido2-hmac ];
+    localStorageDir = ./secrets/rekeyed;
+    storageMode = "local";
+  };
+
   imports = [
     (import ./nixie.nix extendedArgs)
     (import ./services extendedArgs)

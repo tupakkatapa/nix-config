@@ -22,7 +22,6 @@
   };
 
   inputs = {
-    agenix.url = "github:ryantm/agenix";
     devenv.url = "github:cachix/devenv";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -34,6 +33,11 @@
     nixvim.url = "github:nix-community/nixvim";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     treefmt-nix.url = "github:numtide/treefmt-nix";
+
+    # Secret management
+    agenix.url = "github:ryantm/agenix";
+    agenix-rekey.url = "github:oddlama/agenix-rekey";
+    agenix-rekey.inputs.nixpkgs.follows = "nixpkgs";
 
     # Hyprland
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
@@ -65,6 +69,7 @@
     inputs.flake-parts.lib.mkFlake { inherit inputs; } rec {
       systems = inputs.nixpkgs.lib.systems.flakeExposed;
       imports = [
+        inputs.agenix-rekey.flakeModule
         inputs.devenv.flakeModule
         inputs.flake-parts.flakeModules.easyOverlay
         inputs.treefmt-nix.flakeModule
@@ -97,7 +102,6 @@
             # Inputs
             inherit (inputs'.nixie.packages) lkddb-filter;
             inherit (inputs'.nixie.packages) pxe-generate;
-            inherit (inputs'.agenix.packages) agenix;
             inherit (inputs'.mozid.packages) mozid;
             inherit (inputs'.hyprland-plugins.packages) hyprbars;
           };
@@ -127,6 +131,7 @@
 
           # Development shell -> 'nix develop' or 'direnv allow'
           devenv.shells.default = {
+            packages = [ config.agenix-rekey.package ];
             env = {
               NIX_CONFIG = ''
                 accept-flake-config = true
@@ -150,6 +155,15 @@
               "torgue" = torgue.config.system.build.kexecTree;
             })
             // packages;
+
+          # Whitelist hosts using agenix-rekey
+          agenix-rekey.nixosConfigurations = {
+            inherit (self.nixosConfigurations)
+              torgue
+              vladof
+              maliwan
+              ;
+          };
         };
       flake =
         let
@@ -176,6 +190,7 @@
           # Optional additional modules
           withExtra = config: {
             modules = config.modules or [ ] ++ [
+              inputs.agenix-rekey.nixosModules.default
               inputs.agenix.nixosModules.default
               inputs.home-manager.nixosModules.home-manager
               self.nixosModules.sftpClient
@@ -188,6 +203,12 @@
                     programs.nix-index-database.comma.enable = true;
                   }
                 ];
+                age.rekey = {
+                  masterIdentities = [{
+                    identity = ./master.hmac;
+                    pubkey = "age19xu98r52uq33f7lu5z6zafysvnx9snq72x3j6gtcvkd0a8ew8q9q34nw3u";
+                  }];
+                };
               }
             ];
           };

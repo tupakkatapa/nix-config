@@ -1,4 +1,11 @@
-_: {
+{ pkgs, ... }: {
+  age.rekey = {
+    hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJcbYE9n5NE8EhxIrlR9tc4ZredoxvTPubQniNGQWH+s root@maliwan";
+    agePlugins = [ pkgs.age-plugin-fido2-hmac ];
+    localStorageDir = ./secrets/rekeyed;
+    storageMode = "local";
+  };
+
   imports = [
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix

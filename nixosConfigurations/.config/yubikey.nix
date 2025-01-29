@@ -1,4 +1,6 @@
 { pkgs, ... }: {
+  # FIDO2 creds for agenix-rekey
+  # age-plugin-fido2-hmac -g > ./master.hmac
   environment.systemPackages = with pkgs; [
     pinentry-curses
     age-plugin-fido2-hmac

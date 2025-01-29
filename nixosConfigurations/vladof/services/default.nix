@@ -152,13 +152,13 @@ in
 
   # Secrets
   age.secrets = {
-    "vaultwarden-env".file = ../secrets/vaultwarden-env.age;
+    "vaultwarden-env".rekeyFile = ../secrets/vaultwarden-env.age;
     "acme-cf-dns-token" = {
-      file = ../secrets/acme-cf-dns-token.age;
+      rekeyFile = ../secrets/acme-cf-dns-token.age;
       group = "acme";
       mode = "440";
     };
-    "kavita-token".file = ../secrets/kavita-token.age;
+    "kavita-token".rekeyFile = ../secrets/kavita-token.age;
   };
 
   # IPFS seed for Jhvst

@@ -12,25 +12,25 @@ in
 
   # Secrets
   age.secrets = {
-    # "password".file = ./secrets/password.age;
+    # "password".rekeyFile = ./secrets/password.age;
     "wg-dinar" = {
-      file = ./secrets/wg-dinar.age;
+      rekeyFile = ./secrets/wg-dinar.age;
       owner = "systemd-network";
     };
     "wg-home" = {
-      file = ./secrets/wg-home.age;
+      rekeyFile = ./secrets/wg-home.age;
       owner = "systemd-network";
     };
-    "wpa-psk".file = ./secrets/wpa-psk.age;
+    "wpa-psk".rekeyFile = ./secrets/wpa-psk.age;
     "ed25519-sk-yubikey" = {
-      file = ./secrets/ed25519-sk-yubikey.age;
+      rekeyFile = ./secrets/ed25519-sk-yubikey.age;
       path = "/home/${user}/.ssh/id_ed25519_sk_yubikey";
       mode = "600";
       owner = user;
       group = "users";
     };
     "ed25519-sk-trezor" = {
-      file = ./secrets/ed25519-sk-trezor.age;
+      rekeyFile = ./secrets/ed25519-sk-trezor.age;
       path = "/home/${user}/.ssh/id_ed25519_sk_trezor";
       mode = "600";
       owner = user;

@@ -13,7 +13,7 @@ in
 
   # Secrets
   age.secrets."openai-api-key" = {
-    file = ./secrets/openai-api-key.age;
+    rekeyFile = ./secrets/openai-api-key.age;
     mode = "600";
     owner = user;
     group = "users";
