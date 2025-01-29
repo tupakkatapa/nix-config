@@ -62,7 +62,7 @@ in
 
       # Define the YubiKey resident key as the identifier and disable automount
       defaults = {
-        identityFile = "/home/${user}/.ssh/id_ed25519_sk";
+        identityFile = "/home/${user}/.ssh/id_ed25519_sk_yubikey";
         autoMount = false;
       };
 
