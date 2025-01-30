@@ -1,36 +1,40 @@
 use clap::{Arg, Command};
+use futures::stream::{self, StreamExt};
 use ipnetwork::Ipv4Network;
-use std::process::Command as SystemCommand;
-use threadpool::ThreadPool;
+use std::process::Stdio;
+use std::sync::Arc;
+use tokio::process::Command as AsyncCommand;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let args = cli().get_matches();
 
     // Retrieve the parsed arguments
     let network = *args.get_one::<Ipv4Network>("subnet").unwrap();
-    let num_threads = *args.get_one::<usize>("threads").unwrap();
+    let concurrency = *args.get_one::<usize>("threads").unwrap();
 
-    // Create a thread pool
-    let pool = ThreadPool::new(num_threads);
+    // Convert subnet to a IP list
+    let ip_list: Vec<String> = network.iter().map(|ip| ip.to_string()).collect();
+    let ip_list = Arc::new(ip_list);
 
     // Iterate over each IP in the subnet
-    for ip in network.iter() {
-        let ip_addr = ip.to_string();
-
-        pool.execute(move || {
-            if ping(&ip_addr) {
-                println!("{}", ip_addr);
-            }
-        });
-    }
-
-    // Wait for all threads to complete
-    pool.join();
+    stream::iter(ip_list.iter())
+        .map(|ip| {
+            let ip = ip.clone();
+            tokio::spawn(async move {
+                if ping(&ip).await {
+                    println!("{}", ip);
+                }
+            })
+        })
+        .buffer_unordered(concurrency)
+        .collect::<Vec<_>>()
+        .await;
 }
 
 fn cli() -> Command {
     Command::new("Ping Sweep")
-        .version("0.1.0")
+        .version("0.1.1")
         .author("Tupakkatapa")
         .about("Performs a ping sweep on a given subnet")
         .arg(
@@ -47,24 +51,22 @@ fn cli() -> Command {
                 .short('t')
                 .long("threads")
                 .value_name("THREADS")
-                .help("Number of concurrent threads")
-                .default_value("64")
+                .help("Number of concurrent async tasks")
+                .default_value("512")
                 .value_parser(clap::value_parser!(usize)), // Parse as usize
         )
 }
 
-fn ping(ip_addr: &str) -> bool {
-    let output = SystemCommand::new("ping")
+async fn ping(ip_addr: &str) -> bool {
+    let output = AsyncCommand::new("ping")
+        .arg("-n") // Disable DNS resolution
+        .arg("-c").arg("1") // Only one ping attempt
+        .arg("-W").arg("1") // 1-second timeout
         .arg(ip_addr)
-        .arg("-c 1")
-        .arg("-W 1")
-        .output();
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status()
+        .await;
 
-    match output {
-        Ok(o) => o.status.success(),
-        Err(e) => {
-            eprintln!("Error pinging {}: {}", ip_addr, e);
-            false
-        }
-    }
+    matches!(output, Ok(status) if status.success())
 }
