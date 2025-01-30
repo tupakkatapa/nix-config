@@ -41,7 +41,10 @@
   # Connectivity
   networking = {
     hostName = "torgue";
-    firewall.enable = false;
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 80 ]; # magic port
+    };
     useDHCP = false;
   };
   systemd.network = {
