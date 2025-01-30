@@ -38,10 +38,7 @@ in
       chmod = "${plugs}/chmod.yazi";
       diff = "${plugs}/diff.yazi";
       full-border = "${plugs}/full-border.yazi";
-      hide-preview = "${plugs}/hide-preview.yazi";
       jump-to-char = "${plugs}/jump-to-char.yazi";
-      max-preview = "${plugs}/max-preview.yazi";
-      smart-filter = "${plugs}/smart-filter.yazi";
       smart-enter = "${plugs}/smart-enter.yazi";
     };
 
@@ -52,62 +49,12 @@ in
         show_symlink = true;
         sort_dir_first = true;
       };
-
-      preview = {
-        image_filter = "lanczos3";
-        image_quality = 80;
-        max_width = 600;
-        max_height = 900;
-        ueberzug_scale = 1;
-        ueberzug_offset = [ 0 0 0 0 ];
-      };
-
       opener = {
-        play = [
-          {
-            run = "mpv \"$@\"";
-            desc = "Play with mpv";
-            orphan = true;
-          }
-        ];
         image = [
           {
             run = "imv-dir \"$@\"";
             desc = "Open with imv";
             orphan = true;
-          }
-        ];
-        pdf = [
-          {
-            run = "Zathura \"$@\"";
-            desc = "Open with Zathura";
-            orphan = true;
-          }
-        ];
-        folder = [
-          {
-            run = "nvim \"$@\"";
-            desc = "Edit with NeoVim";
-            block = true;
-          }
-        ];
-        text = [
-          {
-            run = "nvim \"$@\"";
-            desc = "Edit with NeoVim";
-            block = true;
-          }
-        ];
-        fallback = [
-          {
-            run = "xdg-open \"$@\"";
-            desc = "XDG Open";
-            orphan = true;
-          }
-          {
-            run = "nvim \"$@\"";
-            desc = "Edit with NeoVim";
-            block = true;
           }
         ];
       };
@@ -121,8 +68,9 @@ in
           desc = "Open shell here";
         }
         {
-          on = [ "y" ];
-          run = [ ''shell 'for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list' --confirm'' "yank" ];
+          on = "<C-h>";
+          run = "toggle hidden";
+          desc = "Toggle hidden files";
         }
         # Plugins
         {
@@ -134,21 +82,6 @@ in
           on = [ "c" "m" ];
           run = "plugin chmod";
           desc = "Chmod on selected files";
-        }
-        {
-          on = "T";
-          run = "plugin max-preview";
-          desc = "Maximize or restore preview";
-        }
-        {
-          on = "Y";
-          run = "plugin hide-preview";
-          desc = "Hide or show preview";
-        }
-        {
-          on = "F";
-          run = "plugin smart-filter";
-          desc = "Smart filter";
         }
         {
           on = "f";

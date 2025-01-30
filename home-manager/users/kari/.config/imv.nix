@@ -1,12 +1,14 @@
-{ pkgs, lib, ... }: {
+_: {
   programs.imv = {
     enable = true;
     settings.binds = {
       q = "quit";
-      "<Left>" = "prev";
-      "<bracketleft>" = "prev";
-      "<Right>" = "next";
-      "<bracketright>" = "next";
+      x = "close";
+      f = "fullscreen";
+      c = "center";
+      r = "reset";
+
+      # Navigating
       gg = "goto 0";
       "<Shift+G>" = "goto -1";
 
@@ -19,29 +21,10 @@
       # Zooming
       j = "zoom -1";
       k = "zoom 1";
-      "<minus>" = "zoom -1";
-      "<plus>" = "zoom 1";
       l = "next";
       h = "prev";
 
-      "<Up>" = "zoom 1";
-      "<Shift+plus>" = "zoom 1";
-      "<Down>" = "zoom -1";
-      i = "exec ${lib.getExe pkgs.libnotify} -t 800 -u low -i image-x-generic \$imv_current_file";
-
-      # Other commands
-      x = "close";
-      f = "fullscreen";
-      d = "overlay";
-      p = "exec echo \$imv_current_file";
-      c = "center";
-      s = "scaling next";
-      "<Shift+S>" = "upscaling next";
-      a = "zoom actual";
-      r = "reset";
-
       # Gif playback
-      "<period>" = "next_frame";
       "<space>" = "toggle_playing";
     };
   };
