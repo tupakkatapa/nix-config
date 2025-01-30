@@ -15,9 +15,9 @@
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
     ./ephemeral.nix
-    ./gaming.nix
+    # ./gaming.nix
     # ./media-production.nix
-    ./music-production.nix
+    # ./music-production.nix
   ];
 
   # Enable blobs
