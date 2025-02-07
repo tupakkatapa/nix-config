@@ -6,8 +6,8 @@
     # ardour
     audacity
     guitarix
-    # gxplugins-lv2
-    # ladspaPlugins
+    gxplugins-lv2
+    ladspaPlugins
     qjackctl
     # tuxguitar
   ];

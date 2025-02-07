@@ -15,6 +15,9 @@
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
     ./ephemeral.nix
+
+    # When needed, build at runtime
+    # ../.config/virtualization/default.nix
     # ./gaming.nix
     # ./media-production.nix
     # ./music-production.nix

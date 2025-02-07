@@ -281,10 +281,14 @@ in
         # Program specific (float, position and size etc.)
         "float, blueberry"
         "float, imv"
+        "float, qjackctl"
         "float, moe.launcher.an-anime-game-launcher"
         "float, mpv"
-        "float, org.pwmt.zathura"
         "float, org.raspberrypi.rpi-imager"
+
+        "center, org.pwmt.zathura"
+        "float, org.pwmt.zathura"
+        "size 800 1150, org.pwmt.zathura"
 
         "center, title:Runelite"
         "float, title:RuneLite"

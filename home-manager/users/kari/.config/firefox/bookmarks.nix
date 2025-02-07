@@ -199,6 +199,10 @@
             name = "Have I Been Pwned";
             url = "https://haveibeenpwned.com/";
           }
+          {
+            name = "MD to PDF Converter";
+            url = "https://cloudconvert.com/md-to-pdf";
+          }
         ];
       }
       {
@@ -257,59 +261,7 @@
               }
             ];
           }
-          {
-            name = "Ethereum";
-            bookmarks = [
-              {
-                name = "Prysm CLI";
-                url = "https://docs.prylabs.network/docs/prysm-usage/parameters";
-              }
-              {
-                name = "Reth CLI";
-                url = "https://reth.rs/cli/reth/node.html";
-              }
-              {
-                name = "Nimbus CLI";
-                url = "https://nimbus.guide/options.html";
-              }
-              {
-                name = "Teku CLI";
-                url = "https://docs.teku.consensys.io/reference/cli";
-              }
-              {
-                name = "Lighthouse CLI";
-                url = "https://lighthouse-book.sigmaprime.io/api-bn.html";
-              }
-              {
-                name = "MEV-Boost CLI";
-                url = "https://github.com/flashbots/mev-boost#mev-boost-cli-arguments";
-              }
-              {
-                name = "Besu CLI";
-                url = "https://besu.hyperledger.org/stable/public-networks/reference/cli/options";
-              }
-              {
-                name = "Nethermind CLI";
-                url = "https://docs.nethermind.io/nethermind/ethereum-client/configuration";
-              }
-              {
-                name = "Geth CLI";
-                url = "https://geth.ethereum.org/docs/fundamentals/command-line-options";
-              }
-              {
-                name = "Erigon CLI";
-                url = "https://erigon.gitbook.io/erigon/advanced-usage/command-line-options";
-              }
-              {
-                name = "SSV node";
-                url = "https://docs.ssv.network/run-a-node/operator-node/installation#create-configuration-file";
-              }
-              {
-                name = "Client Diversity";
-                url = "https://clientdiversity.org/";
-              }
-            ];
-          }
+
         ];
       }
       {
@@ -496,6 +448,134 @@
           {
             name = "Reuters";
             url = "https://www.reuters.com/";
+          }
+        ];
+      }
+      {
+        name = "Shops";
+        bookmarks = [
+          {
+            name = "Amazon";
+            url = "https://www.amazon.de/";
+          }
+          {
+            name = "Crucial";
+            url = "https://www.crucial.com/";
+          }
+          {
+            name = "Verkkokauppa";
+            url = "https://www.verkkokauppa.com/fi/etusivu";
+          }
+          {
+            name = "Jimms";
+            url = "https://www.jimms.fi/";
+          }
+          {
+            name = "Ebay";
+            url = "https://www.ebay.com/";
+          }
+          {
+            name = "n-o-d-e";
+            url = "https://n-o-d-e.shop/";
+          }
+          {
+            name = "Proshop";
+            url = "https://www.proshop.fi/";
+          }
+          {
+            name = "Zalando";
+            url = "https://www.zalando.fi/";
+          }
+          {
+            name = "IKEA";
+            url = "https://www.ikea.com/fi/fi/";
+          }
+        ];
+      }
+      {
+        name = "Crypto";
+        bookmarks = [
+          {
+            name = "Binance";
+            url = "https://www.binance.com/en";
+          }
+          {
+            name = "Coinbase";
+            url = "https://www.coinbase.com/home";
+          }
+          {
+            name = "CoinMarketCap";
+            url = "https://coinmarketcap.com/";
+          }
+          {
+            name = "BscScan";
+            url = "https://bscscan.com/";
+          }
+          {
+            name = "BtcScan";
+            url = "https://btcscan.org/";
+          }
+          {
+            name = "Ethereum";
+            bookmarks = [
+              {
+                name = "EtherScan";
+                url = "https://etherscan.io/";
+              }
+              {
+                name = "Client Diversity";
+                url = "https://clientdiversity.org/";
+              }
+              {
+                name = "Clients";
+                bookmarks = [
+                  {
+                    name = "Prysm CLI";
+                    url = "https://docs.prylabs.network/docs/prysm-usage/parameters";
+                  }
+                  {
+                    name = "Reth CLI";
+                    url = "https://reth.rs/cli/reth/node.html";
+                  }
+                  {
+                    name = "Nimbus CLI";
+                    url = "https://nimbus.guide/options.html";
+                  }
+                  {
+                    name = "Teku CLI";
+                    url = "https://docs.teku.consensys.io/reference/cli";
+                  }
+                  {
+                    name = "Lighthouse CLI";
+                    url = "https://lighthouse-book.sigmaprime.io/api-bn.html";
+                  }
+                  {
+                    name = "MEV-Boost CLI";
+                    url = "https://github.com/flashbots/mev-boost#mev-boost-cli-arguments";
+                  }
+                  {
+                    name = "Besu CLI";
+                    url = "https://besu.hyperledger.org/stable/public-networks/reference/cli/options";
+                  }
+                  {
+                    name = "Nethermind CLI";
+                    url = "https://docs.nethermind.io/nethermind/ethereum-client/configuration";
+                  }
+                  {
+                    name = "Geth CLI";
+                    url = "https://geth.ethereum.org/docs/fundamentals/command-line-options";
+                  }
+                  {
+                    name = "Erigon CLI";
+                    url = "https://erigon.gitbook.io/erigon/advanced-usage/command-line-options";
+                  }
+                  {
+                    name = "SSV node";
+                    url = "https://docs.ssv.network/run-a-node/operator-node/installation#create-configuration-file";
+                  }
+                ];
+              }
+            ];
           }
         ];
       }

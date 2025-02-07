@@ -11,7 +11,7 @@ fi
 
 # Extract and display the information
 notify-send -a "my-app" "Active Window Details" \
-"<br>Title: $(echo "$active_window" | jq -r '.title')
+"Title: $(echo "$active_window" | jq -r '.title')
 Classname: $(echo "$active_window" | jq -r '.class')
 Size: $(echo "$active_window" | jq -r '.size | "\(.[0])x\(.[1])"')
 Position: $(echo "$active_window" | jq -r '.at | "x=\(.[0]) y=\(.[1])"')

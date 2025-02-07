@@ -279,7 +279,7 @@
       "inputs": {
         "flake-compat": "flake-compat_10",
         "nix": "nix_4",
-        "nixpkgs": "nixpkgs_12",
+        "nixpkgs": "nixpkgs_11",
         "pre-commit-hooks": "pre-commit-hooks_5"
       },
       "locked": {
@@ -1010,26 +1010,6 @@
         "type": "github"
       }
     },
-    "homestakeros-base": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_8"
-      },
-      "locked": {
-        "dir": "nixosModules/base",
-        "lastModified": 1735052886,
-        "narHash": "sha256-1KUjXJ3lneHZyFZL+GgBZVfZ4kkhUMZ6gohC4LXURnM=",
-        "owner": "ponkila",
-        "repo": "HomestakerOS",
-        "rev": "a5213786b62b5ac068801d9390ccc8380728b50c",
-        "type": "github"
-      },
-      "original": {
-        "dir": "nixosModules/base",
-        "owner": "ponkila",
-        "repo": "HomestakerOS",
-        "type": "github"
-      }
-    },
     "hyprcursor": {
       "inputs": {
         "hyprlang": [
@@ -1104,7 +1084,7 @@
         "hyprlang": "hyprlang",
         "hyprutils": "hyprutils",
         "hyprwayland-scanner": "hyprwayland-scanner",
-        "nixpkgs": "nixpkgs_9",
+        "nixpkgs": "nixpkgs_8",
         "pre-commit-hooks": "pre-commit-hooks_4",
         "systems": "systems_5",
         "xdph": "xdph"
@@ -1377,7 +1357,7 @@
     "mozid": {
       "inputs": {
         "flake-utils": "flake-utils_4",
-        "nixpkgs": "nixpkgs_10"
+        "nixpkgs": "nixpkgs_9"
       },
       "locked": {
         "lastModified": 1730228609,
@@ -1463,7 +1443,7 @@
     },
     "nix-extras": {
       "inputs": {
-        "nixpkgs": "nixpkgs_11"
+        "nixpkgs": "nixpkgs_10"
       },
       "locked": {
         "lastModified": 1733004883,
@@ -1611,7 +1591,7 @@
       "inputs": {
         "devenv": "devenv_4",
         "flake-parts": "flake-parts_5",
-        "nixpkgs": "nixpkgs_13",
+        "nixpkgs": "nixpkgs_12",
         "nixpkgs-stable": "nixpkgs-stable_5",
         "nixpkgs-stable-patched": "nixpkgs-stable-patched"
       },
@@ -1872,18 +1852,6 @@
     },
     "nixpkgs_10": {
       "locked": {
-        "lastModified": 0,
-        "narHash": "sha256-pP3Azj5d6M5nmG68Fu4JqZmdGt4S4vqI5f8te+E/FTw=",
-        "path": "/nix/store/ia1zpg1s63v6b3vin3n7bxxjgcs51s2r-source",
-        "type": "path"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_11": {
-      "locked": {
         "lastModified": 1710889954,
         "narHash": "sha256-Pr6F5Pmd7JnNEMHHmspZ0qVqIBVxyZ13ik1pJtm2QXk=",
         "owner": "NixOS",
@@ -1897,7 +1865,7 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_12": {
+    "nixpkgs_11": {
       "locked": {
         "lastModified": 1678875422,
         "narHash": "sha256-T3o6NcQPwXjxJMn2shz86Chch4ljXgZn746c2caGxd8=",
@@ -1913,7 +1881,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_13": {
+    "nixpkgs_12": {
       "locked": {
         "lastModified": 1709703039,
         "narHash": "sha256-6hqgQ8OK6gsMu1VtcGKBxKQInRLHtzulDo9Z5jxHEFY=",
@@ -1929,7 +1897,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_14": {
+    "nixpkgs_13": {
       "locked": {
         "lastModified": 1737746512,
         "narHash": "sha256-nU6AezEX4EuahTO1YopzueAXfjFfmCHylYEFCagduHU=",
@@ -2043,22 +2011,6 @@
     },
     "nixpkgs_8": {
       "locked": {
-        "lastModified": 1734875076,
-        "narHash": "sha256-Pzyb+YNG5u3zP79zoi8HXYMs15Q5dfjDgwCdUI5B0nY=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "1807c2b91223227ad5599d7067a61665c52d1295",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-24.11",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_9": {
-      "locked": {
         "lastModified": 1734119587,
         "narHash": "sha256-AKU6qqskl0yf2+JdRdD0cfxX4b9x3KKV5RqA6wijmPM=",
         "owner": "NixOS",
@@ -2071,6 +2023,18 @@
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
+      }
+    },
+    "nixpkgs_9": {
+      "locked": {
+        "lastModified": 0,
+        "narHash": "sha256-pP3Azj5d6M5nmG68Fu4JqZmdGt4S4vqI5f8te+E/FTw=",
+        "path": "/nix/store/ia1zpg1s63v6b3vin3n7bxxjgcs51s2r-source",
+        "type": "path"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
       }
     },
     "nixvim": {
@@ -2294,7 +2258,6 @@
         "devenv": "devenv_3",
         "flake-parts": "flake-parts_4",
         "home-manager": "home-manager_2",
-        "homestakeros-base": "homestakeros-base",
         "hyprland-plugins": "hyprland-plugins",
         "hyprwm-contrib": "hyprwm-contrib",
         "mozid": "mozid",
@@ -2303,7 +2266,7 @@
         "nix-index-database": "nix-index-database",
         "nixie": "nixie",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs_14",
+        "nixpkgs": "nixpkgs_13",
         "nixpkgs-stable": "nixpkgs-stable_6",
         "nixvim": "nixvim",
         "treefmt-nix": "treefmt-nix_3"

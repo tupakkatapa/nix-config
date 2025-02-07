@@ -51,7 +51,6 @@
 
     # Netboot stuff
     nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie\?ref=jesse/bugs";
-    homestakeros-base.url = "github:ponkila/HomestakerOS\?dir=nixosModules/base";
 
     # Index
     nix-index-database.url = "github:nix-community/nix-index-database";

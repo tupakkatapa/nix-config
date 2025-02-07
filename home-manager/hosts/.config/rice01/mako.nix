@@ -20,6 +20,7 @@ in
     icons = true;
     maxIconSize = 64;
     padding = "8,8";
+    height = 1000;
     anchor = "top-right";
     textColor = "#${colors.base05}";
     progressColor = "#${colors.base08}";

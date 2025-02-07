@@ -9,7 +9,6 @@
 let
   # Private services access whitelist
   authorizedIPs = [
-    "192.168.1.6"
     "192.168.1.7"
     "192.168.1.8"
     "172.16.16.2"

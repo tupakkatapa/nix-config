@@ -1,4 +1,5 @@
 { rustPlatform
+, pkgs
 , lib
 }:
 let
@@ -7,6 +8,11 @@ in
 rustPlatform.buildRustPackage {
   pname = manifest.name;
   inherit (manifest) version;
+
+  nativeBuildInputs = with pkgs; [ pkg-config ];
+  buildInputs = with pkgs; [
+    # system library deps
+  ];
 
   src = lib.sourceByRegex ./. [
     "^Cargo.toml$"
