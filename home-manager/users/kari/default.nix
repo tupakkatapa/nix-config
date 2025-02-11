@@ -46,7 +46,6 @@ in
     home.packages = with pkgs; [
       monitor-adjust
 
-      sublime-merge
       plexamp
       chatgpt-cli
 

@@ -48,12 +48,6 @@ in
         key = "dd";
         action = "\"_dd";
       }
-      # Git status
-      {
-        mode = "n";
-        key = "<leader>g";
-        action = "<cmd>Neotree float git_status <CR>";
-      }
       # Easier buffer switching
       {
         mode = "n";
@@ -88,11 +82,16 @@ in
         key = "Q";
         action = ":Bdelete<CR>";
       }
-      # Markdown preview
+      # Plugins
       {
         mode = "n";
         key = "<leader>p";
         action = ":MarkdownPreview<CR>";
+      }
+      {
+        mode = "n";
+        key = "<leader>g";
+        action = "<cmd>LazyGitCurrentFile <CR>";
       }
     ];
 
@@ -107,6 +106,7 @@ in
       bufdelete.enable = true;
       markdown-preview.enable = true;
       web-devicons.enable = true;
+      lazygit.enable = config.programs.lazygit.enable;
 
       # Tabline plugin
       bufferline = {

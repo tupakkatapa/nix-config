@@ -102,6 +102,11 @@ in
   };
 
   home-manager.users."${user}" = {
+    imports =
+      [
+        ./.config/lazygit.nix
+      ];
+
     # Extra SSH config
     programs.ssh = {
       enable = true;
