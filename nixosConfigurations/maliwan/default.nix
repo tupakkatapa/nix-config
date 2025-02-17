@@ -13,9 +13,6 @@
     ./hardware-configuration.nix
   ];
 
-  # Set local flake path to be able to be referenced
-  environment.variables.FLAKE_DIR = "/home/kari/nix-config";
-
   # Bootloader for x86_64-linux / aarch64-linux
   boot.loader.systemd-boot = {
     enable = true;

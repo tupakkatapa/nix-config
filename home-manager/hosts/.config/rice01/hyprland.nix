@@ -22,7 +22,6 @@ let
   };
 
   hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
-  playerctl = "${pkgs.playerctl}/bin/playerctl";
   swaybg = "${pkgs.swaybg}/bin/swaybg";
 in
 {
@@ -158,7 +157,6 @@ in
 
         # Open programs on spesific workspaces
         "[workspace 4 silent] ${BROWSER} https://web.whatsapp.com https://app.element.io/ https://web.telegram.org/ https://www.instagram.com/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
-        "[workspace 5 silent] plexamp"
       ];
 
       bind = [
@@ -171,11 +169,6 @@ in
         ",XF86AudioLowerVolume, exec, ${notify.volume} -d 5"
         ",XF86AudioMute,        exec, ${notify.volume} -t"
 
-        # Media
-        ",XF86AudioNext, exec, ${playerctl} -p Plexamp next"
-        ",XF86AudioPrev, exec, ${playerctl} -p Plexamp previous"
-        ",XF86AudioPlay, exec, ${playerctl} -p Plexamp play-pause"
-
         # General
         "${mod} SHIFT, Return, exec, wofi"
         "${mod}, Backspace, exec, ${TERMINAL}"
@@ -183,7 +176,6 @@ in
 
         # Programs
         "SUPER, B, exec, ${BROWSER}"
-        "SUPER, G, exec, ${TERMINAL} -e $SHELL -c 'chatgpt -d'"
         "SUPER, F, exec, ${TERMINAL} -e $SHELL -c '${FILEMANAGER} ~'"
         "SUPER, V, exec, ${TERMINAL} -e $SHELL -c '${EDITOR} ~'"
 
@@ -313,17 +305,12 @@ in
         "float, foot"
         "size 1400 800, foot"
 
-        "center, Plexamp"
-        "float, Plexamp"
-        "size 1400 800, Plexamp"
-
         # Sets an idle inhibit rule for the window
         "idleinhibit focus, mpv"
         "idleinhibit fullscreen, ${BROWSER}"
 
         # Additional opacity multiplier
         "opacity 0.95 override 0.95 override, ^(foot)$"
-        "opacity 0.95 override 0.95 override, ^(Plexamp)$"
       ];
     };
   };

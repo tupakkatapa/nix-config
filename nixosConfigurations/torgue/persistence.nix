@@ -3,7 +3,7 @@
 let
   dataDir = "/mnt/860";
 
-  # Persistent directories for each user.
+  # Persistent directories for each user
   # Data is stored under: dataDir/home/<user>/<category>/<dir>
   users = {
     kari = [
@@ -33,7 +33,7 @@ let
       {
         name = "secrets";
         dirs = [
-          { name = "gnupg"; mode = "700"; mountPoint = "gnupg"; }
+          { name = "gnupg"; mode = "700"; mountPoint = ".gnupg"; }
           { name = "yubico"; mode = "755"; mountPoint = ".config/Yubico"; }
           { name = "ssh"; mode = "700"; mountPoint = ".ssh"; }
         ];
@@ -47,7 +47,7 @@ let
     ];
   };
 
-  # Create tmpfiles rules for persistent directories under dataDir/home.
+  # Create tmpfiles rules for persistent directories under dataDir/home
   mkUserTmpfiles = user: categories:
     let
       parentRules = lib.concatMap
@@ -67,7 +67,7 @@ let
     in
     parentRules ++ subdirRules;
 
-  # Create bind mount entries from persistent data into /home/<user>.
+  # Create bind mount entries from persistent data into /home/<user>
   mkUserFileSystems = user: categories:
     lib.listToAttrs (lib.concatMap
       (cat:
@@ -83,15 +83,15 @@ let
       )
       categories);
 
-  # Create the overall list of tmpfiles rules.
+  # Create the overall list of tmpfiles rules
   userHomeTmpfiles = lib.map (user: "d ${dataDir}/home/${user} 755 ${user} ${user} -") (lib.attrNames users);
   allUserTmpfiles = lib.concatLists (lib.attrValues (lib.mapAttrs (user: cats: mkUserTmpfiles user cats) users));
-  allTmpfiles = [ "d ${dataDir}/home 755 root root -" ] ++ userHomeTmpfiles ++ allUserTmpfiles;
+  allTmpfiles = userHomeTmpfiles ++ allUserTmpfiles;
 
-  # All bind mounts for user persistent directories.
+  # All bind mounts for user persistent directories
   allFileSystems = lib.foldl' (acc: user: acc // (mkUserFileSystems user users.${user})) { } (lib.attrNames users);
 
-  # Ephemeral directories to be created under /home/<user>.
+  # Ephemeral directories to be created under /home/<user>
   userEphemeralTmpfiles = lib.concatMap
     (user: [
       "d /home/${user}/.config 755 ${user} ${user} -"
@@ -102,12 +102,13 @@ let
     (lib.attrNames users);
 in
 {
-  # Host SSH key (stored under dataDir/ssh) and other host-specific items.
+  # Host SSH key
   services.openssh.hostKeys = [{
     path = "${dataDir}/ssh/ssh_host_ed25519_key";
     type = "ed25519";
   }];
 
+  # Mount persistent drives and user binds
   fileSystems = allFileSystems // {
     "${dataDir}" = {
       device = "/dev/disk/by-uuid/20cfc618-e1e9-476e-984e-55326b3b5ca7";
@@ -119,9 +120,6 @@ in
       fsType = "auto";
     };
   };
-
-  # Set a flake directory variable if needed.
-  environment.variables.FLAKE_DIR = "${dataDir}/nix-config";
 
   # Mount '/nix/.rw-store' and '/tmp' to disk
   services.nixRemount = {
@@ -140,6 +138,7 @@ in
     timeout = 1;
   };
 
+  # Create directories
   systemd.tmpfiles.rules = allTmpfiles ++ userEphemeralTmpfiles ++ [
     "d /mnt/boot          755 root root -"
     "d /mnt/sftp          755 root root -"

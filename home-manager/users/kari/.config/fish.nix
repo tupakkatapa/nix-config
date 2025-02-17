@@ -52,7 +52,7 @@ in
 
       # Nix
       nfc = "nix flake check --impure --accept-flake-config";
-      buidl = "sudo nixos-rebuild test --flake path:$FLAKE_DIR#$(hostname) --accept-flake-config";
+      buidl = "sudo nixos-rebuild test --flake path:$HOME/nix-config#$(hostname) --accept-flake-config";
       gc = "nix-collect-garbage -d";
       ns = "nix-shell -p";
 

@@ -62,6 +62,7 @@
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
     coditon-md.url = "github:tupakkatapa/coditon-md";
     mozid.url = "github:tupakkatapa/mozid";
+    levari.url = "github:tupakkatapa/levari";
   };
 
   outputs = { self, ... }@inputs:
@@ -102,6 +103,7 @@
             inherit (inputs'.nixie.packages) lkddb-filter;
             inherit (inputs'.nixie.packages) pxe-generate;
             inherit (inputs'.mozid.packages) mozid;
+            inherit (inputs'.levari.packages) levari;
             inherit (inputs'.hyprland-plugins.packages) hyprbars;
           };
         in

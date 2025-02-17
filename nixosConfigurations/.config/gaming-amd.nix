@@ -13,7 +13,6 @@
   # System packages
   environment.systemPackages = with pkgs; [
     xow_dongle-firmware
-    discord
 
     # Lutris
     # (lutris.override {

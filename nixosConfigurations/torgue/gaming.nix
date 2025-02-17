@@ -3,8 +3,6 @@
 }: {
   imports = [
     ../.config/gaming-amd.nix
-    ../.config/retroarch.nix
-    ../.config/virtualization/wine.nix
   ];
 
   # High quality games

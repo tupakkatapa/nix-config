@@ -138,7 +138,7 @@ in
           '';
         };
         window = {
-          autoExpandWidth = true;
+          autoExpandWidth = false;
           mappings = {
             "l".command = "open";
             "h".command = "close_node";
@@ -162,15 +162,8 @@ in
           sections = {
             lualine_a = [ "" ];
             lualine_b = [ "" ];
-            # lualine_c = [
-            #  "location"
-            #  {
-            #    name = "filename";
-            #    extraConfig.path = 1;
-            #  }
-            #  "filetype"
-            # ];
-            lualine_x = [ "diagonostics" ];
+            lualine_c = [ "" ];
+            lualine_x = [ "location" ];
             lualine_y = [ "branch" ];
             lualine_z = [ "mode" ];
           };
