@@ -14,7 +14,7 @@
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
-    ./ephemeral.nix
+    ./persistence.nix
 
     # When needed, build at runtime
     # ../.config/virtualization/default.nix
