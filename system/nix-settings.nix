@@ -12,6 +12,9 @@
     # Making legacy nix commands consistent as well, awesome!
     nixPath = lib.mkDefault (lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry);
 
+    # Disable nix channels. Use flakes instead.
+    channel.enable = false;
+
     settings = {
       # Enable flakes and new 'nix' command
       experimental-features = "nix-command flakes";
