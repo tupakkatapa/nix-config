@@ -123,11 +123,29 @@ in
   # Set a flake directory variable if needed.
   environment.variables.FLAKE_DIR = "${dataDir}/nix-config";
 
+  # Mount '/nix/.rw-store' and '/tmp' to disk
+  services.nixRemount = {
+    enable = true;
+    where = "${dataDir}/store";
+    type = "none";
+    options = [ "bind" ];
+  };
+
+  # Update the rEFInd boot manager
+  services.refindGenerate = {
+    enable = true;
+    where = "/dev/sda1";
+    flakeUrl = "github:tupakkatapa/nix-config";
+    hosts = [ "bandit" ];
+    timeout = 1;
+  };
+
   systemd.tmpfiles.rules = allTmpfiles ++ userEphemeralTmpfiles ++ [
     "d /mnt/boot          755 root root -"
     "d /mnt/sftp          755 root root -"
     "d ${dataDir}         755 root root -"
     "d ${dataDir}/home    755 root root -"
     "d ${dataDir}/ssh     700 root root -"
+    "d ${dataDir}/store   755 root root -"
   ];
 }

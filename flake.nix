@@ -220,6 +220,8 @@
               ./system/kexec-tree.nix
               inputs.aagl.nixosModules.default
               inputs.musnix.nixosModules.musnix
+              inputs.nixie.nixosModules.nixRemount
+              inputs.nixie.nixosModules.refindGenerate
               inputs.nixos-hardware.nixosModules.common-gpu-amd
             ];
           };
