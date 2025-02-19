@@ -31,7 +31,7 @@ in
     };
     "ed25519-sk-trezor" = {
       rekeyFile = ./secrets/ed25519-sk-trezor.age;
-      path = "/home/${user}/.ssh/id_ed25519_sk_trezor";
+      # path = "/home/${user}/.ssh/id_ed25519_sk_trezor";
       mode = "600";
       owner = user;
       group = "users";
@@ -114,7 +114,7 @@ in
         "*" = {
           identityFile = [
             config.age.secrets.ed25519-sk-yubikey.path
-            config.age.secrets.ed25519-sk-trezor.path
+            # config.age.secrets.ed25519-sk-trezor.path
           ];
         };
         "192.168.1.*".extraOptions."StrictHostKeyChecking" = "no";
