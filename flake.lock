@@ -1612,11 +1612,11 @@
         "nixpkgs-stable-patched": "nixpkgs-stable-patched"
       },
       "locked": {
-        "lastModified": 1739791450,
-        "narHash": "sha256-eJulexpW7cA6dcVyVklMfBdx4zRw3SXBsHv5ggeTt7w=",
+        "lastModified": 1739804739,
+        "narHash": "sha256-52BqYeC1W64m3s4usukBd3KYmpBkxaKI7YEmmJt2aAI=",
         "ref": "jesse/bugs",
-        "rev": "74b5bda51bf6b45f7aaf24febc1ca357ba2768b6",
-        "revCount": 37,
+        "rev": "7d88bc81773dd94712e6d67f353d6bd5134c27f0",
+        "revCount": 38,
         "type": "git",
         "url": "ssh://git@github.com/majbacka-labs/nixie"
       },
@@ -1943,6 +1943,21 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_17": {
+      "locked": {
+        "lastModified": 1741070619,
+        "narHash": "sha256-l2SFbDVMskfVUk6FewKqmGNrXGgpfRJfE4mCNNLzysk=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5e2119f033fee2e9f7ad30ff965cb1193ad3c095",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -2281,7 +2296,26 @@
         "nixpkgs": "nixpkgs_16",
         "nixpkgs-stable": "nixpkgs-stable_4",
         "nixvim": "nixvim",
+        "sftp-mount": "sftp-mount",
         "treefmt-nix": "treefmt-nix_3"
+      }
+    },
+    "sftp-mount": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_17"
+      },
+      "locked": {
+        "lastModified": 1741076160,
+        "narHash": "sha256-fwEN381kXwDBGLeqbHS/9tyc96FbeirPsAjgJbgrjeQ=",
+        "owner": "tupakkatapa",
+        "repo": "sftp-mount",
+        "rev": "12baf95cc5055d48b401ee8616eea19a1c9d21b5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tupakkatapa",
+        "repo": "sftp-mount",
+        "type": "github"
       }
     },
     "systems": {

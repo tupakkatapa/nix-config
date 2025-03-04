@@ -63,6 +63,7 @@
     coditon-md.url = "github:tupakkatapa/coditon-md";
     mozid.url = "github:tupakkatapa/mozid";
     levari.url = "github:tupakkatapa/levari";
+    sftp-mount.url = "github:tupakkatapa/sftp-mount";
   };
 
   outputs = { self, ... }@inputs:
@@ -194,7 +195,7 @@
               inputs.agenix-rekey.nixosModules.default
               inputs.agenix.nixosModules.default
               inputs.home-manager.nixosModules.home-manager
-              self.nixosModules.sftpClient
+              inputs.sftp-mount.nixosModules.sftpMount
               {
                 home-manager.sharedModules = [
                   inputs.nixvim.homeManagerModules.nixvim
@@ -268,7 +269,6 @@
 
           # NixOS modules
           nixosModules = {
-            sftpClient.imports = [ ./nixosModules/sftp-client.nix ];
             autoScrcpy.imports = [ ./nixosModules/auto-scrcpy.nix ];
             rsyncBackup.imports = [ ./nixosModules/rsync-backup.nix ];
           };
