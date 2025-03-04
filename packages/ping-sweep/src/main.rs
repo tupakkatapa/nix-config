@@ -60,8 +60,10 @@ fn cli() -> Command {
 async fn ping(ip_addr: &str) -> bool {
     let output = AsyncCommand::new("ping")
         .arg("-n") // Disable DNS resolution
-        .arg("-c").arg("1") // Only one ping attempt
-        .arg("-W").arg("1") // 1-second timeout
+        .arg("-c")
+        .arg("1") // Only one ping attempt
+        .arg("-W")
+        .arg("1") // 1-second timeout
         .arg(ip_addr)
         .stdout(Stdio::null())
         .stderr(Stdio::null())
