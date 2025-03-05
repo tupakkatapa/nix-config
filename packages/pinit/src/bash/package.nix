@@ -1,6 +1,5 @@
 { pkgs
 , lib
-,
 }:
 let
   packageName = "foobar";
@@ -17,7 +16,7 @@ pkgs.stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p $out/bin
-    cp $src/${packageName}.sh $out/bin/${packageName}
+    cp $src/main.sh $out/bin/${packageName}
     chmod +x $out/bin/${packageName}
 
     wrapProgram $out/bin/${packageName} \

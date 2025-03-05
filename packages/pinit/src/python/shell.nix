@@ -1,9 +1,8 @@
 { pkgs ? import <nixpkgs> { } }:
-let
-  package = import ./package.nix { inherit pkgs; };
-in
 pkgs.mkShell {
-  inherit (package) buildInputs;
+  buildInputs = with pkgs; [
+    python3
+  ];
 
   shellHook = ''
     echo "You are now using a NIX environment for Python development"

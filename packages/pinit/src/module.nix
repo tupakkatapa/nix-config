@@ -1,32 +1,23 @@
 { config, lib, pkgs, ... }:
-
-with lib;
-
 let
   cfg = config.services.foobar;
 in
 {
   # Declare the configuration options
-  options = {
-    services.foobar = {
-      enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Enable the Foobar service.";
-      };
+  options.services.foobar = {
+    enable = lib.mkEnableOption "Whether to enable the foobar service.";
 
-      setting = mkOption {
-        type = types.str;
-        default = "default-value";
-        description = "Some configuration setting for the Foobar service.";
-      };
+    setting = lib.mkOption {
+      type = lib.types.str;
+      default = "default-value";
+      description = "Some configuration setting for the foobar service.";
     };
   };
 
   # Define the config implementation
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     systemd.services.foobar = {
-      description = "Foobar Service";
+      description = "foobar Service";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
