@@ -8,7 +8,7 @@ date: "2024-04-04"
 
 ---
 
-*Serves 8, 3.5 h*
+*Serves 8, total 30 minutes active time (plus at least 3 hours for solidification)*
 
 The greatest pastry ever to be invented since I do not enjoy over-sweet desserts. The mango offers a refreshing and exotic flavor that's hard to resist in any shape or form. Perfect for having with a cup of coffee when your friends are over. We need bowls, a lot of bowls.
 

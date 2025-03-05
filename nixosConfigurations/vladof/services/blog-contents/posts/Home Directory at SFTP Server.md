@@ -4,6 +4,8 @@ date: "2024-04-10"
 
 # Home Directory at SFTP Server
 
+> Updated 2024-03-04
+
 In this blog post, I discuss how I've begun to centralize the data I use on a daily basis. My intention at the long run is to gather all my data in one place, and in such a form that it is directly accessible from any device.
 
 ## Introduction
@@ -55,24 +57,32 @@ Here is an example directory tree of the `/mnt/sftp` on the remote machine, whic
 └── media
 ```
 
-Now, we can configure [the module](https://github.com/tupakkatapa/nix-config/blob/1e0d42c30f70cd7ffdc0caa563b4e9eaac9055dc/nixosModules/sftp-client.nix) as follows:
+Now, we can configure [the module](https://github.com/tupakkatapa/nix-config/blob/02fcd426d1d0f3a5f8740afb7d1e189f8dc0058a/nixosModules/sftp-client.nix) as follows:
 ```nix
-services.sftpClient = {
+services.sftpMount = {
   enable = true;
-  defaultIdentityFile = "/home/user/.ssh/id_ed25519";
-  mounts = let
-    remoteAddr = "user@192.168.1.100";
-  in [
+
+  # Use this private SSH key for auth
+  defaults.IdentityFile = "/home/user/.ssh/id_ed25519";
+
+  # Mount the SFTP root from the remote server
+  mounts = [{
+    what = "user@192.168.1.100:/";
+    where = "/mnt/remote-sftp";
+  }];
+
+  # Link specific remote folders to local directories
+  binds = [
     {
-      what = "${remoteAddr}:/mnt/sftp/home/Documents";
-      where = "/home/user/Documents";
-    }
-    {
-      what = "${remoteAddr}:/mnt/sftp/home/Pictures";
+      what = "/mnt/remote-sftp/home/Downloads";
       where = "/home/user/Pictures";
     }
     {
-      what = "${remoteAddr}:/mnt/sftp/home/Workspace";
+      what = "/mnt/remote-sftp/home/Pictures";
+      where = "/home/user/Pictures";
+    }
+    {
+      what = "/mnt/remote-sftp/home/Workspace";
       where = "/home/user/Workspace";
     }
   ];

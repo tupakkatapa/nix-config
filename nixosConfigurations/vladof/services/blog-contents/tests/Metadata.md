@@ -1,6 +1,4 @@
 ---
-title: "My First Post"
-author: "Jesse Karjalainen"
 date: "2024-07-28"
 ---
 

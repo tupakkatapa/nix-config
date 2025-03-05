@@ -2,6 +2,8 @@
 date: "2024-03-05"
 ---
 
+# I Prefer Dreams Over Reality
+
 Sounds pretty bad, I know, but bear with me. Everything here is based only on my own experiences and explained with my own, arbitrary choice of words.
 
 For the sake of clarity:

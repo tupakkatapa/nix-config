@@ -2,6 +2,8 @@
 date: "2024-03-27"
 ---
 
+# Netbooting NixOS
+
 In this blog post, we will go through the technical aspects of netbooting the NixOS operating system, motivated by our approach of netbooting all your devices regularly.
 
 Let's first have a few words just about NixOS, and other similar operating systems for that matter. It has a declarative configuration model: you create or edit a description of the desired configuration of your system, and then NixOS takes care of making it happen. This means that you are defining *what* the system should be like, not *how* it achieves that state.
