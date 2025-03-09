@@ -196,7 +196,7 @@
               inputs.agenix-rekey.nixosModules.default
               inputs.agenix.nixosModules.default
               inputs.home-manager.nixosModules.home-manager
-              inputs.sftp-mount.nixosModules.sftpMount
+              inputs.sftp-mount.nixosModules.sftpClient
               {
                 home-manager.sharedModules = [
                   inputs.nixvim.homeManagerModules.nixvim
@@ -241,6 +241,7 @@
               inputs.nixie.nixosModules.refindGenerate
               inputs.nixie.nixosModules.nixie
               inputs.nixos-hardware.nixosModules.common-gpu-intel
+              inputs.sftp-mount.nixosModules.sftpServer
             ];
           };
 

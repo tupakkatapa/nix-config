@@ -78,41 +78,18 @@ in
     domain = "${domain}";
   };
 
-  # Extra SSH/SFTP settings (in addition to openssh.nix)
-  services.openssh = {
-    allowSFTP = lib.mkForce true;
-    extraConfig = ''
-      Match User sftp
-        AllowTcpForwarding no
-        ChrootDirectory %h
-        ForceCommand internal-sftp
-        PermitTunnel no
-        X11Forwarding no
-      Match all
-    '';
-  };
-
-  # SFTP user/group
-  users.users."sftp" = {
-    createHome = true;
-    isSystemUser = true;
-    useDefaultShell = false;
-    group = "sftp";
-    extraGroups = [
-      "sshd"
-      "transmission"
-    ];
-    home = "${dataDir}/sftp";
-    homeMode = "770";
-    openssh.authorizedKeys.keys = [
+  # SFTP Server
+  services.sftpServer = {
+    dataDir = "${dataDir}/sftp";
+    authorizedKeys = [
       # kari@phone (preferably removed, keep until YubiKey NFC for SFTP is possible)
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPFKfmSYqFE+hXp/P1X8oqcpnUG9cx9ILzk4dqQzlEOC kari@phone"
 
       # kari@yubikey
       "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOdsfK46X5IhxxEy81am6A8YnHo2rcF2qZ75cHOKG7ToAAAACHNzaDprYXJp ssh:kari"
     ];
+    extraGroups = [ "transmission" ];
   };
-  users.groups."sftp" = { };
 
   # Create directories, not necessarily persistent
   systemd.tmpfiles.rules = [

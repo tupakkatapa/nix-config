@@ -53,7 +53,7 @@ in
   ];
 
   # Mount SFTP and bind home directories
-  services.sftpMount =
+  services.sftpClient =
     let
       sftpPrefix = "sftp@192.168.1.8:";
     in

@@ -4,7 +4,7 @@ date: "2024-04-10"
 
 # Home Directory at SFTP Server
 
-> Updated 2024-03-04
+> Updated 2025-03-09
 
 In this blog post, I discuss how I've begun to centralize the data I use on a daily basis. My intention at the long run is to gather all my data in one place, and in such a form that it is directly accessible from any device.
 
@@ -59,7 +59,7 @@ Here is an example directory tree of the `/mnt/sftp` on the remote machine, whic
 
 Now, we can configure [the module](https://github.com/tupakkatapa/nix-config/blob/02fcd426d1d0f3a5f8740afb7d1e189f8dc0058a/nixosModules/sftp-client.nix) as follows:
 ```nix
-services.sftpMount = {
+services.sftpClient = {
   enable = true;
 
   # Use this private SSH key for auth
