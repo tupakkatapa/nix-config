@@ -53,9 +53,9 @@
                 nixpkgs-fmt.enable = true;
                 shellcheck.enable = true;
               };
+              # Workaround for https://github.com/cachix/devenv/issues/760
+              containers = pkgs.lib.mkForce { };
             };
-            # Workaround for https://github.com/cachix/devenv/issues/760
-            containers = pkgs.lib.mkForce { };
           };
 
           # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
