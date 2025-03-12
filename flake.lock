@@ -2584,11 +2584,11 @@
         "nixpkgs": "nixpkgs_20"
       },
       "locked": {
-        "lastModified": 1741503563,
-        "narHash": "sha256-bWoG9Nb8A20zYU33VJvB7c1l+DtlGuuS2Pk/hKl586E=",
+        "lastModified": 1741810327,
+        "narHash": "sha256-PuoA2QWRXahsDFFZjMhm+jyLGJRMrFiRjRErj+N3PQ0=",
         "owner": "tupakkatapa",
         "repo": "sftp-mount",
-        "rev": "1a0017656ee6f9497712549d7eadc216399b1aec",
+        "rev": "6cd5ccd79904c5e81a7977aed9715f627d72b4f1",
         "type": "github"
       },
       "original": {

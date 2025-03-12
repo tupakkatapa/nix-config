@@ -80,6 +80,7 @@ in
 
   # SFTP Server
   services.sftpServer = {
+    enable = true;
     dataDir = "${dataDir}/sftp";
     authorizedKeys = [
       # kari@phone (preferably removed, keep until YubiKey NFC for SFTP is possible)
