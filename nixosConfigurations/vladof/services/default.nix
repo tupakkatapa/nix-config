@@ -3,7 +3,6 @@
 , config
 , domain
 , dataDir
-, appData
 , ...
 }:
 let
@@ -56,7 +55,6 @@ let
   '';
 
   # Generate things and stuff for services
-  servicesTmpfileRules = lib.mapAttrsToList (name: _: "d ${appData}/${name} 700 ${name} ${name} -") servicesConfig;
   servicesPorts = lib.mapAttrsToList (_name: service: service.port) servicesConfig;
   servicesVirtualHosts =
     lib.mapAttrs'
@@ -122,11 +120,6 @@ in
         })
         servicesConfig;
   };
-  # Bind ACME directory to preserve certs
-  fileSystems."/var/lib/acme" = {
-    device = "${appData}/acme";
-    options = [ "bind" ];
-  };
 
   # Firewall
   networking.firewall = {
@@ -136,18 +129,9 @@ in
       ++ [
         80
         443
-        5001 # IPFS
-        4001
         8080
       ];
   };
-
-  # Create directories, not necessarily persistent
-  systemd.tmpfiles.rules =
-    servicesTmpfileRules
-    ++ [
-      "d ${appData}/acme  700 acme acme -"
-    ];
 
   # Secrets
   age.secrets = {
@@ -166,7 +150,7 @@ in
     package = pkgs.transmission_4;
     downloadDirPermissions = "0777";
     openRPCPort = true;
-    home = "${appData}/transmission";
+    home = "/var/lib/transmission";
     settings = {
       umask = 0;
       download-dir = "${dataDir}/sftp/dnld";
@@ -195,7 +179,6 @@ in
   services.vaultwarden = {
     enable = true;
     dbBackend = "sqlite";
-    # backupDir = "${appData}/vaultwarden/backup";
     environmentFile = config.age.secrets.vaultwarden-env.path;
     config = {
       domain = "https://${servicesConfig.vaultwarden.addr}";
@@ -203,11 +186,6 @@ in
       rocketAddress = "0.0.0.0";
       signupsAllowed = false;
     };
-  };
-  # Bind service directories to persistent disk
-  fileSystems."/var/lib/vaultwarden" = {
-    device = "${appData}/vaultwarden";
-    options = [ "bind" ];
   };
 
   # Blog
@@ -236,13 +214,13 @@ in
   # Plex (32400)
   services.plex = {
     enable = true;
-    dataDir = "${appData}/plex";
+    dataDir = "/var/lib/plex";
   };
 
   # Kavita
   services.kavita = {
     enable = true;
-    dataDir = "${appData}/kavita";
+    dataDir = "/var/lib/kavita";
     tokenKeyFile = config.age.secrets.kavita-token.path;
     settings.Port = servicesConfig.kavita.port;
   };

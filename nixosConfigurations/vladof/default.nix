@@ -5,14 +5,11 @@
 }:
 let
   domain = "coditon.com";
-
   user = "kari";
   dataDir = "/mnt/wd-red";
-  appData = "${dataDir}/appdata";
-  secretData = "${dataDir}/secrets";
 
   # Inherit global stuff for imports
-  extendedArgs = { inherit pkgs lib config domain dataDir appData secretData; };
+  extendedArgs = { inherit pkgs lib config domain dataDir; };
 in
 {
   age.rekey = {
@@ -23,20 +20,15 @@ in
   };
 
   imports = [
-    (import ./nixie.nix extendedArgs)
     (import ./services extendedArgs)
+    (import ./persistence.nix extendedArgs)
     ../.config/motd.nix
     ../.config/pipewire.nix
+    ./nixie.nix
   ];
 
   # Saiko's automatic gc
   sys2x.gc.useDiskAware = true;
-
-  # Host SSH keys
-  services.openssh.hostKeys = [{
-    path = "${secretData}/ssh/ssh_host_ed25519_key";
-    type = "ed25519";
-  }];
 
   # Autologin for 'kari'
   services.getty.autologinUser = user;
@@ -66,12 +58,6 @@ in
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  # Bind firefox directory to preserve cookies and such
-  fileSystems."/home/${user}/.mozilla" = {
-    device = "${appData}/firefox";
-    options = [ "bind" "mode=755" ];
-  };
-
   # Networking
   networking = {
     hostName = "vladof";
@@ -90,29 +76,6 @@ in
       "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOdsfK46X5IhxxEy81am6A8YnHo2rcF2qZ75cHOKG7ToAAAACHNzaDprYXJp ssh:kari"
     ];
     extraGroups = [ "transmission" ];
-  };
-
-  # Create directories, not necessarily persistent
-  systemd.tmpfiles.rules = [
-    "d /mnt/boot          755 root root -"
-    "d ${dataDir}         755 root root -"
-    "d ${dataDir}/sftp    755 root root -"
-    "d ${dataDir}/store   755 root root -"
-
-    "d ${appData}         777 root root -"
-    "d ${appData}/firefox 755 ${user} ${user} -"
-  ];
-
-  # Mount drives
-  fileSystems."${dataDir}" = {
-    device = "/dev/disk/by-uuid/a11f36c2-e601-4e6c-b8c2-136c4b07203e";
-    fsType = "btrfs";
-    # options = ["subvolid=420"];
-    neededForBoot = true;
-  };
-  fileSystems."/mnt/boot" = {
-    device = "/dev/disk/by-uuid/C994-FCFD";
-    fsType = "vfat";
   };
 
   # Security
