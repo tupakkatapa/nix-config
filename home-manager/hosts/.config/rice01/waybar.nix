@@ -11,6 +11,7 @@ let
   blueberry = "${pkgs.blueberry}/bin/blueberry";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   jq = "${pkgs.jq}/bin/jq";
+  curl = "${pkgs.curl}/bin/curl";
 in
 {
   programs.waybar = {
@@ -53,6 +54,8 @@ in
         "bluetooth"
         "network"
         "battery"
+        "custom/crypto"
+        "custom/weather"
         "clock#date"
         "clock#time"
         "custom/help"
@@ -191,6 +194,33 @@ in
         format = " {}";
       };
 
+      "custom/crypto" = {
+        exec = ''
+          data=$(${curl} -s "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true")
+          btc_price=$(echo $data | ${jq} -r '.bitcoin.usd')
+          btc_change=$(echo $data | ${jq} -r '.bitcoin.usd_24h_change')
+          eth_price=$(echo $data | ${jq} -r '.ethereum.usd')
+          eth_change=$(echo $data | ${jq} -r '.ethereum.usd_24h_change')
+          text=$(printf "%+.2f%%" "$btc_change")
+          tooltip=$(printf "BTC: \$%s, 24h:%+.2f%% | ETH: \$%s, 24h:%+.2f%%" "$btc_price" "$btc_change" "$eth_price" "$eth_change")
+          echo "{\"text\": \"$text\", \"tooltip\": \"$tooltip\"}"
+        '';
+        return-type = "json";
+        interval = 3600;
+        format = " {}";
+      };
+
+      "custom/weather" = {
+        exec = ''
+          weather=$(${curl} -s "wttr.in/?format=%t,+%w")
+          weather=''${weather/#Unknown location*/Unknown Location}
+          echo "{\"text\": \"$weather\"}"
+        '';
+        return-type = "json";
+        interval = 3600;
+        format = "{}";
+      };
+
       "custom/prev" = {
         format = "";
         on-click = ''
@@ -270,6 +300,8 @@ in
       #custom-player,
       #custom-hostname,
       #custom-ping-sweep,
+      #custom-weather,
+      #custom-crypto,
       #window,
       #bluetooth {
         padding: 0 15px;
@@ -309,6 +341,10 @@ in
 
       #bluetooth.disconnected {
         color: #${colors.base0C};
+      }
+
+      #custom-crypto {
+        color: #${colors.base0E};
       }
 
       #network {
