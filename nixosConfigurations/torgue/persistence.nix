@@ -6,42 +6,50 @@ let
   # Persistent directories for each user
   # Data is stored under: dataDir/home/<user>/<category>/<dir>
   users = {
+    root = [
+      {
+        name = "appdata";
+        dirs = [
+          { name = "ollama"; mode = "777"; what = "/var/lib/ollama"; }
+        ];
+      }
+    ];
     kari = [
       {
         name = "appdata";
         dirs = [
-          { name = "firefox"; mode = "755"; mountPoint = ".mozilla"; }
-          { name = "plexamp"; mode = "755"; mountPoint = ".config/Plexamp"; }
-          { name = "guitarix"; mode = "755"; mountPoint = ".config/guitarix"; }
-          { name = "sublime-merge"; mode = "755"; mountPoint = ".config/sublime-merge"; }
-          { name = "openrgb"; mode = "755"; mountPoint = ".config/OpenRGB"; }
-          { name = "discord"; mode = "755"; mountPoint = ".config/discord"; }
+          { name = "firefox"; mode = "755"; what = "/home/kari/.mozilla"; }
+          { name = "plexamp"; mode = "755"; what = "/home/kari/.config/Plexamp"; }
+          { name = "guitarix"; mode = "755"; what = "/home/kari/.config/guitarix"; }
+          { name = "sublime-merge"; mode = "755"; what = "/home/kari/.config/sublime-merge"; }
+          { name = "openrgb"; mode = "755"; what = "/home/kari/.config/OpenRGB"; }
+          { name = "discord"; mode = "755"; what = "/home/kari/.config/discord"; }
         ];
       }
       {
         name = "games";
         dirs = [
-          { name = "steam"; mode = "755"; mountPoint = ".steam"; }
-          { name = "steam/install"; mode = "755"; mountPoint = ".local/share/Steam"; }
-          { name = "bottles"; mode = "755"; mountPoint = ".local/share/bottles"; }
-          { name = "games"; mode = "755"; mountPoint = "Games"; }
-          { name = "anime-game-launcher"; mode = "755"; mountPoint = ".local/share/anime-game-launcher"; }
-          { name = "osu-lazer"; mode = "755"; mountPoint = ".local/share/osu"; }
-          { name = "runelite"; mode = "755"; mountPoint = ".runelite"; }
+          { name = "steam"; mode = "755"; what = "/home/kari/.steam"; }
+          { name = "steam/install"; mode = "755"; what = "/home/kari/.local/share/Steam"; }
+          { name = "bottles"; mode = "755"; what = "/home/kari/.local/share/bottles"; }
+          { name = "games"; mode = "755"; what = "/home/kari/Games"; }
+          { name = "anime-game-launcher"; mode = "755"; what = "/home/kari/.local/share/anime-game-launcher"; }
+          { name = "osu-lazer"; mode = "755"; what = "/home/kari/.local/share/osu"; }
+          { name = "runelite"; mode = "755"; what = "/home/kari/.runelite"; }
         ];
       }
       {
         name = "secrets";
         dirs = [
-          { name = "gnupg"; mode = "700"; mountPoint = ".gnupg"; }
-          { name = "yubico"; mode = "755"; mountPoint = ".config/Yubico"; }
-          { name = "ssh"; mode = "700"; mountPoint = ".ssh"; }
+          { name = "gnupg"; mode = "700"; what = "/home/kari/.gnupg"; }
+          { name = "yubico"; mode = "755"; what = "/home/kari/.config/Yubico"; }
+          { name = "ssh"; mode = "700"; what = "/home/kari/.ssh"; }
         ];
       }
       {
         name = "other";
         dirs = [
-          { name = "nix-config"; mode = "755"; mountPoint = "nix-config"; }
+          { name = "nix-config"; mode = "755"; what = "/home/kari/nix-config"; }
         ];
       }
     ];
@@ -73,7 +81,7 @@ let
       (cat:
         map
           (d: {
-            name = "/home/${user}/${d.mountPoint}";
+            name = d.what;
             value = {
               device = "${dataDir}/home/${user}/${cat.name}/${d.name}";
               options = [ "bind" "mode=${d.mode}" ];

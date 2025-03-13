@@ -18,6 +18,7 @@
 
     # When needed, build at runtime
     # ../.config/virtualization/default.nix
+    # ../.config/ollama.nix
     # ./gaming.nix
     # ./media-production.nix
     # ./music-production.nix
