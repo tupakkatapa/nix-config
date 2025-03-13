@@ -1,11 +1,10 @@
-{ rustPlatform
-, pkgs
+{ pkgs
 , lib
 }:
 let
   manifest = (lib.importTOML ./Cargo.toml).package;
 in
-rustPlatform.buildRustPackage rec {
+pkgs.rustPlatform.buildRustPackage rec {
   pname = manifest.name;
   inherit (manifest) version;
 
