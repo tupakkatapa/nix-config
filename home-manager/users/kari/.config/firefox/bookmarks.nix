@@ -655,6 +655,10 @@
         url = "https://chat.openai.com/?model=gpt-4o";
       }
       {
+        name = "Claude";
+        url = "https://claude.ai/";
+      }
+      {
         name = "Wolt";
         url = "https://wolt.com/fi/discovery";
       }

@@ -1825,11 +1825,11 @@
         "nixpkgs-stable-patched": "nixpkgs-stable-patched"
       },
       "locked": {
-        "lastModified": 1741833929,
-        "narHash": "sha256-hLUaWMeWyvX4q07eSWdj58XXBdPILuy43knyF1YixCA=",
+        "lastModified": 1741845409,
+        "narHash": "sha256-o/1/zaDyB0GANjWpTlesBGbExCxyYk/+ZzJb52+SUH8=",
         "ref": "jesse/bugs",
-        "rev": "2f4ddb04fbcf60edf000a1ef15f1248678bc74f6",
-        "revCount": 39,
+        "rev": "206f04265adba7444123bf67e6511188d432ea10",
+        "revCount": 40,
         "type": "git",
         "url": "ssh://git@github.com/majbacka-labs/nixie"
       },

@@ -344,11 +344,11 @@ in
       }
 
       #custom-crypto {
-        color: #${colors.base0E};
+        color: #${colors.base09};
       }
 
       #network {
-        color: #${colors.base09};
+        color: #${colors.base0E};
       }
 
       #network.disconnected {
