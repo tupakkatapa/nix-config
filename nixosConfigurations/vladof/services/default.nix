@@ -71,6 +71,7 @@ let
               }
               handle {
                 respond `<h1>Permission denied!</h1>` 403 {
+                  header Content-Type "text/html; charset=utf-8"
                   close
                 }
               }
@@ -127,11 +128,14 @@ in
   # Firewall
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [
-      80
-      443
-      8080 # magic port
-    ];
+    allowedTCPPorts =
+      (lib.mapAttrsToList (_: service: service.port)
+        (lib.filterAttrs (_: service: !service.private) servicesConfig))
+      ++ [
+        80
+        443
+        8080 # magic port
+      ];
   };
 
   # Secrets
