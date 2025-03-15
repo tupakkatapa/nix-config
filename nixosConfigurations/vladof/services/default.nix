@@ -54,8 +54,7 @@ let
     cp -r ${./blog-contents}/* $out
   '';
 
-  # Generate things and stuff for services
-  servicesPorts = lib.mapAttrsToList (_name: service: service.port) servicesConfig;
+  # Generate service configuration for ports and virtual hosts
   servicesVirtualHosts =
     lib.mapAttrs'
       (name: service: {
@@ -70,7 +69,11 @@ let
               handle @authorized {
                 reverse_proxy http://127.0.0.1:${toString service.port}
               }
-              respond "<h1> Permission denied! </h1>" 403
+              handle {
+                respond `<h1>Permission denied!</h1>` 403 {
+                  close
+                }
+              }
             '' else ''
               reverse_proxy http://127.0.0.1:${toString service.port}
             '';
@@ -124,13 +127,11 @@ in
   # Firewall
   networking.firewall = {
     enable = true;
-    allowedTCPPorts =
-      servicesPorts
-      ++ [
-        80
-        443
-        8080
-      ];
+    allowedTCPPorts = [
+      80
+      443
+      8080 # magic port
+    ];
   };
 
   # Secrets
@@ -149,7 +150,7 @@ in
     enable = true;
     package = pkgs.transmission_4;
     downloadDirPermissions = "0777";
-    openRPCPort = true;
+    openRPCPort = false;
     home = "/var/lib/transmission";
     settings = {
       umask = 0;
@@ -183,7 +184,7 @@ in
     config = {
       domain = "https://${servicesConfig.vaultwarden.addr}";
       rocketPort = servicesConfig.vaultwarden.port;
-      rocketAddress = "0.0.0.0";
+      rocketAddress = "127.0.0.1";
       signupsAllowed = false;
     };
   };
