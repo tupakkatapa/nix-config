@@ -635,6 +635,19 @@
         ];
       }
       {
+        name = "Games";
+        bookmarks = [
+          {
+            name = "G2A";
+            url = "https://www.g2a.com/";
+          }
+          {
+            name = "SteamDB";
+            url = "https://steamdb.info/sales/";
+          }
+        ];
+      }
+      {
         name = "NAPALM FTP Indexer";
         url = "https://www.searchftps.net/";
       }
