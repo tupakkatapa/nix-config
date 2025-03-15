@@ -197,6 +197,7 @@
               inputs.agenix.nixosModules.default
               inputs.home-manager.nixosModules.home-manager
               inputs.sftp-mount.nixosModules.sftpClient
+              self.nixosModules.stateSaver
               {
                 home-manager.sharedModules = [
                   inputs.nixvim.homeManagerModules.nixvim
@@ -271,6 +272,7 @@
 
           # NixOS modules
           nixosModules = {
+            stateSaver.imports = [ ./nixosModules/state-saver.nix ];
             autoScrcpy.imports = [ ./nixosModules/auto-scrcpy.nix ];
             rsyncBackup.imports = [ ./nixosModules/rsync-backup.nix ];
           };
