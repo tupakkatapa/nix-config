@@ -54,7 +54,8 @@ let
     cp -r ${./blog-contents}/* $out
   '';
 
-  # Generate service configuration for ports and virtual hosts
+  # Generate things and stuff for services
+  servicesPorts = lib.mapAttrsToList (_name: service: service.port) servicesConfig;
   servicesVirtualHosts =
     lib.mapAttrs'
       (name: service: {
@@ -71,7 +72,6 @@ let
               }
               handle {
                 respond `<h1>Permission denied!</h1>` 403 {
-                  header Content-Type "text/html; charset=utf-8"
                   close
                 }
               }
@@ -129,8 +129,7 @@ in
   networking.firewall = {
     enable = true;
     allowedTCPPorts =
-      (lib.mapAttrsToList (_: service: service.port)
-        (lib.filterAttrs (_: service: !service.private) servicesConfig))
+      servicesPorts
       ++ [
         80
         443
