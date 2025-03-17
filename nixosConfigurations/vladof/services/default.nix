@@ -54,33 +54,20 @@ let
     cp -r ${./blog-contents}/* $out
   '';
 
-  # Generate things and stuff for services
-  servicesPorts = lib.mapAttrsToList (_name: service: service.port) servicesConfig;
-  servicesVirtualHosts =
-    lib.mapAttrs'
-      (name: service: {
-        name = service.addr;
-        value = {
-          useACMEHost = service.addr;
-          extraConfig =
-            if service.private then ''
-              @authorized {
-                remote_ip ${lib.concatStringsSep " " authorizedIPs}
-              }
-              handle @authorized {
-                reverse_proxy http://127.0.0.1:${toString service.port}
-              }
-              handle {
-                respond `<h1>Permission denied!</h1>` 403 {
-                  close
-                }
-              }
-            '' else ''
-              reverse_proxy http://127.0.0.1:${toString service.port}
-            '';
-        };
-      })
-      (lib.filterAttrs (name: _: name != "service-index") servicesConfig);
+  # Filter for public and private services
+  publicServices = lib.filterAttrs (_: service: !service.private) servicesConfig;
+  privateServices = lib.filterAttrs (_: service: service.private) servicesConfig;
+
+  # Generate self-signed cert for private services
+  selfSignedCert = pkgs.runCommand "self-signed-cert"
+    {
+      buildInputs = [ pkgs.openssl ];
+    } ''
+    mkdir -p $out
+    openssl req -x509 -newkey rsa:4096 -keyout $out/key.pem -out $out/cert.pem -days 3650 -nodes \
+      -subj "/CN=*.${domain}" \
+      -addext "subjectAltName = DNS:*.${domain}"
+  '';
 
   # Generate index page
   indexPage = import ./index.nix { inherit pkgs lib domain servicesConfig; };
@@ -90,13 +77,54 @@ in
   services.caddy = {
     enable = true;
     virtualHosts =
-      servicesVirtualHosts
+      # Public services with ACME certs
+      lib.mapAttrs'
+        (name: service: {
+          name = service.addr;
+          value = {
+            useACMEHost = service.addr;
+            extraConfig = ''
+              reverse_proxy http://127.0.0.1:${toString service.port}
+            '';
+          };
+        })
+        (lib.filterAttrs (name: _: name != "service-index") publicServices)
+      # Private services with self-signed certs
+      // lib.mapAttrs'
+        (name: service: {
+          name = service.addr;
+          value = {
+            extraConfig = ''
+              tls ${selfSignedCert}/cert.pem ${selfSignedCert}/key.pem
+
+              @authorized {
+                remote_ip ${lib.concatStringsSep " " authorizedIPs}
+              }
+              handle @authorized {
+                reverse_proxy http://127.0.0.1:${toString service.port}
+              }
+              handle {
+                respond "Unauthorized" 403
+              }
+            '';
+          };
+        })
+        (lib.filterAttrs (name: _: name != "service-index") privateServices)
       // {
         "${servicesConfig.service-index.addr}" = {
-          useACMEHost = servicesConfig.service-index.addr;
           extraConfig = ''
-            root * ${indexPage}
-            file_server
+            tls ${selfSignedCert}/cert.pem ${selfSignedCert}/key.pem
+
+            @authorized {
+              remote_ip ${lib.concatStringsSep " " authorizedIPs}
+            }
+            handle @authorized {
+              root * ${indexPage}
+              file_server
+            }
+            handle {
+              respond "Unauthorized" 403
+            }
           '';
         };
       };
@@ -122,14 +150,14 @@ in
           name = service.addr;
           value = { };
         })
-        servicesConfig;
+        publicServices;
   };
 
   # Firewall
   networking.firewall = {
     enable = true;
     allowedTCPPorts =
-      servicesPorts
+      lib.mapAttrsToList (_name: service: service.port) publicServices
       ++ [
         80
         443
