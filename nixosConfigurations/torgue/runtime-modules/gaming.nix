@@ -2,7 +2,7 @@
 , ...
 }: {
   imports = [
-    ../.config/gaming-amd.nix
+    ../../.config/gaming-amd.nix
   ];
 
   # High quality games

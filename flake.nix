@@ -64,6 +64,7 @@
     mozid.url = "github:tupakkatapa/mozid";
     levari.url = "github:tupakkatapa/levari";
     sftp-mount.url = "github:tupakkatapa/sftp-mount";
+    runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
   };
 
   outputs = { self, ... }@inputs:
@@ -196,6 +197,7 @@
               inputs.agenix-rekey.nixosModules.default
               inputs.agenix.nixosModules.default
               inputs.home-manager.nixosModules.home-manager
+              inputs.runtime-modules.nixosModules.runtimeModules
               inputs.sftp-mount.nixosModules.sftpClient
               self.nixosModules.stateSaver
               {

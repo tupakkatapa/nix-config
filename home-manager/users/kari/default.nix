@@ -31,7 +31,7 @@ in
       levari
 
       # sublime-merge
-      # discord
+      discord
       # libreoffice-qt6-fresh
       # chromium
       # nautilus
