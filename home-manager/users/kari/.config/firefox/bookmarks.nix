@@ -547,7 +547,7 @@
                   }
                   {
                     name = "Lighthouse CLI";
-                    url = "https://lighthouse-book.sigmaprime.io/api-bn.html";
+                    url = "https://lighthouse-book.sigmaprime.io/help_bn.html";
                   }
                   {
                     name = "MEV-Boost CLI";
@@ -559,7 +559,7 @@
                   }
                   {
                     name = "Nethermind CLI";
-                    url = "https://docs.nethermind.io/nethermind/ethereum-client/configuration";
+                    url = "https://docs.nethermind.io/fundamentals/configuration#basic-command-line-options";
                   }
                   {
                     name = "Geth CLI";
@@ -567,7 +567,7 @@
                   }
                   {
                     name = "Erigon CLI";
-                    url = "https://erigon.gitbook.io/erigon/advanced-usage/command-line-options";
+                    url = "https://erigon.gitbook.io/erigon/advanced-usage/options";
                   }
                   {
                     name = "SSV node";
