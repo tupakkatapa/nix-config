@@ -64,7 +64,7 @@
     mozid.url = "github:tupakkatapa/mozid";
     levari.url = "github:tupakkatapa/levari";
     sftp-mount.url = "github:tupakkatapa/sftp-mount";
-    runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
+    runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules?ref=rust-rewrite";
   };
 
   outputs = { self, ... }@inputs:
