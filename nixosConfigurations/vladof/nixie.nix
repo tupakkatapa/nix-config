@@ -27,6 +27,12 @@ _: {
           default = "torgue";
           timeout = 3;
         }
+        {
+          name = "bandit";
+          flakeUrl = "github:tupakkatapa/nix-config";
+          hosts = [ "bandit" ];
+          timeout = 3;
+        }
       ];
     };
 
@@ -38,6 +44,7 @@ _: {
           serve = true;
           address = "192.168.1.8";
           interfaces = [ "enp0s31f6" ];
+          defaultMenu = "bandit";
           clients = [
             {
               menu = "torgue";
