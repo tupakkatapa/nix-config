@@ -26,8 +26,10 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+    nix-index-database.url = "github:nix-community/nix-index-database";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -39,31 +41,33 @@
     agenix-rekey.inputs.nixpkgs.follows = "nixpkgs";
 
     # Hyprland
+    hyprland-plugins.inputs.nixpkgs.follows = "nixpkgs";
+    hyprland-plugins.url = "github:hyprwm/hyprland-plugins";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
     hyprwm-contrib.url = "github:hyprwm/contrib";
-    hyprland-plugins.url = "github:hyprwm/hyprland-plugins";
-    hyprland-plugins.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Netboot stuff
+    nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie\?ref=jesse/bugs";
+    runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
+    sftp-mount.url = "github:tupakkatapa/sftp-mount";
+
+    # Real-time audio
+    musnix.inputs.nixpkgs.follows = "nixpkgs";
+    musnix.url = "github:musnix/musnix";
 
     # Games
     aagl.inputs.nixpkgs.follows = "nixpkgs";
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
 
-    # Netboot stuff
-    nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie\?ref=jesse/bugs";
-
-    # Index
-    nix-index-database.url = "github:nix-community/nix-index-database";
-    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
     # Other
-    musnix.url = "github:musnix/musnix";
-    musnix.inputs.nixpkgs.follows = "nixpkgs";
-    nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
     coditon-md.url = "github:tupakkatapa/coditon-md";
-    mozid.url = "github:tupakkatapa/mozid";
     levari.url = "github:tupakkatapa/levari";
-    sftp-mount.url = "github:tupakkatapa/sftp-mount";
-    runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
+    mozid.url = "github:tupakkatapa/mozid";
+    nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
+
+    # Development
+    # habbo.url = "path:/home/kari/Workspace/tupakkatapa/habbo";
+    # homestakeros.url = "path:/home/kari/Workspace/ponkila/HomestakerOS";
   };
 
   outputs = { self, ... }@inputs:
@@ -85,27 +89,27 @@
         }:
         let
           packages = {
-            "tt-utils" = pkgs.callPackage ./packages/tt-utils { };
+            "2mp3" = pkgs.callPackage ./packages/2mp3 { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
             "ping-sweep" = pkgs.callPackage ./packages/ping-sweep { };
-            "pipewire-out-switcher" = pkgs.callPackage ./packages/pipewire-out-switcher { };
             "pinit" = pkgs.callPackage ./packages/pinit { };
-            "2mp3" = pkgs.callPackage ./packages/2mp3 { };
+            "pipewire-out-switcher" = pkgs.callPackage ./packages/pipewire-out-switcher { };
+            "tt-utils" = pkgs.callPackage ./packages/tt-utils { };
             # Wofi scripts
             "dm-pipewire-out-switcher" = pkgs.callPackage ./packages/wofi-scripts/dm-pipewire-out-switcher { };
             "dm-radio" = pkgs.callPackage ./packages/wofi-scripts/dm-radio { };
             # Notify scripts
             "notify-brightness" = pkgs.callPackage ./packages/notify-scripts/notify-brightness { };
+            "notify-not-hyprprop" = pkgs.callPackage ./packages/notify-scripts/notify-not-hyprprop { };
+            "notify-pipewire-out-switcher" = pkgs.callPackage ./packages/notify-scripts/notify-pipewire-out-switcher { };
             "notify-screenshot" = pkgs.callPackage ./packages/notify-scripts/notify-screenshot { };
             "notify-volume" = pkgs.callPackage ./packages/notify-scripts/notify-volume { };
-            "notify-pipewire-out-switcher" = pkgs.callPackage ./packages/notify-scripts/notify-pipewire-out-switcher { };
-            "notify-not-hyprprop" = pkgs.callPackage ./packages/notify-scripts/notify-not-hyprprop { };
             # Inputs
+            inherit (inputs'.hyprland-plugins.packages) hyprbars;
+            inherit (inputs'.levari.packages) levari;
+            inherit (inputs'.mozid.packages) mozid;
             inherit (inputs'.nixie.packages) lkddb-filter;
             inherit (inputs'.nixie.packages) pxe-generate;
-            inherit (inputs'.mozid.packages) mozid;
-            inherit (inputs'.levari.packages) levari;
-            inherit (inputs'.hyprland-plugins.packages) hyprbars;
           };
         in
         {
@@ -125,10 +129,10 @@
             flakeFormatter = true;
             flakeCheck = true;
             programs = {
-              nixpkgs-fmt.enable = true;
               deadnix.enable = true;
-              statix.enable = true;
+              nixpkgs-fmt.enable = true;
               rustfmt.enable = true;
+              statix.enable = true;
             };
           };
 
@@ -154,8 +158,8 @@
           packages =
             (with flake.nixosConfigurations; {
               "bandit" = bandit.config.system.build.kexecTree;
-              "vladof" = vladof.config.system.build.kexecTree;
               "torgue" = torgue.config.system.build.kexecTree;
+              "vladof" = vladof.config.system.build.kexecTree;
             })
             // packages;
 
@@ -228,6 +232,9 @@
               inputs.musnix.nixosModules.musnix
               inputs.nixie.nixosModules.nixRemount
               inputs.nixie.nixosModules.refindGenerate
+              # Development
+              # inputs.habbo.nixosModules.kepler
+              # inputs.homestakeros.nixosModules.backend
             ];
           };
 
@@ -239,8 +246,8 @@
               inputs.coditon-md.nixosModules.default
               inputs.nix-extras.nixosModules.common
               inputs.nixie.nixosModules.nixRemount
-              inputs.nixie.nixosModules.refindGenerate
               inputs.nixie.nixosModules.nixie
+              inputs.nixie.nixosModules.refindGenerate
               inputs.sftp-mount.nixosModules.sftpServer
             ];
           };
@@ -262,17 +269,17 @@
           # NixOS configuration entrypoints
           nixosConfigurations = with inputs.nixpkgs.lib;
             {
+              "bandit" = nixosSystem (withDefaults bandit);
               "maliwan" = nixosSystem (withDefaults maliwan);
               "torgue" = nixosSystem (withDefaults torgue);
               "vladof" = nixosSystem (withDefaults vladof);
-              "bandit" = nixosSystem (withDefaults bandit);
             };
 
           # NixOS modules
           nixosModules = {
-            stateSaver.imports = [ ./nixosModules/state-saver.nix ];
             autoScrcpy.imports = [ ./nixosModules/auto-scrcpy.nix ];
             rsyncBackup.imports = [ ./nixosModules/rsync-backup.nix ];
+            stateSaver.imports = [ ./nixosModules/state-saver.nix ];
           };
         };
     };
