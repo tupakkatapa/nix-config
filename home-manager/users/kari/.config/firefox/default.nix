@@ -38,12 +38,15 @@ in
       isDefault = true;
 
       search = {
-        default = "DuckDuckGo";
+        default = "ddg";
         force = true;
-        order = [ "DuckDuckGo" "Google" ];
+        order = [ "ddg" "google" ];
       };
 
-      bookmarks = import ./bookmarks.nix;
+      bookmarks = {
+        force = true;
+        settings = import ./bookmarks.nix;
+      };
 
       # about:config
       settings =
