@@ -14,11 +14,11 @@ _: {
       }
       {
         name = "visual-production";
-        path = ../.config/production/visual.nix;
+        path = ../.config/media-production/visual.nix;
       }
       {
         name = "audio-production";
-        path = ../.config/production/audio/default.nix;
+        path = ../.config/media-production/audio/default.nix;
       }
     ];
   };

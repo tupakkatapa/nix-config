@@ -1,7 +1,7 @@
 { pkgs
 , ...
 }: {
-  import = [
+  imports = [
     ./kernel.nix
   ];
 
@@ -15,10 +15,3 @@
     tuxguitar
   ];
 }
-
-
-
-
-
-
-

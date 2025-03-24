@@ -4,17 +4,7 @@
   environment.systemPackages = with pkgs; [
     aseprite
     gimp
-    kdenlive
+    kdePackages.kdenlive
     video-trimmer
   ];
 }
-
-
-
-
-
-
-
-
-
-
