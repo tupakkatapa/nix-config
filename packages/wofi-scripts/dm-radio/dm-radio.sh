@@ -25,11 +25,11 @@ USAGE
 parse_arguments() {
   while [[ $# -gt 0 ]]; do
     case "$1" in
-    -v|--video)
+    -v | --video)
       VIDEO=true
       shift
       ;;
-    -h|--help)
+    -h | --help)
       display_usage
       exit 0
       ;;
@@ -45,31 +45,31 @@ parse_arguments() {
 parse_arguments "$@"
 
 menu() {
-    printf '%s\n' "quit"
-    jq -r '.[].name' < "${RADIO_STATIONS_FILE}" | sort
+  printf '%s\n' "quit"
+  jq -r '.[].name' <"${RADIO_STATIONS_FILE}" | sort
 }
 
 main() {
-    # Choosing a radio station from JSON file.
-    choice=$(menu | ${DMENU} 'Choose radio station:') || exit 1
+  # Choosing a radio station from JSON file.
+  choice=$(menu | ${DMENU} 'Choose radio station:') || exit 1
 
-    case $choice in
-    quit)
-        notify-send "Stopping dm-radio" "You have quit dm-radio. 🎶"
-        pkill -f http
-        exit
-        ;;
-    *)
-        pkill -f http || echo "mpv not running."
-        notify-send "Starting dm-radio" "Playing station: $choice. 🎶"
-        URL=$(jq -r --arg choice "$choice" '.[] | select(.name==$choice) | .url' < "${RADIO_STATIONS_FILE}")
-        if [ "$VIDEO" = true ]; then
-          mpv --vf=format=yuv420p,scale=1280:720 --autofit=20% --volume="${DMRADIOVOLUME:-100}" "$URL"
-        else
-          mpv --no-video --volume="${DMRADIOVOLUME:-100}" "$URL"
-        fi
-        ;;
-    esac
+  case $choice in
+  quit)
+    notify-send "Stopping dm-radio" "You have quit dm-radio. 🎶"
+    pkill -f http
+    exit
+    ;;
+  *)
+    pkill -f http || echo "mpv not running."
+    notify-send "Starting dm-radio" "Playing station: $choice. 🎶"
+    URL=$(jq -r --arg choice "$choice" '.[] | select(.name==$choice) | .url' <"${RADIO_STATIONS_FILE}")
+    if [ "$VIDEO" = true ]; then
+      mpv --vf=format=yuv420p,scale=1280:720 --autofit=20% --volume="${DMRADIOVOLUME:-100}" "$URL"
+    else
+      mpv --no-video --volume="${DMRADIOVOLUME:-100}" "$URL"
+    fi
+    ;;
+  esac
 }
 
 main

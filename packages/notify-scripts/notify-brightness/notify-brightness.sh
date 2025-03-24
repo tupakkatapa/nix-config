@@ -9,4 +9,4 @@ current_value=$(brightnessctl -m | awk -F, '{print substr($4, 0, length($4)-1)}'
 notify-send -i @ICON_PATH@ \
   " Brightness " \
   " $current_value% " \
-   -h string:x-canonical-private-synchronous:anything
+  -h string:x-canonical-private-synchronous:anything

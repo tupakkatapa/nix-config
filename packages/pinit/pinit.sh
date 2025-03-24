@@ -7,9 +7,9 @@ trap 'exit 0' SIGINT
 # Initial argument values
 output_path="$(pwd)"
 project_name="$(basename "$(pwd)")"
-mode="package"  # Default mode is "package"
+mode="package" # Default mode is "package"
 lang=""
-src_dir="@SRC_DIR@"  # Will be substituted in during the build
+src_dir="@SRC_DIR@" # Will be substituted in during the build
 
 display_usage() {
   cat <<USAGE
@@ -39,39 +39,39 @@ USAGE
 parse_arguments() {
   while [[ $# -gt 0 ]]; do
     case $1 in
-      -o|--output)
-        output_path="$2"
-        project_name="$(basename "$output_path")"
-        shift 2
-        ;;
-      -n|--name)
-        project_name="$2"
-        shift 2
-        ;;
-      -m|--mode)
-        mode="$2"
-        shift 2
-        ;;
-      -h|--help)
+    -o | --output)
+      output_path="$2"
+      project_name="$(basename "$output_path")"
+      shift 2
+      ;;
+    -n | --name)
+      project_name="$2"
+      shift 2
+      ;;
+    -m | --mode)
+      mode="$2"
+      shift 2
+      ;;
+    -h | --help)
+      display_usage
+      exit 0
+      ;;
+    *)
+      if [ -z "$lang" ]; then
+        lang="$1"
+        case "$lang" in
+        sh) lang="bash" ;;
+        py) lang="python" ;;
+        rs) lang="rust" ;;
+        js) lang="javascript" ;;
+        esac
+      else
+        echo "error: unknown option '$1'"
         display_usage
-        exit 0
-        ;;
-      *)
-        if [ -z "$lang" ]; then
-          lang="$1"
-          case "$lang" in
-            sh) lang="bash" ;;
-            py) lang="python" ;;
-            rs) lang="rust" ;;
-            js) lang="javascript" ;;
-          esac
-        else
-          echo "error: unknown option '$1'"
-          display_usage
-          exit 1
-        fi
-        shift
-        ;;
+        exit 1
+      fi
+      shift
+      ;;
     esac
   done
 }
@@ -99,7 +99,7 @@ copy_source_files() {
 
   if [ "${mode}" == "package" ]; then
     rm -f "${output_path}/flake.nix" "${output_path}/module.nix"
-    echo 'use nix' > "${output_path}/.envrc"
+    echo 'use nix' >"${output_path}/.envrc"
     chmod 644 "${output_path}/.envrc"
     if [ -f "${output_path}/package.nix" ]; then
       mv "${output_path}/package.nix" "${output_path}/default.nix"
@@ -111,8 +111,8 @@ copy_source_files() {
     if [ -f "${src_dir}/module.nix" ]; then
       cp -v "${src_dir}/module.nix" "${output_path}/"
     fi
-    echo '.direnv/' >> "${output_path}/.gitignore"
-    echo 'use flake . --impure --accept-flake-config' > "${output_path}/.envrc"
+    echo '.direnv/' >>"${output_path}/.gitignore"
+    echo 'use flake . --impure --accept-flake-config' >"${output_path}/.envrc"
     chmod 644 "${output_path}/.gitignore" "${output_path}/.envrc"
     substitute_project_name "${output_path}/flake.nix"
     substitute_project_name "${output_path}/module.nix"
@@ -131,26 +131,26 @@ create_project() {
 
   # Initialize the project based on language
   case "$lang" in
-    rust)
-      cargo init --name "${project_name}" "${output_path}" --vcs "none"
-      ( cd "${output_path}" && cargo build )
-      ;;
-    javascript)
-      ( cd "${output_path}" && npm init -y )
-      ( cd "${output_path}" && npm pkg set bin."${project_name}"=app.js )
-      chmod +x "${output_path}/app.js"
-      ( cd "${output_path}" && yarn add express && yarn install )
-      ;;
-    bash)
-      ( cd "${output_path}" && chmod +x main.sh )
-      ;;
-    python)
-      # You can add Python-specific initialization here if needed
-      ;;
-    *)
-      echo "error: unsupported language '${lang}'"
-      exit 1
-      ;;
+  rust)
+    cargo init --name "${project_name}" "${output_path}" --vcs "none"
+    (cd "${output_path}" && cargo build)
+    ;;
+  javascript)
+    (cd "${output_path}" && npm init -y)
+    (cd "${output_path}" && npm pkg set bin."${project_name}"=app.js)
+    chmod +x "${output_path}/app.js"
+    (cd "${output_path}" && yarn add express && yarn install)
+    ;;
+  bash)
+    (cd "${output_path}" && chmod +x main.sh)
+    ;;
+  python)
+    # You can add Python-specific initialization here if needed
+    ;;
+  *)
+    echo "error: unsupported language '${lang}'"
+    exit 1
+    ;;
   esac
 
   # Automatically allow the .envrc file if direnv is installed
@@ -175,14 +175,14 @@ main() {
   fi
 
   case "$lang" in
-    rust|python|bash|javascript)
-      create_project
-      ;;
-    *)
-      echo "error: unsupported language '${lang}'"
-      echo "supported languages: rust, python, bash, javascript"
-      exit 1
-      ;;
+  rust | python | bash | javascript)
+    create_project
+    ;;
+  *)
+    echo "error: unsupported language '${lang}'"
+    echo "supported languages: rust, python, bash, javascript"
+    exit 1
+    ;;
   esac
 }
 

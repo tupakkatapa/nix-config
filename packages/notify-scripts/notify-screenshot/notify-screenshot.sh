@@ -3,19 +3,19 @@
 
 notify-send "Select a region"
 
-if [[ -z "$1" ]]; then
-    notify-send "Error: No path provided."
-    exit 1
+if [[ -z $1 ]]; then
+  notify-send "Error: No path provided."
+  exit 1
 fi
 
-if [[ ! -d "$1" ]]; then
-    notify-send "Error: The provided path is not a directory."
-    exit 1
+if [[ ! -d $1 ]]; then
+  notify-send "Error: The provided path is not a directory."
+  exit 1
 fi
 
-if [[ ! -w "$1" ]]; then
-    notify-send "Error: The provided path is not writable."
-    exit 1
+if [[ ! -w $1 ]]; then
+  notify-send "Error: The provided path is not writable."
+  exit 1
 fi
 
 mkdir -p "$1"

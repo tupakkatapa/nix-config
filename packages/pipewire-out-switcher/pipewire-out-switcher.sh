@@ -6,9 +6,9 @@ verbose=false
 
 # Verbose output function
 say() {
-    if [[ "$verbose" == true ]]; then
-        echo "$@"
-    fi
+  if [[ $verbose == true ]]; then
+    echo "$@"
+  fi
 }
 
 # Display usage information
@@ -42,11 +42,11 @@ USAGE
 parse_arguments() {
   while [[ $# -gt 0 ]]; do
     case $1 in
-    -h|--help)
+    -h | --help)
       display_usage
       exit 0
       ;;
-    -v|--verbose)
+    -v | --verbose)
       verbose=true
       shift
       ;;
@@ -61,7 +61,7 @@ parse_arguments() {
 # Validate JSON format and structure
 validate_json_format() {
   say "status: validating JSON format and structure"
-  if ! jq -e 'type == "object" and all(.[]; type == "string")' "${DEVICE_ALIASES_JSON}" > /dev/null 2>&1; then
+  if ! jq -e 'type == "object" and all(.[]; type == "string")' "${DEVICE_ALIASES_JSON}" >/dev/null 2>&1; then
     echo "error: Invalid JSON format or structure in file '${DEVICE_ALIASES_JSON}'"
     echo "Please ensure the JSON file contains a flat key-value pair structure with string values."
     exit 1
@@ -79,7 +79,7 @@ validate_devices() {
 
   # Check JSON devices against valid devices
   for alias in "${!device_aliases[@]}"; do
-    if [[ -z "${valid_devices[${device_aliases[$alias]}]}" ]]; then
+    if [[ -z ${valid_devices[${device_aliases[$alias]}]} ]]; then
       echo "error: device '${device_aliases[$alias]}' for alias '$alias' is not a valid output device"
       exit 1
     else
@@ -93,17 +93,17 @@ main() {
 
   # Convert JSON file to associative array or use original names from pactl
   if [ -n "${DEVICE_ALIASES_JSON}" ] && [ -f "${DEVICE_ALIASES_JSON}" ]; then
-      say "status: loading device aliases from JSON file '${DEVICE_ALIASES_JSON}'"
-      validate_json_format
-      while IFS="=" read -r key value; do
-          device_aliases["$key"]="$value"
-      done < <(jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" "${DEVICE_ALIASES_JSON}")
-      validate_devices
+    say "status: loading device aliases from JSON file '${DEVICE_ALIASES_JSON}'"
+    validate_json_format
+    while IFS="=" read -r key value; do
+      device_aliases["$key"]="$value"
+    done < <(jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" "${DEVICE_ALIASES_JSON}")
+    validate_devices
   else
-      say "status: loading available devices directly from pactl"
-      while IFS= read -r line; do
-          device_aliases["$line"]="$line"
-      done < <(pactl list sinks | awk '/Name: /{print $2}')
+    say "status: loading available devices directly from pactl"
+    while IFS= read -r line; do
+      device_aliases["$line"]="$line"
+    done < <(pactl list sinks | awk '/Name: /{print $2}')
   fi
 
   # Get current device
@@ -132,7 +132,7 @@ main() {
   done
 
   # Determine the next device alias
-  next_index=$(( (current_index + 1) % ${#aliases[@]} ))
+  next_index=$(((current_index + 1) % ${#aliases[@]}))
   next_alias="${aliases[next_index]}"
   next_device="${device_aliases[$next_alias]}"
 

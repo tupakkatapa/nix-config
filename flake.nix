@@ -132,6 +132,7 @@
               deadnix.enable = true;
               nixpkgs-fmt.enable = true;
               rustfmt.enable = true;
+              shfmt.enable = true;
               statix.enable = true;
             };
           };
