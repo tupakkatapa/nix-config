@@ -22,7 +22,7 @@
   };
 
   inputs = {
-    devenv.url = "github:cachix/devenv?ref=v1.3.1"; # https://github.com/cachix/devenv/issues/1733
+    devenv.url = "github:cachix/devenv";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
