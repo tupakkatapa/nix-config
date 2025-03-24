@@ -64,10 +64,6 @@
     levari.url = "github:tupakkatapa/levari";
     mozid.url = "github:tupakkatapa/mozid";
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
-
-    # Development
-    # habbo.url = "path:/home/kari/Workspace/tupakkatapa/habbo";
-    # homestakeros.url = "path:/home/kari/Workspace/ponkila/HomestakerOS";
   };
 
   outputs = { self, ... }@inputs:
@@ -234,9 +230,6 @@
               ./system/kexec-tree.nix
               inputs.aagl.nixosModules.default
               inputs.musnix.nixosModules.musnix
-              # Development
-              # inputs.habbo.nixosModules.kepler
-              # inputs.homestakeros.nixosModules.backend
             ];
           };
 
