@@ -13,12 +13,17 @@ _: {
         path = ../.config/virtualization/podman.nix;
       }
       {
-        name = "visual-production";
+        name = "wine";
+        path = ../.config/virtualization/wine.nix;
+      }
+
+      {
+        name = "visual";
         path = ../.config/media-production/visual.nix;
       }
       {
-        name = "audio-production";
-        path = ../.config/media-production/audio/default.nix;
+        name = "audio";
+        path = ../.config/media-production/audio.nix;
       }
     ];
   };
@@ -27,6 +32,5 @@ _: {
   # to be available at boot time and cannot be dynamically loaded/unloaded.
   imports = [
     ../.config/gaming-amd/kernel.nix
-    ../.config/media-production/audio/kernel.nix
   ];
 }
