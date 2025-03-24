@@ -201,6 +201,7 @@
               inputs.agenix-rekey.nixosModules.default
               inputs.agenix.nixosModules.default
               inputs.home-manager.nixosModules.home-manager
+              inputs.nix-extras.nixosModules.common
               inputs.runtime-modules.nixosModules.runtimeModules
               inputs.sftp-mount.nixosModules.sftpClient
               self.nixosModules.stateSaver
@@ -245,7 +246,6 @@
               ./nixosConfigurations/vladof
               ./system/kexec-tree.nix
               inputs.coditon-md.nixosModules.default
-              inputs.nix-extras.nixosModules.common
               inputs.nixie.nixosModules.nixRemount
               inputs.nixie.nixosModules.nixie
               inputs.nixie.nixosModules.refindGenerate

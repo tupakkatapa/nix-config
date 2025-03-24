@@ -16,6 +16,9 @@
     ./runtime-modules.nix
   ];
 
+  # Saiko's automatic gc
+  sys2x.gc.useDiskAware = true;
+
   # Support for cross compilation
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
