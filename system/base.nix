@@ -30,6 +30,7 @@
     btrfs-progs
     htop
     kexec-tools
+    lshw
     rsync
     tmux
     vim
