@@ -1,7 +1,6 @@
 { pkgs
 , ...
 }: {
-  # Media creation and editing
   environment.systemPackages = with pkgs; [
     aseprite
     gimp
@@ -9,6 +8,9 @@
     video-trimmer
   ];
 }
+
+
+
 
 
 

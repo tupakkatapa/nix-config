@@ -26,7 +26,6 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
@@ -229,7 +228,6 @@
               inputs.musnix.nixosModules.musnix
               inputs.nixie.nixosModules.nixRemount
               inputs.nixie.nixosModules.refindGenerate
-              inputs.nixos-hardware.nixosModules.common-gpu-amd
             ];
           };
 
@@ -243,7 +241,6 @@
               inputs.nixie.nixosModules.nixRemount
               inputs.nixie.nixosModules.refindGenerate
               inputs.nixie.nixosModules.nixie
-              inputs.nixos-hardware.nixosModules.common-gpu-intel
               inputs.sftp-mount.nixosModules.sftpServer
             ];
           };
@@ -252,7 +249,6 @@
             modules = [
               ./home-manager/users/kari
               ./nixosConfigurations/maliwan
-              inputs.nixos-hardware.nixosModules.common-gpu-intel
             ];
           };
 

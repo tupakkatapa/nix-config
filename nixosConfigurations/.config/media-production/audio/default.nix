@@ -1,17 +1,21 @@
 { pkgs
 , ...
 }: {
-  # Music production
+  import = [
+    ./kernel.nix
+  ];
+
   environment.systemPackages = with pkgs; [
-    # ardour
+    ardour
     audacity
     guitarix
     gxplugins-lv2
     ladspaPlugins
     qjackctl
-    # tuxguitar
+    tuxguitar
   ];
 }
+
 
 
 

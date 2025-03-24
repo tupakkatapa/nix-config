@@ -1,6 +1,4 @@
-{ lib
-, config
-, pkgs
+{ pkgs
 , ...
 }: {
   age.rekey = {
@@ -15,12 +13,8 @@
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
     ./persistence.nix
-    ./runtime-modules
+    ./runtime-modules.nix
   ];
-
-  # Enable blobs
-  hardware.enableRedistributableFirmware = true;
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # Support for cross compilation
   boot.binfmt.emulatedSystems = [
@@ -59,12 +53,6 @@
       };
     };
   };
-
-  hardware.bluetooth.enable = true;
-
-  # Optimize kernel for low-latency audio
-  powerManagement.cpuFreqGovernor = "performance";
-  musnix.enable = true;
 
   # OpenRGB
   # Device "Corsair Lightning Node" > Zone "0" > Size "0-18"
