@@ -4,68 +4,420 @@
     toolbar = true;
     bookmarks = [
       {
-        name = "Home";
+        name = "Services";
         bookmarks = [
           {
-            name = "Pfsense";
-            url = "https://192.168.1.1:10443";
+            name = "Self-Hosted";
+            bookmarks = [
+              {
+                name = "Pfsense";
+                url = "https://192.168.1.1:10443";
+              }
+              {
+                name = "Plex";
+                url = "https://plex.coditon.com";
+              }
+              {
+                name = "Torrent";
+                url = "https://torrent.coditon.com";
+              }
+              {
+                name = "Blog";
+                url = "https://blog.coditon.com";
+              }
+              {
+                name = "Index";
+                url = "https://index.coditon.com";
+              }
+              {
+                name = "Vaultwarden";
+                url = "https://vault.coditon.com";
+              }
+              {
+                name = "Kavita";
+                url = "https://lib.coditon.com";
+              }
+            ];
           }
           {
-            name = "Plex";
-            url = "https://plex.coditon.com";
+            name = "Email";
+            bookmarks = [
+              {
+                name = "Outlook";
+                url = "https://outlook.live.com/mail";
+              }
+              {
+                name = "Ponkila Mail";
+                url = "https://mail.ponkila.com/";
+              }
+              {
+                name = "Protonmail";
+                url = "https://account.proton.me/mail";
+              }
+            ];
           }
           {
-            name = "Torrent";
-            url = "https://torrent.coditon.com";
+            name = "Communication";
+            bookmarks = [
+              {
+                name = "Instagram";
+                url = "https://www.instagram.com/";
+              }
+              {
+                name = "WhatsApp";
+                url = "https://web.whatsapp.com/";
+              }
+              {
+                name = "Discord";
+                url = "https://discord.com/app";
+              }
+              {
+                name = "Telegram";
+                url = "https://web.telegram.org/";
+              }
+              {
+                name = "Element";
+                url = "https://app.element.io/";
+              }
+            ];
           }
           {
-            name = "Blog";
-            url = "https://blog.coditon.com";
-          }
-          {
-            name = "Index";
-            url = "https://index.coditon.com";
-          }
-          {
-            name = "Vaultwarden";
-            url = "https://vault.coditon.com";
-          }
-          {
-            name = "Kavita";
-            url = "https://lib.coditon.com";
+            name = "Cloud & Infrastructure";
+            bookmarks = [
+              {
+                name = "Cloudflare";
+                url = "https://dash.cloudflare.com/";
+              }
+              {
+                name = "Hetzner";
+                url = "https://console.hetzner.cloud";
+              }
+              {
+                name = "Spaceship";
+                url = "https://www.spaceship.com/";
+              }
+              {
+                name = "Domaincompare";
+                url = "https://www.domaincompare.io/";
+              }
+              {
+                name = "GoDaddy";
+                url = "https://www.godaddy.com/";
+              }
+            ];
           }
         ];
       }
       {
-        name = "Torrent";
+        name = "Development";
         bookmarks = [
           {
-            name = "TorrentDay";
-            url = "https://www.torrentday.com/t";
+            name = "Git";
+            bookmarks = [
+              {
+                name = "GitHub";
+                url = "https://github.com/";
+              }
+              {
+                name = "GitLab";
+                url = "https://gitlab.com/";
+              }
+              {
+                name = "Users";
+                bookmarks = [
+                  {
+                    name = "tupakkatapa";
+                    url = "https://github.com/tupakkatapa";
+                  }
+                  {
+                    name = "Misterio77";
+                    url = "https://github.com/Misterio77";
+                  }
+                  {
+                    name = "jhvst";
+                    url = "https://github.com/jhvst";
+                  }
+                  {
+                    name = "2xsaiko";
+                    url = "https://github.com/2xsaiko";
+                  }
+                  {
+                    name = "Mic92";
+                    url = "https://github.com/Mic92";
+                  }
+                ];
+              }
+              {
+                name = "Organizations";
+                bookmarks = [
+                  {
+                    name = "Ponkila";
+                    url = "https://github.com/ponkila";
+                  }
+                  {
+                    name = "Majbacka Labs";
+                    url = "https://github.com/majbacka-labs";
+                  }
+                ];
+              }
+              {
+                name = "Projects";
+                bookmarks = [
+                  {
+                    name = "HomestakerOS";
+                    url = "https://homestakeros.com";
+                  }
+                ];
+              }
+            ];
           }
           {
-            name = "Nyaa";
-            url = "https://nyaa.si/";
+            name = "Nix";
+            bookmarks = [
+              {
+                name = "Nix Reference Manual";
+                bookmarks = [
+                  {
+                    name = "Built-in Functions";
+                    url = "https://nixos.org/manual/nix/unstable/language/builtins.html";
+                  }
+                  {
+                    name = "Data Types";
+                    url = "https://nixos.org/manual/nix/unstable/language/values.html";
+                  }
+                  {
+                    name = "Operators";
+                    url = "https://nixos.org/manual/nix/unstable/language/operators.html";
+                  }
+                ];
+              }
+              {
+                name = "Nixpkgs Manual";
+                bookmarks = [
+                  {
+                    name = "lib.attrsets";
+                    url = "https://nixos.org/manual/nixpkgs/unstable/#sec-functions-library-attrsets";
+                  }
+                ];
+              }
+              {
+                name = "NixOS Search Options";
+                url = "https://search.nixos.org/options?";
+              }
+              {
+                name = "NixOS Search Packages";
+                url = "https://search.nixos.org/packages?";
+              }
+              {
+                name = "Nixpkgs Issues";
+                url = "https://github.com/NixOS/nixpkgs/issues";
+              }
+              {
+                name = "Home Manager Search";
+                url = "https://mipmip.github.io/home-manager-option-search/";
+              }
+              {
+                name = "NixOS Wiki";
+                url = "https://nixos.wiki/";
+              }
+              {
+                name = "Flake Parts";
+                url = "https://flake.parts/";
+              }
+              {
+                name = "Nixvim docs";
+                url = "https://nix-community.github.io/nixvim/";
+              }
+              {
+                name = "Nix (builtins) & Nixpkgs (lib) Functions";
+                url = "https://teu5us.github.io/nix-lib.html";
+              }
+            ];
           }
           {
-            name = "rutracker";
-            url = "https://rutracker.org/forum/index.php";
+            name = "Documentation";
+            bookmarks = [
+              {
+                name = "Kernel Config Search";
+                url = "https://www.kernelconfig.io/index.html";
+              }
+              {
+                name = "Vimium";
+                url = "https://vimium.github.io/";
+              }
+              {
+                name = "Vim Cheat Sheet";
+                url = "https://vim.rtorr.com/";
+              }
+              {
+                name = "Kea DHCP";
+                url = "https://kea.readthedocs.io/en/kea-2.2.0/arm/dhcp4-srv.html";
+              }
+              {
+                name = "Hyprland";
+                url = "https://wiki.hyprland.org/";
+              }
+              {
+                name = "Waybar";
+                url = "https://github.com/Alexays/Waybar/wiki";
+              }
+              {
+                name = "iPXE";
+                url = "https://ipxe.org/docs";
+              }
+              {
+                name = "Bash Reference Manual";
+                url = "https://www.gnu.org/software/bash/manual/html_node/index.html#SEC_Contents";
+              }
+              {
+                name = "rEFInd Boot Manager";
+                url = "http://www.rodsbooks.com/refind/index.html";
+              }
+            ];
           }
           {
-            name = "YIFY";
-            url = "https://yts.mx/";
+            name = "Rust";
+            bookmarks = [
+              {
+                name = "Crates.io";
+                url = "https://crates.io/";
+              }
+              {
+                name = "Rust Language Cheat Sheet";
+                url = "https://cheats.rs/";
+              }
+              {
+                name = "Learn Rust";
+                url = "https://www.rust-lang.org/learn";
+              }
+            ];
           }
           {
-            name = "FitGirl Repacks";
-            url = "https://fitgirl-repacks.site";
+            name = "Security";
+            bookmarks = [
+              {
+                name = "Exploit-DB";
+                url = "https://www.exploit-db.com/";
+              }
+              {
+                name = "Have I Been Pwned";
+                url = "https://haveibeenpwned.com/";
+              }
+            ];
+          }
+        ];
+      }
+      {
+        name = "Media";
+        bookmarks = [
+          {
+            name = "Torrents";
+            bookmarks = [
+              {
+                name = "TorrentDay";
+                url = "https://www.torrentday.com/t";
+              }
+              {
+                name = "Nyaa";
+                url = "https://nyaa.si/";
+              }
+              {
+                name = "rutracker";
+                url = "https://rutracker.org/forum/index.php";
+              }
+              {
+                name = "YIFY";
+                url = "https://yts.mx/";
+              }
+              {
+                name = "FitGirl Repacks";
+                url = "https://fitgirl-repacks.site";
+              }
+              {
+                name = "1337x";
+                url = "https://1337x.to/";
+              }
+              {
+                name = "NAPALM FTP Indexer";
+                url = "https://www.searchftps.net/";
+              }
+              {
+                name = "Mobilism";
+                url = "https://forum.mobilism.org/";
+              }
+            ];
           }
           {
-            name = "1337x";
-            url = "https://1337x.to/";
+            name = "Videos & Streaming";
+            bookmarks = [
+              {
+                name = "YouTube";
+                url = "https://www.youtube.com/feed/subscriptions";
+              }
+              {
+                name = "Twitch";
+                url = "https://www.twitch.tv/";
+              }
+              {
+                name = "Kick";
+                url = "https://kick.com/";
+              }
+            ];
           }
           {
-            name = "Anna's Archive";
-            url = "https://annas-archive.org/";
+            name = "Games";
+            bookmarks = [
+              {
+                name = "G2A";
+                url = "https://www.g2a.com/";
+              }
+              {
+                name = "Steam";
+                url = "https://store.steampowered.com/";
+              }
+              {
+                name = "SteamDB";
+                url = "https://steamdb.info/sales/";
+              }
+              {
+                name = "Zophar";
+                url = "https://www.zophar.net/";
+              }
+            ];
+          }
+          {
+            name = "Literature";
+            bookmarks = [
+              {
+                name = "Anna's Archive";
+                url = "https://annas-archive.org/";
+              }
+              {
+                name = "Internet Archive";
+                url = "https://archive.org/";
+              }
+              {
+                name = "ResearchGate";
+                url = "https://www.researchgate.net/";
+              }
+              {
+                name = "Kansalliskirjasto";
+                url = "https://digi.kansalliskirjasto.fi/etusivu";
+              }
+            ];
+          }
+          {
+            name = "Anime";
+            bookmarks = [
+              {
+                name = "MAL";
+                url = "https://myanimelist.net/";
+              }
+              {
+                name = "EverythingMoe";
+                url = "https://everythingmoe.com/";
+              }
+            ];
           }
         ];
       }
@@ -73,20 +425,8 @@
         name = "Tools";
         bookmarks = [
           {
-            name = "Assets";
+            name = "Design & Creative";
             bookmarks = [
-              {
-                name = "Font Awesome";
-                url = "https://fontawesome.com/icons";
-              }
-              {
-                name = "Icons";
-                url = "https://techicons.dev/";
-              }
-              {
-                name = "Nerdfonts Symbols";
-                url = "https://www.nerdfonts.com/cheat-sheet";
-              }
               {
                 name = "Excalidraw";
                 url = "https://excalidraw.com/";
@@ -99,26 +439,43 @@
                 name = "Favicon.io";
                 url = "https://favicon.io/";
               }
+              {
+                name = "Font Awesome";
+                url = "https://fontawesome.com/icons";
+              }
+              {
+                name = "Tech Icons";
+                url = "https://techicons.dev/";
+              }
+              {
+                name = "Nerdfonts Symbols";
+                url = "https://www.nerdfonts.com/cheat-sheet";
+              }
             ];
           }
           {
             name = "Music";
             bookmarks = [
               {
-                name = "metronomus";
-                url = "https://metronom.us/en/";
-              }
-              {
-                name = "guitarscale";
-                url = "https://guitarscale.org/bass/index.html";
-              }
-              {
-                name = "tap tempo";
-                url = "https://taptempo.io/";
-              }
-              {
-                name = "musmath";
-                url = "https://www.musmath.com/tools/scale-lookup/bass-guitar";
+                name = "Tools";
+                bookmarks = [
+                  {
+                    name = "Metronome";
+                    url = "https://metronom.us/en/";
+                  }
+                  {
+                    name = "Guitar Scale";
+                    url = "https://guitarscale.org/bass/index.html";
+                  }
+                  {
+                    name = "Tap Tempo";
+                    url = "https://taptempo.io/";
+                  }
+                  {
+                    name = "MusMath";
+                    url = "https://www.musmath.com/tools/scale-lookup/bass-guitar";
+                  }
+                ];
               }
               {
                 name = "Backtracks";
@@ -180,398 +537,172 @@
             ];
           }
           {
-            name = "APKCombo";
-            url = "https://apkcombo.com/downloader/";
-          }
-          {
-            name = "DocHub";
-            url = "https://dochub.com/";
-          }
-          {
-            name = "DeepL";
-            url = "https://www.deepl.com/translator";
-          }
-          {
-            name = "CroxyProxy";
-            url = "https://www.croxyproxy.com/";
-          }
-          {
-            name = "Have I Been Pwned";
-            url = "https://haveibeenpwned.com/";
-          }
-          {
-            name = "MD to PDF Converter";
-            url = "https://cloudconvert.com/md-to-pdf";
-          }
-        ];
-      }
-      {
-        name = "Docs";
-        bookmarks = [
-          {
-            name = "Kernel Config Search";
-            url = "https://www.kernelconfig.io/index.html";
-          }
-          {
-            name = "Vimium";
-            url = "https://vimium.github.io/";
-          }
-          {
-            name = "Vim Cheat Sheet";
-            url = "https://vim.rtorr.com/";
-          }
-          {
-            name = "Kea DHCP";
-            url = "https://kea.readthedocs.io/en/kea-2.2.0/arm/dhcp4-srv.html";
-          }
-          {
-            name = "Hyprland";
-            url = "https://wiki.hyprland.org/";
-          }
-          {
-            name = "Waybar";
-            url = "https://github.com/Alexays/Waybar/wiki";
-          }
-          {
-            name = "iPXE";
-            url = "https://ipxe.org/docs";
-          }
-          {
-            name = "Bash Reference Manual";
-            url = "https://www.gnu.org/software/bash/manual/html_node/index.html#SEC_Contents";
-          }
-          {
-            name = "rEFInd Boot Manager";
-            url = "http://www.rodsbooks.com/refind/index.html";
-          }
-          {
-            name = "Rust";
+            name = "Utilities";
             bookmarks = [
               {
-                name = "The Rust community’s crate registry";
-                url = "https://crates.io/";
+                name = "APKCombo";
+                url = "https://apkcombo.com/downloader/";
               }
               {
-                name = "Rust Language Cheat Sheet";
-                url = "https://cheats.rs/";
+                name = "DocHub";
+                url = "https://dochub.com/";
               }
               {
-                name = "Learn Rust";
-                url = "https://www.rust-lang.org/learn";
-              }
-            ];
-          }
-
-        ];
-      }
-      {
-        name = "Git";
-        bookmarks = [
-          {
-            name = "GitHub";
-            url = "https://github.com/";
-          }
-          {
-            name = "Users";
-            bookmarks = [
-              {
-                name = "Misterio77";
-                url = "https://github.com/Misterio77";
+                name = "DeepL";
+                url = "https://www.deepl.com/translator";
               }
               {
-                name = "jhvst";
-                url = "https://github.com/jhvst";
+                name = "CroxyProxy";
+                url = "https://www.croxyproxy.com/";
               }
               {
-                name = "tupakkatapa";
-                url = "https://github.com/tupakkatapa";
-              }
-              {
-                name = "Afrikantahti";
-                url = "https://github.com/Afrikantahti";
-              }
-              {
-                name = "2xsaiko";
-                url = "https://git.sr.ht/~dblsaiko";
-              }
-            ];
-          }
-          {
-            name = "Organizations";
-            bookmarks = [
-              {
-                name = "Ponkila";
-                url = "https://github.com/ponkila";
-              }
-              {
-                name = "Majbacka Labs";
-                url = "https://github.com/majbacka-labs";
+                name = "MD to PDF Converter";
+                url = "https://cloudconvert.com/md-to-pdf";
               }
             ];
           }
         ];
       }
       {
-        name = "Nix";
+        name = "Finance";
         bookmarks = [
           {
-            name = "Nix Reference Manual";
+            name = "Shopping";
             bookmarks = [
               {
-                name = "Built-in Functions";
-                url = "https://nixos.org/manual/nix/unstable/language/builtins.html";
+                name = "Amazon";
+                url = "https://www.amazon.de/";
               }
               {
-                name = "Data Types";
-                url = "https://nixos.org/manual/nix/unstable/language/values.html";
+                name = "Crucial";
+                url = "https://www.crucial.com/";
+              }
+              {
+                name = "Verkkokauppa";
+                url = "https://www.verkkokauppa.com/fi/etusivu";
+              }
+              {
+                name = "Jimms";
+                url = "https://www.jimms.fi/";
+              }
+              {
+                name = "Ebay";
+                url = "https://www.ebay.com/";
+              }
+              {
+                name = "n-o-d-e";
+                url = "https://n-o-d-e.shop/";
+              }
+              {
+                name = "Proshop";
+                url = "https://www.proshop.fi/";
+              }
+              {
+                name = "Zalando";
+                url = "https://www.zalando.fi/";
+              }
+              {
+                name = "IKEA";
+                url = "https://www.ikea.com/fi/fi/";
+              }
+              {
+                name = "Wolt";
+                url = "https://wolt.com/fi/discovery";
               }
             ];
           }
           {
-            name = "Nixpkgs Manual";
+            name = "Crypto";
             bookmarks = [
               {
-                name = "lib.attrsets";
-                url = "https://nixos.org/manual/nixpkgs/unstable/#sec-functions-library-attrsets";
-              }
-            ];
-          }
-          {
-            name = "NixOS Search";
-            url = "https://search.nixos.org/options?";
-          }
-          {
-            name = "NixOS Search";
-            url = "https://search.nixos.org/packages?";
-          }
-          {
-            name = "Nixpkgs Issues";
-            url = "https://github.com/NixOS/nixpkgs/issues";
-          }
-          {
-            name = "Home Manager Search";
-            url = "https://mipmip.github.io/home-manager-option-search/";
-          }
-          {
-            name = "NixOS Wiki";
-            url = "https://nixos.wiki/";
-          }
-          {
-            name = "Flake Parts";
-            url = "https://flake.parts/";
-          }
-          {
-            name = "Nixvim docs";
-            url = "https://nix-community.github.io/nixvim/";
-          }
-          {
-            name = "Nix (builtins) & Nixpkgs (lib) Functions";
-            url = "https://teu5us.github.io/nix-lib.html";
-          }
-        ];
-      }
-      {
-        name = "Blogs";
-        bookmarks = [
-          {
-            name = "Juuso Haavisto";
-            url = "https://juuso.dev/rss.xml";
-          }
-          {
-            name = "Rick Vagabond";
-            url = "https://rickvagabond.blog/";
-          }
-        ];
-      }
-      {
-        name = "Sol";
-        bookmarks = [
-          {
-            name = "SpaceWeatherLive";
-            url = "https://www.spaceweatherlive.com/";
-          }
-          {
-            name = "WSA-Enlil";
-            url = "https://www.swpc.noaa.gov/products/wsa-enlil-solar-wind-prediction";
-          }
-          {
-            name = "SDO";
-            url = "https://sdo.gsfc.nasa.gov/data/";
-          }
-          {
-            name = "Downdetector";
-            url = "https://downdetector.com/";
-          }
-        ];
-      }
-      {
-        name = "Forums";
-        bookmarks = [
-          {
-            name = "Ylilauta";
-            url = "https://ylilauta.org/thread/";
-          }
-          {
-            name = "Reddit";
-            url = "https://www.reddit.com/";
-          }
-          {
-            name = "Hacker News";
-            url = "https://news.ycombinator.com/news";
-          }
-          {
-            name = "4chan";
-            url = "https://www.4chan.org/";
-          }
-        ];
-      }
-      {
-        name = "Email";
-        bookmarks = [
-          {
-            name = "Outlook";
-            url = "https://outlook.live.com/mail";
-          }
-          {
-            name = "Ponkila Mail";
-            url = "https://mail.ponkila.com/";
-          }
-          {
-            name = "Protonmail";
-            url = "https://account.proton.me/mail";
-          }
-        ];
-      }
-      {
-        name = "News";
-        bookmarks = [
-          {
-            name = "Reuters";
-            url = "https://www.reuters.com/";
-          }
-        ];
-      }
-      {
-        name = "Shops";
-        bookmarks = [
-          {
-            name = "Amazon";
-            url = "https://www.amazon.de/";
-          }
-          {
-            name = "Crucial";
-            url = "https://www.crucial.com/";
-          }
-          {
-            name = "Verkkokauppa";
-            url = "https://www.verkkokauppa.com/fi/etusivu";
-          }
-          {
-            name = "Jimms";
-            url = "https://www.jimms.fi/";
-          }
-          {
-            name = "Ebay";
-            url = "https://www.ebay.com/";
-          }
-          {
-            name = "n-o-d-e";
-            url = "https://n-o-d-e.shop/";
-          }
-          {
-            name = "Proshop";
-            url = "https://www.proshop.fi/";
-          }
-          {
-            name = "Zalando";
-            url = "https://www.zalando.fi/";
-          }
-          {
-            name = "IKEA";
-            url = "https://www.ikea.com/fi/fi/";
-          }
-        ];
-      }
-      {
-        name = "Crypto";
-        bookmarks = [
-          {
-            name = "Binance";
-            url = "https://www.binance.com/en";
-          }
-          {
-            name = "Coinbase";
-            url = "https://www.coinbase.com/home";
-          }
-          {
-            name = "CoinMarketCap";
-            url = "https://coinmarketcap.com/";
-          }
-          {
-            name = "BscScan";
-            url = "https://bscscan.com/";
-          }
-          {
-            name = "BtcScan";
-            url = "https://btcscan.org/";
-          }
-          {
-            name = "Ethereum";
-            bookmarks = [
-              {
-                name = "EtherScan";
-                url = "https://etherscan.io/";
-              }
-              {
-                name = "Client Diversity";
-                url = "https://clientdiversity.org/";
-              }
-              {
-                name = "Clients";
+                name = "Exchanges";
                 bookmarks = [
                   {
-                    name = "Prysm CLI";
-                    url = "https://docs.prylabs.network/docs/prysm-usage/parameters";
+                    name = "Binance";
+                    url = "https://www.binance.com/en";
                   }
                   {
-                    name = "Reth CLI";
-                    url = "https://reth.rs/cli/reth/node.html";
+                    name = "Coinbase";
+                    url = "https://www.coinbase.com/home";
                   }
                   {
-                    name = "Nimbus CLI";
-                    url = "https://nimbus.guide/options.html";
+                    name = "CoinMarketCap";
+                    url = "https://coinmarketcap.com/";
+                  }
+                ];
+              }
+              {
+                name = "Block Explorers";
+                bookmarks = [
+                  {
+                    name = "BscScan";
+                    url = "https://bscscan.com/";
                   }
                   {
-                    name = "Teku CLI";
-                    url = "https://docs.teku.consensys.io/reference/cli";
+                    name = "BtcScan";
+                    url = "https://btcscan.org/";
                   }
                   {
-                    name = "Lighthouse CLI";
-                    url = "https://lighthouse-book.sigmaprime.io/help_bn.html";
+                    name = "EtherScan";
+                    url = "https://etherscan.io/";
+                  }
+                ];
+              }
+              {
+                name = "Ethereum";
+                bookmarks = [
+                  {
+                    name = "Client Diversity";
+                    url = "https://clientdiversity.org/";
                   }
                   {
-                    name = "MEV-Boost CLI";
-                    url = "https://github.com/flashbots/mev-boost#mev-boost-cli-arguments";
-                  }
-                  {
-                    name = "Besu CLI";
-                    url = "https://besu.hyperledger.org/stable/public-networks/reference/cli/options";
-                  }
-                  {
-                    name = "Nethermind CLI";
-                    url = "https://docs.nethermind.io/fundamentals/configuration#basic-command-line-options";
-                  }
-                  {
-                    name = "Geth CLI";
-                    url = "https://geth.ethereum.org/docs/fundamentals/command-line-options";
-                  }
-                  {
-                    name = "Erigon CLI";
-                    url = "https://erigon.gitbook.io/erigon/advanced-usage/options";
-                  }
-                  {
-                    name = "SSV node";
-                    url = "https://docs.ssv.network/run-a-node/operator-node/installation#create-configuration-file";
+                    name = "Clients";
+                    bookmarks = [
+                      {
+                        name = "Prysm CLI";
+                        url = "https://docs.prylabs.network/docs/prysm-usage/parameters";
+                      }
+                      {
+                        name = "Reth CLI";
+                        url = "https://reth.rs/cli/reth/node.html";
+                      }
+                      {
+                        name = "Nimbus CLI";
+                        url = "https://nimbus.guide/options.html";
+                      }
+                      {
+                        name = "Teku CLI";
+                        url = "https://docs.teku.consensys.io/reference/cli";
+                      }
+                      {
+                        name = "Lighthouse CLI";
+                        url = "https://lighthouse-book.sigmaprime.io/help_bn.html";
+                      }
+                      {
+                        name = "MEV-Boost CLI";
+                        url = "https://github.com/flashbots/mev-boost#mev-boost-cli-arguments";
+                      }
+                      {
+                        name = "Besu CLI";
+                        url = "https://besu.hyperledger.org/stable/public-networks/reference/cli/options";
+                      }
+                      {
+                        name = "Nethermind CLI";
+                        url = "https://docs.nethermind.io/fundamentals/configuration#basic-command-line-options";
+                      }
+                      {
+                        name = "Geth CLI";
+                        url = "https://geth.ethereum.org/docs/fundamentals/command-line-options";
+                      }
+                      {
+                        name = "Erigon CLI";
+                        url = "https://erigon.gitbook.io/erigon/advanced-usage/options";
+                      }
+                      {
+                        name = "SSV node";
+                        url = "https://docs.ssv.network/run-a-node/operator-node/installation#create-configuration-file";
+                      }
+                    ];
                   }
                 ];
               }
@@ -580,118 +711,104 @@
         ];
       }
       {
-        name = "Literature";
+        name = "Information";
         bookmarks = [
           {
-            name = "ResearchGate";
-            url = "https://www.researchgate.net/";
+            name = "AI";
+            bookmarks = [
+              {
+                name = "ChatGPT";
+                url = "https://chat.openai.com/?model=gpt-4o";
+              }
+              {
+                name = "Claude";
+                url = "https://claude.ai/";
+              }
+            ];
           }
           {
-            name = "Kansalliskirjasto";
-            url = "https://digi.kansalliskirjasto.fi/etusivu";
+            name = "News & Forums";
+            bookmarks = [
+              {
+                name = "Reuters";
+                url = "https://www.reuters.com/";
+              }
+              {
+                name = "Hackaday";
+                url = "https://hackaday.com/";
+              }
+              {
+                name = "Hacker News";
+                url = "https://news.ycombinator.com/news";
+              }
+              {
+                name = "Reddit";
+                url = "https://www.reddit.com/";
+              }
+              {
+                name = "Ylilauta";
+                url = "https://ylilauta.org/thread/";
+              }
+              {
+                name = "4chan";
+                url = "https://www.4chan.org/";
+              }
+            ];
+          }
+          {
+            name = "Blogs";
+            bookmarks = [
+              {
+                name = "Juuso Haavisto";
+                url = "https://juuso.dev/rss.xml";
+              }
+              {
+                name = "Rick Vagabond";
+                url = "https://rickvagabond.blog/";
+              }
+            ];
+          }
+          {
+            name = "Space Weather";
+            bookmarks = [
+              {
+                name = "SpaceWeatherLive";
+                url = "https://www.spaceweatherlive.com/";
+              }
+              {
+                name = "WSA-Enlil";
+                url = "https://www.swpc.noaa.gov/products/wsa-enlil-solar-wind-prediction";
+              }
+              {
+                name = "SDO";
+                url = "https://sdo.gsfc.nasa.gov/data/";
+              }
+              {
+                name = "Downdetector";
+                url = "https://downdetector.com/";
+              }
+            ];
+          }
+          {
+            name = "Weather";
+            bookmarks = [
+              {
+                name = "Foreca";
+                url = "https://www.foreca.fi/Finland/Oulu";
+              }
+            ];
+          }
+          {
+            name = "Search";
+            bookmarks = [
+              {
+                name = "Qwant";
+                url = "https://www.qwant.com/";
+              }
+            ];
           }
         ];
       }
-      {
-        name = "Videos & Streaming";
-        bookmarks = [
-          {
-            name = "YouTube";
-            url = "https://www.youtube.com/feed/subscriptions";
-          }
-          {
-            name = "Twitch";
-            url = "https://www.twitch.tv/";
-          }
-          {
-            name = "Kick";
-            url = "https://kick.com/";
-          }
-        ];
-      }
-      {
-        name = "Infrastructure";
-        bookmarks = [
-          {
-            name = "Cloudflare";
-            url = "https://dash.cloudflare.com/";
-          }
-          {
-            name = "Hetzner";
-            url = "https://console.hetzner.cloud";
-          }
-          {
-            name = "Spaceship";
-            url = "https://www.spaceship.com/";
-          }
-          {
-            name = "Domaincompare";
-            url = "https://www.domaincompare.io/";
-          }
-          {
-            name = "GoDaddy";
-            url = "https://www.godaddy.com/";
-          }
-        ];
-      }
-      {
-        name = "Games";
-        bookmarks = [
-          {
-            name = "G2A";
-            url = "https://www.g2a.com/";
-          }
-          {
-            name = "SteamDB";
-            url = "https://steamdb.info/sales/";
-          }
-        ];
-      }
-      {
-        name = "NAPALM FTP Indexer";
-        url = "https://www.searchftps.net/";
-      }
-      {
-        name = "Exploit-DB";
-        url = "https://www.exploit-db.com/";
-      }
-      {
-        name = "Hackaday";
-        url = "https://hackaday.com/";
-      }
-      {
-        name = "Qwant";
-        url = "https://www.qwant.com/";
-      }
-      {
-        name = "ChatGPT";
-        url = "https://chat.openai.com/?model=gpt-4o";
-      }
-      {
-        name = "Claude";
-        url = "https://claude.ai/";
-      }
-      {
-        name = "Wolt";
-        url = "https://wolt.com/fi/discovery";
-      }
-      {
-        name = "EverythingMoe";
-        url = "https://everythingmoe.com/";
-      }
-      {
-        name = "MAL";
-        url = "https://myanimelist.net/";
-      }
-      {
-        name = "Zophar";
-        url = "https://www.zophar.net/";
-      }
-      # {
-      #   name = "";
-      #   url = "";
-      # }
     ];
   }
 ]
-
