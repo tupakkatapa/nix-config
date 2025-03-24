@@ -202,6 +202,8 @@
               inputs.agenix.nixosModules.default
               inputs.home-manager.nixosModules.home-manager
               inputs.nix-extras.nixosModules.common
+              inputs.nixie.nixosModules.nixRemount
+              inputs.nixie.nixosModules.refindGenerate
               inputs.runtime-modules.nixosModules.runtimeModules
               inputs.sftp-mount.nixosModules.sftpClient
               self.nixosModules.stateSaver
@@ -232,8 +234,6 @@
               ./system/kexec-tree.nix
               inputs.aagl.nixosModules.default
               inputs.musnix.nixosModules.musnix
-              inputs.nixie.nixosModules.nixRemount
-              inputs.nixie.nixosModules.refindGenerate
               # Development
               # inputs.habbo.nixosModules.kepler
               # inputs.homestakeros.nixosModules.backend
@@ -246,9 +246,7 @@
               ./nixosConfigurations/vladof
               ./system/kexec-tree.nix
               inputs.coditon-md.nixosModules.default
-              inputs.nixie.nixosModules.nixRemount
               inputs.nixie.nixosModules.nixie
-              inputs.nixie.nixosModules.refindGenerate
               inputs.sftp-mount.nixosModules.sftpServer
             ];
           };
