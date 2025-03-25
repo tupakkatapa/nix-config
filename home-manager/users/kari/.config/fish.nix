@@ -11,6 +11,18 @@ let
   hasEza = hasPackage "eza";
 in
 {
+  programs.tmux = {
+    enable = true;
+    keyMode = "vi";
+    prefix = "C-Space";
+    extraConfig = ''
+      set -s escape-time 0
+      set -g status off
+      set -g mouse on
+      bind-key v split-window -h -c "#{pane_current_path}"
+      bind-key g split-window -v -c "#{pane_current_path}"
+    '';
+  };
   programs.fish = {
     enable = true;
     shellAbbrs = rec {
@@ -44,11 +56,12 @@ in
       cp = "cp -ia";
       free = "free -h";
       grep = "grep --color=auto";
-      jctl = "journalctl -p 3 -xb";
 
       # Utils
       lsd = "du -Lhc --max-depth=0 ./* | sort -h";
       rpg = "shuf -i 1024-65535 -n 1";
+      wlc = "wl-copy --type text/plain";
+      jctl = "journalctl -p 3 -xb";
 
       # Nix
       nfc = "nix flake check --impure --accept-flake-config";
@@ -68,7 +81,9 @@ in
       vim = mkIf hasNeovim "nvim";
       amimullvad = "curl https://am.i.mullvad.net/connected";
     };
-    functions = { fish_greeting = ""; };
+    functions = {
+      fish_greeting = "";
+    };
     interactiveShellInit =
       # Use vim bindings and cursors
       ''
@@ -77,6 +92,11 @@ in
         set fish_cursor_insert      line       blink
         set fish_cursor_replace_one underscore blink
         set fish_cursor_visual      block
+
+        # Autostart tmux
+        if not set -q TMUX
+            exec tmux
+        end
 
         # Function to handle missing commands with comma
         # function fish_command_not_found --on-event fish_command_not_found
