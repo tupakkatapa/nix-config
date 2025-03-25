@@ -102,7 +102,10 @@ in
       comment.enable = true;
       rainbow-delimiters.enable = true;
       fugitive.enable = true;
-      hardtime.enable = true;
+      hardtime = {
+        enable = true;
+        settings.max_count = 0;
+      };
       bufdelete.enable = true;
       markdown-preview.enable = true;
       web-devicons.enable = true;
