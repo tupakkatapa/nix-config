@@ -1,11 +1,6 @@
-{ pkgs
-, lib
-, config
-, ...
-}:
+{ pkgs, lib, config, ... }:
 let
-  inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR FILEMANAGER THEME;
-  colors = (import ../../../colors.nix).${THEME};
+  inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR FILEMANAGER;
   mod = "ALT";
 
   notify = {
@@ -22,20 +17,15 @@ let
   };
 
   hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
-  swaybg = "${pkgs.swaybg}/bin/swaybg";
 in
 {
+  # hyprland.nix
   home.sessionVariables = {
     LIBSEAT_BACKEND = "logind";
     MOZ_ENABLE_WAYLAND = "1";
     QT_QPA_PLATFORM = "wayland";
     WLR_NO_HARDWARE_CURSORS = "1";
     WLR_RENDERER_ALLOW_SOFTWARE = "1";
-  };
-
-  home.file = {
-    "wallpaper".source = ./wallpaper.png;
-    "hypr_binds.txt".text = lib.concatStringsSep "\n" config.wayland.windowManager.hyprland.settings.bind;
   };
 
   wayland.windowManager.hyprland = {
@@ -73,6 +63,7 @@ in
         bindm = ${mod}, mouse:273,  resizewindow
       '';
 
+
     settings = {
       monitor = ",preferred,auto,1";
 
@@ -82,56 +73,6 @@ in
         numlock_by_default = true;
         repeat_delay = 300;
         repeat_rate = 50;
-      };
-
-      general = {
-        "col.active_border" = "rgb(${colors.base06})";
-        "col.inactive_border" = "rgb(${colors.base02})";
-        border_size = 2;
-        gaps_out = 5;
-      };
-
-      decoration = {
-        rounding = 7;
-        shadow.enabled = false;
-        blur.enabled = false;
-      };
-
-      animations = {
-        enabled = true;
-        bezier = [
-          "easein,0.1,0,0.5,0"
-          "easeout,0.5,1,0.9,1"
-          "easeinout,0.45,0,0.55,1"
-        ];
-        animation =
-          let
-            duration = "1";
-          in
-          [
-            "fadeIn,1,${duration},easeout"
-            "fadeLayersIn,1,${duration},easeout"
-            "layersIn,1,${duration},easeout"
-            "windowsIn,1,${duration},easeout"
-
-            "fadeLayersOut,1,${duration},easein"
-            "fadeOut,1,${duration},easein"
-            "layersOut,1,${duration},easein"
-            "windowsOut,1,${duration},easein"
-
-            "border,1,${duration},easeout"
-            "fadeDim,1,${duration},easeinout"
-            "fadeShadow,1,${duration},easeinout"
-            "fadeSwitch,1,${duration},easeinout"
-            "windowsMove,1,${duration},easeout"
-            "workspaces,1,${duration},easeout"
-          ];
-      };
-
-      group = {
-        "col.border_active" = "rgb(${colors.base06})";
-        "col.border_inactive" = "rgb(${colors.base02})";
-        groupbar.font_size = 11;
       };
 
       misc = {
@@ -151,13 +92,9 @@ in
 
       # Startup
       exec-once = [
-        "${swaybg} -i ~/wallpaper --mode fill"
         "dunst"
         "swayidle -w"
         "wl-clipboard-history -t"
-
-        # Open programs on spesific workspaces
-        "[workspace 4 silent] ${BROWSER} https://web.whatsapp.com https://app.element.io/ https://web.telegram.org/ https://www.instagram.com/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
       ];
 
       bind = [
@@ -228,10 +165,6 @@ in
         "${mod}, tab, changegroupactive"
         "${mod} SHIFT, g, moveoutofgroup, d"
 
-        # workspaces
-        "${mod}, x,       togglespecialworkspace"
-        "${mod} SHIFT, x, movetoworkspace, special"
-
         # Change the workspace
         "${mod}, 1, workspace, 1"
         "${mod}, 2, workspace, 2"
@@ -268,9 +201,6 @@ in
 
       # Window behiavior
       windowrule = [
-        # Sets the workspace on which a window should open
-        "workspace 4 silent, discord"
-
         # Program specific (float, position and size etc.)
         "float, blueberry"
         "float, imv"

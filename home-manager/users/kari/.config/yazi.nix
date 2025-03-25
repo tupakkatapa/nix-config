@@ -1,13 +1,9 @@
 # https://github.com/fdnt7/nix-config/blob/3d9866e701e6bb897a189e428add4b68922d1e6f/home-manager/programs/yazi/yazi.nix
 # https://github.com/Anomalocaridid/dotfiles/blob/4e6c64d2a80f04de451d7807b99e2c345a197296/home-modules/yazi.nix
 { pkgs
-, config
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) THEME;
-  colors = (import ../../../colors.nix).${THEME};
-
   plugs = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
@@ -25,8 +21,6 @@ in
     options = {
       adjust-open = "width";
       smooth-scroll = true;
-      statusbar-fg = "#${colors.base05}";
-      statusbar-bg = "#${colors.base00}";
     };
   };
 

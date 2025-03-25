@@ -6,7 +6,6 @@ let
 in
 {
   programs.wofi = {
-    enable = true;
     settings = {
       # General
       columns = 5;

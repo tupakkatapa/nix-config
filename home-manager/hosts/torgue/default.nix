@@ -4,6 +4,6 @@
   # See 'home-manager/users/kari/minimal.nix' for an example how to do this conditionally
 
   imports = [
-    ../.config/rice01
+    ../.config/base01/rice01
   ];
 }

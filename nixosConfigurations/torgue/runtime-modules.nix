@@ -16,7 +16,6 @@ _: {
         name = "wine";
         path = ../.config/virtualization/wine.nix;
       }
-
       {
         name = "visual";
         path = ../.config/media-production/visual.nix;

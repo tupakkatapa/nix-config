@@ -4,7 +4,7 @@
 }:
 let
   inherit (config.home.sessionVariables) FONT THEME;
-  colors = (import ../../../colors.nix).${THEME};
+  colors = (import ../../colors.nix).${THEME};
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
@@ -15,14 +15,6 @@ let
 in
 {
   programs.waybar = {
-    enable = true;
-    systemd = {
-      enable = true;
-      target = "hyprland-session.target";
-    };
-    package = pkgs.waybar.overrideAttrs (oa: {
-      mesonFlags = (oa.mesonFlags or [ ]) ++ [ "-Dexperimental=true" ];
-    });
     settings.primary = {
       height = 20;
       margin-top = 3;

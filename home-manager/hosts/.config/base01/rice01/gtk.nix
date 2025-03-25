@@ -7,7 +7,6 @@ let
 in
 {
   gtk = {
-    enable = true;
     iconTheme = {
       name = "oomox-gruvbox-dark";
       package = pkgs.gruvbox-dark-icons-gtk;
@@ -25,12 +24,6 @@ in
       name = "gruvbox-dark";
       package = pkgs.gruvbox-dark-gtk;
     };
-  };
-
-  qt = {
-    enable = true;
-    platformTheme.name = "gtk";
-    style.name = "gtk2";
   };
 
   home.pointerCursor = {
