@@ -14,6 +14,7 @@ pkgs.stdenv.mkDerivation rec {
     libnotify # filemon
     parallel # raidgrep
     zstd # raidgrep
+    findutils # cathead
   ];
 
   nativeBuildInputs = [ pkgs.makeWrapper ];
