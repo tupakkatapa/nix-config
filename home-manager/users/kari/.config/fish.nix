@@ -93,9 +93,9 @@ in
         set fish_cursor_replace_one underscore blink
         set fish_cursor_visual      block
 
-        # Autostart tmux
-        if not set -q TMUX
-            exec tmux
+        # Autostart tmux when not in an SSH session
+        if not set -q SSH_CONNECTION; and not set -q TMUX
+          exec tmux
         end
 
         # Function to handle missing commands with comma
