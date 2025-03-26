@@ -2570,16 +2570,16 @@
         "nixpkgs": "nixpkgs_25"
       },
       "locked": {
-        "lastModified": 1742274440,
-        "narHash": "sha256-Ic/azrnyOBAzjd37Y0Vvqs5CBIU0vB3X/vZ61ttTlGk=",
+        "lastModified": 1742994447,
+        "narHash": "sha256-nc+F3bzXpTFTtGkt6sJ+7o+QXX8mdLP7iXu+32k+wT0=",
         "owner": "tupakkatapa",
-        "repo": "sftp-mount",
-        "rev": "50e75d9e0de780f80e3e23a04678a69cea513548",
+        "repo": "nixos-sftp-mount",
+        "rev": "6dad9d64e8554f7be3cb2d622bdb86db1ccbdd37",
         "type": "github"
       },
       "original": {
         "owner": "tupakkatapa",
-        "repo": "sftp-mount",
+        "repo": "nixos-sftp-mount",
         "type": "github"
       }
     },

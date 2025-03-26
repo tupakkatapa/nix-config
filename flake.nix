@@ -49,7 +49,7 @@
     # Netboot stuff
     nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie\?ref=jesse/bugs";
     runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
-    sftp-mount.url = "github:tupakkatapa/sftp-mount";
+    sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount";
 
     # Real-time audio
     musnix.inputs.nixpkgs.follows = "nixpkgs";
