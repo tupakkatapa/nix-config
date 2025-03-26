@@ -3,11 +3,11 @@
 }: {
   # High quality games
   environment.systemPackages = with pkgs; [
-    runelite
+    # runelite
     osu-lazer
     discord
   ];
-  programs.anime-game-launcher.enable = true;
+  # programs.anime-game-launcher.enable = true;
 
   # Steam and gaming settings
   programs.gamescope.enable = true;
