@@ -1,10 +1,6 @@
 { pkgs
 , ...
 }: {
-  imports = [
-    ./kernel.nix
-  ];
-
   # High quality games
   environment.systemPackages = with pkgs; [
     runelite
