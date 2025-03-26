@@ -1,7 +1,31 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, hostName, ... }:
 let
   inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR FILEMANAGER;
   mod = "ALT";
+
+  # Define monitor and workspace configurations based on hostname
+  monitorConfig =
+    # https://wiki.hyprland.org/Configuring/Monitors/
+    if (hostName == "torgue") then [
+      "DP-4, 3440x1440@60, 0x0, 1"
+      "HDMI-A-1, 3840x2160@60, 3440x0, 1"
+    ] else [
+      ",preferred,auto,1"
+    ];
+  workspaceConfig =
+    # https://wiki.hyprland.org/Configuring/Workspace-Rules/
+    if (hostName == "torgue") then [
+      "1, monitor:DP-4, persistent:true, default:true"
+      "2, monitor:DP-4"
+      "3, monitor:DP-4"
+      "4, monitor:DP-4"
+      "5, monitor:DP-4"
+      "6, monitor:DP-4"
+      "7, monitor:DP-4"
+      "8, monitor:DP-4"
+      "9, monitor:DP-4"
+      "10, monitor:HDMI-A-1"
+    ] else [ ];
 
   notify = {
     brightness = "${pkgs.notify-brightness}/bin/notify-brightness";
@@ -63,9 +87,9 @@ in
         bindm = ${mod}, mouse:273,  resizewindow
       '';
 
-
     settings = {
-      monitor = ",preferred,auto,1";
+      monitor = monitorConfig;
+      workspace = workspaceConfig;
 
       input = {
         kb_layout = "fi";
@@ -199,7 +223,7 @@ in
         "${mod} CTRL, 9, movetoworkspace, 9"
       ];
 
-      # Window behiavior
+      # Window behavior
       windowrule = [
         # Program specific (float, position and size etc.)
         "float, blueberry"

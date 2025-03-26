@@ -203,22 +203,27 @@
               inputs.runtime-modules.nixosModules.runtimeModules
               inputs.sftp-mount.nixosModules.sftpClient
               self.nixosModules.stateSaver
-              {
-                home-manager.sharedModules = [
-                  inputs.nixvim.homeManagerModules.nixvim
-                  inputs.nix-index-database.hmModules.nix-index
-                  {
-                    programs.nix-index.enable = true;
-                    programs.nix-index-database.comma.enable = true;
-                  }
-                ];
+              ({ config, ... }: {
+                home-manager = {
+                  sharedModules = [
+                    inputs.nixvim.homeManagerModules.nixvim
+                    inputs.nix-index-database.hmModules.nix-index
+                    {
+                      programs.nix-index.enable = true;
+                      programs.nix-index-database.comma.enable = true;
+                    }
+                  ];
+                  extraSpecialArgs = {
+                    inherit (config.networking) hostName;
+                  };
+                };
                 age.rekey = {
                   masterIdentities = [{
                     identity = ./master.hmac;
                     pubkey = "age19xu98r52uq33f7lu5z6zafysvnx9snq72x3j6gtcvkd0a8ew8q9q34nw3u";
                   }];
                 };
-              }
+              })
             ];
           };
 
