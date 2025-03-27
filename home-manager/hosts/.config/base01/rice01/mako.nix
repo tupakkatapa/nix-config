@@ -1,9 +1,10 @@
 { config
+, customLib
 , ...
 }:
 let
   inherit (config.home.sessionVariables) FONT THEME;
-  colors = (import ../../colors.nix).${THEME};
+  colors = customLib.colors.${THEME};
 in
 {
   services.mako = {

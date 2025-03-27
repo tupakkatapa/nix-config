@@ -1,10 +1,10 @@
 # https://github.com/hyper-dot/Arch-Hyprland
 { pkgs
+, customLib
 , ...
-}@args:
+}:
 let
   user = "kari";
-  helpers = import ../../helpers.nix args;
 in
 {
   # This configuration extends the minimal-passwd and minimal-gui versions
@@ -14,7 +14,7 @@ in
   home-manager.users."${user}" = {
     # Default apps
     xdg.mimeApps.enable = true;
-    xdg.mimeApps.defaultApplications = helpers.createMimes {
+    xdg.mimeApps.defaultApplications = customLib.xdg.createMimes {
       text = [ "writer.desktop" ];
       spreadsheet = [ "calc.desktop" ];
       presentation = [ "impress.desktop" ];

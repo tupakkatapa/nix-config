@@ -173,9 +173,12 @@
         let
           inherit (self) outputs;
 
+          # Create lib instance with custom helpers
+          customLib = import ./library { inherit (inputs.nixpkgs) lib; };
+
           # Base configuration applied to all hosts
           withDefaults = config: {
-            specialArgs = { inherit inputs outputs; };
+            specialArgs = { inherit inputs outputs customLib; };
             system = config.system or "x86_64-linux";
             modules = config.modules or [ ] ++ [
               ./system/base.nix
@@ -215,6 +218,7 @@
                   ];
                   extraSpecialArgs = {
                     inherit (config.networking) hostName;
+                    inherit customLib;
                   };
                 };
                 age.rekey = {

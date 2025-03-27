@@ -111,6 +111,10 @@ These hosts are **truly declarative** by being **ephemeral** - [majbacka-labs/ni
     }
     ```
 
+- **./lib**
+
+  A centralized library of helper functions that are injected as `customLib` via specialArgs to all configurations.
+
 - **./system**
 
   This directory contains the very common configurations, such as settings in `withDefaults` and host formats, which are all imported at the flake level.

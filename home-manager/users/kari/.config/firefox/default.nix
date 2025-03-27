@@ -1,17 +1,17 @@
 { lib
 , pkgs
 , config
+, customLib
 , ...
-}@args:
+}:
 let
   inherit (config.home.sessionVariables) FONT;
-  helpers = import ../../../../helpers.nix args;
 in
 {
   # If the browser doesn’t retain cookies or add-on settings between reboots, despite a persistent '~/.mozilla', go to 'about:profiles' and select 'Restart normally...'
 
   xdg.mimeApps.enable = true;
-  xdg.mimeApps.defaultApplications = helpers.createMimes {
+  xdg.mimeApps.defaultApplications = customLib.xdg.createMimes {
     browser = [ "firefox.desktop" ];
   };
 

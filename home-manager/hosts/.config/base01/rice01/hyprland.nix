@@ -1,11 +1,12 @@
 { pkgs
 , lib
 , config
+, customLib
 , ...
 }:
 let
   inherit (config.home.sessionVariables) BROWSER THEME;
-  colors = (import ../../colors.nix).${THEME};
+  colors = customLib.colors.${THEME};
   swaybg = "${pkgs.swaybg}/bin/swaybg";
 in
 {

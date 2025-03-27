@@ -1,9 +1,10 @@
 { config
+, customLib
 , ...
 }:
 let
   inherit (config.home.sessionVariables) THEME;
-  colors = (import ../../colors.nix).${THEME};
+  colors = customLib.colors.${THEME};
 in
 {
   programs.zathura.options = {

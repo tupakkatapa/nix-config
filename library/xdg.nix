@@ -1,6 +1,5 @@
-{ lib
-, ...
-}:
+{ lib, ... }:
+
 let
   # Embedded MIME type definitions
   mimes = {
@@ -15,7 +14,6 @@ let
       "audio/webm"
       "audio/x-matroska"
     ];
-
     archive = [
       "application/bzip2"
       "application/gzip"
@@ -40,7 +38,6 @@ let
       "application/x-xz-compressed-tar"
       "application/zip"
     ];
-
     browser = [
       "text/html"
       "x-scheme-handler/about"
@@ -48,11 +45,13 @@ let
       "x-scheme-handler/https"
       "x-scheme-handler/unknown"
     ];
-
-    calendar = [ "text/calendar" "x-scheme-handler/webcal" ];
-
-    directory = [ "inode/directory" ];
-
+    calendar = [
+      "text/calendar"
+      "x-scheme-handler/webcal"
+    ];
+    directory = [
+      "inode/directory"
+    ];
     image = [
       "image/bmp"
       "image/gif"
@@ -66,13 +65,15 @@ let
       "image/vnd.microsoft.icon"
       "image/webp"
     ];
-
-    magnet = [ "x-scheme-handler/magnet" ];
-
-    mail = [ "x-scheme-handler/mailto" ];
-
-    markdown = [ "text/markdown" ];
-
+    magnet = [
+      "x-scheme-handler/magnet"
+    ];
+    mail = [
+      "x-scheme-handler/mailto"
+    ];
+    markdown = [
+      "text/markdown"
+    ];
     office = {
       spreadsheet = [
         "application/vnd.ms-excel"
@@ -91,23 +92,22 @@ let
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       ];
     };
-
-    pdf = [ "application/pdf" ];
-
+    pdf = [
+      "application/pdf"
+    ];
     ebook = [
       "application/epub+zip"
       "application/vnd.amazon.ebook"
     ];
-
     comic = [
       "application/vnd.comicbook+rar"
       "application/vnd.comicbook+zip"
       "application/x-cbr"
       "application/x-cbz"
     ];
-
-    text = [ "text/plain" ];
-
+    text = [
+      "text/plain"
+    ];
     video = [
       "video/mp2t"
       "video/mp4"
@@ -123,18 +123,12 @@ let
   };
 in
 {
-  inherit mimes;
-
-  # Functions
-  rgb = color: "rgb(${lib.removePrefix "#" color})";
-  rgba = color: alpha: "rgba(${lib.removePrefix "#" color}${alpha})";
-
   # Function to create MIME associations
-  createMimes = option:
-    lib.listToAttrs (lib.flatten (lib.mapAttrsToList
-      (name: types:
-        if lib.hasAttr name option
-        then map (type: lib.nameValuePair type option."${name}") types
-        else [ ])
-      mimes));
+  createMimes = option: lib.listToAttrs (lib.flatten (lib.mapAttrsToList
+    (name: types:
+      if lib.hasAttr name option then
+        map (type: lib.nameValuePair type option."${name}") types
+      else [ ]
+    )
+    mimes));
 }

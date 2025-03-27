@@ -1,10 +1,11 @@
 { pkgs
 , config
+, customLib
 , ...
 }:
 let
   inherit (config.home.sessionVariables) FONT THEME;
-  colors = (import ../../colors.nix).${THEME};
+  colors = customLib.colors.${THEME};
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
