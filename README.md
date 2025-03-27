@@ -111,7 +111,7 @@ These hosts are **truly declarative** by being **ephemeral** - [majbacka-labs/ni
     }
     ```
 
-- **./lib**
+- **./library**
 
   A centralized library of helper functions that are injected as `customLib` via specialArgs to all configurations.
 
