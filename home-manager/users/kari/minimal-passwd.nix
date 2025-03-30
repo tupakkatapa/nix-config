@@ -36,7 +36,13 @@ in
       owner = user;
       group = "users";
     };
+    "nix-access-tokens".rekeyFile = ./secrets/nix-access-tokens.age;
   };
+
+  # Append access tokens to nix.conf to avoid rate limits
+  nix.extraOptions = ''
+    !include ${config.age.secrets.nix-access-tokens.path}
+  '';
 
   # Set password
   users.users.${user} = {
