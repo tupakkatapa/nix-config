@@ -212,16 +212,16 @@ in
       # Window behavior
       windowrule = [
         # Program specific (float, position and size etc.)
-        "float, blueberry"
-        "float, imv"
-        "float, qjackctl"
-        "float, moe.launcher.an-anime-game-launcher"
-        "float, mpv"
-        "float, org.raspberrypi.rpi-imager"
+        "float, class:blueberry"
+        "float, class:imv"
+        "float, class:qjackctl"
+        "float, class:moe.launcher.an-anime-game-launcher"
+        "float, class:mpv"
+        "float, class:org.raspberrypi.rpi-imager"
 
-        "center, org.pwmt.zathura"
-        "float, org.pwmt.zathura"
-        "size 800 1150, org.pwmt.zathura"
+        "center, class:org.pwmt.zathura"
+        "float, class:org.pwmt.zathura"
+        "size 800 1150, class:org.pwmt.zathura"
 
         "center, title:Runelite"
         "float, title:RuneLite"
@@ -231,9 +231,9 @@ in
         "float, title:QEMU"
         "size 1400 800, title:QEMU"
 
-        "center, pavucontrol"
-        "float, pavucontrol"
-        "size 1400 800, pavucontrol"
+        "center, class:pavucontrol"
+        "float, class:pavucontrol"
+        "size 1400 800, class:pavucontrol"
 
         "center, title:^(Picture-in-Picture)$"
         "float, title:^(Picture-in-Picture)$"
@@ -242,16 +242,16 @@ in
         "center, title:^(Properties)$"
         "size 480 650, title:^(Properties)$"
 
-        "center, foot"
-        "float, foot"
-        "size 1400 800, foot"
+        "center, class:foot"
+        "float, class:foot"
+        "size 1400 800, class:foot"
 
         # Sets an idle inhibit rule for the window
-        "idleinhibit focus, mpv"
-        "idleinhibit fullscreen, ${BROWSER}"
+        "idleinhibit focus, class:mpv"
+        "idleinhibit fullscreen, class:${BROWSER}"
 
         # Additional opacity multiplier
-        "opacity 0.95 override 0.95 override, ^(foot)$"
+        "opacity 0.95 override 0.95 override, class:foot"
       ];
     };
   };
