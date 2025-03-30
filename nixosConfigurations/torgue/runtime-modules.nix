@@ -1,7 +1,7 @@
-_: {
+{ inputs, ... }: {
   services.runtimeModules = {
     enable = true;
-    flakeUrl = "path:/home/kari/nix-config";
+    flakeUrl = "path:${inputs.self.outPath}";
 
     modules = [
       {
