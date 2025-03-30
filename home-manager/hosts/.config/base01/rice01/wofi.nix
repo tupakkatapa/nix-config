@@ -1,8 +1,10 @@
 { config
+, customLib
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) FONT TERMINAL;
+  inherit (config.home.sessionVariables) FONT TERMINAL THEME;
+  colors = customLib.colors.${THEME};
 in
 {
   programs.wofi = {
@@ -42,9 +44,9 @@ in
       }
 
       #wofi-window {
-        background-color: #282828;
-        color: #d9e0ee;
-        border: 2px solid #2E2D2C;
+        background-color: #${colors.base00};
+        color: #${colors.base05};
+        border: 2px solid #${colors.base01};
         border-radius: 0px;
       }
 
@@ -53,8 +55,8 @@ in
       }
 
       #input {
-        background-color: #2E2D2C;
-        border: 0px solid #FFCE8A;
+        background-color: #${colors.base01};
+        border: 0px solid #${colors.base0A};
         padding: 8px 12px;
         border-radius: 4px;
       }
@@ -69,16 +71,16 @@ in
       }
 
       #img:selected {
-        background-color: #FFCE8A;
+        background-color: #${colors.base0A};
       }
 
       #text {
-        color: #d9e0ee;
+        color: #${colors.base05};
       }
 
       #text:selected {
-        background-color: #FFCE8A;
-        color: #282828;
+        background-color: #${colors.base0A};
+        color: #${colors.base00};
       }
 
       #entry {
@@ -86,9 +88,9 @@ in
       }
 
       #entry:selected {
-        background-color: #FFCE8A;
+        background-color: #${colors.base0A};
         border-radius: 4px;
-        color: #282828;
+        color: #${colors.base00};
       }
     '';
   };
