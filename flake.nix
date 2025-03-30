@@ -101,7 +101,6 @@
             "notify-screenshot" = pkgs.callPackage ./packages/notify-scripts/notify-screenshot { };
             "notify-volume" = pkgs.callPackage ./packages/notify-scripts/notify-volume { };
             # Inputs
-            inherit (inputs'.hyprland-plugins.packages) hyprbars;
             inherit (inputs'.levari.packages) levari;
             inherit (inputs'.mozid.packages) mozid;
             inherit (inputs'.nixie.packages) lkddb-filter;
