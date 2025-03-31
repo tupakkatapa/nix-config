@@ -104,7 +104,10 @@ in
         };
       };
 
-      "custom/hostname" = { exec = "echo $USER@$HOSTNAME"; };
+      "custom/hostname" = {
+        exec = "echo $USER@$HOSTNAME";
+        tooltip = false;
+      };
 
       pulseaudio = {
         format = "{icon} {volume}%";
@@ -134,9 +137,13 @@ in
         format-wifi = " {signalStrength}%";
         format-ethernet = " wired";
         format-disconnected = "";
+        tooltip = false;
       };
 
-      "clock#time" = { format = "{:%H:%M}"; };
+      "clock#time" = {
+        format = "{:%H:%M}";
+        tooltip = false;
+      };
 
       "clock#date" = {
         format = "{:%d.%m.%Y}";
@@ -220,6 +227,7 @@ in
           current_ws=$(${hyprctl} monitors -j | ${jq} -r '.[0].activeWorkspace.id')
           ${hyprctl} dispatch workspace $(( current_ws - 1 ))
         '';
+        tooltip = false;
       };
 
       "custom/next" = {
@@ -228,6 +236,7 @@ in
           current_ws=$(${hyprctl} monitors -j | ${jq} -r '.[0].activeWorkspace.id')
           [ $(( current_ws + 1 )) -le 9 ] && ${hyprctl} dispatch workspace $(( current_ws + 1 ))
         '';
+        tooltip = false;
       };
 
       "custom/menu" = {
@@ -235,6 +244,7 @@ in
         on-click = ''
           wofi
         '';
+        tooltip = false;
       };
 
       "custom/help" = {
@@ -244,10 +254,10 @@ in
           tr -s ' ' |
           wofi --show dmenu
         '';
+        tooltip = false;
       };
     };
     style = ''
-      /* Global Styles */
       * {
         border-radius: 7px;
         font-family: ${FONT};
@@ -255,7 +265,6 @@ in
         font-weight: 900;
       }
 
-      /* Waybar Styles */
       window#waybar {
         background-color: transparent;
         color: #${colors.base05};
@@ -263,13 +272,11 @@ in
         transition-duration: 0.5s;
       }
 
-      /* Workspace Styles */
       #workspaces {
         padding: 0 10px;
         background-color: #${colors.base00};
       }
 
-      /* Workspace Button Styles */
       #workspaces button {
         color: #${colors.base02};
         background-color: transparent;
@@ -281,7 +288,6 @@ in
         color: #${colors.base05};
       }
 
-      /* Global Item Styles */
       #clock,
       #battery,
       #cpu,
@@ -311,7 +317,6 @@ in
         background-color: #${colors.base00};
       }
 
-      /* Item Styles */
       #cpu {
         color: #${colors.base08};
       }

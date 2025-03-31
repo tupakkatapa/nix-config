@@ -7,6 +7,7 @@
   home.packages = with pkgs; [
     wl-clipboard
     libnotify
+    nautilus
   ];
 
   gtk.enable = true;
@@ -32,10 +33,10 @@
 
   programs.waybar = {
     enable = true;
-    systemd = {
-      enable = true;
-      target = "hyprland-session.target";
-    };
+    # systemd = {
+    #   enable = true;
+    #   target = "hyprland-session.target";
+    # };
     package = pkgs.waybar.overrideAttrs (oa: {
       mesonFlags = (oa.mesonFlags or [ ]) ++ [ "-Dexperimental=true" ];
     });
