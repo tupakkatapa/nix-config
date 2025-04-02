@@ -1,4 +1,4 @@
-{ pkgs, lib, config, hostName, customLib, ... }:
+{ pkgs, config, hostName, customLib, ... }:
 let
   inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR FILEMANAGER;
   mod = "ALT";
@@ -71,14 +71,7 @@ in
 
   wayland.windowManager.hyprland = {
     enable = true;
-    systemd = {
-      enable = true;
-      # Same as default, but stop graphical-session too
-      extraCommands = lib.mkBefore [
-        "systemctl --user stop graphical-session.target"
-        "systemctl --user start hyprland-session.target"
-      ];
-    };
+    systemd.enable = true;
 
     # Submaps are impossible to be defined in settings
     extraConfig =
@@ -136,6 +129,7 @@ in
         "dunst"
         "swayidle -w"
         "wl-clipboard-history -t"
+        "waybar"
       ];
 
       bind = [

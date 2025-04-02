@@ -31,18 +31,6 @@
     groupBy = "app-name";
   };
 
-  programs.waybar = {
-    enable = true;
-    # systemd = {
-    #   enable = true;
-    #   target = "hyprland-session.target";
-    # };
-    package = pkgs.waybar.overrideAttrs (oa: {
-      mesonFlags = (oa.mesonFlags or [ ]) ++ [ "-Dexperimental=true" ];
-    });
-  };
-
-  programs.wofi = {
-    enable = true;
-  };
+  programs.waybar.enable = true;
+  programs.wofi.enable = true;
 }
