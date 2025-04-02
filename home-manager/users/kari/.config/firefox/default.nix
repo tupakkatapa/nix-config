@@ -57,7 +57,7 @@ in
           "font.name.serif.x-western" = "${FONT}";
           "font.name.monospace.x-western" = "${FONT}";
           "font.name.sans-serif.x-western" = "${FONT}";
-          # "https://addons.mozilla.org/firefox/downloads/file/3595905/gruvbox_dark_theme-1.1.xpi";
+          # https://addons.mozilla.org/en-US/firefox/addon/gruvbox-dark-theme/
           "extensions.activeThemeID" = "{eb8c4a94-e603-49ef-8e81-73d3c4cc04ff}";
           "browser.uidensity" = 1;
           "browser.toolbars.bookmarks.visibility" = "never";
@@ -67,8 +67,6 @@ in
           "identity.fxaccounts.enabled" = false;
           "browser.tabs.firefox-view" = false;
           "layout.spellcheckDefault" = 0;
-          "zoom.maxPercent" = 90;
-          "zoom.minPercent" = 90;
           "browser.startup.homepage" = "https://index.coditon.com";
           "ui.key.menuAccessKeyFocuses" = false;
           "browser.tabs.hoverPreview.enabled" = false;
