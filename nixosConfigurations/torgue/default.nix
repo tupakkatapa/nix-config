@@ -56,9 +56,4 @@
       };
     };
   };
-
-  # OpenRGB
-  # Device "Corsair Lightning Node" > Zone "0" > Size "0-18"
-  # Device "Corsair Lightning Node" > Zone "1" > Size "0-30"
-  services.hardware.openrgb.enable = true;
 }

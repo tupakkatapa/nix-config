@@ -8,6 +8,7 @@ let
   inherit (config.home.sessionVariables) BROWSER THEME;
   colors = customLib.colors.${THEME};
   swaybg = "${pkgs.swaybg}/bin/swaybg";
+  liquidctl = "${pkgs.liquidctl}/bin/liquidctl";
 in
 {
   home.file = {
@@ -69,6 +70,8 @@ in
     # Startup
     exec-once = [
       "${swaybg} -i ~/wallpaper --mode fill"
+      "${liquidctl} set led1 color fixed 850255"
+      "${liquidctl} set led2 color fixed 330066"
 
       # Open programs on spesific workspaces
       "[workspace 4 silent] ${BROWSER} https://web.whatsapp.com https://app.element.io/ https://web.telegram.org/ https://www.instagram.com/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
@@ -79,8 +82,5 @@ in
       # Sets the workspace on which a window should open
       "workspace 4 silent, class:discord"
     ];
-
-
-
   };
 }
