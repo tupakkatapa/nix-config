@@ -27,10 +27,7 @@ in
           name = "appdata";
           dirs = [
             { name = "firefox"; mode = "755"; what = "/home/kari/.mozilla"; }
-            { name = "plexamp"; mode = "755"; what = "/home/kari/.config/Plexamp"; }
             { name = "guitarix"; mode = "755"; what = "/home/kari/.config/guitarix"; }
-            { name = "sublime-merge"; mode = "755"; what = "/home/kari/.config/sublime-merge"; }
-            { name = "openrgb"; mode = "755"; what = "/home/kari/.config/OpenRGB"; }
             { name = "discord"; mode = "755"; what = "/home/kari/.config/discord"; }
           ];
         }
@@ -39,7 +36,6 @@ in
           dirs = [
             { name = "steam"; mode = "755"; what = "/home/kari/.steam"; }
             { name = "steam/install"; mode = "755"; what = "/home/kari/.local/share/Steam"; }
-            { name = "bottles"; mode = "755"; what = "/home/kari/.local/share/bottles"; }
             { name = "games"; mode = "755"; what = "/home/kari/Games"; }
             { name = "anime-game-launcher"; mode = "755"; what = "/home/kari/.local/share/anime-game-launcher"; }
             { name = "osu-lazer"; mode = "755"; what = "/home/kari/.local/share/osu"; }
