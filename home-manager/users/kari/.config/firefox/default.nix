@@ -51,25 +51,33 @@ in
       # about:config
       settings =
         {
-          "browser.compactmode.show" = true;
+          # Behaviour
           "browser.fullscreen.autohide" = false;
+          "browser.shell.checkDefaultBrowser" = false;
+          "browser.startup.homepage" = "https://index.coditon.com";
+          "browser.toolbars.bookmarks.visibility" = "never"; # not working?
+
+          # Disable useless bloat
+          "browser.tabs.firefox-view" = false;
+          "browser.tabs.hoverPreview.enabled" = false;
+          "identity.fxaccounts.enabled" = false;
+          "layout.spellcheckDefault" = 0;
+          "media.webspeech.synth.enabled" = false;
+          "ui.key.menuAccessKeyFocuses" = false;
+
+          # Appearance
+          "browser.compactmode.show" = true;
           "browser.in-content.dark-mode" = true;
-          "font.name.serif.x-western" = "${FONT}";
+          "browser.uidensity" = 1;
+          "extensions.activeThemeID" = "{eb8c4a94-e603-49ef-8e81-73d3c4cc04ff}"; # https://addons.mozilla.org/en-US/firefox/addon/gruvbox-dark-theme/
           "font.name.monospace.x-western" = "${FONT}";
           "font.name.sans-serif.x-western" = "${FONT}";
-          # https://addons.mozilla.org/en-US/firefox/addon/gruvbox-dark-theme/
-          "extensions.activeThemeID" = "{eb8c4a94-e603-49ef-8e81-73d3c4cc04ff}";
-          "browser.uidensity" = 1;
-          "browser.toolbars.bookmarks.visibility" = "never";
+          "font.name.serif.x-western" = "${FONT}";
+
+          # Auto-translation
           "browser.translations.neverTranslateLanguages" = "en,fi";
+          "browser.translations.alwaysTranslateLanguages" = "es,zh,ar,pt,id,fr,ja,ru,de,hi,et,sv,no,da";
           "browser.translations.autoTranslate" = true;
-          "browser.shell.checkDefaultBrowser" = false;
-          "identity.fxaccounts.enabled" = false;
-          "browser.tabs.firefox-view" = false;
-          "layout.spellcheckDefault" = 0;
-          "browser.startup.homepage" = "https://index.coditon.com";
-          "ui.key.menuAccessKeyFocuses" = false;
-          "browser.tabs.hoverPreview.enabled" = false;
         }
         # derived from https://brainfucksec.github.io/firefox-hardening-guide
         // {

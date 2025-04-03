@@ -30,12 +30,11 @@ in
       monitor-adjust
       levari
 
-      # sublime-merge
       discord
       # libreoffice-qt6-fresh
       # chromium
-      # nautilus
       # rpi-imager
+      # appimage-run
 
       # Networking
       wireguard-go

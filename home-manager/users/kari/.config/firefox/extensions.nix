@@ -53,4 +53,8 @@
     uuid = "webextension@metamask.io";
     shortId = "ether-metamask";
   }
+  {
+    uuid = "{e4a8a97b-f2ed-450b-b12d-ee082ba24781}";
+    shortId = "greasemonkey";
+  }
 ]
