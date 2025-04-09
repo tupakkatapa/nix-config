@@ -1,5 +1,6 @@
 { lib
 , config
+, hostName
 , ...
 }:
 let
@@ -9,10 +10,11 @@ let
   hasNeovim = config.programs.neovim.enable || config.programs.nixvim.enable;
   hasYazi = config.programs.yazi.enable;
   hasEza = hasPackage "eza";
+  hasTmux = hostName == "vladof";
 in
 {
   programs.tmux = {
-    enable = true;
+    enable = hasTmux;
     keyMode = "vi";
     prefix = "C-Space";
     extraConfig = ''
@@ -93,10 +95,12 @@ in
         set fish_cursor_replace_one underscore blink
         set fish_cursor_visual      block
 
+        ${lib.optionalString hasTmux ''
         # Autostart tmux when not in an SSH session
         if not set -q SSH_CONNECTION; and not set -q TMUX
           exec tmux
         end
+        ''}
 
         # Function to handle missing commands with comma
         # function fish_command_not_found --on-event fish_command_not_found

@@ -7,6 +7,7 @@ pkgs.stdenv.mkDerivation rec {
 
   buildInputs = with pkgs; [
     ddcutil
+    gawk
   ];
 
   nativeBuildInputs = [ pkgs.makeWrapper ];

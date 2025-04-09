@@ -11,6 +11,7 @@ _: {
       # Navigating
       gg = "goto 0";
       "<Shift+G>" = "goto -1";
+      "<Ctrl+r>" = "rotate by 90";
 
       # Panning
       J = "pan 0 -50";
