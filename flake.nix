@@ -51,10 +51,6 @@
     runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
     sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount";
 
-    # Real-time audio
-    musnix.inputs.nixpkgs.follows = "nixpkgs";
-    musnix.url = "github:musnix/musnix";
-
     # Games
     # aagl.inputs.nixpkgs.follows = "nixpkgs";
     # aagl.url = "github:ezKEa/aagl-gtk-on-nix";
@@ -237,7 +233,6 @@
               ./nixosConfigurations/torgue
               ./system/kexec-tree.nix
               # inputs.aagl.nixosModules.default
-              inputs.musnix.nixosModules.musnix
             ];
           };
 

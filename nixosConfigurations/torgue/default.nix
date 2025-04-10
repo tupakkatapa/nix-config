@@ -1,4 +1,5 @@
 { pkgs
+, inputs
 , ...
 }: {
   age.rekey = {
@@ -9,12 +10,26 @@
   };
 
   imports = [
+    ../.config/gaming-amd.nix
     ../.config/pipewire.nix
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
     ./persistence.nix
-    ./runtime-modules.nix
   ];
+
+  services.runtimeModules = {
+    enable = true;
+    flakeUrl = "path:${inputs.self.outPath}";
+    builtinModules.enable = true;
+  };
+
+  # High quality games
+  environment.systemPackages = with pkgs; [
+    # runelite
+    osu-lazer
+    bottles
+  ];
+  # programs.anime-game-launcher.enable = true;
 
   # Saiko's automatic gc
   sys2x.gc.useDiskAware = true;

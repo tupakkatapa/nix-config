@@ -40,6 +40,7 @@ in
             { name = "anime-game-launcher"; mode = "755"; what = "/home/kari/.local/share/anime-game-launcher"; }
             { name = "osu-lazer"; mode = "755"; what = "/home/kari/.local/share/osu"; }
             { name = "runelite"; mode = "755"; what = "/home/kari/.runelite"; }
+            { name = "bottles"; mode = "755"; what = "/home/kari/.local/share/bottles"; }
           ];
         }
         {
