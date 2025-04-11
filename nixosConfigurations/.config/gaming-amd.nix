@@ -24,6 +24,9 @@
     "amdgpu.ppfeaturemask=0xffffffff"
   ];
 
+  # Load I2C modules for hw communication
+  boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
+
   hardware = {
     # Xbox controller
     bluetooth.enable = true;
