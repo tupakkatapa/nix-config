@@ -52,8 +52,8 @@
     sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount";
 
     # Games
-    # aagl.inputs.nixpkgs.follows = "nixpkgs";
-    # aagl.url = "github:ezKEa/aagl-gtk-on-nix";
+    aagl.inputs.nixpkgs.follows = "nixpkgs";
+    aagl.url = "github:ezKEa/aagl-gtk-on-nix";
 
     # Other
     coditon-md.url = "github:tupakkatapa/coditon-md";
@@ -232,7 +232,7 @@
               ./home-manager/users/kari
               ./nixosConfigurations/torgue
               ./system/kexec-tree.nix
-              # inputs.aagl.nixosModules.default
+              inputs.aagl.nixosModules.default
             ];
           };
 

@@ -1,5 +1,4 @@
 { pkgs
-, inputs
 , ...
 }: {
   age.rekey = {
@@ -19,17 +18,13 @@
 
   services.runtimeModules = {
     enable = true;
-    flakeUrl = "path:${inputs.self.outPath}";
+    flakeUrl = "path:/home/kari/nix-config";
     builtinModules.enable = true;
+    modules = [{
+      name = "games";
+      path = ./games.nix;
+    }];
   };
-
-  # High quality games
-  environment.systemPackages = with pkgs; [
-    # runelite
-    osu-lazer
-    bottles
-  ];
-  # programs.anime-game-launcher.enable = true;
 
   # Saiko's automatic gc
   sys2x.gc.useDiskAware = true;
