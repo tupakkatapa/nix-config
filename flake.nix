@@ -59,6 +59,7 @@
     coditon-md.url = "github:tupakkatapa/coditon-md";
     levari.url = "github:tupakkatapa/levari";
     mozid.url = "github:tupakkatapa/mozid";
+    ping-sweep.url = "github:tupakkatapa/ping-sweep";
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
   };
 
@@ -83,7 +84,6 @@
           packages = {
             "2mp3" = pkgs.callPackage ./packages/2mp3 { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
-            "ping-sweep" = pkgs.callPackage ./packages/ping-sweep { };
             "pinit" = pkgs.callPackage ./packages/pinit { };
             "pipewire-out-switcher" = pkgs.callPackage ./packages/pipewire-out-switcher { };
             "tt-utils" = pkgs.callPackage ./packages/tt-utils { };
@@ -101,6 +101,7 @@
             inherit (inputs'.mozid.packages) mozid;
             inherit (inputs'.nixie.packages) lkddb-filter;
             inherit (inputs'.nixie.packages) pxe-generate;
+            inherit (inputs'.ping-sweep.packages) ping-sweep;
           };
         in
         {
