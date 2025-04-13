@@ -86,7 +86,7 @@ in
   # Update the rEFInd boot manager
   services.refindGenerate = {
     enable = true;
-    where = "/dev/sda1";
+    where = "/dev/disk/by-uuid/CA7C-5C77";
     flakeUrl = "github:tupakkatapa/nix-config";
     hosts = [ "bandit" ];
     timeout = 1;

@@ -111,7 +111,7 @@
   # Update the rEFInd boot manager
   services.refindGenerate = {
     enable = true;
-    where = "/dev/sda1";
+    where = "/dev/disk/by-uuid/C994-FCFD";
     flakeUrl = "github:tupakkatapa/nix-config";
     hosts = [ "vladof" "bandit" ];
     default = "vladof";
