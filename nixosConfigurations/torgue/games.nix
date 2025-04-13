@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   # High quality games
   environment.systemPackages = with pkgs; [
-    minecraft
+    prismlauncher
     osu-lazer
     runelite
   ];

@@ -41,6 +41,7 @@ in
             { name = "osu-lazer"; mode = "755"; what = "/home/kari/.local/share/osu"; }
             { name = "runelite"; mode = "755"; what = "/home/kari/.runelite"; }
             { name = "bottles"; mode = "755"; what = "/home/kari/.local/share/bottles"; }
+            { name = "minecraft"; mode = "755"; what = "/home/kari/.local/share/PrismLauncher"; }
           ];
         }
         {

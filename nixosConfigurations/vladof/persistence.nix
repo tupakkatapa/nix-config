@@ -51,6 +51,14 @@
           ];
         }
       ];
+      minecraft = [
+        {
+          name = "appdata";
+          dirs = [
+            { name = "minecraft"; mode = "700"; what = "/var/lib/minecraft"; }
+          ];
+        }
+      ];
       root = [
         {
           name = "secrets";

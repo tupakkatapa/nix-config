@@ -46,6 +46,11 @@ let
       port = 37600;
       private = true;
     };
+    minecraft = {
+      addr = "craft.${domain}";
+      port = 25565;
+      private = false;
+    };
   };
 
   # Define the derivation for blog contents
@@ -255,5 +260,29 @@ in
     dataDir = "/var/lib/kavita";
     tokenKeyFile = config.age.secrets.kavita-token.path;
     settings.Port = servicesConfig.kavita.port;
+  };
+
+  # Vanilla Minecraft server
+  services.minecraft-server = {
+    enable = true;
+    eula = true;
+    openFirewall = true;
+    dataDir = "/var/lib/minecraft";
+    declarative = true;
+    whitelist = {
+      # https://mcuuid.net/
+      Tupakkatapa = "94d38539-5c6d-41ab-8660-4b00363ad9ea";
+    };
+    # https://minecraft.fandom.com/wiki/Server.properties
+    serverProperties = {
+      difficulty = 2;
+      gamemode = 0;
+      max-players = 5;
+      pvp = false;
+      server-port = servicesConfig.minecraft.port;
+      simulation-distance = 32;
+      view-distance = 32;
+      white-list = true;
+    };
   };
 }
