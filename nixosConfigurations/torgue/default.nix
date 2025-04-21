@@ -20,10 +20,16 @@
     enable = true;
     flakeUrl = "path:/home/kari/nix-config";
     builtinModules.enable = true;
-    modules = [{
-      name = "games";
-      path = ./games.nix;
-    }];
+    modules = [
+      {
+        name = "games";
+        path = ../.config/games.nix;
+      }
+      {
+        name = "retroarch";
+        path = ../.config/retroarch.nix;
+      }
+    ];
   };
 
   # Saiko's automatic gc

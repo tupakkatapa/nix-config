@@ -1,25 +1,30 @@
 # https://archive.org/details/retro-roms-best-set
+# https://myrient.erista.me/files/No-Intro/
 { pkgs, ... }:
 let
-  dataDir = "/mnt/sftp/games/Retroarch";
-
-  myCores = libretro: with pkgs.libretro; [
-    fbneo # SNK Neo Geo / Arcade
-    dosbox # DOS
-    mame2003-plus # Arcade
+  cores = with pkgs.libretro; [
+    mame # Arcade
     stella # Atari 2600
-    prosystem # Atari 7800
-    genesis-plus-gx # Sega Genesis
-    fceumm # NES
-    snes9x # SNES
-    mupen64plus # N64
+    dosbox # MS-DOS
+    beetle-pce-fast # NEC PC Engine CD
+    beetle-supergrafx # NEC TurboGrafx-16 (CD)
+    beetle-pcfx # NEC PC-FX
+
+    citra # 3DS
+    melonds # NDS
+    sameboy # GB / GBC
+    mgba # GBA
     dolphin # GameCube / Wii
-    gambatte # GB / GBC
-    beetle-gba # GBA
-    desmume # NDS
-    beetle-pce-fast # NEC systems (TurboGrafx-16, PC Engine)
+    mupen64plus # N64
+    mesen # NES - Famicon
+    bsnes # SNES
+
+    flycast # Dreamcast
+    genesis-plus-gx # Game Gear / Genesis / Master System / Sega CD
+    beetle-saturn # Saturn
+
+    swanstation # PS1
     pcsx2 # PS2
-    beetle-psx-hw # PS1
     ppsspp # PSP
   ];
 in
@@ -30,15 +35,7 @@ in
 
     # Paths
     assets_directory = "${pkgs.retroarch-assets}/share/retroarch/assets"
-    content_favorites_directory = "${dataDir}/playlists"
-    content_favorites_path = "${dataDir}/playlists/content_favorites.lpl"
-    playlist_directory = "${dataDir}/playlists"
-    rgui_browser_directory = "${dataDir}/roms"
-    savefile_directory = "${dataDir}/saves"
-    savestate_directory = "${dataDir}/states"
-    screenshot_directory = "${dataDir}/screenshots"
-    system_directory = "${dataDir}/bios"
-    thumbnails_directory = "${dataDir}/thumbnails"
+    rgui_browser_directory = "~/.config/retroarch/roms"
 
     # Input settings
     # Xbox controllers have a remapping issue with the left analog stick; I have found this to be the case with Dolphin and PCSX2 emulators.
@@ -59,13 +56,6 @@ in
   '';
 
   environment.systemPackages = [
-    (pkgs.symlinkJoin {
-      name = "retroarch-with-cores-and-config";
-      paths = [ (pkgs.retroarch.withCores myCores) ];
-      nativeBuildInputs = [ pkgs.makeBinaryWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/retroarch --add-flags "--appendconfig=/etc/retroarch.cfg"
-      '';
-    })
+    (pkgs.retroarch-bare.wrapper { inherit cores; })
   ];
 }

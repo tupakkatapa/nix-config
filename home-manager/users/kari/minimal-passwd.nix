@@ -59,48 +59,44 @@ in
   ];
 
   # Mount SFTP and bind home directories
-  services.sftpClient =
-    let
-      sftpPrefix = "sftp@192.168.1.8:";
-    in
-    lib.mkIf (config.networking.hostName != "vladof") {
-      enable = true;
+  services.sftpClient = lib.mkIf (config.networking.hostName != "vladof") {
+    enable = true;
 
-      # Define the YubiKey resident key as the identifier and disable automount
-      defaults = {
-        identityFile = "/home/${user}/.ssh/id_ed25519_sk_yubikey";
-        autoMount = false;
-      };
-
-      mounts =
-        [
-          {
-            what = "${sftpPrefix}/";
-            where = "/mnt/sftp";
-          }
-        ];
-
-      # Bind mounts are always done after the SFTP mounts
-      binds =
-        [
-          {
-            what = "/mnt/sftp/docs";
-            where = "/home/${user}/Documents";
-          }
-          {
-            what = "/mnt/sftp/media";
-            where = "/home/${user}/Media";
-          }
-          {
-            what = "/mnt/sftp/code/workspace";
-            where = "/home/${user}/Workspace";
-          }
-          {
-            what = "/mnt/sftp/dnld";
-            where = "/home/${user}/Downloads";
-          }
-        ];
+    # Define the YubiKey resident key as the identifier and disable automount
+    defaults = {
+      identityFile = "/home/${user}/.ssh/id_ed25519_sk_yubikey";
+      autoMount = false;
     };
+
+    mounts = [{
+      what = "sftp@192.168.1.8:/";
+      where = "/mnt/sftp";
+    }];
+
+    # Bind mounts are always done after the SFTP mounts
+    binds = [
+      {
+        what = "/mnt/sftp/docs";
+        where = "/home/${user}/Documents";
+      }
+      {
+        what = "/mnt/sftp/media";
+        where = "/home/${user}/Media";
+      }
+      {
+        what = "/mnt/sftp/code/workspace";
+        where = "/home/${user}/Workspace";
+      }
+      {
+        what = "/mnt/sftp/dnld";
+        where = "/home/${user}/Downloads";
+      }
+      {
+        what = "/mnt/sftp/appdata/retroarch";
+        where = "/home/${user}/.config/retroarch";
+      }
+    ];
+  };
   # Add SFTP host to root's known hosts for non-interactive authentication
   services.openssh.knownHosts.vladof = {
     publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEJktZ00i+OxH4Azi1tLkwoYrJ0qo2RIZ5huzzK+g2w";
