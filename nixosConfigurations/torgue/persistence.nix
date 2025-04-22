@@ -76,7 +76,7 @@ in
   };
 
   # Mount '/nix/.rw-store' and '/tmp' to disk
-  services.nixRemount = {
+  services.storeRemount = {
     enable = true;
     where = "${dataDir}/store";
     type = "none";

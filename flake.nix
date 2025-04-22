@@ -50,6 +50,7 @@
     nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie?ref=jesse/bugs";
     runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
     sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount";
+    store-remount.url = "github:ponkila/nixos-store-remount";
 
     # Games
     aagl.inputs.nixpkgs.follows = "nixpkgs";
@@ -200,6 +201,7 @@
               inputs.nixie.nixosModules.nixRemount
               inputs.nixie.nixosModules.refindGenerate
               inputs.runtime-modules.nixosModules.runtimeModules
+              inputs.store-remount.nixosModules.storeRemount
               inputs.sftp-mount.nixosModules.sftpClient
               self.nixosModules.stateSaver
               ({ config, ... }: {
