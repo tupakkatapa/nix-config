@@ -76,6 +76,9 @@ in
     programs.git = {
       enable = true;
       package = pkgs.gitFull;
+      aliases = {
+        uncommit = "git reset --soft HEAD~1";
+      };
       extraConfig = {
         safe.directory = [ "*" ];
         http = {
