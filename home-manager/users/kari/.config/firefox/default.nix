@@ -56,6 +56,9 @@ in
           "browser.shell.checkDefaultBrowser" = false;
           "browser.startup.homepage" = "https://index.coditon.com";
           "browser.toolbars.bookmarks.visibility" = "never"; # not working?
+          "browser.urlbar.suggest.openpage" = false;
+          "browser.urlbar.suggest.topsites" = false;
+          "browser.urlbar.suggest.history" = false;
 
           # Disable useless bloat
           "browser.tabs.firefox-view" = false;
@@ -86,7 +89,7 @@ in
           "browser.startup.page" = 1;
 
           # Disable Activity Stream
-          "browser.newtabpage.enabled" = true; # changed this
+          "browser.newtabpage.enabled" = false;
           "browser.newtab.preload" = false;
           "browser.newtabpage.activity-stream.feeds.telemetry" = false;
           "browser.newtabpage.activity-stream.telemetry" = false;
