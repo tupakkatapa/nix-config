@@ -46,11 +46,11 @@ let
       port = 37600;
       private = true;
     };
-    minecraft = {
-      addr = "craft.${domain}";
-      port = 25565;
-      private = false;
-    };
+    # minecraft = {
+    #   addr = "craft.${domain}";
+    #   port = 25565;
+    #   private = false;
+    # };
     immich = {
       addr = "img.${domain}";
       port = 2283;
@@ -268,28 +268,28 @@ in
   };
 
   # Vanilla Minecraft server
-  services.minecraft-server = {
-    enable = true;
-    eula = true;
-    openFirewall = true;
-    dataDir = "/var/lib/minecraft";
-    declarative = true;
-    whitelist = {
-      # https://mcuuid.net/
-      Tupakkatapa = "94d38539-5c6d-41ab-8660-4b00363ad9ea";
-    };
-    # https://minecraft.fandom.com/wiki/Server.properties
-    serverProperties = {
-      difficulty = 2;
-      gamemode = 0;
-      max-players = 5;
-      pvp = false;
-      server-port = servicesConfig.minecraft.port;
-      simulation-distance = 32;
-      view-distance = 32;
-      white-list = true;
-    };
-  };
+  # services.minecraft-server = {
+  #   enable = true;
+  #   eula = true;
+  #   openFirewall = true;
+  #   dataDir = "/var/lib/minecraft";
+  #   declarative = true;
+  #   whitelist = {
+  #     # https://mcuuid.net/
+  #     Tupakkatapa = "94d38539-5c6d-41ab-8660-4b00363ad9ea";
+  #   };
+  #   # https://minecraft.fandom.com/wiki/Server.properties
+  #   serverProperties = {
+  #     difficulty = 2;
+  #     gamemode = 0;
+  #     max-players = 5;
+  #     pvp = false;
+  #     server-port = servicesConfig.minecraft.port;
+  #     simulation-distance = 32;
+  #     view-distance = 32;
+  #     white-list = true;
+  #   };
+  # };
 
   # Immich
   services.immich = {
