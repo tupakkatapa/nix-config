@@ -119,6 +119,8 @@
             { name = "iPXE"; url = "https://ipxe.org/docs"; }
             { name = "Bash Reference Manual"; url = "https://www.gnu.org/software/bash/manual/html_node/index.html#SEC_Contents"; }
             { name = "rEFInd Boot Manager"; url = "http://www.rodsbooks.com/refind/index.html"; }
+            { name = "git-send-email.io"; url = "https://git-send-email.io/"; }
+            { name = "lore.kernel.org"; url = "https://lore.kernel.org/"; }
           ];
         }
         {
@@ -161,6 +163,7 @@
             { name = "1337x"; url = "https://1337x.to/"; }
             { name = "NAPALM FTP Indexer"; url = "https://www.searchftps.net/"; }
             { name = "Mobilism"; url = "https://forum.mobilism.org/"; }
+            { name = "Myrient"; url = "https://myrient.erista.me/files/"; }
           ];
         }
         {
@@ -346,6 +349,13 @@
             { name = "Reddit"; url = "https://www.reddit.com/"; }
             { name = "Ylilauta"; url = "https://ylilauta.org/thread/"; }
             { name = "4chan"; url = "https://www.4chan.org/"; }
+            { name = "2ch (RU)"; url = "https://2ch.hk/"; }
+          ];
+        }
+        {
+          name = "Reference";
+          bookmarks = [
+            { name = "Cambridge Dictionary"; url = "https://dictionary.cambridge.org/dictionary/"; }
           ];
         }
         {
