@@ -198,7 +198,6 @@
               inputs.agenix.nixosModules.default
               inputs.home-manager.nixosModules.home-manager
               inputs.nix-extras.nixosModules.common
-              inputs.nixie.nixosModules.nixRemount
               inputs.nixie.nixosModules.refindGenerate
               inputs.runtime-modules.nixosModules.runtimeModules
               inputs.store-remount.nixosModules.storeRemount
