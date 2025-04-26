@@ -14,14 +14,6 @@ in
     # Persistent directories for each user
     # Will be stored at: dataDir/home/<user>/<category>/<dir>
     persistentDirs = {
-      root = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "ollama"; mode = "777"; what = "/var/lib/ollama"; }
-          ];
-        }
-      ];
       kari = [
         {
           name = "appdata";

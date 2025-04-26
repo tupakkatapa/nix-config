@@ -9,8 +9,10 @@
       # https://ollama.com/library
       "deepseek-coder-v2:16b"
       "deepseek-r1:32b"
+      "gemma3:27b"
+      "dolphin-mixtral:8x7b"
     ];
-    home = "/var/lib/ollama";
+    home = "/mnt/860/home/root/appdata/ollama";
   };
 
   services.open-webui = {
@@ -24,3 +26,4 @@
     };
   };
 }
+
