@@ -143,18 +143,47 @@ in
     };
     services.ssh-agent.enable = true;
 
+    # Electronic mail
+    accounts.email.accounts."ponkila" = {
+      address = "jesse@ponkila.com";
+      userName = "jesse@ponkila.com";
+      realName = "Jesse Karjalainen";
+      primary = true;
+      imap = {
+        host = "mail.your-server.de";
+        port = 143;
+        tls = {
+          enable = true;
+          useStartTls = true;
+        };
+      };
+      smtp = {
+        host = "mail.your-server.de";
+        port = 587;
+        tls = {
+          enable = true;
+          useStartTls = true;
+        };
+      };
+      msmtp.enable = true;
+    };
+    programs.msmtp.enable = true;
+
     # Signing commits
     programs.git = {
       signing.key = "A3B346665514836DCE851842A2429183508FCEFF";
       signing.signByDefault = true;
       userEmail = "jesse@ponkila.com";
-      userName = "tupakkatapa";
+      userName = "Jesse Karjalainen";
+      extraConfig.sendemail = {
+        smtpserver = "${pkgs.msmtp}/bin/msmtp";
+      };
     };
     programs.gpg = {
       enable = true;
       homedir = "/home/${user}/.gnupg/trezor";
       settings = {
-        default-key = "Tupakkatapa <jesse@ponkila.com>";
+        default-key = "Jesse Karjalainen <jesse@ponkila.com>";
         agent-program = "${pkgs.trezor_agent}/bin/trezor-gpg-agent";
       };
     };
