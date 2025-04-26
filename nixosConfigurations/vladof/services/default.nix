@@ -51,6 +51,11 @@ let
       port = 25565;
       private = false;
     };
+    immich = {
+      addr = "img.${domain}";
+      port = 2283;
+      private = true;
+    };
   };
 
   # Define the derivation for blog contents
@@ -284,5 +289,15 @@ in
       view-distance = 32;
       white-list = true;
     };
+  };
+
+  # Immich
+  services.immich = {
+    enable = true;
+    user = "sftp";
+    group = "sftp";
+    inherit (servicesConfig.immich) port;
+    openFirewall = true;
+    mediaLocation = "${dataDir}/sftp/media/img";
   };
 }
