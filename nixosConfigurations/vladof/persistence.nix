@@ -51,6 +51,16 @@
           ];
         }
       ];
+      immich = [
+        {
+          name = "appdata";
+          dirs = [
+            { name = "immich"; mode = "777"; what = "/var/lib/immich"; }
+            { name = "redis-immich"; mode = "777"; what = "/var/lib/redis-immich"; }
+            { name = "postgresql"; mode = "777"; what = "/var/lib/postgresql"; }
+          ];
+        }
+      ];
       # minecraft = [
       #   {
       #     name = "appdata";

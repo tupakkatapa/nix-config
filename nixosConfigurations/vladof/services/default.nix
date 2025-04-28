@@ -294,10 +294,8 @@ in
   # Immich
   services.immich = {
     enable = true;
-    user = "sftp";
-    group = "sftp";
+    host = "0.0.0.0";
     inherit (servicesConfig.immich) port;
     openFirewall = true;
-    mediaLocation = "${dataDir}/sftp/media/img";
   };
 }
