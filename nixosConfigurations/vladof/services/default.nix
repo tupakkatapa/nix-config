@@ -211,9 +211,6 @@ in
       RootDirectoryStartOnly = lib.mkForce false;
       RootDirectory = lib.mkForce "";
     };
-    # Hotfix, nixRemount runs too late
-    after = [ "nix-remount.service" ];
-    requires = [ "nix-remount.service" ];
   };
 
   # Vaultwarden
@@ -297,5 +294,23 @@ in
     host = "0.0.0.0";
     inherit (servicesConfig.immich) port;
     openFirewall = true;
+  };
+
+  # Quick fix (?) for 'Failed to set up mount namespacing: /tmp: No such file or directory'
+  systemd.services.transmission.serviceConfig = {
+    after = [ "store-remount.service" ];
+    requires = [ "store-remount.service" ];
+  };
+  systemd.services.acme-setup.serviceConfig = {
+    after = [ "store-remount.service" ];
+    requires = [ "store-remount.service" ];
+  };
+  systemd.services.redis-immich.serviceConfig = {
+    after = [ "store-remount.service" ];
+    requires = [ "store-remount.service" ];
+  };
+  systemd.services.postgresql.serviceConfig = {
+    after = [ "store-remount.service" ];
+    requires = [ "store-remount.service" ];
   };
 }
