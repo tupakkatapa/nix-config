@@ -53,6 +53,9 @@
   # Required if swaylock is installed via home-manager
   security.pam.services.swaylock = { };
 
+  # Required for automounting
+  services.udisks2.enable = true;
+
   # Connectivity
   networking = {
     hostName = "torgue";
