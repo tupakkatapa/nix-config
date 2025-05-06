@@ -15,19 +15,19 @@ The greatest pastry ever to be invented since I do not enjoy over-sweet desserts
 ## Ingredients
 
 ### Crust
-- Whole grain digestive biscuits: 200g (7 oz)
-- Butter: 90g (3.2 oz)
+- Whole grain digestive biscuits: 200g
+- Butter: 90g
 
 ### Filling
 - Gelatin sheets: 5
-- Whipping cream: 2dl (0.7 cup)
-- Passion-mango (or just mango) quark: 200g (7 oz)
-- Cream cheese: 200g (7 oz)
-- Mango puree: 2dl (0.7 cup)
-- Sugar: 1dl (0.35 cup)
+- Whipping cream: 2dl
+- Passion-mango (or just mango) quark: 200g
+- Cream cheese: 200g
+- Mango puree: 2dl
+- Sugar: 1dl
 
 ### Glaze
-- Mango puree: 3dl (1 cup)
+- Mango puree: 3dl
 - Gelatin sheets: 3
 
 ## Preparation
@@ -38,7 +38,3 @@ The greatest pastry ever to be invented since I do not enjoy over-sweet desserts
 5. Carefully mix the gelatin solution into the mango-quark mixture. Follow this by folding in the whipped cream.
 6. Transfer the filling over the biscuit base, smoothing the top. Chill in the refrigerator for at least 2 hours to firm up. Time for a nap 😴
 7. For the glaze, repeat the gelatin process with the remaining mango puree. Pour it over the set filling, smoothing out the surface of the glaze. Refrigerate for at least 1 hour before serving.
-
-### Serving
-Loosen the cheesecake from the pan using a barbecue stick or knife, and transfer it to a cake platter, ready to slice and serve!
-

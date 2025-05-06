@@ -24,6 +24,3 @@ A fresh and simple salsa recipe with a bit of heat. I often use it as a filling 
 2. Add the jalapeños, onion powder, black pepper, salt, and sugar. Mash and mix well to combine.
 3. Drizzle the olive oil over the mixture and stir to combine.
 4. Taste and adjust the seasoning if necessary. For a spicier salsa, add more chili or jalapeños.
-
-### Serving
-Serve fresh as a dip, topping, or condiment. For the best flavor, let it rest for a couple of hours to allow the ingredients to meld. Store leftovers in the refrigerator for up to 2 days.

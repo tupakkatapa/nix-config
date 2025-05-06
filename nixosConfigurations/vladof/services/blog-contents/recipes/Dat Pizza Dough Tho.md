@@ -8,19 +8,19 @@ date: "2025-03-04"
 
 ---
 
-*Makes 4 pizzas, ~1 hour active time (plus an optional 3–4 day cold rise)*
+*Makes 4 pizzas, ~1 hour active time (plus a 3–4 day cold rise)*
 
 This is my go-to pizza (and bread) dough recipe. It should be prepared when you are not hungry, so plan ahead — cold fermentation significantly enhances the flavor. The quantities below reflect my own experience and differ slightly from the original.
 
 ## Ingredients
 
 ### Dough
-- Warm water: 500 ml (2 1/8 cups)
+- Warm water: 500 ml
 - Sugar: 1 tbsp
 - Active dry yeast: 1 tbsp
 - Olive oil: 2 tbsp
 - Salt: 1 tbsp
-- Wheat flour: 11 dl (5 1/4 cups) + extra for kneading
+- Wheat flour: 11 dl + extra for kneading
 - Additional olive oil for coating
 
 ### Sauce
