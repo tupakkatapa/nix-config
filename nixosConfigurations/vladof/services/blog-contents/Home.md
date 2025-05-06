@@ -11,7 +11,7 @@ Hello there! I'm Jesse, and I have booked this little corner of the world wide w
 
 ### Ready to Explore?
 
-  - 2025-05-04 - [Applejack from Scratch](./dreams/Applejack%20from%20Scratch.md) *(Post)*
+  - 2025-05-04 - [Applejack from Scratch](./posts/Applejack%20from%20Scratch.md) *(Post)*
   - 2025-05-04 - [My First Upstream Kernel Patch](./posts/My%20First%20Upstream%20Kernel%20Patch.md) *(Post)*
   - 2025-03-04 - [Dat Pizza Dough Tho](./recipes/Dat%20Pizza%20Dough%20Tho.md) *(Recipe)*
   - 2024-11-28 - [Paint A Thing](./dreams/Paint%20A%20Thing.md) *(Dream)*

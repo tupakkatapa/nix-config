@@ -6,11 +6,9 @@ date: "2025-05-04"
 
 Where I live, alcohol is ridiculously expensive — so making my own for **about 1.37 €/L** is worth the effort. This might not end up as the best‑tasting wine in the world, but it’s done for the price, not for sipping with your pinky finger raised. Let’s first go through making the wine itself, and then the process of distilling it into applejack.
 
-## Apple Wine Fermentation
+## Fermentation
 
-### What You’ll Need
-
-Think of these as a one-time investment for cheap AF alcohol.
+Here’s what you’ll need. Think of these as a one-time investment for cheap AF alcohol.
 
 - 25 L fermentation vessel with airlock
 - Food-safe bottles for 19 L
@@ -18,9 +16,9 @@ Think of these as a one-time investment for cheap AF alcohol.
 - Hydrometer to measure ABV
 - Straining Bag
 - Thermometer (I've survived without)
-- Couple of buckets will come handy
+- A couple of buckets will come in handy
 
-### Ingredients (with approximate cost)
+### Ingredients
 
 - 6 kg apples (washed) — *€8.35*
 - 6 kg sugar — *€7.50*
@@ -50,36 +48,42 @@ Just follow your fermentation kit’s instructions. Most home wine kits are simp
 - **Temp:** 18–25 °C
 - **Max OG:** 1.120 (don’t push it too much)
 
-### ABV Calculations
+### ABV Formulas
 
 - **Potential (before fermentation):**
-  `ABV (%) = (OG − 1.000) × 131.25`
-  → (1.121 − 1.000) × 131.25 ≈ 15.9 %
+
+  `Potential ABV (%) = (OG − 1.000) × 131.25`
+
   *Where OG is the original specific gravity.*
 
 - **Measured:**
+
   `ABV (%) = (OG − FG) × 131.25`
-  → (1.121 − 0.994) × 131.25 = 16.7 %
+
   *Where OG is original gravity and FG is final gravity.*
 
 - **Oechsle scale alternative:**
+
   `Potential ABV = °Oe × 0.136 − 2.5`
+
   `ABV = (Starting °Oe − Ending °Oe) × 0.136`
+
   *Where °Oe is the degrees Oechsle (i.e., the gravity points above 1.000, multiplied by 1000).*
 
 ### SG ↔ Oechsle
 
 - `SG = 1 + (°Oe ÷ 1000)`
 - `°Oe = (SG − 1) × 1000`
+
 *Where SG is specific gravity, and °Oe is the corresponding value on the Oechsle scale.*
 
 ---
 
-## Optional: Back-Sweetening
+## Back-Sweetening
 
 > Skip this if you’re planning to jack the wine.
 
-For a sweeter finish, dissolve sugar in a small amount of heated wine and add gradually to taste. Here’s a general guide for sweetness levels:
+For a sweeter finish, dissolve sugar in a small amount of heated water and add gradually to taste. Here’s a general guide for sweetness levels:
 
 | Style        | g/L      | Total for 19 L |
 | ------------ | -------- | -------------- |
@@ -90,11 +94,13 @@ For a sweeter finish, dissolve sugar in a small amount of heated wine and add gr
 
 After sweetening, stir thoroughly and let it settle before bottling.
 
-## Freeze Distillation (“Applejacking”)
+## Freeze Distillation
 
-This is the fun part. Apple brandy first came from freeze distillation (aka. [fractional freezing](https://en.wikipedia.org/wiki/Fractional_freezing) or “jacking”) in colonial times, and the result was nicknamed applejack. Winter cold concentrated hard apple cider into a stronger spirit, and settlers favored it over classical distillation because it was free, whereas boiling demanded precious fuel. Thus was born America’s first native liquor.
+This is the fun part. Apple brandy originated from freeze distillation (aka [fractional freezing](https://en.wikipedia.org/wiki/Fractional_freezing) or “jacking”) in colonial times, and the result was nicknamed applejack. Winter cold concentrated hard apple cider into a stronger spirit, and settlers favored it over traditional distillation because it required no fuel — boiling demanded precious resources. Thus was born America’s first native liquor.
 
-Before we continue, let’s clear up the usual concern: [methanol](https://en.wikipedia.org/wiki/Methanol). It’s toxic to humans if ingested in large quantities — though regular alcohol isn’t exactly harmless either. Fermentation produces small amounts of methanol, along with the "good stuff", thanks to the pectin in apples. Store-bought wine also contains methanol — it’s completely normal, and producers don’t remove it. The EU allows up to 250 mg/L in wine (400 mg/L in red). In traditional distillation, methanol can be reduced by discarding the first portion (the foreshot), since it boils at a lower temperature. But because we’re not boiling anything here, freeze distillation doesn’t separate methanol — so we need to know if it’s still safe.
+Before we continue, let’s clear up the usual concern: [methanol](https://en.wikipedia.org/wiki/Methanol). It’s toxic to humans if ingested in large quantities — though regular alcohol isn’t exactly harmless either. Fermentation produces small amounts of methanol — especially from fruit with high pectin content like apples — along with the good stuff. Store-bought wine also contains methanol, it’s completely normal, and producers don’t remove it. The EU allows up to 250 mg/L in wine (400 mg/L in red).
+
+In traditional distillation, methanol can be reduced by discarding the first portion (the foreshot), since it boils at a lower temperature. But because we’re not boiling anything here, freeze distillation doesn’t separate methanol — so we need to know if it’s still safe.
 
 Let’s do the math:
 
@@ -111,7 +117,7 @@ Even after jacking, where alcohol and methanol are both concentrated about 2× (
 ### What You’ll Need
 
 - Finished apple wine
-- Food-safe plastic bottles (e.g., a 1.5 L bottle for 1 L of wine)
+- Food-safe plastic bottles (such as a 1.5 L bottle for 1 L of wine)
 - Freezer with space
 
 ### How-To
@@ -119,7 +125,7 @@ Even after jacking, where alcohol and methanol are both concentrated about 2× (
 1. Fill each bottle two-thirds full (to leave room for expansion)
 2. Cap tightly and place in the freezer
 3. Elevate the bottle 15–20°, with the cap pointing slightly down
-4. Freeze for 8–12 hours at 18°C
+4. Freeze for 8–12 hours at -18°C
 5. Once ice has formed around the edges with liquid still in the middle, you’re ready
 6. Over a container, slowly loosen the cap and let the concentrated liquid drain out
 7. You’ll get a 40–50 % yield — e.g., 1 L of wine → ~0.4–0.5 L of applejack
@@ -131,7 +137,7 @@ Even after jacking, where alcohol and methanol are both concentrated about 2× (
 | Max final ABV (%) | Equilibrium freezing point (°C)* |
 | ----------------- | -------------------------------- |
 | 10                | −4                               |
-| 15                | −6.5                             |
+| 15                | −6.5                             |
 | 20                | −9                               |
 | 25                | −12                              |
 | 30                | −15                              |
@@ -160,7 +166,7 @@ Here are some cocktail recipes I found but haven’t tried yet; I’m noting the
 - 4 cl lemon juice
 - 3 cl orange juice
 - 3 cl simple syrup
-- 4 dashes aromatic bitters (optional)
+- 4 dashes aromatic bitters
 
 ---
 

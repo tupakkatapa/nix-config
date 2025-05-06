@@ -60,6 +60,24 @@ Contributing to the Linux kernel isn’t as daunting as it seems — once you un
 
 3. **Make the changes**
 
+   In my case, I just removed the stray space between the '.' and the 'data' field name:
+
+   ```diff
+   diff --git a/drivers/leds/leds-pca995x.c b/drivers/leds/leds-pca995x.c
+   index 11c7bb69573e8c..6ad06ce2bf640a 100644
+   --- a/drivers/leds/leds-pca995x.c
+   +++ b/drivers/leds/leds-pca995x.c
+   @@ -197,7 +197,7 @@ MODULE_DEVICE_TABLE(i2c, pca995x_id);
+
+    static const struct of_device_id pca995x_of_match[] = {
+     { .compatible = "nxp,pca9952", .data = &pca9952_chipdef },
+   -	{ .compatible = "nxp,pca9955b", . data = &pca9955b_chipdef },
+   +	{ .compatible = "nxp,pca9955b", .data = &pca9955b_chipdef },
+     { .compatible = "nxp,pca9956b", .data = &pca9956b_chipdef },
+     {},
+    };
+   ```
+
 3. **Create a commit**
 
    ```bash

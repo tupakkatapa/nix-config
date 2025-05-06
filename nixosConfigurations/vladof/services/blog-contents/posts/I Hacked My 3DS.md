@@ -16,7 +16,7 @@ iFixit has some great guides on taking the thing apart [https://www.ifixit.com/D
 
 I basically just followed the guide at [https://3ds.hacks.guide/](https://3ds.hacks.guide/) to the letter, which is a great resource, but I couldn’t get it working on Linux. After a few hours, I gave up and gave in to the burden of installing Windows (Tiny11) on my laptop, since I don’t have a single machine with Windows in my household. From then on, everything worked like a charm:
 
-1. **Format the SD card**: [Formatting SD (Windows)](https://3ds.hacks.guide/formatting-sd-%28windows%29.html) as FAT32 with a 32 KV cluster size.
+1. **Format the SD card**: [Formatting SD (Windows)](https://3ds.hacks.guide/formatting-sd-%28windows%29.html) as FAT32 with a 32 KB cluster size.
 
 2. **Flash the firmware**: [Installing boot9strap (MSET9 CLI)](https://3ds.hacks.guide/installing-boot9strap-%28mset9-cli%29.html).
 
@@ -26,7 +26,7 @@ I basically just followed the guide at [https://3ds.hacks.guide/](https://3ds.ha
    - **Universal-Updater** — “store” for homebrew applications
    - **Checkpoint** — save-game manager, with cheats
    - **ftpd** — slow as fuck (\~450 KB/s) FTP server for transferring files without removing the SD card
-   - **Anemone3DS** — theming “ricing” manager
+   - **Anemone3DS** — theming manager
    - **Homebrew Launcher** — lists and launches homebrew applications
    - **FBI** — installs and manages CIA packages
 
@@ -36,9 +36,9 @@ I basically just followed the guide at [https://3ds.hacks.guide/](https://3ds.ha
 
    *Via Universal-Updater*
 
-   - **TWiLight Menu++** — runs original DS games and whatnot
+   - **TWiLight Menu++** — emulator, runs original DS games and whatnot
    - **ndsForwarder** — creates Home Menu shortcuts for DS games stored in TWiLight Menu++ (appears under Homebrew Launcher)
-   - **open\_agb\_firm** — much better, native way to play GBA games (accessible through GodMode9: **Start + Power**)
+   - **open\_agb\_firm** — much better, native way to play GBA games (accessible through GodMode9)
    - **wumiibo** — amiibo emulation (haven’t tried it yet)
 
    *Via FBI (scan the QR)*
@@ -50,7 +50,7 @@ I basically just followed the guide at [https://3ds.hacks.guide/](https://3ds.ha
 5. **Ricing**
 
    - **Themes** — Open Anemone3DS on your 3DS and browse [Theme Plaza](https://themeplaza.art/themes) on another device. Scan the QR code of the theme you want to install.
-   - **Splash screens** — images shown on the top and bottom screens during startup; install them the same way as themes.
+   - **Splash screens** — images shown on the screens during startup; install them the same way as themes.
    - **Badges** — PNGs that can be attached to folders or placed on the HOME Menu grid.
      Download a badge pack from Theme Plaza, extract it, delete any preview files, copy the folder to `/Badges` on the SD card, then install via Anemone3DS.
 
@@ -66,7 +66,7 @@ I basically just followed the guide at [https://3ds.hacks.guide/](https://3ds.ha
 
 ### Ace Attorney
 
-The trilogy exists on the original DS, but there's a remake with better graphics released on the 3DS. If you'd prefer that, grab it instead — it's available on hShop.
+The trilogy exists on the original DS, but there's a remake with fixes and better graphics released on the 3DS. If you'd prefer that, grab it instead — it's available on hShop.
 
 ### Final Fantasy & Fire Emblem
 
