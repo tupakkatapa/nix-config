@@ -1,11 +1,7 @@
 { config
-, pkgs
 , lib
 , ...
 }: {
-  # Use Zen kernel
-  boot.kernelPackages = pkgs.linuxPackages_zen;
-
   # Kernel parameters to optimize performance
   boot.kernelParams = [
     "mitigations=off"
