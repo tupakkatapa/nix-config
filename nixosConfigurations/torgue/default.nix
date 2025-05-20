@@ -47,6 +47,12 @@
   # https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;
 
+  # Wireless VR Streaming
+  programs.alvr = {
+    enable = true;
+    openFirewall = true;
+  };
+
   # Enable ADB for android development
   programs.adb.enable = true;
 
@@ -64,18 +70,27 @@
       allowedTCPPorts = [ 80 ]; # magic port
     };
     useDHCP = false;
+    wireless.enable = true;
   };
   systemd.network = {
     enable = true;
     networks = {
       "10-wan" = {
         linkConfig.RequiredForOnline = "routable";
-        matchConfig.Name = "enp3s0";
+        matchConfig.Name = [ "enp3s0" ];
         networkConfig = {
           DHCP = "ipv4";
           IPv6AcceptRA = true;
         };
         address = [ "192.168.1.7/24" ]; # static IP
+      };
+      "20-wan" = {
+        linkConfig.RequiredForOnline = "routable";
+        matchConfig.Name = [ "wlp7s0" ];
+        networkConfig = {
+          DHCP = "ipv4";
+          IPv6AcceptRA = true;
+        };
       };
     };
   };
