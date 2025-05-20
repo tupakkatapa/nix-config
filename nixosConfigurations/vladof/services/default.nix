@@ -46,16 +46,6 @@ let
       port = 37600;
       private = true;
     };
-    # minecraft = {
-    #   addr = "craft.${domain}";
-    #   port = 25565;
-    #   private = false;
-    # };
-    immich = {
-      addr = "img.${domain}";
-      port = 2283;
-      private = true;
-    };
   };
 
   # Define the derivation for blog contents
@@ -264,52 +254,12 @@ in
     settings.Port = servicesConfig.kavita.port;
   };
 
-  # Vanilla Minecraft server
-  # services.minecraft-server = {
-  #   enable = true;
-  #   eula = true;
-  #   openFirewall = true;
-  #   dataDir = "/var/lib/minecraft";
-  #   declarative = true;
-  #   whitelist = {
-  #     # https://mcuuid.net/
-  #     Tupakkatapa = "94d38539-5c6d-41ab-8660-4b00363ad9ea";
-  #   };
-  #   # https://minecraft.fandom.com/wiki/Server.properties
-  #   serverProperties = {
-  #     difficulty = 2;
-  #     gamemode = 0;
-  #     max-players = 5;
-  #     pvp = false;
-  #     server-port = servicesConfig.minecraft.port;
-  #     simulation-distance = 32;
-  #     view-distance = 32;
-  #     white-list = true;
-  #   };
-  # };
-
-  # Immich
-  services.immich = {
-    enable = true;
-    host = "0.0.0.0";
-    inherit (servicesConfig.immich) port;
-    openFirewall = true;
-  };
-
   # Quick fix (?) for 'Failed to set up mount namespacing: /tmp: No such file or directory'
   systemd.services.transmission.serviceConfig = {
     after = [ "store-remount.service" ];
     requires = [ "store-remount.service" ];
   };
   systemd.services.acme-setup.serviceConfig = {
-    after = [ "store-remount.service" ];
-    requires = [ "store-remount.service" ];
-  };
-  systemd.services.redis-immich.serviceConfig = {
-    after = [ "store-remount.service" ];
-    requires = [ "store-remount.service" ];
-  };
-  systemd.services.postgresql.serviceConfig = {
     after = [ "store-remount.service" ];
     requires = [ "store-remount.service" ];
   };
