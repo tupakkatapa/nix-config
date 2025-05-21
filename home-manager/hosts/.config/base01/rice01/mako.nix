@@ -7,7 +7,7 @@ let
   colors = customLib.colors.${THEME};
 in
 {
-  services.mako = {
+  services.mako.settings = {
     backgroundColor = "#${colors.base00}";
     borderColor = "#${colors.base06}";
     borderRadius = 10;
