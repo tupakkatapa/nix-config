@@ -21,9 +21,14 @@ in
     };
     xdg.configFile."mimeapps.list".force = true;
 
-    # Default apps by user
-    home.sessionVariables = {
-      # FILEMANAGER = lib.mkForce "nautilus";
+    # Auto-start floating terminal with SFTP mount on login
+    wayland.windowManager.hyprland = {
+      extraConfig = ''
+        exec-once = $TERMINAL -T "SFTP Mount" sh -c "echo '\$ sudo sftp-mount' && sudo sftp-mount && sleep 1 || read"
+        windowrulev2 = float, title:SFTP Mount
+        windowrulev2 = center, title:SFTP Mount
+        windowrulev2 = size 600 450, title:SFTP Mount
+      '';
     };
 
     home.packages = with pkgs; [
@@ -31,10 +36,15 @@ in
       levari
 
       discord
-      # libreoffice-qt6-fresh
       # chromium
       # rpi-imager
       # appimage-run
+
+      # Also available via runtime-modules, but using these very often
+      guitarix
+      gxplugins-lv2
+      ladspaPlugins
+      qjackctl
 
       # Networking
       wireguard-go

@@ -1,6 +1,7 @@
 { pkgs
 , config
 , inputs
+, lib
 , ...
 }:
 let
@@ -106,7 +107,7 @@ in
     home.sessionVariables = {
       EDITOR = "nvim";
       MANPAGER = "nvim +Man!";
-      FILEMANAGER = "yazi";
+      FILEMANAGER = lib.mkDefault "yazi";
     };
 
     home.packages = with pkgs; [

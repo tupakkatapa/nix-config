@@ -10,6 +10,10 @@
     nautilus
   ];
 
+  home.sessionVariables = {
+    FILEMANAGER = "nautilus";
+  };
+
   gtk.enable = true;
 
   qt = {

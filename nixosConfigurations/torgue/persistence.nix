@@ -34,6 +34,7 @@ in
             { name = "runelite"; mode = "755"; what = "/home/kari/.runelite"; }
             { name = "bottles"; mode = "755"; what = "/home/kari/.local/share/bottles"; }
             { name = "minecraft"; mode = "755"; what = "/home/kari/.local/share/PrismLauncher"; }
+            { name = "heroic"; mode = "755"; what = "/home/kari/.config/heroic"; }
           ];
         }
         {

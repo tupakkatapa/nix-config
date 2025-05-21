@@ -52,7 +52,7 @@
     sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount";
     store-remount.url = "github:ponkila/nixos-store-remount";
 
-    # Games
+    # Gaming stuff
     aagl.inputs.nixpkgs.follows = "nixpkgs";
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
 

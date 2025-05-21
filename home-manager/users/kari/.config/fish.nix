@@ -37,6 +37,7 @@ in
       lock = "swaylock --daemonize";
       logout = "hyprctl dispatch exit";
       rbt = "systemctl reboot";
+      reboot = "systemctl reboot";
       sdn = "systemctl poweroff";
       sus = "systemctl suspend";
 
