@@ -8,26 +8,13 @@ let
 in
 {
   services.mako.settings = {
-    backgroundColor = "#${colors.base00}";
-    borderColor = "#${colors.base06}";
-    borderRadius = 0;
-    borderSize = 2;
+    background-color = "#${colors.base00}";
+    border-color = "#${colors.base06}";
+    border-radius = 0;
+    border-size = 2;
     font = "${FONT} 10";
-    textColor = "#${colors.base05}";
-    progressColor = "#${colors.base08}";
-    extraConfig = ''
-      [urgency=low]
-      background-color=#${colors.base00}
-      text-color=#${colors.base05}
-
-      [urgency=normal]
-      background-color=#${colors.base00}
-      text-color=#${colors.base05}
-
-      [urgency=critical]
-      background-color=#${colors.base00}
-      text-color=#${colors.base08}
-    '';
+    text-color = "#${colors.base05}";
+    progress-color = "#${colors.base08}";
   };
 }
 

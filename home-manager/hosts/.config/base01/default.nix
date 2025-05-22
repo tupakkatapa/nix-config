@@ -25,15 +25,15 @@
   services.mako = {
     enable = true;
     settings = {
-      defaultTimeout = 5000;
+      default-timeout = 5000;
       markup = true;
       icons = true;
-      maxIconSize = 64;
+      max-icon-size = 64;
       padding = "8,8";
       height = 1000;
       anchor = "top-right";
       sort = "+time";
-      groupBy = "app-name";
+      group-by = "app-name";
     };
   };
 
