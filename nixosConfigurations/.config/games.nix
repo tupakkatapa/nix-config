@@ -5,5 +5,4 @@
     osu-lazer
     runelite
   ];
-  programs.anime-game-launcher.enable = true;
 }

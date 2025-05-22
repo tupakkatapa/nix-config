@@ -52,10 +52,6 @@
     sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount";
     store-remount.url = "github:ponkila/nixos-store-remount";
 
-    # Gaming stuff
-    aagl.inputs.nixpkgs.follows = "nixpkgs";
-    aagl.url = "github:ezKEa/aagl-gtk-on-nix";
-
     # Other
     coditon-md.url = "github:tupakkatapa/coditon-md";
     levari.url = "github:tupakkatapa/levari";
@@ -234,7 +230,6 @@
               ./home-manager/users/kari
               ./nixosConfigurations/torgue
               ./system/kexec-tree.nix
-              inputs.aagl.nixosModules.default
             ];
           };
 
