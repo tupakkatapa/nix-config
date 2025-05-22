@@ -22,29 +22,19 @@ in
     xdg.configFile."mimeapps.list".force = true;
 
     # Auto-start floating terminal with SFTP mount on login
-    wayland.windowManager.hyprland = {
-      extraConfig = ''
-        exec-once = $TERMINAL -T "SFTP Mount" sh -c "echo '\$ sudo sftp-mount' && sudo sftp-mount && sleep 1 || read"
-        windowrulev2 = float, title:SFTP Mount
-        windowrulev2 = center, title:SFTP Mount
-        windowrulev2 = size 600 450, title:SFTP Mount
-      '';
-    };
+    wayland.windowManager.hyprland.settings.exec-once = [
+      "foot -e $SHELL -c 'echo \"\\$ sudo sftp-mount\" && sudo sftp-mount && sleep 1 || read -p \"Press enter to continue..\"'"
+    ];
 
     home.packages = with pkgs; [
       monitor-adjust
       levari
 
       discord
+      guitarix
       # chromium
       # rpi-imager
       # appimage-run
-
-      # Also available via runtime-modules, but using these very often
-      guitarix
-      gxplugins-lv2
-      ladspaPlugins
-      qjackctl
 
       # Networking
       wireguard-go
