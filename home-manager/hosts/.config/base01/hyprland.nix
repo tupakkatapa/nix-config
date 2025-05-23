@@ -117,6 +117,11 @@ in
         swallow_regex = "^(wezterm)$";
       };
 
+      ecosystem = {
+        no_update_news = true;
+        no_donation_nag = true;
+      };
+
       dwindle = {
         force_split = 2; # Always split to the right
         preserve_split = true;
