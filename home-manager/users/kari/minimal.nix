@@ -67,6 +67,7 @@ in
         ./.config/direnv.nix
         ./.config/fish.nix
         ./.config/neovim.nix
+        ./.config/tmux.nix
         ./.config/yazi.nix
       ]
       # Importing host-spesific home-manager config if it exists

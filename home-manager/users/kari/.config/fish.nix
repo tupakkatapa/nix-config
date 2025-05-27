@@ -1,6 +1,5 @@
 { lib
 , config
-, hostName
 , ...
 }:
 let
@@ -10,21 +9,9 @@ let
   hasNeovim = config.programs.neovim.enable || config.programs.nixvim.enable;
   hasYazi = config.programs.yazi.enable;
   hasEza = hasPackage "eza";
-  hasTmux = hostName == "vladof";
+  hasTmux = config.programs.tmux.enable;
 in
 {
-  programs.tmux = {
-    enable = hasTmux;
-    keyMode = "vi";
-    prefix = "C-Space";
-    extraConfig = ''
-      set -s escape-time 0
-      set -g status off
-      set -g mouse on
-      bind-key v split-window -h -c "#{pane_current_path}"
-      bind-key g split-window -v -c "#{pane_current_path}"
-    '';
-  };
   programs.fish = {
     enable = true;
     shellAbbrs = rec {
@@ -97,8 +84,8 @@ in
         set fish_cursor_visual      block
 
         ${lib.optionalString hasTmux ''
-        # Autostart tmux when not in an SSH session
-        if not set -q SSH_CONNECTION; and not set -q TMUX
+        # Autostart tmux when in an SSH session
+        if set -q SSH_CONNECTION; and not set -q TMUX
           exec tmux
         end
         ''}
