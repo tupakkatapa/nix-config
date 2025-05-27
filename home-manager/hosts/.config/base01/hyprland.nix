@@ -154,7 +154,7 @@ in
 
         # Programs
         "SUPER, B, exec, ${BROWSER}"
-        "SUPER, F, exec, ${TERMINAL} -e $SHELL -c '${FILEMANAGER} ~'"
+        "SUPER, F, exec, ${FILEMANAGER} ~"
         "SUPER, V, exec, ${TERMINAL} -e $SHELL -c '${EDITOR} ~'"
 
         # Misc
@@ -244,6 +244,10 @@ in
         "center, class:foot"
         "float, class:foot"
         "size 1400 800, class:foot"
+
+        "center, class:org.gnome.Nautilus"
+        "float, class:org.gnome.Nautilus"
+        "size 1400 800, class:org.gnome.Nautilus"
 
         # Sets an idle inhibit rule for the window
         "idleinhibit focus, class:mpv"
