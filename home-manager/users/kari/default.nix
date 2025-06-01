@@ -32,6 +32,8 @@ in
 
       discord
       guitarix
+      google-chrome
+      libreoffice
       # chromium
       # rpi-imager
       # appimage-run

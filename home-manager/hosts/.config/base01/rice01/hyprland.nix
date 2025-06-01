@@ -74,7 +74,8 @@ in
       "${liquidctl} set led2 color fixed 330066"
 
       # Open programs on spesific workspaces
-      "[workspace 4 silent] ${BROWSER} https://web.whatsapp.com https://app.element.io/ https://web.telegram.org/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
+      "[workspace 4 silent] ${BROWSER} https://web.whatsapp.com https://web.telegram.org/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
+      "[workspace 4 silent] ${pkgs.google-chrome}/bin/google-chrome-stable https://app.slack.com/client https://mail.google.com/mail https://meet.google.com/landing https://drive.google.com/drive/home"
     ];
 
     # Window behiavior
