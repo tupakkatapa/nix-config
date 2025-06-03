@@ -21,6 +21,7 @@ in
             { name = "firefox"; mode = "755"; what = "/home/kari/.mozilla"; }
             { name = "guitarix"; mode = "755"; what = "/home/kari/.config/guitarix"; }
             { name = "discord"; mode = "755"; what = "/home/kari/.config/discord"; }
+            { name = "chrome"; mode = "755"; what = "/home/kari/.config/google-chrome"; }
           ];
         }
         {
