@@ -136,7 +136,7 @@
                 warn-dirty = false
               '';
             };
-            pre-commit.hooks.treefmt = {
+            git-hooks.hooks.treefmt = {
               enable = true;
               package = config.treefmt.build.wrapper;
             };
