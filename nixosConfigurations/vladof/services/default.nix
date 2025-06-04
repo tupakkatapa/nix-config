@@ -145,12 +145,21 @@ in
       reloadServices = [ "caddy.service" ];
     };
     certs =
+      # Public services with ACME certs from Let's Encrypt
       lib.mapAttrs'
         (name: service: {
           name = service.addr;
           value = { };
         })
-        publicServices;
+        publicServices
+      // lib.mapAttrs'
+        (name: service: {
+          name = service.addr;
+          value = {
+            server = null; # This tells ACME to generate self-signed certificates
+          };
+        })
+        privateServices;
   };
 
   # Firewall
