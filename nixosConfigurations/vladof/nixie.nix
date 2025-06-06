@@ -25,7 +25,7 @@ _: {
           flakeUrl = "github:tupakkatapa/nix-config";
           hosts = [ "torgue" "bandit" ];
           default = "torgue";
-          timeout = 3;
+          timeout = 1;
         }
         {
           name = "bandit";
