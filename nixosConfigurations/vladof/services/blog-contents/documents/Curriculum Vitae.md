@@ -1,24 +1,28 @@
 ---
-date: "2024-03-02"
+date: "2025-06-06"
 ---
 
 # Curriculum Vitae
 
-My name is Jesse, I am currently located in Oulu, Finland, and willing to consider moving to another city or country. I have been involved in education and work focusing on construction but recently have found a passion for software engineering. My skills revolve around Linux, scripting, networking and a bit of web development, with a particular focus on NixOS. I am especially interested in learning Rust as my go-to programming language. Whether I have zero or moderate knowledge in a particular area, I always consider my best qualities to be creativity, curiosity, willingness to learn, and Finnish "[sisu](https://en.wikipedia.org/wiki/Sisu)".
+My name is Jesse, I am currently located in Oulu, Finland. I have been involved in education and work focusing on construction but recently have found a passion for software engineering. My skills revolve around Linux, scripting, networking and a bit of web development, with a particular focus on NixOS. I am especially interested in learning Rust as my go-to programming language. Whether I have zero or moderate knowledge in a particular area, I always consider my best qualities to be creativity, curiosity, willingness to learn, and Finnish "[sisu](https://en.wikipedia.org/wiki/Sisu)".
 
-Skills from my point of view (rated on a scale from 1 to 5): Bash (4), Ethereum (2), Git (3), HTML/CSS (1), iPXE (4), JavaScript (1), Linux (3), Networking (3), Nix/NixOS (4), Python (4), Rust (1), Virtualization (2).
+Skills from my point of view (rated on a scale from 1 to 5): Bash (4), iPXE (4), Nix (4), Python (4), Git (3), Linux (3), Networking (3), Ethereum (2), Virtualization (2), HTML/CSS (1), JavaScript (1), LLM (1), Rust (1). If anything else comes to mind, I'm ready to learn it.
 
 ## Work Experience
+
+- **Mill Hill Garage Oy**
+
+  Software Engineer, June 2025 -
 
 - **Maanrakennus Lopakka Oy**
 
   Groundworker, July 2024 - October 2024
 
-  Just to kill some time and grind some money between Nix projects in a familiar workplace. Same tasks as below.
+  Just to kill some time and grind some money between coding projects in a familiar workplace. Same tasks as below.
 
 - **Juha Hulkko**
 
-  Software Engineer, February 2023 - March 2024
+  Software Engineer, October 2023 - March 2024
 
   Developed [Nixie](https://github.com/majbacka-labs/nixos.fi), a NixOS module leveraging RAM disks and PXE booting to streamline the setup and management of a network-based boot environment.
 
@@ -58,4 +62,4 @@ Skills from my point of view (rated on a scale from 1 to 5): Bash (4), Ethereum 
 
   Vocational Qualification in Construction, August 2012 - November 2014
 
-  Completed most of the common subjects here and built a detached house with the class from start to almost to the end. Dropped out due to panic disorder.
+  Completed most of the common subjects here and we built a detached house with the class from start to almost to the end. Dropped out due to panic disorder.

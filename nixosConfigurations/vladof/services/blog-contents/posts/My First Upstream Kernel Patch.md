@@ -4,7 +4,7 @@ date: "2025-05-04"
 
 # My First Upstream Kernel Patch
 
-Last week, I submitted my first patch to the Linux kernel, and it has already been queued in the **for-leds-next** branch. It’s satisfying to see my name appear in the commit history of software I work with every day — software that runs on an absurd number of devices. That said, I’m still a bit concerned and wondering how a syntax error like this slipped through the usual layers of review and tooling.
+Last week, I submitted my first patch to the Linux kernel, and it has already been queued in the **for-leds-next** branch. It's satisfying to see my name appear in the commit history of software I work with every day — software that runs on an absurd number of devices. That said, I'm still a bit concerned and wondering how a syntax error like this slipped through the usual layers of review and tooling.
 
 **Commit**: [leds: pca995x: Fix typo in pca995x_of_match's of_device_id entry](https://git.kernel.org/pub/scm/linux/kernel/git/lee/leds.git/commit/?h=for-leds-next)
 
@@ -43,7 +43,7 @@ The kernel turned out to have a simple typo that prevented the database from com
 
 ## Sending a patch
 
-Contributing to the Linux kernel isn’t as daunting as it seems — once you understand the workflow. I referred to [the official guide](https://www.kernel.org/doc/html/latest/process/submitting-patches.html) for contributing to the kernel throughout the process of figuring this out. Here’s how I sent my patch upstream, step by step.
+Contributing to the Linux kernel isn't as daunting as it seems, once you understand the workflow. I referred to [the official guide](https://www.kernel.org/doc/html/latest/process/submitting-patches.html) for contributing to the kernel throughout the process of figuring this out. Here's how I sent my patch upstream, step by step.
 
 1. **Clone an up‑to‑date tree**
 
@@ -115,7 +115,7 @@ Contributing to the Linux kernel isn’t as daunting as it seems — once you un
 
 6. **Configure email**
 
-   I initially struggled with Outlook — its mandatory OAuth authentication wouldn’t cooperate with `git send-email` — so I switched to my company account hosted on Hetzner instead, which worked like a charm.
+   I initially struggled with Outlook. Its mandatory OAuth authentication wouldn't cooperate with `git send-email`, so I switched to my company account hosted on Hetzner instead, which worked like a charm.
 
    Here is the NixOS Home Manager setup I ended up with:
 
