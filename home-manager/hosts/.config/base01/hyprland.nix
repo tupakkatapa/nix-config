@@ -126,6 +126,7 @@ in
         force_split = 2; # Always split to the right
         preserve_split = true;
         pseudotile = true;
+        split_width_multiplier = "1.3";
       };
 
       # Startup
