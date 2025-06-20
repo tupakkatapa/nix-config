@@ -29,7 +29,6 @@
         {
           name = "Communication";
           bookmarks = [
-            { name = "Instagram"; url = "https://www.instagram.com/"; }
             { name = "WhatsApp"; url = "https://web.whatsapp.com/"; }
             { name = "Discord"; url = "https://discord.com/app"; }
             { name = "Telegram"; url = "https://web.telegram.org/"; }
@@ -347,7 +346,6 @@
             { name = "Reuters"; url = "https://www.reuters.com/"; }
             { name = "Hackaday"; url = "https://hackaday.com/"; }
             { name = "Hacker News"; url = "https://news.ycombinator.com/news"; }
-            { name = "Reddit"; url = "https://www.reddit.com/"; }
             { name = "Ylilauta"; url = "https://ylilauta.org/thread/"; }
             { name = "4chan"; url = "https://www.4chan.org/"; }
             { name = "2ch (RU)"; url = "https://2ch.hk/"; }
