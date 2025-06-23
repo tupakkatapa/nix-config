@@ -15,7 +15,6 @@
             { name = "Index"; url = "https://index.coditon.com"; }
             { name = "Vaultwarden"; url = "https://vault.coditon.com"; }
             { name = "Kavita"; url = "https://lib.coditon.com"; }
-            { name = "Immich"; url = "https://img.coditon.com"; }
           ];
         }
         {
@@ -55,29 +54,6 @@
           bookmarks = [
             { name = "GitHub"; url = "https://github.com/"; }
             { name = "GitLab"; url = "https://gitlab.com/"; }
-            {
-              name = "Users";
-              bookmarks = [
-                { name = "tupakkatapa"; url = "https://github.com/tupakkatapa"; }
-                { name = "Misterio77"; url = "https://github.com/Misterio77"; }
-                { name = "jhvst"; url = "https://github.com/jhvst"; }
-                { name = "2xsaiko"; url = "https://github.com/2xsaiko"; }
-                { name = "Mic92"; url = "https://github.com/Mic92"; }
-              ];
-            }
-            {
-              name = "Organizations";
-              bookmarks = [
-                { name = "Ponkila"; url = "https://github.com/ponkila"; }
-                { name = "Majbacka Labs"; url = "https://github.com/majbacka-labs"; }
-              ];
-            }
-            {
-              name = "Projects";
-              bookmarks = [
-                { name = "HomestakerOS"; url = "https://homestakeros.com"; }
-              ];
-            }
           ];
         }
         {
@@ -355,13 +331,6 @@
           name = "Reference";
           bookmarks = [
             { name = "Cambridge Dictionary"; url = "https://dictionary.cambridge.org/dictionary/"; }
-          ];
-        }
-        {
-          name = "Blogs";
-          bookmarks = [
-            { name = "Juuso Haavisto"; url = "https://juuso.dev/rss.xml"; }
-            { name = "Rick Vagabond"; url = "https://rickvagabond.blog/"; }
           ];
         }
         {
