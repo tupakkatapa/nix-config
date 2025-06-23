@@ -6,7 +6,7 @@ date: "2025-05-04"
 
 Last week, I submitted my first patch to the Linux kernel, and it has already been queued in the **for-leds-next** branch. It's satisfying to see my name appear in the commit history of software I work with every day — software that runs on an absurd number of devices. That said, I'm still a bit concerned and wondering how a syntax error like this slipped through the usual layers of review and tooling.
 
-**Commit**: [leds: pca995x: Fix typo in pca995x_of_match's of_device_id entry](https://git.kernel.org/pub/scm/linux/kernel/git/lee/leds.git/commit/?h=for-leds-next)
+**Commit**: [[PATCH] leds: pca995x: fix typo](https://lore.kernel.org/linux-leds/20250426020454.47059-1-jesse@ponkila.com/T/#u)
 
 ---
 
