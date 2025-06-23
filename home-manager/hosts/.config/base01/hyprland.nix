@@ -154,7 +154,8 @@ in
 
         # Programs
         "SUPER, B, exec, ${BROWSER}"
-        "SUPER, F, exec, ${FILEMANAGER} ~"
+        # "SUPER, F, exec, ${FILEMANAGER} ~"
+        "SUPER, F, exec, ${TERMINAL} -e $SHELL -c '${FILEMANAGER} ~'"
         "SUPER, V, exec, ${TERMINAL} -e $SHELL -c '${EDITOR} ~'"
 
         # Misc

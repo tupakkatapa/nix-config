@@ -11,7 +11,7 @@
   ];
 
   home.sessionVariables = {
-    FILEMANAGER = "nautilus";
+    # FILEMANAGER = "nautilus";
   };
 
   gtk.enable = true;
