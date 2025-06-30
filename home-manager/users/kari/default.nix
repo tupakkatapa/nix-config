@@ -29,14 +29,18 @@ in
     home.packages = with pkgs; [
       monitor-adjust
       levari
-
       discord
       guitarix
-      google-chrome
-      libreoffice
+
       # chromium
       # rpi-imager
       # appimage-run
+
+      # Work
+      google-chrome
+      libreoffice
+      claude-code
+      sublime-merge
 
       # Networking
       wireguard-go
