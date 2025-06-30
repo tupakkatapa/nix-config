@@ -46,6 +46,11 @@ let
       port = 37600;
       private = true;
     };
+    searx = {
+      addr = "search.${domain}";
+      port = 7777;
+      private = true;
+    };
   };
 
   # Define the derivation for blog contents
@@ -263,13 +268,13 @@ in
     settings.Port = servicesConfig.kavita.port;
   };
 
-  # Quick fix (?) for 'Failed to set up mount namespacing: /tmp: No such file or directory'
-  systemd.services.transmission.serviceConfig = {
-    after = [ "store-remount.service" ];
-    requires = [ "store-remount.service" ];
-  };
-  systemd.services.acme-setup.serviceConfig = {
-    after = [ "store-remount.service" ];
-    requires = [ "store-remount.service" ];
+  # SearXNG
+  services.searx = {
+    enable = true;
+    package = pkgs.searxng;
+    settings.server = {
+      inherit (servicesConfig.searx) port;
+      bind_address = "127.0.0.1";
+    };
   };
 }
