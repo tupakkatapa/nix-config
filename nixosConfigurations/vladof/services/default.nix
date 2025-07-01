@@ -188,6 +188,7 @@ in
       mode = "440";
     };
     "kavita-token".rekeyFile = ../secrets/kavita-token.age;
+    "searx-env".rekeyFile = ../secrets/searx-env.age;
   };
 
   # Torrent
@@ -275,6 +276,8 @@ in
     settings.server = {
       inherit (servicesConfig.searx) port;
       bind_address = "127.0.0.1";
+      secret_key = "@SEARX_SECRET_KEY@";
     };
+    environmentFile = config.age.secrets.searx-env.path; # SEARX_SECRET_KEY
   };
 }
