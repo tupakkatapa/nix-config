@@ -236,7 +236,7 @@ in
       "99-home" = {
         matchConfig.Name = "home";
         address = [ "172.16.16.3/32" ];
-        linkConfig.ActivationPolicy = if config.networking.hostName == "maliwan" then "always" else "manual";
+        linkConfig.ActivationPolicy = if config.networking.hostName == "maliwan" then "up" else "manual";
         routes = [
           {
             Gateway = "172.16.16.1";
