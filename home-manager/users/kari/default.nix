@@ -40,7 +40,6 @@ in
       google-chrome
       libreoffice
       claude-code
-      sublime-merge
 
       # Networking
       wireguard-go
