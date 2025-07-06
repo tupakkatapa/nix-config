@@ -38,9 +38,15 @@ in
       isDefault = true;
 
       search = {
-        default = "ddg";
+        default = "searxng";
         force = true;
-        order = [ "ddg" "google" ];
+        order = [ "searxng" "ddg" "google" ];
+        engines = {
+          "searxng" = {
+            urls = [{ template = "https://search.coditon.com/search?q={searchTerms}"; }];
+            definedAliases = [ "@sx" ];
+          };
+        };
       };
 
       bookmarks = {

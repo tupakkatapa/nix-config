@@ -15,6 +15,7 @@
             { name = "Index"; url = "https://index.coditon.com"; }
             { name = "Vaultwarden"; url = "https://vault.coditon.com"; }
             { name = "Kavita"; url = "https://lib.coditon.com"; }
+            { name = "Search"; url = "https://search.coditon.com"; }
           ];
         }
         {
