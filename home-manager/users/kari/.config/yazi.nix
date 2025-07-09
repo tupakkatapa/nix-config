@@ -44,10 +44,10 @@ in
         sort_dir_first = true;
       };
       opener = {
-        image = [
+        open = [
           {
-            run = "imv-dir \"$@\"";
-            desc = "Open with imv";
+            run = ''xdg-open "$@"'';
+            desc = "Open";
             orphan = true;
           }
         ];

@@ -94,6 +94,7 @@ let
     };
     pdf = [
       "application/pdf"
+      "application/x-pdf"
     ];
     ebook = [
       "application/epub+zip"
@@ -124,11 +125,33 @@ let
 in
 {
   # Function to create MIME associations
-  createMimes = option: lib.listToAttrs (lib.flatten (lib.mapAttrsToList
-    (name: types:
-      if lib.hasAttr name option then
-        map (type: lib.nameValuePair type option."${name}") types
-      else [ ]
-    )
-    mimes));
+  createMimes = optionRaw:
+    let
+      # Internal helper to flatten nested attrsets like { office.text = [ … ] }
+      flattenAttrs =
+        let
+          flatten' = prefix: attrs:
+            lib.concatMapAttrs
+              (k: v:
+                if lib.isAttrs v then
+                  flatten' (prefix ++ [ k ]) v
+                else
+                  { "${lib.concatStringsSep "." (prefix ++ [k])}" = v; }
+              )
+              attrs;
+        in
+        flatten' [ ];
+
+      # Flattened option attrset (e.g. { "office.text" = [ … ] })
+      option = flattenAttrs optionRaw;
+    in
+    # Construct the final MIME type -> application map
+    lib.listToAttrs (lib.flatten (lib.mapAttrsToList
+      (name: types:
+        if lib.hasAttr name option then
+          map (type: lib.nameValuePair type option.${name}) types
+        else
+          [ ]
+      )
+      mimes));
 }
