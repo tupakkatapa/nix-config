@@ -8,6 +8,10 @@
     storageMode = "local";
   };
 
+  # environment.systemPackages = with pkgs; [
+  #   wayvnc
+  # ];
+
   imports = [
     ../.config/gaming-amd.nix
     ../.config/pipewire.nix
