@@ -49,10 +49,10 @@ in
     ];
 
     home.packages = with pkgs; [
-      monitor-adjust
-      levari
-      discord
-      guitarix
+      # monitor-adjust
+      # levari
+      # discord
+      # guitarix
 
       # chromium
       # rpi-imager
