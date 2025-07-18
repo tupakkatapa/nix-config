@@ -32,6 +32,7 @@
   };
   systemd.network = {
     enable = true;
+    wait-online.anyInterface = true;
     networks = {
       "10-wan" = {
         linkConfig.RequiredForOnline = "routable";
