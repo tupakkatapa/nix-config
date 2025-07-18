@@ -1,6 +1,7 @@
 # https://github.com/hyper-dot/Arch-Hyprland
 { pkgs
 , customLib
+, unstable
 , ...
 }:
 let
@@ -48,11 +49,11 @@ in
       "foot -e $SHELL -c 'echo \"\\$ sudo sftp-mount\" && sudo sftp-mount && sleep 1 || read -p \"Press enter to continue..\"'"
     ];
 
-    home.packages = with pkgs; [
-      # monitor-adjust
-      # levari
-      # discord
-      # guitarix
+    home.packages = (with pkgs; [
+      monitor-adjust
+      levari
+      discord
+      guitarix
 
       # chromium
       # rpi-imager
@@ -61,11 +62,13 @@ in
       # Work
       google-chrome
       libreoffice
-      claude-code
 
       # Networking
       wireguard-go
       wireguard-tools
-    ];
+    ]) ++
+    (with unstable; [
+      claude-code
+    ]);
   };
 }

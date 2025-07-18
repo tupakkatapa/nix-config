@@ -171,7 +171,13 @@
 
           # Base configuration applied to all hosts
           withDefaults = config: {
-            specialArgs = { inherit inputs outputs customLib; };
+            specialArgs = {
+              inherit inputs outputs customLib;
+              unstable = import inputs.nixpkgs-unstable {
+                system = config.system or "x86_64-linux";
+                config.allowUnfree = true;
+              };
+            };
             system = config.system or "x86_64-linux";
             modules = config.modules or [ ] ++ [
               ./system/base.nix
@@ -212,7 +218,12 @@
                   extraSpecialArgs = {
                     inherit (config.networking) hostName;
                     inherit customLib;
+                    unstable = import inputs.nixpkgs-unstable {
+                      system = config.system or "x86_64-linux";
+                      config.allowUnfree = true;
+                    };
                   };
+                  useGlobalPkgs = true;
                 };
                 age.rekey = {
                   masterIdentities = [{
