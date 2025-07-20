@@ -25,6 +25,7 @@ _: {
           flakeUrl = "github:tupakkatapa/nix-config";
           hosts = [ "torgue" "bandit" ];
           default = "torgue";
+          rollbacks.enable = true;
           timeout = 1;
         }
         {

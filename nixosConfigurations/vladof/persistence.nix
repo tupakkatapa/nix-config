@@ -103,6 +103,7 @@
   # Update the rEFInd boot manager
   services.refindGenerate = {
     enable = true;
+    rollbacks.enable = true;
     where = "/dev/disk/by-uuid/C994-FCFD";
     flakeUrl = "github:tupakkatapa/nix-config";
     hosts = [ "vladof" "bandit" ];
