@@ -2319,11 +2319,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1753014680,
-        "narHash": "sha256-7nT1Zz0QhFOIJ2nwJTp73LYMGtuRJxDRVBHGcVH+0Ps=",
+        "lastModified": 1753121951,
+        "narHash": "sha256-3o2xJHhc5I9i5O9igABTjun4IG5fY18+kQpQICR06/k=",
         "ref": "jesse/dev31",
-        "rev": "9fdbc8eb1bc2aeb6e7d63fc6e9c3d8914e7ca343",
-        "revCount": 18,
+        "rev": "76187891d5afda7bb6dc762e1ed9ce10a0356cd1",
+        "revCount": 19,
         "type": "git",
         "url": "ssh://git@github.com/majbacka-labs/nixie"
       },
@@ -3214,11 +3214,11 @@
         "nixpkgs": "nixpkgs_31"
       },
       "locked": {
-        "lastModified": 1742994447,
-        "narHash": "sha256-nc+F3bzXpTFTtGkt6sJ+7o+QXX8mdLP7iXu+32k+wT0=",
+        "lastModified": 1753050742,
+        "narHash": "sha256-in36LbcpDbdBvZoIO8CXdyn2Lc7t7NVQCcggHzISCc4=",
         "owner": "tupakkatapa",
         "repo": "nixos-sftp-mount",
-        "rev": "6dad9d64e8554f7be3cb2d622bdb86db1ccbdd37",
+        "rev": "d5cdc8c88540c4a636274d7fa27090cdb755557a",
         "type": "github"
       },
       "original": {
