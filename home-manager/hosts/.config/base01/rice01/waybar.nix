@@ -41,8 +41,7 @@ in
         "bluetooth"
         "network"
         "battery"
-        "clock#date"
-        "clock#time"
+        "clock#datetime"
       ];
 
       "custom/player" = {
@@ -129,13 +128,8 @@ in
         tooltip = false;
       };
 
-      "clock#time" = {
-        format = "{:%H:%M}";
-        tooltip = false;
-      };
-
-      "clock#date" = {
-        format = "{:%d.%m.%Y}";
+      "clock#datetime" = {
+        format = "{:%d.%m.%Y | %H:%M}";
         tooltip-format = "<tt><small>{calendar}</small></tt>";
         calendar = {
           mode = "year";
@@ -220,6 +214,7 @@ in
         color: #${colors.base05};
       }
 
+      /* Main module styles */
       #clock,
       #battery,
       #network,
@@ -236,6 +231,7 @@ in
         border: ${toString rice.border.size}px solid #${rice.border.inactive};
       }
 
+      /* All dot modules */
       #custom-red-dot,
       #custom-yellow-dot,
       #custom-green-dot {
@@ -243,41 +239,12 @@ in
         background-color: transparent;
       }
 
-      #custom-red-dot {
-        color: #${colors.base08};
-      }
-
-      #custom-yellow-dot {
-        color: #${colors.base0A};
-      }
-
+      /* Dot-specific colors */
+      #custom-red-dot { color: #${colors.base08}; }
+      #custom-yellow-dot { color: #${colors.base0A}; }
       #custom-green-dot {
-        padding: 0 8px 0 5px;
         color: #${colors.base0B};
-      }
-
-      #pulseaudio {
-        color: #${colors.base0D};
-      }
-
-      #bluetooth {
-        color: #${colors.base0C};
-      }
-
-      #bluetooth.disconnected {
-        color: #${colors.base0C};
-      }
-
-      #network {
-        color: #${colors.base0E};
-      }
-
-      #network.disconnected {
-        color: #${colors.base09};
-      }
-
-      #battery {
-        color: #${colors.base0E};
+        padding: 0 8px 0 5px;
       }
 
       #tray > .passive {
@@ -293,7 +260,7 @@ in
         margin-left: ${toString (rice.spacing / 2)}px;
       }
 
-      #clock.time {
+      #clock.datetime {
         margin-right: ${toString (rice.spacing / 2)}px;
       }
     '';
