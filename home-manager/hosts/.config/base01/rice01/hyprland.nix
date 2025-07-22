@@ -7,6 +7,7 @@
 let
   inherit (config.home.sessionVariables) BROWSER THEME;
   colors = customLib.colors.${THEME};
+  rice = import ./config.nix { inherit customLib config; };
   swaybg = "${pkgs.swaybg}/bin/swaybg";
   liquidctl = "${pkgs.liquidctl}/bin/liquidctl";
 in
@@ -18,14 +19,15 @@ in
 
   wayland.windowManager.hyprland.settings = {
     general = {
-      "col.active_border" = "rgb(${colors.base06})";
-      "col.inactive_border" = "rgb(${colors.base02})";
-      border_size = 2;
-      gaps_out = 5;
+      "col.active_border" = "rgb(${rice.border.active})";
+      "col.inactive_border" = "rgb(${rice.border.inactive})";
+      border_size = rice.border.size;
+      gaps_in = rice.spacing / 2;
+      gaps_out = rice.spacing;
     };
 
     decoration = {
-      rounding = 7;
+      inherit (rice) rounding;
       shadow.enabled = false;
       blur.enabled = false;
     };

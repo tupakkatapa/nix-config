@@ -6,38 +6,32 @@
 let
   inherit (config.home.sessionVariables) FONT THEME;
   colors = customLib.colors.${THEME};
+  rice = import ./config.nix { inherit customLib config; };
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
   blueberry = "${pkgs.blueberry}/bin/blueberry";
-  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
-  jq = "${pkgs.jq}/bin/jq";
-  curl = "${pkgs.curl}/bin/curl";
 in
 {
   programs.waybar = {
     settings.primary = {
       height = 20;
-      margin-top = 3;
-      margin-left = 10;
-      margin-bottom = 0;
-      margin-right = 10;
+      margin-top = rice.spacing;
+      margin-left = rice.spacing;
+      margin-right = rice.spacing;
       layer = "top";
-      spacing = 5;
+      spacing = rice.spacing / 2;
 
       modules-left = [
-        "custom/menu"
         "custom/hostname"
-        "cpu"
-        "memory"
-        "disk"
+        "custom/red-dot"
+        "custom/yellow-dot"
+        "custom/green-dot"
         "custom/player"
       ];
 
       modules-center = [
-        "custom/prev"
         "hyprland/workspaces"
-        "custom/next"
       ];
 
       modules-right = [
@@ -47,38 +41,16 @@ in
         "bluetooth"
         "network"
         "battery"
-        "custom/crypto"
-        "custom/weather"
         "clock#date"
         "clock#time"
-        "custom/help"
       ];
-
-      cpu = {
-        format = " {usage}%";
-        max-length = 100;
-        interval = 1;
-      };
-
-      memory = {
-        format = " {}%";
-        format-alt = " {used:0.1f}G";
-        interval = 5;
-        max-length = 10;
-      };
-
-      disk = {
-        interval = 30;
-        format = " {percentage_free}% free";
-        format-alt = " {free} free";
-      };
 
       "custom/player" = {
         exec-if = "${playerctl} status";
         exec = ''${playerctl} metadata --format '{"text": "{{artist}} - {{title}}", "alt": "{{status}}", "tooltip": "{{title}} ({{artist}} - {{album}})"}' '';
         return-type = "json";
         interval = 2;
-        max-length = 50;
+        max-length = 100;
         format = "{icon} {}";
         format-icons = {
           "Playing" = "";
@@ -91,6 +63,8 @@ in
       "hyprland/workspaces" = {
         format = "{icon}";
         on_click = "activate";
+        on-scroll-up = "hyprctl dispatch workspace e+1";
+        on-scroll-down = "hyprctl dispatch workspace e-1";
         format-icons = {
           "1" = "1";
           "2" = "2";
@@ -106,6 +80,21 @@ in
 
       "custom/hostname" = {
         exec = "echo $USER@$HOSTNAME";
+        tooltip = false;
+      };
+
+      "custom/red-dot" = {
+        format = "";
+        tooltip = false;
+      };
+
+      "custom/yellow-dot" = {
+        format = "";
+        tooltip = false;
+      };
+
+      "custom/green-dot" = {
+        format = "";
         tooltip = false;
       };
 
@@ -194,72 +183,13 @@ in
         format = " {}";
       };
 
-      "custom/crypto" = {
-        exec = ''
-          data=$(${curl} -s "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true")
-          btc_price=$(echo $data | ${jq} -r '.bitcoin.usd')
-          btc_change=$(echo $data | ${jq} -r '.bitcoin.usd_24h_change')
-          eth_price=$(echo $data | ${jq} -r '.ethereum.usd')
-          eth_change=$(echo $data | ${jq} -r '.ethereum.usd_24h_change')
-          text=$(printf "%+.2f%%" "$btc_change")
-          tooltip=$(printf "BTC: \$%s, 24h:%+.2f%% | ETH: \$%s, 24h:%+.2f%%" "$btc_price" "$btc_change" "$eth_price" "$eth_change")
-          echo "{\"text\": \"$text\", \"tooltip\": \"$tooltip\"}"
-        '';
-        return-type = "json";
-        interval = 3600;
-        format = " {}";
-      };
 
-      "custom/weather" = {
-        exec = ''
-          weather=$(${curl} -s "wttr.in/?format=%t,+%w")
-          weather=''${weather/#Unknown location*/Unknown Location}
-          echo "{\"text\": \"$weather\"}"
-        '';
-        return-type = "json";
-        interval = 3600;
-        format = "{}";
-      };
 
-      "custom/prev" = {
-        format = "";
-        on-click = ''
-          current_ws=$(${hyprctl} monitors -j | ${jq} -r '.[0].activeWorkspace.id')
-          ${hyprctl} dispatch workspace $(( current_ws - 1 ))
-        '';
-        tooltip = false;
-      };
 
-      "custom/next" = {
-        format = "";
-        on-click = ''
-          current_ws=$(${hyprctl} monitors -j | ${jq} -r '.[0].activeWorkspace.id')
-          [ $(( current_ws + 1 )) -le 9 ] && ${hyprctl} dispatch workspace $(( current_ws + 1 ))
-        '';
-        tooltip = false;
-      };
-
-      "custom/menu" = {
-        format = "󰍜";
-        on-click = ''
-          wofi
-        '';
-        tooltip = false;
-      };
-
-      "custom/help" = {
-        format = "󰋖";
-        on-click = ''
-          sed -r 's:/nix/store/[a-z0-9]+-[a-zA-Z0-9.-]+/bin/::g' ~/hypr_binds.txt |
-          tr -s ' ' |
-          wofi --show dmenu
-        '';
-        tooltip = false;
-      };
     };
     style = ''
       * {
-        border-radius: 7px;
+        border-radius: ${toString rice.rounding}px;
         font-family: ${FONT};
         font-size: 11px;
         font-weight: 900;
@@ -275,6 +205,7 @@ in
       #workspaces {
         padding: 0 10px;
         background-color: #${colors.base00};
+        border: ${toString rice.border.size}px solid #${rice.border.inactive};
       }
 
       #workspaces button {
@@ -282,6 +213,7 @@ in
         background-color: transparent;
         box-shadow: inset 0 -3px transparent;
         border: none;
+        min-width: 20px;
       }
 
       #workspaces button.active {
@@ -290,42 +222,37 @@ in
 
       #clock,
       #battery,
-      #cpu,
-      #memory,
-      #disk,
       #network,
       #pulseaudio,
       #tray,
       #custom-player,
       #custom-hostname,
       #custom-ping-sweep,
-      #custom-weather,
-      #custom-crypto,
       #window,
       #bluetooth {
         padding: 0 15px;
         color: #${colors.base05};
         background-color: #${colors.base00};
+        border: ${toString rice.border.size}px solid #${rice.border.inactive};
       }
 
-      #custom-prev,
-      #custom-next,
-      #custom-menu,
-      #custom-help {
-        padding: 0 8px;
-        color: #${colors.base02};
-        background-color: #${colors.base00};
+      #custom-red-dot,
+      #custom-yellow-dot,
+      #custom-green-dot {
+        padding: 0 5px;
+        background-color: transparent;
       }
 
-      #cpu {
+      #custom-red-dot {
         color: #${colors.base08};
       }
 
-      #memory {
+      #custom-yellow-dot {
         color: #${colors.base0A};
       }
 
-      #disk {
+      #custom-green-dot {
+        padding: 0 8px 0 5px;
         color: #${colors.base0B};
       }
 
@@ -341,10 +268,6 @@ in
         color: #${colors.base0C};
       }
 
-      #custom-crypto {
-        color: #${colors.base09};
-      }
-
       #network {
         color: #${colors.base0E};
       }
@@ -357,21 +280,6 @@ in
         color: #${colors.base0E};
       }
 
-      #battery.charging,
-      #battery.full,
-      #battery.plugged {
-        color: #${colors.base0B};
-      }
-
-      #battery.critical:not(.charging) {
-        color: #${colors.base08};
-        animation-name: blink;
-        animation-duration: 0.5s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-        animation-direction: alternate;
-      }
-
       #tray > .passive {
         -gtk-icon-effect: dim;
       }
@@ -379,6 +287,14 @@ in
       #tray > .needs-attention {
         -gtk-icon-effect: highlight;
         background-color: #${colors.base00};
+      }
+
+      #custom-hostname {
+        margin-left: ${toString (rice.spacing / 2)}px;
+      }
+
+      #clock.time {
+        margin-right: ${toString (rice.spacing / 2)}px;
       }
     '';
   };
