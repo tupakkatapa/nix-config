@@ -51,7 +51,6 @@ in
 
     home.packages = (with pkgs; [
       monitor-adjust
-      levari
       discord
       guitarix
 

@@ -60,6 +60,11 @@ in
       gc = "nix-collect-garbage -d";
       ns = "nix-shell -p";
 
+      # Nix run
+      mozid = "nix run github:tupakkatapa/mozid -- ";
+      levari = "nix run github:tupakkatapa/levari -- -d ";
+      nix-tree = "nix run github:utdemir/nix-tree -- --help";
+
       # YouTube-DL
       yt = ", yt-dlp --embed-metadata --sponsorblock-remove all -i --format mp4";
       yt-pl-urls = yt + "--flat-playlist --print '%(url)s' --no-warnings";
