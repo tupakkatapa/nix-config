@@ -3,14 +3,6 @@
 { pkgs
 , ...
 }:
-let
-  plugs = pkgs.fetchFromGitHub {
-    owner = "yazi-rs";
-    repo = "plugins";
-    rev = "3d1efb706924112daed986a4eef634e408bad65e";
-    hash = "sha256-GgEg1A5sxaH7hR1CUOO9WV21kH8B2YUGAtOapcWLP7Y=";
-  };
-in
 {
   home.packages = with pkgs; [
     exiftool
@@ -28,12 +20,8 @@ in
     enable = true;
     enableFishIntegration = true;
 
-    plugins = {
-      chmod = "${plugs}/chmod.yazi";
-      diff = "${plugs}/diff.yazi";
-      full-border = "${plugs}/full-border.yazi";
-      jump-to-char = "${plugs}/jump-to-char.yazi";
-      smart-enter = "${plugs}/smart-enter.yazi";
+    plugins = with pkgs.yaziPlugins; {
+      inherit chmod diff full-border jump-to-char smart-enter;
     };
 
     settings = {
