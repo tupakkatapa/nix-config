@@ -84,9 +84,9 @@ in
           "font.name.serif.x-western" = "${FONT}";
 
           # Auto-translation
-          "browser.translations.neverTranslateLanguages" = "en,fi";
-          "browser.translations.alwaysTranslateLanguages" = "es,zh,ar,pt,id,fr,ja,ru,de,hi,et,sv,no,da";
-          "browser.translations.autoTranslate" = true;
+          # "browser.translations.neverTranslateLanguages" = "en,fi";
+          # "browser.translations.alwaysTranslateLanguages" = "es,zh,ar,pt,id,fr,ja,ru,de,hi,et,sv,no,da";
+          # "browser.translations.autoTranslate" = true;
         }
         # derived from https://brainfucksec.github.io/firefox-hardening-guide
         // {

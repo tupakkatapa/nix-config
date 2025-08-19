@@ -163,6 +163,7 @@
         {
           name = "Literature";
           bookmarks = [
+            { name = "Sci-Hub"; url = "https://www.sci-hub.pub/"; }
             { name = "Anna's Archive"; url = "https://annas-archive.org/"; }
             { name = "Internet Archive"; url = "https://archive.org/"; }
             { name = "ResearchGate"; url = "https://www.researchgate.net/"; }
@@ -176,11 +177,25 @@
             { name = "EverythingMoe"; url = "https://everythingmoe.com/"; }
           ];
         }
+        {
+          name = "Fun";
+          bookmarks = [
+            { name = "xkcd"; url = "https://xkcd.com/"; }
+            { name = "Radio Garden"; url = "https://radio.garden/"; }
+          ];
+        }
       ];
     }
     {
       name = "Tools";
       bookmarks = [
+        {
+          name = "Privacy";
+          bookmarks = [
+            { name = "Temp-num"; url = "https://quackr.io/temporary-numbers"; }
+            { name = "Temp-mail"; url = "https://temp-mail.org/en/"; }
+          ];
+        }
         {
           name = "Design & Creative";
           bookmarks = [
@@ -207,6 +222,7 @@
             {
               name = "Backtracks";
               bookmarks = [
+                { name = "Backing Tracks"; url = "https://www.youtube.com/@BackingTracksForBass/videos"; }
                 { name = "63 BPM"; url = "https://www.youtube.com/watch?v=GhM_MJEB7e0"; }
                 { name = "65 BPM"; url = "https://www.youtube.com/watch?v=RNvxvwc0cWQ"; }
                 { name = "75 BPM"; url = "https://www.youtube.com/watch?v=r3xzzBis9RI"; }
@@ -225,6 +241,15 @@
           ];
         }
         {
+          name = "AI";
+          bookmarks = [
+            { name = "ChatGPT"; url = "https://chat.openai.com/?model=gpt-4o"; }
+            { name = "Claude"; url = "https://claude.ai/"; }
+            { name = "Microsoft Copilot"; url = "https://copilot.microsoft.com/"; }
+            { name = "Grok"; url = "https://grok.com/"; }
+          ];
+        }
+        {
           name = "Utilities";
           bookmarks = [
             { name = "APKCombo"; url = "https://apkcombo.com/downloader/"; }
@@ -232,6 +257,7 @@
             { name = "DeepL"; url = "https://www.deepl.com/translator"; }
             { name = "CroxyProxy"; url = "https://www.croxyproxy.com/"; }
             { name = "MD to PDF Converter"; url = "https://cloudconvert.com/md-to-pdf"; }
+            { name = "Downdetector"; url = "https://downdetector.com/"; }
           ];
         }
       ];
@@ -258,6 +284,11 @@
             { name = "Zalando"; url = "https://www.zalando.fi/"; }
             { name = "IKEA"; url = "https://www.ikea.com/fi/fi/"; }
             { name = "Wolt"; url = "https://wolt.com/fi/discovery"; }
+            { name = "Revolutionrace"; url = "https://www.revolutionrace.eu/"; }
+            { name = "Cotopaxi"; url = "https://eu.cotopaxi.com/en"; }
+            { name = "Disks & Storage"; url = "https://diskprices.com/?locale=de&condition=new&disk_types=internal_hdd"; }
+            { name = "RAM Sticks"; url = "https://ramstickprices.com/"; }
+            { name = "Superdry"; url = "https://www.superdry.fi/"; }
           ];
         }
         {
@@ -309,23 +340,23 @@
       name = "Information";
       bookmarks = [
         {
-          name = "AI";
+          name = "News";
           bookmarks = [
-            { name = "ChatGPT"; url = "https://chat.openai.com/?model=gpt-4o"; }
-            { name = "Claude"; url = "https://claude.ai/"; }
-            { name = "Microsoft Copilot"; url = "https://copilot.microsoft.com/"; }
-            { name = "Grok"; url = "https://grok.com/"; }
+            { name = "Media Bias Chart"; url = "https://app.adfontesmedia.com/chart/interactive"; }
+            { name = "Reuters"; url = "https://www.reuters.com/"; }
+            { name = "AP"; url = "https://apnews.com/"; }
+            { name = "WSJ"; url = "https://www.wsj.com/"; }
+            { name = "BBC"; url = "https://www.bbc.com/"; }
           ];
         }
         {
-          name = "News & Forums";
+          name = "Forums";
           bookmarks = [
-            { name = "Reuters"; url = "https://www.reuters.com/"; }
-            { name = "Hackaday"; url = "https://hackaday.com/"; }
             { name = "Hacker News"; url = "https://news.ycombinator.com/news"; }
+            { name = "Lobsters"; url = "https://lobste.rs/"; }
             { name = "Ylilauta"; url = "https://ylilauta.org/thread/"; }
             { name = "4chan"; url = "https://www.4chan.org/"; }
-            { name = "2ch (RU)"; url = "https://2ch.hk/"; }
+            { name = "2ch"; url = "https://2ch.hk/"; }
           ];
         }
         {
