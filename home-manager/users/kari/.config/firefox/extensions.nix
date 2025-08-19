@@ -38,10 +38,6 @@
     uuid = "sponsorBlocker@ajay.app";
     shortId = "sponsorblock";
   }
-  {
-    uuid = "enhancerforyoutube@maximerf.addons.mozilla.org";
-    shortId = "enhancer-for-youtube";
-  }
 
   # Media & Downloads
   {
