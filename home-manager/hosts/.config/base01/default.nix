@@ -7,11 +7,11 @@
   home.packages = with pkgs; [
     wl-clipboard
     libnotify
-    nautilus
+    thunar
   ];
 
   home.sessionVariables = {
-    # FILEMANAGER = "nautilus";
+    # FILEMANAGER = "thunar";
   };
 
   gtk.enable = true;
