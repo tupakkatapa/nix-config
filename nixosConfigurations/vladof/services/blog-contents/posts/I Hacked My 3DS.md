@@ -18,6 +18,8 @@ I basically just followed the guide at [https://3ds.hacks.guide/](https://3ds.ha
 
 1. **Format the SD card**: [Formatting SD (Windows)](https://3ds.hacks.guide/formatting-sd-%28windows%29.html) as FAT32 with a 32 KB cluster size.
 
+  > Note: Changed to bigger SD card later, formatted with Linux: `sudo mkfs.fat /dev/sdX -s 64 -F 32 -I`
+
 2. **Flash the firmware**: [Installing boot9strap (MSET9 CLI)](https://3ds.hacks.guide/installing-boot9strap-%28mset9-cli%29.html).
 
 3. **Installing core apps**: [Finalizing Setup](https://3ds.hacks.guide/finalizing-setup.html)
@@ -51,14 +53,13 @@ I basically just followed the guide at [https://3ds.hacks.guide/](https://3ds.ha
 
    - **Themes**: Open Anemone3DS on your 3DS and browse [Theme Plaza](https://themeplaza.art/themes) on another device. Scan the QR code of the theme you want to install.
    - **Splash screens**: images shown on the screens during startup; install them the same way as themes.
-   - **Badges**: PNGs that can be attached to folders or placed on the HOME Menu grid.
-     Download a badge pack from Theme Plaza, extract it, delete any preview files, copy the folder to `/Badges` on the SD card, then install via Anemone3DS.
+   - **Badges**: PNGs that can be attached to folders or placed on the HOME Menu grid. Download a badge pack from Theme Plaza, extract it, delete any preview files, copy the folder to `/Badges` on the SD card, then install via Anemone3DS.
 
 6. **Getting the games**
 
-   You can find them at [Myrient](https://myrient.erista.me/files/No-Intro/) (at your own risk).
+   You can find them at [Myrient](https://myrient.erista.me/files/No-Intro/) (at your own risk) or install directly via hShop.
 
-   - **3DS games**: copy them to the SD card, install via GodMode9, then delete the originals to free up space.
+   - **3DS games**: copy them to the SD card, install via GodMode9, then delete the originals to free up space. These will be installed encrypted under `/Nintendo 3DS/<ID0>/<ID1>/title`. Ref: https://3dbrew.org/wiki/SD_Filesystem.
    - **GBA games**: store them in `/3ds/open_agb_firm/roms` and launch with open\_agb\_firm via GodMode9.
    - **NDS games**: place them in `/roms/nds` for use with TWiLight Menu++.
 
@@ -83,6 +84,11 @@ Quote from: [Fire Emblem - "New to the series, where should I start?"](https://w
 Great game, but it has a pay-to-play element we need to tackle. The game has these so-called 'Picrites' which you have to grind hard for, or just purchase at the eShop (of course). Since the eShop no longer exists, the pay-to-play aspect is broken, and we can fix this by using cheats. Open Checkpoint, select your game, click on cheats, and enable 'Maximum Picrites'. Then launch the game and press 'L + Down + Select' to open Luma3DS's Rosalina menu and enable cheats. Bon appétit — actually playable now.
 
 By the way, this game is hard to find anywhere other than hShop, so install it from there.
+
+### Games over 4GB
+
+FAT32 has a 4GB file size limit due to its file allocation table structure. Either [convert](https://github.com/ihaveamac/3dsconv) to CIA packages since they are smaller, install remotely from hShop, or trim the ROM using 3DSExplorer.
+
 
 ---
 
