@@ -7,7 +7,7 @@
   home.packages = with pkgs; [
     wl-clipboard
     libnotify
-    thunar
+    xfce.thunar
   ];
 
   home.sessionVariables = {
