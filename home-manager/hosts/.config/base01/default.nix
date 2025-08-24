@@ -2,16 +2,16 @@
 {
   imports = [
     ./hyprland.nix
+    ./thunar.nix
   ];
 
   home.packages = with pkgs; [
     wl-clipboard
     libnotify
-    xfce.thunar
   ];
 
   home.sessionVariables = {
-    # FILEMANAGER = "thunar";
+    FILEMANAGER = "thunar";
   };
 
   gtk.enable = true;

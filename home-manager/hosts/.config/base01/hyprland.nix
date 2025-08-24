@@ -250,6 +250,14 @@ in
         "float, class:org.gnome.Nautilus"
         "size 1400 800, class:org.gnome.Nautilus"
 
+        "center, class:thunar"
+        "float, class:thunar"
+        "size 1400 800, class:thunar"
+
+        "center, class:Thunar"
+        "float, class:Thunar"
+        "size 1400 800, class:Thunar"
+
         # Sets an idle inhibit rule for the window
         "idleinhibit focus, class:mpv"
         "idleinhibit fullscreen, class:${BROWSER}"
