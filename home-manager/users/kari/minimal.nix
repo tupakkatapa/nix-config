@@ -81,6 +81,13 @@ in
       aliases = {
         uncommit = "reset --soft HEAD^";
       };
+      ignores = [
+        ".knowledge"
+        ".scripts"
+        "TODO.md"
+        "PROMPTS.md"
+        "MEMO.md"
+      ];
       extraConfig = {
         safe.directory = [ "*" ];
         pull.rebase = true;
