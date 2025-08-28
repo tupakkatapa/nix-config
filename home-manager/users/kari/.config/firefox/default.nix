@@ -62,6 +62,7 @@ in
           "browser.shell.checkDefaultBrowser" = false;
           "browser.startup.homepage" = "https://index.coditon.com";
           "browser.toolbars.bookmarks.visibility" = "never"; # not working?
+          "sidebar.revamp" = false;
           "browser.urlbar.suggest.openpage" = false;
           "browser.urlbar.suggest.topsites" = false;
           "browser.urlbar.suggest.history" = false;
