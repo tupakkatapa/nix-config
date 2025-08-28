@@ -223,6 +223,8 @@
               name = "Backtracks";
               bookmarks = [
                 { name = "Backing Tracks"; url = "https://www.youtube.com/@BackingTracksForBass/videos"; }
+                { name = "F# Minor"; url = "https://www.youtube.com/watch?v=hLjhM-S4B3o"; }
+                { name = "D Dorian"; url = "https://www.youtube.com/watch?v=z75ZVfpPaZk"; }
                 { name = "63 BPM"; url = "https://www.youtube.com/watch?v=GhM_MJEB7e0"; }
                 { name = "65 BPM"; url = "https://www.youtube.com/watch?v=RNvxvwc0cWQ"; }
                 { name = "75 BPM"; url = "https://www.youtube.com/watch?v=r3xzzBis9RI"; }
@@ -258,6 +260,8 @@
             { name = "CroxyProxy"; url = "https://www.croxyproxy.com/"; }
             { name = "MD to PDF Converter"; url = "https://cloudconvert.com/md-to-pdf"; }
             { name = "Downdetector"; url = "https://downdetector.com/"; }
+            { name = "MyTime"; url = "https://mytime.io/"; }
+            { name = "Word2Markdown"; url = "https://word2md.com/"; }
           ];
         }
       ];
@@ -289,6 +293,7 @@
             { name = "Disks & Storage"; url = "https://diskprices.com/?locale=de&condition=new&disk_types=internal_hdd"; }
             { name = "RAM Sticks"; url = "https://ramstickprices.com/"; }
             { name = "Superdry"; url = "https://www.superdry.fi/"; }
+            { name = "Kava Europe"; url = "https://kavaeurope.eu/"; }
           ];
         }
         {
