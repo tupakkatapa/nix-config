@@ -60,7 +60,7 @@ in
 
       # Work
       google-chrome
-      libreoffice
+      # libreoffice
 
       # Networking
       wireguard-go
