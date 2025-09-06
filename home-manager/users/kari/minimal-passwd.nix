@@ -249,7 +249,11 @@ in
             Destination = "192.168.1.0/24";
           }
         ];
-        dns = [ "172.16.16.1" ];
+        dns = [
+          "192.168.1.1" # pfsense
+          # "172.16.16.1" # vladof
+          "1.1.1.1" # cloudflare
+        ];
       };
       "99-dinar" = {
         matchConfig.Name = "dinar";
