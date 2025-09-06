@@ -212,7 +212,7 @@ in
         };
         wireguardConfig.PrivateKeyFile = config.age.secrets.wg-home.path;
         wireguardPeers = [{
-          PublicKey = "QwI/iYe1Iw/1UJQOBOWjJfhrv6G5poiFNiz33d0xdx8=";
+          PublicKey = "jRlrkYOWatx3pvJPt22uuWDiWJ8K9d+teJ2IEiMJ3SA=";
           AllowedIPs = [ "192.168.1.0/24" "172.16.16.0/24" ];
           Endpoint = [ "coditon.com:51820" ];
           PersistentKeepalive = 25;

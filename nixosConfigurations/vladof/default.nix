@@ -25,6 +25,7 @@ in
     ../.config/motd.nix
     ../.config/pipewire.nix
     ./nixie.nix
+    ./wireguard.nix
   ];
 
   # Saiko's automatic gc
