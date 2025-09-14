@@ -43,14 +43,6 @@
           ];
         }
       ];
-      kavita = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "kavita"; mode = "700"; what = "/var/lib/kavita"; }
-          ];
-        }
-      ];
       root = [
         {
           name = "secrets";

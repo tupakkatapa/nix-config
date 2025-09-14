@@ -6,14 +6,6 @@
 , ...
 }:
 let
-  # Private services access whitelist
-  authorizedIPs = [
-    "192.168.1.7"
-    "192.168.1.8"
-    "172.16.16.2"
-    "172.16.16.3"
-  ];
-
   # Quick service config
   servicesConfig = {
     transmission = {
@@ -78,6 +70,10 @@ let
   indexPage = import ./index.nix { inherit pkgs lib domain servicesConfig; };
 in
 {
+  imports = [
+    (import ./containers { inherit pkgs lib config domain dataDir servicesConfig; })
+  ];
+
   # Reverse proxy
   services.caddy = {
     enable = true;
@@ -101,16 +97,7 @@ in
           value = {
             extraConfig = ''
               tls ${selfSignedCert}/cert.pem ${selfSignedCert}/key.pem
-
-              @authorized {
-                remote_ip ${lib.concatStringsSep " " authorizedIPs}
-              }
-              handle @authorized {
-                reverse_proxy http://127.0.0.1:${toString service.port}
-              }
-              handle {
-                respond "Unauthorized" 403
-              }
+              reverse_proxy ${if name == "kavita" then "http://10.233.1.10" else "http://127.0.0.1"}:${toString service.port}
             '';
           };
         })
@@ -119,17 +106,8 @@ in
         "${servicesConfig.service-index.addr}" = {
           extraConfig = ''
             tls ${selfSignedCert}/cert.pem ${selfSignedCert}/key.pem
-
-            @authorized {
-              remote_ip ${lib.concatStringsSep " " authorizedIPs}
-            }
-            handle @authorized {
-              root * ${indexPage}
-              file_server
-            }
-            handle {
-              respond "Unauthorized" 403
-            }
+            root * ${indexPage}
+            file_server
           '';
         };
       };
@@ -261,13 +239,8 @@ in
     dataDir = "/var/lib/plex";
   };
 
-  # Kavita
-  services.kavita = {
-    enable = true;
-    dataDir = "/var/lib/kavita";
-    tokenKeyFile = config.age.secrets.kavita-token.path;
-    settings.Port = servicesConfig.kavita.port;
-  };
+  # Kavita - now running in container
+  # services.kavita moved to containers.nix
 
   # SearXNG
   services.searx = {
