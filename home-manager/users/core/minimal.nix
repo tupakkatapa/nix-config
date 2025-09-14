@@ -1,16 +1,19 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   user = "core";
+  optionalGroups = groups:
+    builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in
 {
   users.users."${user}" = {
     isNormalUser = true;
     group = user;
-    extraGroups = [
+    extraGroups = optionalGroups [
       "audio"
       "users"
       "video"
       "wheel"
+      "podman"
     ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEdpdbTOz0h9tVvkn13k1e8X7MnctH3zHRFmYWTbz9T kari@torgue"
