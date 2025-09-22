@@ -15,6 +15,7 @@
   imports = [
     ../.config/gaming-amd.nix
     ../.config/pipewire.nix
+    ../.config/podman.nix
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
     ./persistence.nix

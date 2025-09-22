@@ -1,16 +1,9 @@
-{ pkgs, config, lib, ... }: {
+{ config, lib, ... }: {
   networking.hostName = "bandit";
 
   # Podman
-  virtualisation.containers.enable = true;
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;
-    defaultNetwork.settings.dns_enabled = true;
-  };
-
-  environment.systemPackages = with pkgs; [
-    podman-compose
+  imports = [
+    ../.config/podman.nix
   ];
 
   # Disable firewall
