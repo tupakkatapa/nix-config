@@ -19,30 +19,6 @@
           ];
         }
       ];
-      vaultwarden = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "vaultwarden"; mode = "700"; what = "/var/lib/vaultwarden"; }
-          ];
-        }
-      ];
-      transmission = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "transmission"; mode = "700"; what = "/var/lib/transmission"; }
-          ];
-        }
-      ];
-      plex = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "plex"; mode = "700"; what = "/var/lib/plex"; }
-          ];
-        }
-      ];
       root = [
         {
           name = "secrets";

@@ -3,53 +3,68 @@
 , config
 , domain
 , dataDir
+, inputs
 , ...
 }:
 let
-  # Quick service config
-  servicesConfig = {
-    transmission = {
-      addr = "torrent.${domain}";
-      port = 9091;
-      private = true;
+  # Service and container configuration
+  containerSubnet = "10.233.1";
+  servicesConfig = lib.mapAttrs
+    (_name: service: service // {
+      localAddress = "${containerSubnet}.${toString service.lastOctet}";
+      hostAddress = "${containerSubnet}.1";
+    })
+    {
+      transmission = {
+        addr = "torrent.${domain}";
+        port = 9091;
+        private = true;
+        lastOctet = 12;
+        uid = 10003;
+      };
+      vaultwarden = {
+        addr = "vault.${domain}";
+        port = 8222;
+        private = true;
+        lastOctet = 11;
+        uid = 10002;
+      };
+      plex = {
+        addr = "plex.${domain}";
+        port = 32400;
+        private = false;
+        lastOctet = 14;
+        uid = 10005;
+      };
+      coditon-md = {
+        addr = "blog.${domain}";
+        port = 54783;
+        private = false;
+        lastOctet = 15;
+        uid = 10006;
+      };
+      service-index = {
+        addr = "index.${domain}";
+        port = 53654;
+        private = true;
+        lastOctet = 16;
+        uid = 10007;
+      };
+      kavita = {
+        addr = "lib.${domain}";
+        port = 37600;
+        private = true;
+        lastOctet = 10;
+        uid = 10001;
+      };
+      searx = {
+        addr = "search.${domain}";
+        port = 7777;
+        private = true;
+        lastOctet = 13;
+        uid = 10004;
+      };
     };
-    vaultwarden = {
-      addr = "vault.${domain}";
-      port = 8222;
-      private = true;
-    };
-    plex = {
-      addr = "plex.${domain}";
-      port = 32400;
-      private = false;
-    };
-    coditon-md = {
-      addr = "blog.${domain}";
-      port = 54783;
-      private = false;
-    };
-    service-index = {
-      addr = "index.${domain}";
-      port = 53654;
-      private = true;
-    };
-    kavita = {
-      addr = "lib.${domain}";
-      port = 37600;
-      private = true;
-    };
-    searx = {
-      addr = "search.${domain}";
-      port = 7777;
-      private = true;
-    };
-  };
-
-  # Define the derivation for blog contents
-  blogContents = pkgs.runCommand "blog-contents" { } ''
-    mkdir -p $out
-    cp -r ${./blog-contents}/* $out
-  '';
 
   # Filter for public and private services
   publicServices = lib.filterAttrs (_: service: !service.private) servicesConfig;
@@ -65,13 +80,10 @@ let
       -subj "/CN=*.${domain}" \
       -addext "subjectAltName = DNS:*.${domain}"
   '';
-
-  # Generate index page
-  indexPage = import ./index.nix { inherit pkgs lib domain servicesConfig; };
 in
 {
   imports = [
-    (import ./containers { inherit pkgs lib config domain dataDir servicesConfig; })
+    (import ./containers { inherit pkgs lib config domain dataDir servicesConfig containerSubnet inputs; })
   ];
 
   # Reverse proxy
@@ -85,7 +97,7 @@ in
           value = {
             useACMEHost = service.addr;
             extraConfig = ''
-              reverse_proxy http://127.0.0.1:${toString service.port}
+              reverse_proxy http://${service.localAddress}:${toString service.port}
             '';
           };
         })
@@ -97,7 +109,7 @@ in
           value = {
             extraConfig = ''
               tls ${selfSignedCert}/cert.pem ${selfSignedCert}/key.pem
-              reverse_proxy ${if name == "kavita" then "http://10.233.1.10" else "http://127.0.0.1"}:${toString service.port}
+              reverse_proxy http://${service.localAddress}:${toString service.port}
             '';
           };
         })
@@ -106,8 +118,11 @@ in
         "${servicesConfig.service-index.addr}" = {
           extraConfig = ''
             tls ${selfSignedCert}/cert.pem ${selfSignedCert}/key.pem
-            root * ${indexPage}
-            file_server
+            reverse_proxy https://${servicesConfig.service-index.localAddress}:${toString servicesConfig.service-index.port} {
+              transport http {
+                tls_insecure_skip_verify
+              }
+            }
           '';
         };
       };
@@ -145,6 +160,11 @@ in
         privateServices;
   };
 
+  # Ensure proper ACME certificate permissions
+  systemd.tmpfiles.rules = [
+    "Z /var/lib/acme 0755 acme acme - -"
+  ];
+
   # Firewall
   networking.firewall = {
     enable = true;
@@ -159,98 +179,10 @@ in
 
   # Secrets
   age.secrets = {
-    "vaultwarden-env".rekeyFile = ../secrets/vaultwarden-env.age;
     "acme-cf-dns-token" = {
       rekeyFile = ../secrets/acme-cf-dns-token.age;
       group = "acme";
       mode = "440";
     };
-    "kavita-token".rekeyFile = ../secrets/kavita-token.age;
-    "searx-env".rekeyFile = ../secrets/searx-env.age;
-  };
-
-  # Torrent
-  services.transmission = {
-    enable = true;
-    package = pkgs.transmission_4;
-    downloadDirPermissions = "0777";
-    openRPCPort = false;
-    home = "/var/lib/transmission";
-    settings = {
-      umask = 0;
-      download-dir = "${dataDir}/sftp/dnld";
-      incomplete-dir = "${dataDir}/sftp/dnld/.incomplete";
-      download-queue-enabled = false;
-      rpc-authentication-required = false;
-      rpc-bind-address = "127.0.0.1";
-      rpc-port = servicesConfig.transmission.port;
-      rpc-host-whitelist-enabled = false;
-      rpc-whitelist-enabled = false;
-    };
-  };
-  # Workaround for https://github.com/NixOS/nixpkgs/issues/258793
-  systemd.services.transmission = {
-    serviceConfig = {
-      RootDirectoryStartOnly = lib.mkForce false;
-      RootDirectory = lib.mkForce "";
-    };
-  };
-
-  # Vaultwarden
-  # https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
-  services.vaultwarden = {
-    enable = true;
-    dbBackend = "sqlite";
-    environmentFile = config.age.secrets.vaultwarden-env.path;
-    config = {
-      domain = "https://${servicesConfig.vaultwarden.addr}";
-      rocketPort = servicesConfig.vaultwarden.port;
-      rocketAddress = "127.0.0.1";
-      signupsAllowed = false;
-    };
-  };
-
-  # Blog
-  services.coditon-md = {
-    enable = true;
-    inherit (servicesConfig.coditon-md) port;
-    dataDir = "${blogContents}";
-    name = "Jesse Karjalainen";
-    image = "${blogContents}/profile.jpg";
-    links = [
-      {
-        fab = "fa-github";
-        url = "https://github.com/tupakkatapa";
-      }
-      {
-        fab = "fa-x-twitter";
-        url = "https://x.com/tupakkatapa";
-      }
-      {
-        fab = "fa-linkedin-in";
-        url = "https://www.linkedin.com/in/jesse-karjalainen-a7bb612b8/";
-      }
-    ];
-  };
-
-  # Plex (32400)
-  services.plex = {
-    enable = true;
-    dataDir = "/var/lib/plex";
-  };
-
-  # Kavita - now running in container
-  # services.kavita moved to containers.nix
-
-  # SearXNG
-  services.searx = {
-    enable = true;
-    package = pkgs.searxng;
-    settings.server = {
-      inherit (servicesConfig.searx) port;
-      bind_address = "127.0.0.1";
-      secret_key = "@SEARX_SECRET_KEY@";
-    };
-    environmentFile = config.age.secrets.searx-env.path; # SEARX_SECRET_KEY
   };
 }

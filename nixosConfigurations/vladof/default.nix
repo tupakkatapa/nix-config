@@ -1,6 +1,7 @@
 { pkgs
 , lib
 , config
+, inputs
 , ...
 }:
 let
@@ -9,7 +10,7 @@ let
   dataDir = "/mnt/wd-red";
 
   # Inherit global stuff for imports
-  extendedArgs = { inherit pkgs lib config domain dataDir; };
+  extendedArgs = { inherit pkgs lib config domain dataDir inputs; };
 in
 {
   age.rekey = {
@@ -41,7 +42,7 @@ in
     program = lib.concatStringsSep " \\\n\t" [
       "${config.home-manager.users."${user}".programs.firefox.package}/bin/firefox"
       "https://www.youtube.com"
-      "http://127.0.0.1:32400" # plex
+      "http://10.233.1.14:32400" # plex
     ];
     environment = {
       XKB_DEFAULT_LAYOUT = "fi";
