@@ -163,6 +163,7 @@ in
         "${mod} SHIFT, W, exec, pkill waybar; waybar & notify-send \"Waybar reloaded\""
         "${mod}, XF86AudioRaiseVolume, exec, ${notify.pipewire-out-switcher}"
         ", Print, exec, ${notify.screenshot} \"$HOME\""
+        "SUPER, Print, exec, ${notify.screenshot} \"$HOME\" fullscreen"
 
         # Window management
         "${mod}, D,     pseudo"

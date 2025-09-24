@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # https://askubuntu.com/a/871207/307523
 
-notify-send "Select a region"
-
 if [[ -z $1 ]]; then
   notify-send "Error: No path provided."
   exit 1
@@ -22,7 +20,14 @@ mkdir -p "$1"
 
 # Capturing the screenshot
 screenshot_path="$1/$(date +"Screenshot_%Y-%m-%d_%H-%M-%S.png")"
-grim -g "$(slurp)" "$screenshot_path"
+
+if [[ $2 == "fullscreen" ]]; then
+  notify-send "Took a fullscreen screenshot"
+  grim "$screenshot_path"
+else
+  notify-send "Select a region"
+  grim -g "$(slurp)" "$screenshot_path"
+fi
 
 notify-send "Screenshot saved in $1" \
   -h string:x-canonical-private-synchronous:anything
