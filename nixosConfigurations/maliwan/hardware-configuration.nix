@@ -42,7 +42,12 @@
       options = [ "subvol=home" "compress=zstd" ];
     };
 
-  swapDevices = [ ];
+  swapDevices = [
+    {
+      device = "/var/swapfile";
+      size = 16384; # 16GB swap file
+    }
+  ];
 
   powerManagement.cpuFreqGovernor = "performance";
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

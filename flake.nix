@@ -98,6 +98,7 @@
             inherit (inputs'.mozid.packages) mozid;
             inherit (inputs'.nixie.packages) lkddb-filter;
             inherit (inputs'.nixie.packages) pxe-generate;
+            inherit (inputs'.nixie.packages) refind-generate;
             inherit (inputs'.ping-sweep.packages) ping-sweep;
           };
         in
@@ -128,7 +129,9 @@
 
           # Development shell -> 'nix develop' or 'direnv allow'
           devenv.shells.default = {
-            packages = [ config.agenix-rekey.package ];
+            packages = [
+              config.agenix-rekey.package
+            ];
             env = {
               NIX_CONFIG = ''
                 accept-flake-config = true

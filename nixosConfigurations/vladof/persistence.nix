@@ -55,8 +55,9 @@
       neededForBoot = true;
     };
     "/mnt/boot" = {
-      device = "/dev/disk/by-uuid/C994-FCFD";
+      device = "/dev/disk/by-uuid/3C60-8E75";
       fsType = "vfat";
+      neededForBoot = false;
     };
   };
 
@@ -72,7 +73,7 @@
   services.refindGenerate = {
     enable = true;
     rollbacks.enable = true;
-    where = "/dev/disk/by-uuid/C994-FCFD";
+    where = "/dev/disk/by-uuid/3C60-8E75";
     flakeUrl = "github:tupakkatapa/nix-config";
     hosts = [ "vladof" "bandit" ];
     default = "vladof";
