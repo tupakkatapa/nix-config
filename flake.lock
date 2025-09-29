@@ -2338,11 +2338,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1756772347,
-        "narHash": "sha256-vNpGBpJyOM3pZ1NFTmwWrD/CN6HSpTbn2u+yGX8RVqk=",
+        "lastModified": 1759104054,
+        "narHash": "sha256-36KxUhNlTntexSb33OFyeRh5jPWgU11E5H8ox17C9nQ=",
         "ref": "jesse/dev31",
-        "rev": "d6a3ef7bf846f56783e042d469f405d39c4c8d75",
-        "revCount": 29,
+        "rev": "71ba594817cf21be145de58721c6dbe1ddd9f582",
+        "revCount": 35,
         "type": "git",
         "url": "ssh://git@github.com/majbacka-labs/nixie"
       },
@@ -2638,16 +2638,16 @@
     },
     "nixpkgs_17": {
       "locked": {
-        "lastModified": 1742422364,
-        "narHash": "sha256-mNqIplmEohk5jRkqYqG19GA8MbQ/D4gQSK0Mu4LvfRQ=",
+        "lastModified": 1758791193,
+        "narHash": "sha256-F8WmEwFoHsnix7rt290R0rFXNJiMbClMZyIC/e+HYf0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a84ebe20c6bc2ecbcfb000a50776219f48d134cc",
+        "rev": "25e53aa156d47bad5082ff7618f5feb1f5e02d01",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-unstable",
+        "ref": "nixos-25.05",
         "repo": "nixpkgs",
         "type": "github"
       }

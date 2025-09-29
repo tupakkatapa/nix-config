@@ -57,7 +57,6 @@
     "/mnt/boot" = {
       device = "/dev/disk/by-uuid/3C60-8E75";
       fsType = "vfat";
-      neededForBoot = false;
     };
   };
 
