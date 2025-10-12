@@ -72,7 +72,7 @@
     hostName = "torgue";
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 80 ]; # magic port
+      allowedTCPPorts = [ 8080 ]; # magic port
     };
     useDHCP = false;
     wireless.enable = true;
