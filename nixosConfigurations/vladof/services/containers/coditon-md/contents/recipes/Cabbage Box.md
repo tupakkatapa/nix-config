@@ -28,6 +28,6 @@ A traditional Finnish cabbage casserole that people either love or hate. Cabbage
 2. Heat and simmer covered until tender, about 10 minutes.
 3. Finely chop the onion. Brown the onion and ground beef, season with salt, garlic powder, and pepper.
 4. Mix the ground beef-onion mixture and raw rice into the cabbage.
-5. Pour mixture into a greased oven dish. Add heavy cream and water if needed.
-6. Bake in the lower/middle part of oven at 175°C for about 1½ hours.
+5. Pour mixture into an oven dish. Add the cream and water if needed.
+6. Bake in the lower/middle part of the oven at 175°C for about 1½ hours.
 

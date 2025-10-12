@@ -12,7 +12,7 @@ Skills from my point of view (rated on a scale from 1 to 5): Bash (4), iPXE (4),
 
 - **Mill Hill Garage Oy**
 
-  Software Engineer, June 2025 -
+  Software & Cloud Engineer, June 2025 -
 
   We're developing an agentic Human-in-the-Loop (HITL) generative AI system that helps US real estate appraisers generate UAD 3.6-compliant reports more efficiently. I specialize in cloud infrastructure and the appraisal platform.
 
