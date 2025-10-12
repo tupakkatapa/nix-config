@@ -311,11 +311,11 @@
         "playwright": "playwright"
       },
       "locked": {
-        "lastModified": 1757196408,
-        "narHash": "sha256-f8qqAkkAsvaY+vqWOdAKlnL7WfI5sRar0LyahYU2aBw=",
+        "lastModified": 1760296869,
+        "narHash": "sha256-P3gxiiXSSsrP5vaxrRmbC0HGk6G9bZO0UZwOu5HjDNI=",
         "owner": "tupakkatapa",
         "repo": "coditon-md",
-        "rev": "be55dd23328a2e21b46b7c8144da1ac5f7e2fedc",
+        "rev": "eb17e26d7856832fafb0fb6798e420c8f8915f1d",
         "type": "github"
       },
       "original": {
