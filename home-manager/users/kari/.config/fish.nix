@@ -48,7 +48,7 @@ in
       grep = "grep --color=auto";
 
       # Utils
-      lsd = "du -Lhc --max-depth=0 ./* | sort -h";
+      lsd = "du -Lhc --max-depth=0 $(ls -A) | sort -h";
       rpg = "shuf -i 1024-65535 -n 1";
       wlc = "wl-copy --type text/plain";
       jctl = "journalctl -p 3 -xb";
