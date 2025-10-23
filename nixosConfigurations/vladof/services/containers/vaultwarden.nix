@@ -28,10 +28,14 @@
         dbBackend = "sqlite";
         environmentFile = "/etc/vaultwarden-env";
         config = {
+          # Example: https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
+          # Defaults: https://github.com/dani-garcia/vaultwarden/blob/main/src/config.rs
           domain = "https://${servicesConfig.vaultwarden.addr}";
           rocketPort = servicesConfig.vaultwarden.port;
           rocketAddress = "0.0.0.0";
           signupsAllowed = false;
+          showPasswordHint = false;
+          experimentalClientFeatureFlags = "fido2-vault-credentials,ssh-key-vault-item,ssh-agent";
         };
       };
 
