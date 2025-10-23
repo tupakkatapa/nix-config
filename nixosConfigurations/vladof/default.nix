@@ -46,6 +46,7 @@ in
     ];
     environment = {
       XKB_DEFAULT_LAYOUT = "fi";
+      HOME = "/home/${user}";
     };
   };
   systemd.services.cage-tty1 = {
