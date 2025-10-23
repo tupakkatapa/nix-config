@@ -10,14 +10,14 @@ date: "2024-05-07"
 
 *Serves 6, 70 min*
 
-This easy banana bread recipe is perfect for using up those overripe bananas that nobody wants to eat. It's not too sweet and can be customized with your favorite additions like nuts, dried fruit, or chocolate chips. A stable recipe for a nice treat lasting a couple of days.
+This easy banana bread recipe is perfect for using up those overripe bananas that nobody wants to eat. It's not too sweet either, and leaving it a bit undercooked in the middle gives some cookie dough vibes. It's a reliable recipe for a nice treat that lasts a couple of days.
 
 ## Ingredients
 - Overripe bananas: 3
 - Butter: 75g, melted
 - Baking soda: 1 tsp
 - Salt: 1/4 tsp
-- Sugar: 1.5 dl
+- Sugar: 2 dl
 - Eggs: 2
 - Vanilla sugar: 1 tsp
 - Cinnamon: 1 tsp
