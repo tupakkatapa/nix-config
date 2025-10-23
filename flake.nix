@@ -95,7 +95,6 @@
             "notify-volume" = pkgs.callPackage ./packages/notify-scripts/notify-volume { };
             # Inputs
             inherit (inputs'.levari.packages) levari;
-            inherit (inputs'.mozid.packages) mozid;
             inherit (inputs'.nixie.packages) lkddb-filter;
             inherit (inputs'.nixie.packages) pxe-generate;
             inherit (inputs'.nixie.packages) refind-generate;
@@ -221,6 +220,7 @@
                   extraSpecialArgs = {
                     inherit (config.networking) hostName;
                     inherit customLib;
+                    inherit (inputs) mozid;
                     unstable = import inputs.nixpkgs-unstable {
                       system = config.system or "x86_64-linux";
                       config.allowUnfree = true;

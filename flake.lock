@@ -2016,11 +2016,11 @@
         "nixpkgs": "nixpkgs_11"
       },
       "locked": {
-        "lastModified": 1730228609,
-        "narHash": "sha256-gWYuEe5LnJYlAO/+qt34qiMZxebog6kYzaBCcXYLyUo=",
+        "lastModified": 1761255223,
+        "narHash": "sha256-P0aQbYn0MMGJ2ABY4Nd1SL7vkd690eYkYAfTvrpiD7A=",
         "owner": "tupakkatapa",
         "repo": "mozid",
-        "rev": "7a06adf5c8e2b050713f211a8928c907a4c38666",
+        "rev": "644b023836c369aa569d321f1f8d0d6d3a4f7cb5",
         "type": "github"
       },
       "original": {

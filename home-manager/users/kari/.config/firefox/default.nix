@@ -2,6 +2,7 @@
 , pkgs
 , config
 , customLib
+, mozid
 , ...
 }:
 let
@@ -19,19 +20,9 @@ in
     enable = true;
     package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
       extraPolicies.ExtensionSettings =
-        {
-          # Block non-declarative installing
-          "*".installation_mode = "blocked";
-        }
-        // lib.listToAttrs (map
-          (extension: {
-            name = extension.uuid;
-            value = {
-              install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${extension.shortId}/latest.xpi";
-              installation_mode = "force_installed";
-            };
-          })
-          (import ./extensions.nix));
+        { "*".installation_mode = "blocked"; }
+        # https://github.com/tupakkatapa/mozid
+        // mozid.lib.mkExtensions (import ./extensions.nix);
     };
 
     profiles.personal = {
