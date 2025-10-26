@@ -64,6 +64,13 @@ let
         lastOctet = 13;
         uid = 10004;
       };
+      nextcloud = {
+        addr = "next.${domain}";
+        port = 18842;
+        private = true;
+        lastOctet = 17;
+        uid = 10008;
+      };
     };
 
   # Filter for public and private services

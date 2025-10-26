@@ -16,6 +16,7 @@
             { name = "Vaultwarden"; url = "https://vault.coditon.com"; }
             { name = "Kavita"; url = "https://lib.coditon.com"; }
             { name = "Search"; url = "https://search.coditon.com"; }
+            { name = "Nextcloud"; url = "https://next.coditon.com"; }
           ];
         }
         {
