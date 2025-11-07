@@ -7,26 +7,36 @@
   };
 
   imports = [
+    ../.config/gaming-amd.nix
     ../.config/pipewire.nix
+    ../.config/podman.nix
     ../.config/tuigreet-hypr.nix
     ../.config/yubikey.nix
-    ./hardware-configuration.nix
+    ./persistence.nix
   ];
 
-  # Bootloader for x86_64-linux / aarch64-linux
-  boot.loader.systemd-boot = {
-    enable = true;
-    configurationLimit = 10;
-  };
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Saiko's automatic gc
+  sys2x.gc.useDiskAware = true;
 
   # https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;
 
+  # Enable ADB for android development
+  programs.adb.enable = true;
+
+  # Required if swaylock is installed via home-manager
+  security.pam.services.swaylock = { };
+
+  # Required for automounting
+  services.udisks2.enable = true;
+
   # Connectivity
   networking = {
     hostName = "maliwan";
-    firewall.enable = false;
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 8080 ]; # magic port
+    };
     useDHCP = false;
     wireless.enable = true;
   };
@@ -36,7 +46,7 @@
     networks = {
       "10-wan" = {
         linkConfig.RequiredForOnline = "routable";
-        matchConfig.Name = [ "enp2s0" "wlp3s0" ];
+        matchConfig.Name = [ "enp195s0f0" "wlp194s0" ];
         networkConfig = {
           DHCP = "ipv4";
           IPv6AcceptRA = true;
@@ -45,4 +55,5 @@
     };
   };
   hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = false;
 }
