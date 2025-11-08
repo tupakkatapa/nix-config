@@ -28,7 +28,7 @@
   security.pam.services.swaylock = { };
 
   # Required for automounting
-  services.udisks2.enable = true;
+  # services.udisks2.enable = true;
 
   # Connectivity
   networking = {
