@@ -147,6 +147,8 @@ in
                   value = {
                     device = "${cfg.dataDir}/home/${user}/${cat.name}/${dir.name}";
                     options = [ "bind" "mode=${dir.mode}" ];
+                    depends = [ cfg.dataDir ];
+                    neededForBoot = true;
                     noCheck = true;
                   };
                 })
