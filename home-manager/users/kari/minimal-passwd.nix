@@ -198,6 +198,7 @@ in
   networking.wireless = {
     networks = {
       "OP9".pskRaw = "ext:psk_op9";
+      "Pixel_1253".pskRaw = "ext:psk_op9";
     };
     secretsFile = config.age.secrets.wpa-psk.path;
   };
