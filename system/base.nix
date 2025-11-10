@@ -35,5 +35,9 @@
     tmux
     vim
     wget
+    curl
+    pciutils
+    lsof
+    dig
   ];
 }
