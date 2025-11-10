@@ -44,7 +44,6 @@ in
           dirs = [
             { name = "gnupg"; mode = "700"; what = "/home/kari/.gnupg"; }
             { name = "yubico"; mode = "755"; what = "/home/kari/.config/Yubico"; }
-            { name = "ssh"; mode = "700"; what = "/home/kari/.ssh"; }
           ];
         }
         {
@@ -96,6 +95,5 @@ in
     "d /home/kari/.config 755 kari kari -"
     "d /home/kari/.local 755 kari kari -"
     "d /home/kari/.local/share 755 kari kari -"
-    "d /home/kari/.ssh 700 kari kari -"
   ];
 }
