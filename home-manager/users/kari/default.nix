@@ -68,6 +68,7 @@ in
     ]) ++
     (with unstable; [
       claude-code
+      gemini-cli
     ]);
   };
 }
