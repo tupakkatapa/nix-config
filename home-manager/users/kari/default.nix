@@ -53,6 +53,7 @@ in
       monitor-adjust
       discord
       guitarix
+      gxplugins-lv2
 
       # chromium
       # rpi-imager
