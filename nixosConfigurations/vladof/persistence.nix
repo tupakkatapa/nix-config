@@ -84,5 +84,6 @@
     "d /mnt/boot          755 root root -"
     "d ${dataDir}/backups  700 root root -"
     "d ${dataDir}/sftp     755 root root -"
+    "d ${dataDir}/store    755 root root -"
   ];
 }

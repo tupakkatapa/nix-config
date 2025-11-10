@@ -90,6 +90,7 @@ in
   systemd.tmpfiles.rules = [
     "d /mnt/boot          755 root root -"
     "d /mnt/sftp          755 root root -"
+    "d ${dataDir}/store   755 root root -"
 
     # Ephemeral directories for users
     "d /home/kari/.config 755 kari kari -"
