@@ -58,6 +58,7 @@
     mozid.url = "github:tupakkatapa/mozid";
     ping-sweep.url = "github:tupakkatapa/ping-sweep";
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
+    codex-cli-nix.url = "github:sadjow/codex-cli-nix";
   };
 
   outputs = { self, ... }@inputs:
@@ -84,6 +85,7 @@
             "pinit" = pkgs.callPackage ./packages/pinit { };
             "pipewire-out-switcher" = pkgs.callPackage ./packages/pipewire-out-switcher { };
             "tt-utils" = pkgs.callPackage ./packages/tt-utils { };
+            "wifi-connect" = pkgs.callPackage ./packages/wifi-connect { };
             # Wofi scripts
             "dm-pipewire-out-switcher" = pkgs.callPackage ./packages/wofi-scripts/dm-pipewire-out-switcher { };
             "dm-radio" = pkgs.callPackage ./packages/wofi-scripts/dm-radio { };
@@ -99,6 +101,7 @@
             inherit (inputs'.nixie.packages) pxe-generate;
             inherit (inputs'.nixie.packages) refind-generate;
             inherit (inputs'.ping-sweep.packages) ping-sweep;
+            inherit (inputs'.codex-cli-nix.packages) codex;
           };
         in
         {

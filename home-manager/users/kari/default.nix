@@ -66,11 +66,12 @@ in
       # Networking
       wireguard-go
       wireguard-tools
+
+      codex
     ]) ++
     (with unstable; [
       claude-code
       gemini-cli
-      codex
     ]);
   };
 }
