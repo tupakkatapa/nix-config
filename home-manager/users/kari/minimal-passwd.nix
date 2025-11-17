@@ -172,7 +172,7 @@ in
     # Signing commits
     programs.git = {
       signing.key = "A3B346665514836DCE851842A2429183508FCEFF";
-      signing.signByDefault = true;
+      signing.signByDefault = if config.networking.hostName == "maliwan" then false else true;
       userEmail = "jesse@ponkila.com";
       userName = "Jesse Karjalainen";
       extraConfig.sendemail = {

@@ -2,6 +2,7 @@
 { pkgs
 , customLib
 , unstable
+, config
 , ...
 }:
 let
@@ -45,9 +46,10 @@ in
     };
 
     # Auto-start floating terminal with SFTP mount on login
-    wayland.windowManager.hyprland.settings.exec-once = [
-      "foot -e $SHELL -c 'echo \"\\$ sudo sftp-mount\" && sudo sftp-mount && sleep 1 || read -p \"Press enter to continue..\"'"
-    ];
+    wayland.windowManager.hyprland.settings.exec-once =
+      if config.networking.hostName != "maliwan" then [
+        "foot -e $SHELL -c 'echo \"\\$ sudo sftp-mount\" && sudo sftp-mount && sleep 1 || read -p \"Press enter to continue..\"'"
+      ] else [ ];
 
     home.packages = (with pkgs; [
       monitor-adjust
