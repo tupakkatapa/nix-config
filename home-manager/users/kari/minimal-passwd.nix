@@ -178,6 +178,7 @@ in
       extraConfig.sendemail = {
         smtpserver = "${pkgs.msmtp}/bin/msmtp";
       };
+      lfs.enable = true;
     };
     programs.gpg = {
       enable = true;
