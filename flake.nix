@@ -85,7 +85,6 @@
             "pinit" = pkgs.callPackage ./packages/pinit { };
             "pipewire-out-switcher" = pkgs.callPackage ./packages/pipewire-out-switcher { };
             "tt-utils" = pkgs.callPackage ./packages/tt-utils { };
-            "wifi-connect" = pkgs.callPackage ./packages/wifi-connect { };
             # Wofi scripts
             "dm-pipewire-out-switcher" = pkgs.callPackage ./packages/wofi-scripts/dm-pipewire-out-switcher { };
             "dm-radio" = pkgs.callPackage ./packages/wofi-scripts/dm-radio { };
