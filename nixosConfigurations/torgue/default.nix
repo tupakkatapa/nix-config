@@ -53,10 +53,10 @@
   programs.dconf.enable = true;
 
   # Wireless VR Streaming
-  programs.alvr = {
-    enable = true;
-    openFirewall = true;
-  };
+  # programs.alvr = {
+  #   enable = true;
+  #   openFirewall = true;
+  # };
 
   # Enable ADB for android development
   programs.adb.enable = true;
