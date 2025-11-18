@@ -53,7 +53,7 @@ in
 
     home.packages = (with pkgs; [
       monitor-adjust
-      # discord
+      discord
       guitarix
       gxplugins-lv2
 
