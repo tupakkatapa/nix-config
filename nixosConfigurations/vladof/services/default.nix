@@ -22,6 +22,13 @@ let
         lastOctet = 18;
         uid = 10009;
       };
+      radicale = {
+        addr = "dav.${domain}";
+        port = 5232;
+        private = true;
+        lastOctet = 17;
+        uid = 10008;
+      };
       transmission = {
         addr = "torrent.${domain}";
         port = 9091;
@@ -70,13 +77,6 @@ let
         private = true;
         lastOctet = 13;
         uid = 10004;
-      };
-      nextcloud = {
-        addr = "next.${domain}";
-        port = 18842;
-        private = true;
-        lastOctet = 17;
-        uid = 10008;
       };
     };
 
