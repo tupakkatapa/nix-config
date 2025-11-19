@@ -15,6 +15,13 @@ let
       hostAddress = "${containerSubnet}.1";
     })
     {
+      ollama = {
+        addr = "chat.${domain}";
+        port = 11444;
+        private = true;
+        lastOctet = 18;
+        uid = 10009;
+      };
       transmission = {
         addr = "torrent.${domain}";
         port = 9091;

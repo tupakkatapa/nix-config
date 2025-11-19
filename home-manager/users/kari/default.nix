@@ -69,6 +69,7 @@ in
       wireguard-go
       wireguard-tools
 
+      oterm
       codex
     ]) ++
     (with unstable; [

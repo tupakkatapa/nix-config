@@ -76,6 +76,7 @@ in
     (import ./vaultwarden.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
     (import ./transmission.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
     (import ./searx.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
+    (import ./ollama.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
     (import ./plex.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
     (import ./nextcloud.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
     (import ./coditon-md { inherit config lib pkgs domain dataDir servicesConfig inputs globalContainerConfig; })

@@ -21,10 +21,16 @@
       services.searx = {
         enable = true;
         package = pkgs.searxng;
-        settings.server = {
-          inherit (servicesConfig.searx) port;
-          bind_address = "0.0.0.0";
-          secret_key = "@SEARX_SECRET_KEY@";
+        settings = {
+          server = {
+            inherit (servicesConfig.searx) port;
+            bind_address = "0.0.0.0";
+            secret_key = "@SEARX_SECRET_KEY@";
+          };
+          search.formats = [
+            "html"
+            "json"
+          ];
         };
         environmentFile = "/etc/searx-env";
       };
