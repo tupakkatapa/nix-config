@@ -57,13 +57,6 @@ let
         lastOctet = 15;
         uid = 10006;
       };
-      service-index = {
-        addr = "index.${domain}";
-        port = 53654;
-        private = true;
-        lastOctet = 16;
-        uid = 10007;
-      };
       kavita = {
         addr = "lib.${domain}";
         port = 37600;
@@ -94,6 +87,9 @@ let
       -subj "/CN=*.${domain}" \
       -addext "subjectAltName = DNS:*.${domain}"
   '';
+
+  # Generate index page
+  indexPage = import ./index.nix { inherit pkgs lib domain servicesConfig; };
 in
 {
   imports = [
@@ -115,7 +111,7 @@ in
             '';
           };
         })
-        (lib.filterAttrs (name: _: name != "service-index") publicServices)
+        publicServices
       # Private services with self-signed certs
       // lib.mapAttrs'
         (name: service: {
@@ -127,16 +123,13 @@ in
             '';
           };
         })
-        (lib.filterAttrs (name: _: name != "service-index") privateServices)
+        privateServices
       // {
-        "${servicesConfig.service-index.addr}" = {
+        "index.${domain}" = {
           extraConfig = ''
             tls ${selfSignedCert}/cert.pem ${selfSignedCert}/key.pem
-            reverse_proxy https://${servicesConfig.service-index.localAddress}:${toString servicesConfig.service-index.port} {
-              transport http {
-                tls_insecure_skip_verify
-              }
-            }
+            root * ${indexPage}
+            file_server
           '';
         };
       };
@@ -157,21 +150,13 @@ in
       reloadServices = [ "caddy.service" ];
     };
     certs =
-      # Public services with ACME certs from Let's Encrypt
+      # ACME certs from Let's Encrypt
       lib.mapAttrs'
         (name: service: {
           name = service.addr;
           value = { };
         })
-        publicServices
-      // lib.mapAttrs'
-        (name: service: {
-          name = service.addr;
-          value = {
-            server = null; # This tells ACME to generate self-signed certificates
-          };
-        })
-        privateServices;
+        publicServices;
   };
 
   # Ensure proper ACME certificate permissions
@@ -188,6 +173,7 @@ in
         80
         443
         8080 # magic port
+        53654 # index
       ];
   };
 

@@ -8,17 +8,6 @@
 , ...
 }:
 let
-  # Generate self-signed cert for service index at host level
-  selfSignedCert = pkgs.runCommand "self-signed-cert"
-    {
-      buildInputs = [ pkgs.openssl ];
-    } ''
-    mkdir -p $out
-    openssl req -x509 -newkey rsa:4096 -keyout $out/key.pem -out $out/cert.pem -days 3650 -nodes \
-      -subj "/CN=*.${domain}" \
-      -addext "subjectAltName = DNS:*.${domain}"
-  '';
-
   # Global container settings with user creation
   globalContainerConfig = serviceName: {
     system.stateVersion = "24.11";
@@ -80,7 +69,6 @@ in
     (import ./plex.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
     (import ./radicale.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
     (import ./coditon-md { inherit config lib pkgs domain dataDir servicesConfig inputs globalContainerConfig; })
-    (import ./index { inherit config lib pkgs domain dataDir servicesConfig globalContainerConfig; inherit selfSignedCert; })
   ];
   boot.enableContainers = true;
 
