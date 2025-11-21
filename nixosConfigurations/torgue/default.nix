@@ -34,10 +34,6 @@
         name = "retroarch";
         path = ../.config/retroarch.nix;
       }
-      {
-        name = "ollama";
-        path = ./ollama.nix;
-      }
     ];
   };
 
