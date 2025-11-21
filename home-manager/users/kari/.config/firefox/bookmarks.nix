@@ -9,8 +9,10 @@
           name = "Self-Hosted";
           bookmarks = [
             { name = "Pfsense"; url = "https://192.168.1.1:10443"; }
+            { name = "Radicale"; url = "https://dav.coditon.com/"; }
             { name = "Plex"; url = "https://plex.coditon.com"; }
             { name = "Torrent"; url = "https://torrent.coditon.com"; }
+            { name = "Ollama"; url = "https://chat.coditon.com/"; }
             { name = "Blog"; url = "https://blog.coditon.com"; }
             { name = "Index"; url = "https://index.coditon.com"; }
             { name = "Vaultwarden"; url = "https://vault.coditon.com"; }
@@ -25,6 +27,7 @@
             { name = "Outlook"; url = "https://outlook.live.com/mail"; }
             { name = "Ponkila Mail"; url = "https://mail.ponkila.com/"; }
             { name = "Protonmail"; url = "https://account.proton.me/mail"; }
+            { name = "Gmail"; url = "https://mail.google.com/"; }
           ];
         }
         {
@@ -34,6 +37,7 @@
             { name = "Discord"; url = "https://discord.com/app"; }
             { name = "Telegram"; url = "https://web.telegram.org/"; }
             { name = "Element"; url = "https://app.element.io/"; }
+            { name = "Slack"; url = "https://app.slack.com/"; }
           ];
         }
         {
@@ -44,6 +48,17 @@
             { name = "Spaceship"; url = "https://www.spaceship.com/"; }
             { name = "Domaincompare"; url = "https://www.domaincompare.io/"; }
             { name = "GoDaddy"; url = "https://www.godaddy.com/"; }
+          ];
+        }
+        {
+          name = "Google";
+          bookmarks = [
+            { name = "Drive"; url = "https://drive.google.com/"; }
+            { name = "Calendar"; url = "https://calendar.google.com/"; }
+            { name = "Gmail"; url = "https://mail.google.com/"; }
+            { name = "Cloud Console"; url = "https://console.cloud.google.com/"; }
+            { name = "Admin"; url = "https://admin.google.com/"; }
+            { name = "Gemini"; url = "https://gemini.google.com/"; }
           ];
         }
       ];
@@ -83,6 +98,7 @@
             { name = "Flake Parts"; url = "https://flake.parts/"; }
             { name = "Nixvim docs"; url = "https://nix-community.github.io/nixvim/"; }
             { name = "Nix (builtins) & Nixpkgs (lib) Functions"; url = "https://teu5us.github.io/nix-lib.html"; }
+            { name = "Zero to Nix"; url = "https://zero-to-nix.com/"; }
           ];
         }
         {
@@ -108,6 +124,10 @@
             { name = "Radicle"; url = "https://radicle.xyz/"; }
             { name = "Oxide Computer"; url = "https://oxide.computer/"; }
             { name = "Netdata"; url = "https://www.netdata.cloud/"; }
+            { name = "Pulumi"; url = "https://www.pulumi.com/"; }
+            { name = "Doppler"; url = "https://www.doppler.com/"; }
+            { name = "n8n"; url = "https://n8n.io/"; }
+            { name = "RunPod"; url = "https://www.runpod.io/"; }
           ];
         }
         {
@@ -191,6 +211,14 @@
       name = "Tools";
       bookmarks = [
         {
+          name = "Collab";
+          bookmarks = [
+            { name = "Notion"; url = "https://www.notion.com/"; }
+            { name = "Miro"; url = "https://miro.com"; }
+            { name = "Linear"; url = "https://linear.app/"; }
+          ];
+        }
+        {
           name = "Privacy";
           bookmarks = [
             { name = "Temp-num"; url = "https://quackr.io/temporary-numbers"; }
@@ -270,6 +298,23 @@
     {
       name = "Finance";
       bookmarks = [
+        {
+          name = "Banking & Money";
+          bookmarks = [
+            { name = "Wise"; url = "https://wise.com/"; }
+            { name = "Danske Bank"; url = "https://danskebank.com/"; }
+            { name = "OP"; url = "https://www.op.fi/"; }
+            { name = "Rotki"; url = "https://rotki.com/"; }
+          ];
+        }
+        {
+          name = "Bills & Utilities";
+          bookmarks = [
+            { name = "DNA"; url = "https://www.dna.fi/"; }
+            { name = "Oomi"; url = "https://oomi.fi/"; }
+            { name = "Vero"; url = "https://vero.fi"; }
+          ];
+        }
         {
           name = "Markets";
           bookmarks = [
