@@ -22,7 +22,8 @@
         enable = true;
         package = pkgs.ollama;
         openFirewall = true;
-        port = 11434;
+        inherit (servicesConfig.ollama) port;
+        host = "0.0.0.0";
         acceleration = false;
         loadModels = [
           # https://ollama.com/library

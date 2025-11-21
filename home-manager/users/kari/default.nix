@@ -33,6 +33,11 @@ in
     };
     xdg.configFile."mimeapps.list".force = true;
 
+    # Environment variables
+    home.sessionVariables = {
+      OLLAMA_URL = "https://chat.coditon.com/";
+    };
+
     # Custom desktop entry for opening files in nvim via terminal
     home.file."nvim.desktop" = {
       target = ".local/share/applications/nvim.desktop";
