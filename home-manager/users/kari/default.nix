@@ -53,7 +53,6 @@ in
 
     home.packages = (with pkgs; [
       monitor-adjust
-      discord
       guitarix
       gxplugins-lv2
 
@@ -62,7 +61,6 @@ in
       # appimage-run
 
       # Work
-      google-chrome
       # libreoffice
 
       # Networking

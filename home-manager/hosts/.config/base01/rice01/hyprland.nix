@@ -77,7 +77,7 @@ in
 
       # Open programs on spesific workspaces
       "[workspace 4 silent] ${BROWSER} https://web.whatsapp.com https://web.telegram.org/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
-      "[workspace 5 silent] ${pkgs.google-chrome}/bin/google-chrome-stable https://app.slack.com/client https://mail.google.com/mail https://calendar.google.com/calendar https://drive.google.com/drive/home"
+      "[workspace 5 silent] ${BROWSER} https://app.slack.com/client https://mail.google.com/mail https://calendar.google.com/calendar https://drive.google.com/drive/home https://www.notion.so/"
     ];
 
     # Window behiavior
