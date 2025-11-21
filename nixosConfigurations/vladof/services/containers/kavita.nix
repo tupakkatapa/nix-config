@@ -4,6 +4,9 @@
 , globalContainerConfig
 , ...
 }:
+let
+  uid = builtins.toString servicesConfig.kavita.uid;
+in
 {
   containers.kavita = {
     autoStart = true;
@@ -41,4 +44,9 @@
       };
     };
   };
+
+  # Ensure host directories for the bind mount exist
+  systemd.tmpfiles.rules = [
+    "d ${dataDir}/home/kavita/appdata/kavita 755 ${uid} ${uid} -"
+  ];
 }

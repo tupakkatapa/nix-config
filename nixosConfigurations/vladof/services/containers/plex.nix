@@ -3,6 +3,9 @@
 , globalContainerConfig
 , ...
 }:
+let
+  uid = builtins.toString servicesConfig.plex.uid;
+in
 {
   containers.plex = {
     autoStart = true;
@@ -56,4 +59,9 @@
       };
     };
   };
+
+  # Ensure host directories for the bind mount exist
+  systemd.tmpfiles.rules = [
+    "d ${dataDir}/home/plex/appdata/plex 755 ${uid} ${uid} -"
+  ];
 }

@@ -2,6 +2,7 @@
 , servicesConfig
 , inputs
 , globalContainerConfig
+, dataDir
 , ...
 }:
 let
@@ -10,6 +11,7 @@ let
     mkdir -p $out
     cp -r ${./contents}/* $out
   '';
+  uid = builtins.toString servicesConfig.coditon-md.uid;
 in
 {
   containers.coditon-md = {
@@ -58,4 +60,9 @@ in
       };
     };
   };
+
+  # Ensure host directories for potential writable state exist
+  systemd.tmpfiles.rules = [
+    "d ${dataDir}/home/coditon-md/appdata 755 ${uid} ${uid} -"
+  ];
 }

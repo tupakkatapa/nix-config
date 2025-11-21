@@ -3,6 +3,9 @@
 , globalContainerConfig
 , ...
 }:
+let
+  uid = builtins.toString servicesConfig.radicale.uid;
+in
 {
   containers.radicale = {
     autoStart = true;
@@ -33,5 +36,9 @@
       };
     };
   };
-}
 
+  # Ensure host directories for the bind mount exist
+  systemd.tmpfiles.rules = [
+    "d ${dataDir}/home/radicale/appdata/radicale 755 ${uid} ${uid} -"
+  ];
+}

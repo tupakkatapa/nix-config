@@ -3,6 +3,9 @@
 , globalContainerConfig
 , ...
 }:
+let
+  uid = builtins.toString servicesConfig.ollama.uid;
+in
 {
   containers.ollama = {
     autoStart = true;
@@ -33,6 +36,9 @@
       };
     };
   };
+
+  # Ensure host directories for the bind mount exist
+  systemd.tmpfiles.rules = [
+    "d ${dataDir}/home/ollama/appdata/ollama/models 755 ${uid} ${uid} -"
+  ];
 }
-
-

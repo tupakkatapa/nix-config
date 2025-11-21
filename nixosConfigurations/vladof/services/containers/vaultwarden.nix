@@ -4,6 +4,9 @@
 , globalContainerConfig
 , ...
 }:
+let
+  uid = builtins.toString servicesConfig.vaultwarden.uid;
+in
 {
   containers.vaultwarden = {
     autoStart = true;
@@ -45,4 +48,9 @@
       };
     };
   };
+
+  # Ensure host directories for the bind mount exist
+  systemd.tmpfiles.rules = [
+    "d ${dataDir}/home/vaultwarden/appdata/vaultwarden  755 ${uid} ${uid} -"
+  ];
 }
