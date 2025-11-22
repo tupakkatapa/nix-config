@@ -50,11 +50,17 @@ in
       '';
     };
 
-    # Auto-start floating terminal with SFTP mount on login
+    # Use spesific startup
     wayland.windowManager.hyprland.settings.exec-once =
-      if config.networking.hostName != "maliwan" then [
+      [
+        # Open programs on specific workspaces
+        "[workspace 4 silent] $BROWSER web.whatsapp.com web.telegram.org discord.com/channels/@me outlook.live.com"
+        "[workspace 5 silent] $BROWSER app.slack.com/client mail.google.com calendar.google.com drive.google.com www.notion.so"
+      ]
+      ++ (if config.networking.hostName != "maliwan" then [
+        # Open terminal with SFTP mount on login
         "foot -e $SHELL -c 'echo \"\\$ sudo sftp-mount\" && sudo sftp-mount && sleep 1 || read -p \"Press enter to continue..\"'"
-      ] else [ ];
+      ] else [ ]);
 
     home.packages = (with pkgs; [
       monitor-adjust

@@ -5,7 +5,7 @@
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) BROWSER THEME;
+  inherit (config.home.sessionVariables) THEME;
   colors = customLib.colors.${THEME};
   rice = import ./config.nix { inherit customLib config; };
   swaybg = "${pkgs.swaybg}/bin/swaybg";
@@ -74,10 +74,6 @@ in
       "${swaybg} -i ~/wallpaper --mode fill"
       "${liquidctl} set led1 color fixed 850255"
       "${liquidctl} set led2 color fixed 330066"
-
-      # Open programs on spesific workspaces
-      "[workspace 4 silent] ${BROWSER} https://web.whatsapp.com https://web.telegram.org/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
-      "[workspace 5 silent] ${BROWSER} https://app.slack.com/client https://mail.google.com/mail https://calendar.google.com/calendar https://drive.google.com/drive/home https://www.notion.so/"
     ];
 
     # Window behiavior
