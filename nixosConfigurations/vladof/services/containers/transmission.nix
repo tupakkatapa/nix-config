@@ -70,6 +70,5 @@ in
   # Ensure host directories for the bind mount exist
   systemd.tmpfiles.rules = [
     "d ${dataDir}/home/transmission/appdata/transmission 755 ${uid} ${uid} -"
-    "d ${dataDir}/sftp/dnld/.incomplete                  755 ${uid} ${uid} -"
   ];
 }
