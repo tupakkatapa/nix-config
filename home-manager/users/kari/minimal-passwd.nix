@@ -91,16 +91,20 @@ in
         where = "/home/${user}/Media";
       }
       {
-        what = "/mnt/sftp/code/workspace";
-        where = "/home/${user}/Workspace";
-      }
-      {
         what = "/mnt/sftp/dnld";
         where = "/home/${user}/Downloads";
       }
       {
         what = "/mnt/sftp/appdata/retroarch";
         where = "/home/${user}/.config/retroarch";
+      }
+    ];
+
+    syncs = [
+      {
+        what = "/mnt/sftp/code/workspace";
+        where = "/home/${user}/Workspace";
+        timer = 10; # minutes
       }
     ];
   };

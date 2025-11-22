@@ -3319,15 +3319,16 @@
         "nixpkgs": "nixpkgs_33"
       },
       "locked": {
-        "lastModified": 1753050742,
-        "narHash": "sha256-in36LbcpDbdBvZoIO8CXdyn2Lc7t7NVQCcggHzISCc4=",
+        "lastModified": 1763846910,
+        "narHash": "sha256-ab+K2YI/JkyKNjTIg7QPJUurQpOAn1AXh/3W/2Qzvm8=",
         "owner": "tupakkatapa",
         "repo": "nixos-sftp-mount",
-        "rev": "d5cdc8c88540c4a636274d7fa27090cdb755557a",
+        "rev": "43bca4b1a6588a47e9621940746fb9a5215426d7",
         "type": "github"
       },
       "original": {
         "owner": "tupakkatapa",
+        "ref": "sync",
         "repo": "nixos-sftp-mount",
         "type": "github"
       }
