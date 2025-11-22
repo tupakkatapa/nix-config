@@ -77,7 +77,7 @@ in
     "vaultwarden-env".rekeyFile = ../../secrets/vaultwarden-env.age;
     "kavita-token".rekeyFile = ../../secrets/kavita-token.age;
     "searx-env".rekeyFile = ../../secrets/searx-env.age;
-    "nextcloud-admin-pass".rekeyFile = ../../secrets/nextcloud-admin-pass.age;
+    "radicale-admin-pass".rekeyFile = ../../secrets/radicale-admin-pass.age;
   };
 
   # Host networking for all containers

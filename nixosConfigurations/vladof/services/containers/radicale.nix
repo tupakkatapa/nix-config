@@ -1,6 +1,7 @@
 { dataDir
 , servicesConfig
 , globalContainerConfig
+, config
 , ...
 }:
 let
@@ -18,6 +19,10 @@ in
         hostPath = "${dataDir}/home/radicale/appdata/radicale";
         isReadOnly = false;
       };
+      "/etc/radicale-admin-pass" = {
+        hostPath = config.age.secrets.radicale-admin-pass.path;
+        isReadOnly = true;
+      };
     };
 
     config = _: (globalContainerConfig "radicale") // {
@@ -26,7 +31,11 @@ in
         settings = {
           server.hosts = [ "0.0.0.0:${builtins.toString servicesConfig.radicale.port}" ];
           storage.filesystem_folder = "/var/lib/radicale/collections";
-          auth.type = "none";
+          auth = {
+            type = "htpasswd";
+            htpasswd_filename = "/etc/radicale-admin-pass";
+            htpasswd_encryption = "plain";
+          };
         };
       };
 

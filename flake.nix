@@ -232,10 +232,16 @@
                   useGlobalPkgs = true;
                 };
                 age.rekey = {
-                  masterIdentities = [{
-                    identity = ./master.hmac;
-                    pubkey = "age19xu98r52uq33f7lu5z6zafysvnx9snq72x3j6gtcvkd0a8ew8q9q34nw3u";
-                  }];
+                  masterIdentities = [
+                    {
+                      identity = ./master.hmac;
+                      pubkey = "age19xu98r52uq33f7lu5z6zafysvnx9snq72x3j6gtcvkd0a8ew8q9q34nw3u";
+                    }
+                    {
+                      identity = ./master-2.hmac;
+                      pubkey = "age1dsxnrelyffuq2wc8we80z65kfh57nq692f93gz38343ewx43y9fsdm62ay";
+                    }
+                  ];
                 };
               })
             ];
