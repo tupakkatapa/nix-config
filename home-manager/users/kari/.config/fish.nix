@@ -93,7 +93,7 @@ in
         ${lib.optionalString hasTmux ''
         # Autostart tmux when in an SSH session
         if set -q SSH_CONNECTION; and not set -q TMUX
-          exec tmux
+          tmux new-session -A -s ssh
         end
         ''}
 
