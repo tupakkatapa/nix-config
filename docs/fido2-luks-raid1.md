@@ -32,6 +32,7 @@ nix-shell -p btrfs-progs cryptsetup parted util-linux systemd
 - Find stable path: `ls -l /dev/disk/by-id | grep sdX1` → copy `/dev/disk/by-id/...-part1`
 - Add to NixOS:\
   ```nix
+  boot.initrd.luks.fido2Support = true;
   boot.initrd.luks.devices.backup = {
     device = "/dev/disk/by-id/<drive>-part1";
     crypttabExtraOpts = [ "fido2-device=auto" "fido2-with-client-pin=yes" ];

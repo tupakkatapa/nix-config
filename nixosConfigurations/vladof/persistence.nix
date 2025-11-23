@@ -59,6 +59,10 @@
       fsType = "vfat";
     };
   };
+  boot.initrd.luks.devices.backup = {
+    device = "/dev/disk/by-id/ata-WDC_WD120EFBX-68B0EN0_D7JZR2HN-part1";
+    crypttabExtraOpts = [ "fido2-device=auto" "fido2-with-client-pin=yes" ];
+  };
 
   # Mount '/nix/.rw-store' and '/tmp' to disk
   services.storeRemount = {
