@@ -52,10 +52,14 @@ in
 
     # Use spesific startup
     wayland.windowManager.hyprland.settings.exec-once =
+      let
+        # User-level variable, cannot use $BROWSER as might not be set yet
+        browser = config.home-manager.users."${user}".home.sessionVariables.BROWSER;
+      in
       [
         # Open programs on specific workspaces
-        "[workspace 4 silent] $BROWSER web.whatsapp.com web.telegram.org discord.com/channels/@me outlook.live.com"
-        "[workspace 5 silent] $BROWSER app.slack.com/client mail.google.com calendar.google.com drive.google.com www.notion.so"
+        "[workspace 4 silent] ${browser} https://web.whatsapp.com https://web.telegram.org/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
+        "[workspace 5 silent] ${browser} https://app.slack.com/client https://mail.google.com/mail https://calendar.google.com/calendar https://drive.google.com/drive/home https://www.notion.so/"
       ]
       ++ (if config.networking.hostName != "maliwan" then [
         # Open terminal with SFTP mount on login
