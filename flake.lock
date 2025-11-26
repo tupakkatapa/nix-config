@@ -309,11 +309,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1763582853,
-        "narHash": "sha256-nyFWoDJM6GQMRsWpaZa6nl5mjwvVRDuW8JALznvjJwU=",
+        "lastModified": 1763751980,
+        "narHash": "sha256-yfjs2t+XCpcu3cHJYZGbBOatK5cf4fiocDjhAT3rWKE=",
         "owner": "sadjow",
         "repo": "codex-cli-nix",
-        "rev": "e08d1cffb38ce7e8bd5e194fa681f6b71d3a57ed",
+        "rev": "ebd144df2e431904116953d93a5c12c6e635720c",
         "type": "github"
       },
       "original": {
@@ -2375,11 +2375,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1760904472,
-        "narHash": "sha256-mKxmk/wX1PIpcJaZfTUvhtJtnnMzb0YaVHxflBxCgYM=",
+        "lastModified": 1764198814,
+        "narHash": "sha256-hXE5cs3IUI/oZ/nsJKRr9FWPCQh4e1Djzh93tZaEY/k=",
         "ref": "jesse/dev31",
-        "rev": "d563ffadcabaf1063851e98e2db90eee9427482e",
-        "revCount": 41,
+        "rev": "07cf29a70dce6bc25f632631007e75f78faabad9",
+        "revCount": 42,
         "type": "git",
         "url": "ssh://git@github.com/majbacka-labs/nixie"
       },
