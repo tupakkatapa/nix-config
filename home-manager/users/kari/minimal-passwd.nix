@@ -98,15 +98,18 @@ in
         what = "/mnt/sftp/appdata/retroarch";
         where = "/home/${user}/.config/retroarch";
       }
-    ];
-
-    syncs = [
       {
         what = "/mnt/sftp/code/workspace";
         where = "/home/${user}/Workspace";
-        timer = 10; # minutes
       }
     ];
+    # syncs = [
+    #   {
+    #     what = "/mnt/sftp/code/workspace";
+    #     where = "/home/${user}/Workspace";
+    #     timer = 10; # minutes
+    #   }
+    # ];
   };
   # Add SFTP host to root's known hosts for non-interactive authentication
   services.openssh.knownHosts.vladof = {
