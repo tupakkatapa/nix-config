@@ -58,8 +58,8 @@ in
       in
       [
         # Open programs on specific workspaces
-        "[workspace 4 silent] sleep 2 && ${browser} https://web.whatsapp.com https://web.telegram.org/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
-        "[workspace 5 silent] sleep 4 && ${browser} https://app.slack.com/client https://mail.google.com/mail https://calendar.google.com/calendar https://drive.google.com/drive/home https://www.notion.so/"
+        "[workspace 4 silent] sleep 2 && ${browser} --new-instance https://web.whatsapp.com https://web.telegram.org/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
+        "[workspace 5 silent] sleep 4 && ${browser} --new-instance https://app.slack.com/client https://mail.google.com/mail https://calendar.google.com/calendar https://drive.google.com/drive/home https://www.notion.so/"
       ]
       ++ (if config.networking.hostName != "maliwan" then [
         # Open terminal with SFTP mount on login
