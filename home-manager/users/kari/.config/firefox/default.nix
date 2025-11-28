@@ -25,29 +25,27 @@ in
         // mozid.lib.mkExtensions (import ./extensions.nix);
     };
 
-    profiles.personal = {
-      isDefault = true;
-
-      search = {
-        default = "searxng";
-        force = true;
-        order = [ "searxng" "ddg" "google" ];
-        engines = {
-          "searxng" = {
-            urls = [{ template = "https://search.coditon.com/search?q={searchTerms}"; }];
-            definedAliases = [ "@sx" ];
+    profiles =
+      let
+        search = {
+          default = "searxng";
+          force = true;
+          order = [ "searxng" "ddg" "google" ];
+          engines = {
+            "searxng" = {
+              urls = [{ template = "https://search.coditon.com/search?q={searchTerms}"; }];
+              definedAliases = [ "@sx" ];
+            };
           };
         };
-      };
 
-      bookmarks = {
-        force = true;
-        settings = import ./bookmarks.nix;
-      };
+        bookmarks = {
+          force = true;
+          settings = import ./bookmarks.nix;
+        };
 
-      # about:config
-      settings =
-        {
+        # about:config
+        settings = {
           # Behaviour
           "browser.fullscreen.autohide" = false;
           "browser.startup.homepage" = "https://index.coditon.com";
@@ -81,7 +79,19 @@ in
           "font.name.monospace.x-western" = "${FONT}";
           "font.name.sans-serif.x-western" = "${FONT}";
           "font.name.serif.x-western" = "${FONT}";
-        } // (import ./hardened.nix);
-    };
+        }
+        // (import ./hardened.nix);
+      in
+      {
+        personal = {
+          id = 0;
+          isDefault = true;
+          inherit search bookmarks settings;
+        };
+        work = {
+          id = 1;
+          inherit search bookmarks settings;
+        };
+      };
   };
 }
