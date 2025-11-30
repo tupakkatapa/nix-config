@@ -50,7 +50,8 @@ in
 
       # Ensure transmission data directory has correct permissions
       systemd.tmpfiles.rules = [
-        "Z /var/lib/transmission 0750 transmission transmission - -"
+        "Z /downloads            0755 transmission transmission - -"
+        "Z /var/lib/transmission 0755 transmission transmission - -"
       ];
 
       # Workaround for
@@ -69,6 +70,7 @@ in
 
   # Ensure host directories for the bind mount exist
   systemd.tmpfiles.rules = [
+    "d ${dataDir}/sftp/dnld                              755 ${uid} ${uid} -"
     "d ${dataDir}/home/transmission/appdata/transmission 755 ${uid} ${uid} -"
   ];
 }
