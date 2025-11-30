@@ -33,7 +33,7 @@ in
   # Saiko's automatic gc
   sys2x.gc.useDiskAware = true;
 
-  # Autologin for 'kari'
+  # Autologin
   services.getty.autologinUser = user;
 
   # Cage-kiosk (firefox)

@@ -155,6 +155,7 @@
               "torgue" = torgue.config.system.build.kexecTree;
               "vladof" = vladof.config.system.build.kexecTree;
               "maliwan" = maliwan.config.system.build.kexecTree;
+              "hyperion" = hyperion.config.system.build.kexecTree;
             })
             // packages;
 
@@ -164,6 +165,7 @@
               torgue
               vladof
               maliwan
+              hyperion
               ;
           };
         };
@@ -275,6 +277,14 @@
             ];
           };
 
+          hyperion = withExtra {
+            modules = [
+              ./home-manager/users/core/minimal.nix
+              ./nixosConfigurations/hyperion
+              ./system/kexec-tree.nix
+            ];
+          };
+
           bandit.modules = [
             ./home-manager/users/core/minimal.nix
             ./nixosConfigurations/bandit
@@ -289,6 +299,7 @@
               "maliwan" = nixosSystem (withDefaults maliwan);
               "torgue" = nixosSystem (withDefaults torgue);
               "vladof" = nixosSystem (withDefaults vladof);
+              "hyperion" = nixosSystem (withDefaults hyperion);
             };
 
           # NixOS modules
