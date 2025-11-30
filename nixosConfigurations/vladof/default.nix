@@ -25,6 +25,7 @@ in
     (import ./persistence.nix extendedArgs)
     ../.config/motd.nix
     ../.config/pipewire.nix
+    ../.config/yubikey.nix
     ./nixie.nix
     ./wireguard.nix
   ];
