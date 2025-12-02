@@ -79,7 +79,8 @@
         min_size=102400 # KB
         initrd_size=$(du -L $out/initrd | cut -f1)
         if [ "$initrd_size" -lt "$min_size" ]; then
-          echo "error: size $initrd_size KB < $min_size KB, likely deformed due to >4GB contents"
+          echo "error: initrd malformed - reported size $initrd_size KB is suspiciously small"
+          echo "cause: it probably exceeded 4 GiB, which is a 32-bit address space limit"
           echo "hint: use 'squashfs' format for large images or reduce the size"
           exit 1
         fi
