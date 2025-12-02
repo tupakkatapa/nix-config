@@ -98,10 +98,6 @@ in
         what = "/mnt/sftp/appdata/retroarch";
         where = "/home/${user}/.config/retroarch";
       }
-      {
-        what = "/mnt/sftp/code/workspace";
-        where = "/home/${user}/Workspace";
-      }
     ];
     # syncs = [
     #   {
