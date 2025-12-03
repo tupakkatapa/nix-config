@@ -16,8 +16,8 @@ in
       size = 10;
     };
     cursorTheme = {
-      name = "Bibata-Modern-Ice";
-      package = pkgs.bibata-cursors;
+      name = "capitaine-cursors";
+      package = pkgs.capitaine-cursors;
       size = 16;
     };
     theme = {
@@ -27,8 +27,8 @@ in
   };
 
   home.pointerCursor = {
-    name = "Bibata-Modern-Ice";
-    package = pkgs.bibata-cursors;
+    name = "capitaine-cursors";
+    package = pkgs.capitaine-cursors;
     size = 16;
     gtk.enable = true;
     x11.enable = true;
