@@ -34,6 +34,10 @@
         name = "retroarch";
         path = ../.config/retroarch.nix;
       }
+      {
+        name = "ai-tools";
+        path = ../.config/ai-tools.nix;
+      }
     ];
   };
 

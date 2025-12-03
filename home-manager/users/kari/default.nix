@@ -84,11 +84,9 @@ in
       wireguard-tools
 
       oterm
-      codex
     ]) ++
     (with unstable; [
       claude-code
-      gemini-cli
     ]);
   };
 }
