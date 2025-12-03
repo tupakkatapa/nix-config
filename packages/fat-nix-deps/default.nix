@@ -9,7 +9,7 @@
 }:
 
 stdenv.mkDerivation {
-  pname = "dep-hunter";
+  pname = "fat-nix-deps";
   version = "0.1.0";
 
   src = ./.;
@@ -18,10 +18,10 @@ stdenv.mkDerivation {
 
   installPhase = ''
     mkdir -p $out/bin
-    cp hunt-large-deps.sh $out/bin/dep-hunter
-    chmod +x $out/bin/dep-hunter
+    cp fat-nix-deps.sh $out/bin/fat-nix-deps
+    chmod +x $out/bin/fat-nix-deps
 
-    wrapProgram $out/bin/dep-hunter \
+    wrapProgram $out/bin/fat-nix-deps \
       --prefix PATH : ${lib.makeBinPath [
         coreutils
         gnugrep

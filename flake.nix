@@ -81,7 +81,7 @@
         let
           packages = {
             "2mp3" = pkgs.callPackage ./packages/2mp3 { };
-            "dep-hunter" = pkgs.callPackage ./packages/hunt-large-deps { };
+            "fat-nix-deps" = pkgs.callPackage ./packages/fat-nix-deps { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
             "pinit" = pkgs.callPackage ./packages/pinit { };
             "pipewire-out-switcher" = pkgs.callPackage ./packages/pipewire-out-switcher { };
