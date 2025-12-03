@@ -5,7 +5,6 @@
   # Use the latest kernel
   boot.kernelParams = [ "boot.shell_on_fail" ];
   boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-  boot.initrd.luks.fido2Support = true;
 
   # Set the console keymap
   console.keyMap = "fi";

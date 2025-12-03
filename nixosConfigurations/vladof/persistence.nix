@@ -53,16 +53,20 @@
       device = "/dev/disk/by-uuid/a11f36c2-e601-4e6c-b8c2-136c4b07203e";
       fsType = "btrfs";
       neededForBoot = true;
+      options = [ "degraded" ]; # Allow mounting with missing RAID1 device
     };
     "/mnt/boot" = {
       device = "/dev/disk/by-uuid/3C60-8E75";
       fsType = "vfat";
     };
   };
-  boot.initrd.luks.devices.backup = {
-    device = "/dev/disk/by-id/ata-WDC_WD120EFBX-68B0EN0_D7JZR2HN-part1";
-    crypttabExtraOpts = [ "fido2-device=auto" "fido2-with-client-pin=yes" ];
-  };
+
+  # FIDO2 LUKS configuration
+  # boot.initrd.luks.fido2Support = true;
+  # boot.initrd.luks.devices.backup = {
+  #   device = "/dev/disk/by-id/ata-WDC_WD120EFBX-68B0EN0_D7JZR2HN-part1";
+  #   crypttabExtraOpts = [ "fido2-device=auto" "fido2-with-client-pin=yes" ];
+  # };
 
   # Mount '/nix/.rw-store' and '/tmp' to disk
   services.storeRemount = {
