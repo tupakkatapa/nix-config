@@ -1,13 +1,19 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 let
   inherit (config.home.sessionVariables) TERMINAL;
+
+  # Override tumbler to exclude libgepub (EPUB support) which pulls in WebKitGTK
+  # Saves 141.46 MiB from initrd by preventing 1.4 GiB WebKitGTK closure
+  tumblerWithoutEpub = pkgs.xfce.tumbler.overrideAttrs (old: {
+    buildInputs = lib.filter (x: (x.pname or "") != "libgepub") old.buildInputs;
+  });
 in
 {
   home.packages = with pkgs; [
     xfce.thunar
     xfce.thunar-archive-plugin
     xfce.thunar-volman
-    xfce.tumbler
+    tumblerWithoutEpub
     xfce.xfconf
     p7zip
     xarchiver
