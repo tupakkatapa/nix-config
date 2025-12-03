@@ -18,7 +18,7 @@ in
     cursorTheme = {
       name = "capitaine-cursors";
       package = pkgs.capitaine-cursors;
-      size = 16;
+      size = 24;
     };
     theme = {
       name = "gruvbox-dark";
@@ -29,7 +29,7 @@ in
   home.pointerCursor = {
     name = "capitaine-cursors";
     package = pkgs.capitaine-cursors;
-    size = 16;
+    size = 24;
     gtk.enable = true;
     x11.enable = true;
   };
