@@ -135,6 +135,16 @@
           mappings = {
             "l".command = "open";
             "h".command = "close_node";
+            "Y" = {
+              __raw = ''
+                function(state)
+                  local node = state.tree:get_node()
+                  local filepath = node:get_id()
+                  vim.fn.setreg('+', filepath)
+                  vim.notify('Copied: ' .. filepath)
+                end
+              '';
+            };
           };
         };
         filesystem = {
