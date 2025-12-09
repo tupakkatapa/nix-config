@@ -283,6 +283,7 @@
               ./home-manager/users/core/minimal.nix
               ./nixosConfigurations/hyperion
               ./system/kexec-tree.nix
+              inputs.nixie.nixosModules.nixie
             ];
           };
 
