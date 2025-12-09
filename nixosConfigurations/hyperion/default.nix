@@ -5,14 +5,14 @@
 }:
 let
   domain = "coditon.com";
-  # dataDir = "/mnt/storage";
+  dataDir = "/mnt/lexar";
 
   # Inherit global stuff for imports
-  # extendedArgs = { inherit pkgs lib config domain dataDir inputs; };
+  extendedArgs = { inherit pkgs lib config domain dataDir; };
 in
 {
   age.rekey = {
-    hostPubkey = "";
+    hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFXTPhVIrcmsJp9AwrPGfh3bX4Ixq6NmwTve3ExlLp16 root@hyperion";
     agePlugins = [ pkgs.age-plugin-fido2-hmac ];
     localStorageDir = ./secrets/rekeyed;
     storageMode = "local";
@@ -23,11 +23,11 @@ in
     ../.config/motd.nix
 
     # To be added during migration:
-    # (import ./persistence.nix extendedArgs)
+    (import ./persistence.nix extendedArgs)
     # ./networking.nix    # WAN/LAN interface config
     # ./firewall.nix      # nftables NAT/firewall rules
-    # ./nixie.nix         # DHCP + PXE server (from vladof)
-    # ./wireguard.nix     # VPN server (from vladof)
+    # ./nixie.nix           # DHCP + PXE server
+    # ./wireguard.nix       # VPN server
     # ./dns.nix           # CoreDNS
     # ./ntp.nix           # chrony NTP server
     # ./monitoring.nix    # Prometheus + vnStat
