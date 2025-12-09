@@ -15,11 +15,6 @@ in
       name = "${FONT}";
       size = 10;
     };
-    cursorTheme = {
-      name = "capitaine-cursors";
-      package = pkgs.capitaine-cursors;
-      size = 24;
-    };
     theme = {
       name = "gruvbox-dark";
       package = pkgs.gruvbox-dark-gtk;
@@ -27,10 +22,17 @@ in
   };
 
   home.pointerCursor = {
-    name = "capitaine-cursors";
-    package = pkgs.capitaine-cursors;
+    name = "Capitaine Cursors (Gruvbox)";
+    package = pkgs.capitaine-cursors-themed;
     size = 24;
     gtk.enable = true;
     x11.enable = true;
+  };
+  wayland.windowManager.hyprland.settings = {
+    exec-once = [
+      # Fixes cursor themes in gnome apps under hyprland
+      "gsettings set org.gnome.desktop.interface cursor-theme '${config.home.pointerCursor.name}'"
+      "gsettings set org.gnome.desktop.interface cursor-size ${toString config.home.pointerCursor.size}"
+    ];
   };
 }
