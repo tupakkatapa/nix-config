@@ -39,7 +39,8 @@ in
 
       # Powerstate
       bios = "systemctl reboot --firmware-setup";
-      sdn = "shutdown -h now";
+      sdn = "systemctl poweroff";
+      rbt = "systemctl reboot";
 
       # Changing 'ls' to 'eza'
       ls = "eza -agl --color=always --group-directories-first";
