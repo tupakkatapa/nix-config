@@ -39,7 +39,7 @@
       neededForBoot = true;
     };
     "/mnt/boot" = {
-      device = "/dev/disk/by-uuid/B791-38E0";
+      device = "/dev/disk/by-uuid/2A10-2D31";
       fsType = "vfat";
     };
   };
@@ -56,7 +56,7 @@
   services.refindGenerate = {
     enable = true;
     rollbacks.enable = true;
-    where = "/dev/disk/by-uuid/B791-38E0";
+    where = "/dev/disk/by-uuid/2A10-2D31";
     flakeUrl = "github:tupakkatapa/nix-config";
     hosts = [ "hyperion" "bandit" ];
     default = "hyperion";
