@@ -21,6 +21,23 @@
             { name = "ssh"; mode = "700"; what = "/root/.ssh"; }
           ];
         }
+        {
+          name = "appdata";
+          dirs = [
+            { name = "unbound"; mode = "755"; what = "/var/lib/unbound"; }
+            { name = "kea"; mode = "755"; what = "/var/lib/kea"; }
+            { name = "fail2ban"; mode = "755"; what = "/var/lib/fail2ban"; }
+            { name = "chrony"; mode = "755"; what = "/var/lib/chrony"; }
+            { name = "vnstat"; mode = "755"; what = "/var/lib/vnstat"; }
+          ];
+        }
+        {
+          name = "logs";
+          dirs = [
+            { name = "journal"; mode = "755"; what = "/var/log/journal"; }
+            { name = "rsyslog"; mode = "755"; what = "/var/log/rsyslog"; }
+          ];
+        }
       ];
     };
   };
@@ -67,4 +84,3 @@
     "d ${dataDir}/store    755 root root -"
   ];
 }
-

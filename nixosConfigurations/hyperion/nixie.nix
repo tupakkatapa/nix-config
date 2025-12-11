@@ -7,7 +7,9 @@
 
   services.nixie = {
     enable = true;
+    openFirewall = false;
     dataDir = "${dataDir}/home/root/appdata/nixie";
+    logDir = "${dataDir}/home/root/appdata/nixie/logs";
 
     file-server = {
       https = {
@@ -27,14 +29,20 @@
           flakeUrl = "github:tupakkatapa/nix-config";
           hosts = [ "torgue" "bandit" ];
           default = "torgue";
-          rollbacks.enable = true;
+          rollbacks = {
+            enable = true;
+            keep = 2;
+          };
           timeout = 1;
         }
         {
           name = "vladof";
           flakeUrl = "github:tupakkatapa/nix-config";
           hosts = [ "vladof" "bandit" ];
-          rollbacks.enable = true;
+          rollbacks = {
+            enable = true;
+            keep = 2;
+          };
           timeout = 1;
         }
         {
@@ -52,7 +60,9 @@
         {
           name = "upstream";
           serve = true;
-          address = "192.168.1.2";
+          address = "192.168.1.2"; # TESTING: Change to .1 for production
+          gateway = "192.168.1.2"; # TESTING: Change to .1 for production
+          dns = "192.168.1.2"; # TESTING: Change to .1 for production
           interfaces = [ "enp2s0" ];
           defaultMenu = "bandit";
           clients = [
@@ -73,7 +83,7 @@
             }
           ];
           poolStart = "192.168.1.30";
-          poolEnd = "192.168.1.59";
+          poolEnd = "192.168.1.254";
         }
       ];
     };

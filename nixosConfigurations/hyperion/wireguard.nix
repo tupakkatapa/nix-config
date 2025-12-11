@@ -29,11 +29,13 @@
           {
             PublicKey = "PH/wZiXlLiCiWqB2AAxB7TRhPVbUh0Dyy6bB8zEthBM=";
             AllowedIPs = [ "172.16.16.2/32" ];
+            PersistentKeepalive = 25;
           }
           # Kari
           {
             PublicKey = "vdCiN71d/Qn2I1GF5wJnXNWcqBSVyWvjtpLSUykbLkA=";
             AllowedIPs = [ "172.16.16.3/32" ];
+            PersistentKeepalive = 25;
           }
         ];
       };

@@ -19,18 +19,16 @@ in
   };
 
   imports = [
-    ../.config/yubikey.nix
-    ../.config/motd.nix
-
-    # To be added during migration:
+    (import ./nixie.nix extendedArgs)
     (import ./persistence.nix extendedArgs)
-    # ./networking.nix    # WAN/LAN interface config
-    # ./firewall.nix      # nftables NAT/firewall rules
-    (import ./nixie.nix extendedArgs) # DHCP + PXE server
-    ./wireguard.nix # VPN server
-    # ./dns.nix           # CoreDNS
-    # ./ntp.nix           # chrony NTP server
-    # ./monitoring.nix    # Prometheus + vnStat
+    ../.config/motd.nix
+    ../.config/yubikey.nix
+    ./dns.nix
+    ./firewall.nix
+    ./monitoring.nix
+    ./networking.nix
+    ./ntp.nix
+    ./wireguard.nix
   ];
 
   # Saiko's automatic gc
