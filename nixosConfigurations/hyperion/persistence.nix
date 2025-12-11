@@ -24,11 +24,7 @@
         {
           name = "appdata";
           dirs = [
-            { name = "unbound"; mode = "755"; what = "/var/lib/unbound"; }
-            { name = "kea"; mode = "755"; what = "/var/lib/kea"; }
             { name = "fail2ban"; mode = "755"; what = "/var/lib/fail2ban"; }
-            { name = "chrony"; mode = "755"; what = "/var/lib/chrony"; }
-            { name = "vnstat"; mode = "755"; what = "/var/lib/vnstat"; }
           ];
         }
         {
@@ -36,6 +32,30 @@
           dirs = [
             { name = "journal"; mode = "755"; what = "/var/log/journal"; }
             { name = "rsyslog"; mode = "755"; what = "/var/log/rsyslog"; }
+          ];
+        }
+      ];
+      unbound = [
+        {
+          name = "appdata";
+          dirs = [
+            { name = "unbound"; mode = "755"; what = "/var/lib/unbound"; }
+          ];
+        }
+      ];
+      chrony = [
+        {
+          name = "appdata";
+          dirs = [
+            { name = "chrony"; mode = "755"; what = "/var/lib/chrony"; }
+          ];
+        }
+      ];
+      vnstatd = [
+        {
+          name = "appdata";
+          dirs = [
+            { name = "vnstat"; mode = "755"; what = "/var/lib/vnstat"; }
           ];
         }
       ];

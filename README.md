@@ -2,10 +2,11 @@
 
 | Hostname | Architecture | Deploy | Users | Details
 | :-:       |  :-:    | :-:          | :-:   | :-
-[maliwan](nixosConfigurations/maliwan/default.nix) | x86_64  | refind     | [kari](home-manager/users/kari/default.nix)                    | AMD Laptop, Hyprland
-[vladof](nixosConfigurations/vladof/default.nix)   | "       | "          | [kari (minimal-gui)](home-manager/users/kari/minimal-gui.nix)  | Homelab, Firefox kiosk + Netboot Server ([Nixie](https://github.com/majbacka-labs/nixos.fi))
-[torgue](nixosConfigurations/torgue/default.nix)   | "       | netboot    | [kari](home-manager/users/kari/default.nix)                    | AMD Desktop, Hyprland, [screenshot](https://raw.githubusercontent.com/tupakkatapa/nix-config/main/nixosConfigurations/torgue/screenshot.png)
-[bandit](nixosConfigurations/bandit/default.nix)   | "       | "          | [core (minimal)](home-manager/users/core/minimal.nix)          | Minimal for headless
+[hyperion](nixosConfigurations/hyperion/default.nix) | x86_64 | refind  | [core (minimal)](home-manager/users/core/minimal.nix)         | Router + Netboot Server ([Nixie](https://github.com/majbacka-labs/nixos.fi))
+[maliwan](nixosConfigurations/maliwan/default.nix)   | "      | "       | [kari](home-manager/users/kari/default.nix)                   | AMD Laptop, Hyprland
+[torgue](nixosConfigurations/torgue/default.nix)     | "      | netboot | "                                                             | AMD Desktop, Hyprland, [screenshot](https://raw.githubusercontent.com/tupakkatapa/nix-config/main/nixosConfigurations/torgue/screenshot.png)
+[vladof](nixosConfigurations/vladof/default.nix)     | "      | "       | [kari (minimal-gui)](home-manager/users/kari/minimal-gui.nix) | Homelab, Firefox kiosk
+[bandit](nixosConfigurations/bandit/default.nix)     | "      | "       | [core (minimal)](home-manager/users/core/minimal.nix)         | Minimal for headless
 
 These hosts are **truly declarative** by being **ephemeral** - [majbacka-labs/nixos.fi](https://github.com/majbacka-labs/nixos.fi).
 

@@ -2375,11 +2375,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1765423795,
-        "narHash": "sha256-PrxYmTdHmQu7MV5AQvitpR/AUEqpLf+RASzorcPu1ng=",
+        "lastModified": 1765453894,
+        "narHash": "sha256-B2r0VspRqfgec/HxVUgETzJkOsJtjgCpvrQO3rOW4Bs=",
         "ref": "jesse/dev31",
-        "rev": "89ce51e259e9f23f11d1387241576cc0b5b7d9f8",
-        "revCount": 53,
+        "rev": "7e68e6111e851f18689302e4b610a4f032cb9aca",
+        "revCount": 54,
         "type": "git",
         "url": "ssh://git@github.com/majbacka-labs/nixie"
       },
@@ -3360,11 +3360,11 @@
         "nixpkgs": "nixpkgs_37"
       },
       "locked": {
-        "lastModified": 1745350375,
+        "lastModified": 1765456511,
         "narHash": "sha256-WZXR34qpNUqLI/mSVlmpIs1g4fioFuOIffYnKB6r0Hk=",
         "owner": "ponkila",
         "repo": "nixos-store-remount",
-        "rev": "de440396adccb665d22563e0aeae75b3a532b839",
+        "rev": "04c3376e4be65039c36f0c0be6cc801b74289908",
         "type": "github"
       },
       "original": {

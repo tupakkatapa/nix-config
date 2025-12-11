@@ -39,6 +39,7 @@
           name = "vladof";
           flakeUrl = "github:tupakkatapa/nix-config";
           hosts = [ "vladof" "bandit" ];
+          default = "vladof";
           rollbacks = {
             enable = true;
             keep = 2;
@@ -61,7 +62,7 @@
           name = "upstream";
           serve = true;
           address = "192.168.1.2"; # TESTING: Change to .1 for production
-          gateway = "192.168.1.2"; # TESTING: Change to .1 for production
+          gateway = "192.168.1.1";
           dns = "192.168.1.2"; # TESTING: Change to .1 for production
           interfaces = [ "enp2s0" ];
           defaultMenu = "bandit";
