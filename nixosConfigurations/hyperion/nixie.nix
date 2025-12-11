@@ -1,4 +1,5 @@
-_: {
+{ dataDir, ... }:
+{
   # Support for cross compilation
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
@@ -6,6 +7,7 @@ _: {
 
   services.nixie = {
     enable = true;
+    dataDir = "${dataDir}/home/root/appdata/nixie";
 
     file-server = {
       https = {
@@ -29,6 +31,13 @@ _: {
           timeout = 1;
         }
         {
+          name = "vladof";
+          flakeUrl = "github:tupakkatapa/nix-config";
+          hosts = [ "vladof" "bandit" ];
+          rollbacks.enable = true;
+          timeout = 1;
+        }
+        {
           name = "bandit";
           flakeUrl = "github:tupakkatapa/nix-config";
           hosts = [ "bandit" ];
@@ -43,14 +52,19 @@ _: {
         {
           name = "upstream";
           serve = true;
-          address = "192.168.1.8";
-          interfaces = [ "enp0s31f6" ];
+          address = "192.168.1.2";
+          interfaces = [ "enp2s0" ];
           defaultMenu = "bandit";
           clients = [
             {
               menu = "torgue";
               mac = "d4:5d:64:d1:12:52";
               address = "192.168.1.7";
+            }
+            {
+              menu = "vladof";
+              mac = "30:9c:23:3c:b9:01";
+              address = "192.168.1.8";
             }
             {
               menu = "kaakkuri-ephemeral-alpha";

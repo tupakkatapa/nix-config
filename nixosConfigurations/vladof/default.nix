@@ -26,8 +26,6 @@ in
     ../.config/motd.nix
     ../.config/pipewire.nix
     ../.config/yubikey.nix
-    ./nixie.nix
-    ./wireguard.nix
   ];
 
   # Saiko's automatic gc
@@ -62,10 +60,26 @@ in
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  # Networking
+  # Connectivity
   networking = {
     hostName = "vladof";
     domain = "${domain}";
+    useDHCP = false;
+  };
+  systemd.network = {
+    enable = true;
+    wait-online.anyInterface = true;
+    networks = {
+      "10-wan" = {
+        linkConfig.RequiredForOnline = "routable";
+        matchConfig.Name = [ "enp0s31f6" ];
+        networkConfig = {
+          DHCP = "ipv4";
+          IPv6AcceptRA = true;
+        };
+        address = [ "192.168.1.8/24" ]; # static IP
+      };
+    };
   };
 
   # SFTP Server

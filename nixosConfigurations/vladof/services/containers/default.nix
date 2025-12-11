@@ -85,7 +85,7 @@ in
     nat = {
       enable = true;
       internalInterfaces = [ "ve-+" ];
-      externalInterface = "br-upstream"; # Created by Nixie's Kea
+      externalInterface = "enp0s31f6";
     };
     firewall = {
       extraCommands =

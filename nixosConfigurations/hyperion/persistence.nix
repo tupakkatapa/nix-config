@@ -50,7 +50,10 @@
   services.refindGenerate = {
     enable = true;
     dataDir = "${dataDir}/home/root/appdata/refind";
-    rollbacks.enable = true;
+    rollbacks = {
+      enable = true;
+      keep = 4;
+    };
     where = "/dev/disk/by-uuid/2A10-2D31";
     flakeUrl = "github:tupakkatapa/nix-config";
     hosts = [ "hyperion" "bandit" ];

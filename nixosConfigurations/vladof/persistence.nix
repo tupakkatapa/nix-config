@@ -19,23 +19,6 @@
           ];
         }
       ];
-      root = [
-        {
-          name = "secrets";
-          dirs = [
-            # For compiling hosts that contain or are sourced from private inputs
-            # Potentially required by the 'nixie' or 'refindGenerate' modules
-            # You can remove this when Nixie is someday open-sourced
-            { name = "ssh"; mode = "700"; what = "/root/.ssh"; }
-          ];
-        }
-        {
-          name = "appdata";
-          dirs = [
-            { name = "nixie"; mode = "755"; what = "/var/www/netboot"; }
-          ];
-        }
-      ];
       kari = [
         {
           name = "appdata";

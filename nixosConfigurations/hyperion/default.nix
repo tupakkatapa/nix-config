@@ -26,8 +26,8 @@ in
     (import ./persistence.nix extendedArgs)
     # ./networking.nix    # WAN/LAN interface config
     # ./firewall.nix      # nftables NAT/firewall rules
-    # ./nixie.nix           # DHCP + PXE server
-    # ./wireguard.nix       # VPN server
+    (import ./nixie.nix extendedArgs) # DHCP + PXE server
+    ./wireguard.nix # VPN server
     # ./dns.nix           # CoreDNS
     # ./ntp.nix           # chrony NTP server
     # ./monitoring.nix    # Prometheus + vnStat
