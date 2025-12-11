@@ -21,12 +21,6 @@
             { name = "ssh"; mode = "700"; what = "/root/.ssh"; }
           ];
         }
-        {
-          name = "appdata";
-          dirs = [
-            { name = "nixie"; mode = "755"; what = "/var/www/netboot"; }
-          ];
-        }
       ];
     };
   };
@@ -55,6 +49,7 @@
   # Update the rEFInd boot manager
   services.refindGenerate = {
     enable = true;
+    dataDir = "${dataDir}/home/root/appdata/refind";
     rollbacks.enable = true;
     where = "/dev/disk/by-uuid/2A10-2D31";
     flakeUrl = "github:tupakkatapa/nix-config";
