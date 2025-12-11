@@ -83,6 +83,11 @@
         key = "<leader>g";
         action = "<cmd>LazyGitCurrentFile <CR>";
       }
+      {
+        mode = "n";
+        key = "<leader>e";
+        action = ":Neotree toggle<CR>";
+      }
     ];
 
     plugins = {
@@ -91,7 +96,6 @@
       todo-comments.enable = true;
       comment.enable = true;
       rainbow-delimiters.enable = true;
-      fugitive.enable = true;
       hardtime = {
         enable = true;
         settings.max_count = 0;
@@ -151,7 +155,8 @@
           useLibuvFileWatcher = true;
           filteredItems = {
             visible = true;
-            hideGitignored = true;
+            hideDotfiles = false;
+            neverShowByPattern = [ ".git" ".direnv" ".devenv" ];
           };
           followCurrentFile.enabled = true;
         };
@@ -202,14 +207,10 @@
         servers = {
           bashls.enable = true;
           nixd.enable = true;
-          # rust-analyzer = {
-          #   enable = true;
-          #   installRustc = true;
-          #   installCargo = true;
-          # };
         };
       };
       lsp-format.enable = true;
+      lsp-lines.enable = true;
 
       # A completion
       cmp = {
