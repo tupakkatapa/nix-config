@@ -2375,11 +2375,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1765408881,
-        "narHash": "sha256-vQbO2wNO2a47Gc6gj3WlGSyeuG6fcjQ7fY71tNbJ1O8=",
+        "lastModified": 1765411370,
+        "narHash": "sha256-kdnbqHhBjInJ5aZ9kSqFgcYQKdTZpPIn91pRd+nr8J4=",
         "ref": "jesse/dev31",
-        "rev": "2ce9ebe258db7fd6a8f2dd4db88febfc15812e23",
-        "revCount": 47,
+        "rev": "d2fa6e2e3cff41f190200a981be24577b6bd7478",
+        "revCount": 48,
         "type": "git",
         "url": "ssh://git@github.com/majbacka-labs/nixie"
       },
