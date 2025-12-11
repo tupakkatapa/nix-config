@@ -24,7 +24,4 @@ _:
       local stratum 10
     '';
   };
-
-  # Open NTP port on firewall
-  networking.firewall.allowedUDPPorts = [ 123 ];
 }

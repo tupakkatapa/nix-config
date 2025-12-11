@@ -1,7 +1,22 @@
 _:
 {
-  networking.nftables.enable = true;
   networking.firewall.enable = true;
+
+  # nftables with flow offloading
+  networking.nftables = {
+    enable = true;
+    checkRuleset = false;
+    tables."nixos-fw" = {
+      family = "inet";
+      content = ''
+        flowtable f {
+          hook ingress priority 0;
+          devices = { enp1s0, br-upstream };
+          flags offload;
+        }
+      '';
+    };
+  };
 
   # NAT and port forwarding
   networking.nat = {
@@ -60,9 +75,6 @@ _:
     '';
 
     extraForwardRules = ''
-      # Flow offloading
-      meta l4proto { tcp, udp } flow add @f
-
       # Allow LAN → WAN
       iifname "br-upstream" oifname "enp1s0" accept
 
@@ -72,18 +84,11 @@ _:
       # Rate limit new connections (anti-DoS)
       ct state new limit rate over 100/second drop
 
+      # Flow offloading (only established connections for security)
+      meta l4proto { tcp, udp } ct state established flow add @f
+
       # Logging (sampled)
       limit rate 1/minute log prefix "FORWARD DROP: "
     '';
   };
-
-  # Flow offloading flowtable
-  networking.nftables.preCheckRuleset = ''
-    table inet filter {
-      flowtable f {
-        hook ingress priority 0
-        devices = { enp1s0, br-upstream }
-      }
-    }
-  '';
 }
