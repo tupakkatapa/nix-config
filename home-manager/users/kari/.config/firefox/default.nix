@@ -58,7 +58,7 @@ in
           "browser.tabs.firefox-view" = false;
           "browser.tabs.hoverPreview.enabled" = false;
           "identity.fxaccounts.enabled" = false;
-          "layout.spellcheckDefault" = 0;
+          "layout.spellcheckDefault" = 2;
           "media.webspeech.synth.enabled" = false;
           "ui.key.menuAccessKeyFocuses" = false;
 
