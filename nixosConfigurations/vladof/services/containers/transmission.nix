@@ -50,7 +50,7 @@ in
 
       # Ensure transmission data directory has correct permissions
       systemd.tmpfiles.rules = [
-        "Z /downloads            0755 transmission transmission - -"
+        "Z /downloads            0775 transmission transmission - -"
         "Z /var/lib/transmission 0755 transmission transmission - -"
       ];
 
