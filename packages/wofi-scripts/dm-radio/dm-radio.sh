@@ -56,17 +56,17 @@ main() {
   case $choice in
   quit)
     notify-send "Stopping dm-radio" "You have quit dm-radio. 🎶"
-    pkill -f http
+    pkill -f "mpv.*--title=dm-radio"
     exit
     ;;
   *)
-    pkill -f http || echo "mpv not running."
+    pkill -f "mpv.*--title=dm-radio" || echo "mpv not running."
     notify-send "Starting dm-radio" "Playing station: $choice. 🎶"
     URL=$(jq -r --arg choice "$choice" '.[] | select(.name==$choice) | .url' <"${RADIO_STATIONS_FILE}")
     if [ "$VIDEO" = true ]; then
-      mpv --vf=format=yuv420p,scale=1280:720 --autofit=20% --volume="${DMRADIOVOLUME:-100}" "$URL"
+      mpv --title="dm-radio" --vf=format=yuv420p,scale=1280:720 --autofit=20% --volume="${DMRADIOVOLUME:-100}" "$URL"
     else
-      mpv --no-video --volume="${DMRADIOVOLUME:-100}" "$URL"
+      mpv --title="dm-radio" --no-video --volume="${DMRADIOVOLUME:-100}" "$URL"
     fi
     ;;
   esac
