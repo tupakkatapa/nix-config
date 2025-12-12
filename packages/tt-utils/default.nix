@@ -1,6 +1,5 @@
 { pkgs
 , lib
-,
 }:
 pkgs.stdenv.mkDerivation rec {
   pname = "tt-utils";
@@ -8,15 +7,14 @@ pkgs.stdenv.mkDerivation rec {
   src = ./.;
 
   buildInputs = with pkgs; [
-    coreutils # various
+    coreutils # cathead
     curl # filemon
+    findutils # cathead, raidgrep
     gnused # prefix
     libnotify # filemon
     parallel # raidgrep
     zstd # raidgrep
-    findutils # cathead
   ];
-
   nativeBuildInputs = [ pkgs.makeWrapper ];
 
   # List of scripts to be installed

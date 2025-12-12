@@ -103,14 +103,9 @@
           overlayAttrs = {
             inherit (config.packages)
               # Custom packages used in configurations
-              dm-pipewire-out-switcher
-              dm-radio
+              dm-scripts
               monitor-adjust
-              notify-brightness
-              notify-not-hyprprop
-              notify-pipewire-out-switcher
-              notify-screenshot
-              notify-volume
+              notify-scripts
               pipewire-out-switcher
               tt-utils
               # Inputs
@@ -158,20 +153,13 @@
           # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
           packages = {
             "2mp3" = pkgs.callPackage ./packages/2mp3 { };
+            "dm-scripts" = pkgs.callPackage ./packages/dm-scripts { };
             "fat-nix-deps" = pkgs.callPackage ./packages/fat-nix-deps { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
+            "notify-scripts" = pkgs.callPackage ./packages/notify-scripts { };
             "pinit" = pkgs.callPackage ./packages/pinit { };
             "pipewire-out-switcher" = pkgs.callPackage ./packages/pipewire-out-switcher { };
             "tt-utils" = pkgs.callPackage ./packages/tt-utils { };
-            # Wofi scripts
-            "dm-pipewire-out-switcher" = pkgs.callPackage ./packages/wofi-scripts/dm-pipewire-out-switcher { };
-            "dm-radio" = pkgs.callPackage ./packages/wofi-scripts/dm-radio { };
-            # Notify scripts
-            "notify-brightness" = pkgs.callPackage ./packages/notify-scripts/notify-brightness { };
-            "notify-not-hyprprop" = pkgs.callPackage ./packages/notify-scripts/notify-not-hyprprop { };
-            "notify-pipewire-out-switcher" = pkgs.callPackage ./packages/notify-scripts/notify-pipewire-out-switcher { };
-            "notify-screenshot" = pkgs.callPackage ./packages/notify-scripts/notify-screenshot { };
-            "notify-volume" = pkgs.callPackage ./packages/notify-scripts/notify-volume { };
             # Inputs
             inherit (inputs'.levari.packages) levari;
             inherit (inputs'.nixie.packages) lkddb-filter;

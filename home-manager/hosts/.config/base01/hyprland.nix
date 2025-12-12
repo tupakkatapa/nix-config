@@ -45,16 +45,16 @@ let
   };
 
   notify = {
-    brightness = "${pkgs.notify-brightness}/bin/notify-brightness";
-    not-hyprprop = "${pkgs.notify-not-hyprprop}/bin/notify-not-hyprprop";
-    pipewire-out-switcher = "${pkgs.notify-pipewire-out-switcher}/bin/notify-pipewire-out-switcher";
-    screenshot = "${pkgs.notify-screenshot}/bin/notify-screenshot";
-    volume = "${pkgs.notify-volume}/bin/notify-volume";
+    brightness = "${pkgs.notify-scripts}/bin/notify-brightness";
+    not-hyprprop = "${pkgs.notify-scripts}/bin/notify-not-hyprprop";
+    pipewire-out-switcher = "${pkgs.notify-scripts}/bin/notify-pipewire-out-switcher";
+    screenshot = "${pkgs.notify-scripts}/bin/notify-screenshot";
+    volume = "${pkgs.notify-scripts}/bin/notify-volume";
   };
 
   dm = {
-    pipewire-out-switcher = "${pkgs.dm-pipewire-out-switcher}/bin/dm-pipewire-out-switcher";
-    radio = "${pkgs.dm-radio}/bin/dm-radio-wrapper";
+    pipewire-out-switcher = "${pkgs.dm-scripts}/bin/dm-pipewire-out-switcher";
+    radio = "${pkgs.dm-scripts}/bin/dm-radio";
   };
 
   hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
