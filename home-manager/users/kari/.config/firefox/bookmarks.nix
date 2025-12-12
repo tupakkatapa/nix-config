@@ -115,6 +115,8 @@
             { name = "rEFInd Boot Manager"; url = "http://www.rodsbooks.com/refind/index.html"; }
             { name = "git-send-email.io"; url = "https://git-send-email.io/"; }
             { name = "lore.kernel.org"; url = "https://lore.kernel.org/"; }
+            { name = "CommandLineFu"; url = "https://www.commandlinefu.com/"; }
+            { name = "ExplainShell"; url = "https://explainshell.com/"; }
           ];
         }
         {
@@ -184,10 +186,11 @@
         {
           name = "Literature";
           bookmarks = [
-            { name = "Sci-Hub"; url = "https://www.sci-hub.pub/"; }
+            { name = "Sci-Hub"; url = "https://sci-hub.se/"; }
             { name = "Anna's Archive"; url = "https://annas-archive.org/"; }
             { name = "Internet Archive"; url = "https://archive.org/"; }
             { name = "ResearchGate"; url = "https://www.researchgate.net/"; }
+            { name = "Google Scholar"; url = "https://scholar.google.com/"; }
             { name = "Kansalliskirjasto"; url = "https://digi.kansalliskirjasto.fi/etusivu"; }
           ];
         }
@@ -291,6 +294,12 @@
             { name = "Downdetector"; url = "https://downdetector.com/"; }
             { name = "MyTime"; url = "https://mytime.io/"; }
             { name = "Word2Markdown"; url = "https://word2md.com/"; }
+          ];
+        }
+        {
+          name = "Travel";
+          bookmarks = [
+            { name = "Skyscanner"; url = "https://www.skyscanner.fi/lennot"; }
           ];
         }
       ];
