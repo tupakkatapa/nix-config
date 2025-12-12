@@ -127,24 +127,19 @@ in
           forwardAgent = true;
           addKeysToAgent = "yes";
         };
-        "192.168.1.*".extraOptions."StrictHostKeyChecking" = "no";
-        "192.168.100.*" = {
-          user = "core";
+        "hyperion" = {
+          hostname = "192.168.1.2";
           extraOptions."StrictHostKeyChecking" = "no";
         };
-        "192.168.1.171" = {
-          user = "core";
+        "torgue" = {
+          hostname = "192.168.1.7";
           extraOptions."StrictHostKeyChecking" = "no";
         };
         "vladof" = {
           hostname = "192.168.1.8";
           extraOptions."StrictHostKeyChecking" = "no";
         };
-        "node2" = {
-          proxyJump = "core@192.168.1.25";
-          hostname = "node2.simple";
-          user = "core";
-        };
+        "192.168.1.*".extraOptions."StrictHostKeyChecking" = "no";
       };
     };
     services.ssh-agent.enable = true;
