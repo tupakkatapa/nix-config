@@ -1,6 +1,5 @@
 # https://github.com/jhvst/nix-config/blob/main/nixosModules/neovim/default.nix
 { pkgs
-, config
 , ...
 }:
 {
@@ -96,6 +95,7 @@
       todo-comments.enable = true;
       comment.enable = true;
       rainbow-delimiters.enable = true;
+      mini-notify.enable = true;
       hardtime = {
         enable = true;
         settings.max_count = 0;
@@ -103,7 +103,14 @@
       bufdelete.enable = true;
       markdown-preview.enable = true;
       web-devicons.enable = true;
-      lazygit.enable = config.programs.lazygit.enable;
+      lazygit = {
+        enable = true;
+        settings = {
+          floating_window_winblend = 0;
+          floating_window_scaling_factor = 0.9;
+        };
+      };
+      luasnip.enable = true;
 
       # Tabline plugin
       bufferline = {
@@ -156,6 +163,7 @@
             use_libuv_file_watcher = true;
             filtered_items = {
               visible = true;
+              hide_gitignored = true;
               hide_dotfiles = false;
               never_show_by_pattern = [ ".git" ".direnv" ".devenv" ];
             };
@@ -170,7 +178,6 @@
       lualine = {
         enable = true;
         settings = {
-
           sections = {
             lualine_a = [ "" ];
             lualine_b = [ "" ];
@@ -180,7 +187,6 @@
             lualine_z = [ "mode" ];
           };
           options = {
-
             theme = "gruvbox-material";
             icons_enabled = false;
             disabled_filetypes.statusline = [ "neo-tree" ];
