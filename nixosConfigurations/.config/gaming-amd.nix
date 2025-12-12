@@ -28,10 +28,9 @@
     # Xbox controller
     bluetooth.enable = true;
     xpadneo.enable = true;
-    xone.enable = true;
 
-    # Vulkan
-    amdgpu.amdvlk.enable = false;
+    # Xbox Wireless Adapter dongle
+    # xone.enable = true; # incompatible with Linux 6.18 (ida_simple_get deprecated)
 
     # Firmware configurations
     enableRedistributableFirmware = true;

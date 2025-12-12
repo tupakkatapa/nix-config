@@ -122,12 +122,15 @@ in
     # Extra SSH config
     programs.ssh = {
       enable = true;
+      enableDefaultConfig = false;
       matchBlocks = {
         "*" = {
           identityFile = [
             config.age.secrets.ed25519-sk-yubikey.path
             config.age.secrets.ed25519-sk-trezor.path
           ];
+          forwardAgent = true;
+          addKeysToAgent = "yes";
         };
         "192.168.1.*".extraOptions."StrictHostKeyChecking" = "no";
         "192.168.100.*" = {
@@ -148,8 +151,6 @@ in
           user = "core";
         };
       };
-      forwardAgent = true;
-      addKeysToAgent = "yes";
     };
     services.ssh-agent.enable = true;
 
@@ -183,10 +184,14 @@ in
     programs.git = {
       signing.key = "A3B346665514836DCE851842A2429183508FCEFF";
       signing.signByDefault = if config.networking.hostName == "maliwan" then false else true;
-      userEmail = "jesse@ponkila.com";
-      userName = "Jesse Karjalainen";
-      extraConfig.sendemail = {
-        smtpserver = "${pkgs.msmtp}/bin/msmtp";
+      settings = {
+        user = {
+          email = "jesse@ponkila.com";
+          name = "Jesse Karjalainen";
+        };
+        sendemail = {
+          smtpserver = "${pkgs.msmtp}/bin/msmtp";
+        };
       };
       lfs.enable = true;
     };
@@ -195,7 +200,7 @@ in
       homedir = "/home/${user}/.gnupg/trezor";
       settings = {
         default-key = "Jesse Karjalainen <jesse@ponkila.com>";
-        agent-program = "${pkgs.trezor_agent}/bin/trezor-gpg-agent";
+        agent-program = "${pkgs.trezor-agent}/bin/trezor-gpg-agent";
       };
     };
     home.packages = with pkgs; [

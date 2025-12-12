@@ -25,13 +25,13 @@
     devenv.url = "github:cachix/devenv";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     nix-index-database.url = "github:nix-community/nix-index-database";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
-    nixvim.url = "github:nix-community/nixvim";
+    nixvim.url = "github:nix-community/nixvim/nixos-25.11";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
@@ -63,7 +63,7 @@
 
   outputs = { self, ... }@inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } rec {
-      systems = inputs.nixpkgs.lib.systems.flakeExposed;
+      systems = [ "x86_64-linux" ];
       imports = [
         inputs.agenix-rekey.flakeModule
         inputs.devenv.flakeModule
@@ -79,30 +79,18 @@
         , ...
         }:
         let
-          packages = {
-            "2mp3" = pkgs.callPackage ./packages/2mp3 { };
-            "fat-nix-deps" = pkgs.callPackage ./packages/fat-nix-deps { };
-            "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
-            "pinit" = pkgs.callPackage ./packages/pinit { };
-            "pipewire-out-switcher" = pkgs.callPackage ./packages/pipewire-out-switcher { };
-            "tt-utils" = pkgs.callPackage ./packages/tt-utils { };
-            # Wofi scripts
-            "dm-pipewire-out-switcher" = pkgs.callPackage ./packages/wofi-scripts/dm-pipewire-out-switcher { };
-            "dm-radio" = pkgs.callPackage ./packages/wofi-scripts/dm-radio { };
-            # Notify scripts
-            "notify-brightness" = pkgs.callPackage ./packages/notify-scripts/notify-brightness { };
-            "notify-not-hyprprop" = pkgs.callPackage ./packages/notify-scripts/notify-not-hyprprop { };
-            "notify-pipewire-out-switcher" = pkgs.callPackage ./packages/notify-scripts/notify-pipewire-out-switcher { };
-            "notify-screenshot" = pkgs.callPackage ./packages/notify-scripts/notify-screenshot { };
-            "notify-volume" = pkgs.callPackage ./packages/notify-scripts/notify-volume { };
-            # Inputs
-            inherit (inputs'.levari.packages) levari;
-            inherit (inputs'.nixie.packages) lkddb-filter;
-            inherit (inputs'.nixie.packages) pxe-generate;
-            inherit (inputs'.nixie.packages) refind-generate;
-            inherit (inputs'.ping-sweep.packages) ping-sweep;
-            inherit (inputs'.codex-cli-nix.packages) codex;
-          };
+          # Patched nixpkgs with trezor fix for click 8.2 compatibility
+          # See: https://github.com/jhvst/nix-config/blob/949d9dea5d01292e9eac358535dca247f3a9229b/flake.nix#L41-L107
+          nixpkgs-patched = import
+            ((import inputs.nixpkgs { inherit system; }).applyPatches {
+              name = "nixpkgs-pr-455630";
+              src = inputs.nixpkgs;
+              patches = [ ./packages/trezor/455630.patch ];
+            })
+            {
+              inherit system;
+              config.permittedInsecurePackages = [ "python3.13-ecdsa-0.19.1" ];
+            };
         in
         {
           # Overlays
@@ -111,9 +99,27 @@
             overlays = [
               self.overlays.default
             ];
-            config = { };
           };
-          overlayAttrs = packages;
+          overlayAttrs = {
+            inherit (config.packages)
+              # Custom packages used in configurations
+              dm-pipewire-out-switcher
+              dm-radio
+              monitor-adjust
+              notify-brightness
+              notify-not-hyprprop
+              notify-pipewire-out-switcher
+              notify-screenshot
+              notify-volume
+              pipewire-out-switcher
+              tt-utils
+              # Inputs
+              codex
+              ping-sweep
+              # Patches
+              python313
+              ;
+          };
 
           # Nix code formatter -> 'nix fmt'
           treefmt.config = {
@@ -150,15 +156,43 @@
           };
 
           # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
-          packages =
-            (with flake.nixosConfigurations; {
-              "bandit" = bandit.config.system.build.kexecTree;
-              "torgue" = torgue.config.system.build.kexecTree;
-              "vladof" = vladof.config.system.build.kexecTree;
-              "maliwan" = maliwan.config.system.build.kexecTree;
-              "hyperion" = hyperion.config.system.build.kexecTree;
-            })
-            // packages;
+          packages = {
+            "2mp3" = pkgs.callPackage ./packages/2mp3 { };
+            "fat-nix-deps" = pkgs.callPackage ./packages/fat-nix-deps { };
+            "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
+            "pinit" = pkgs.callPackage ./packages/pinit { };
+            "pipewire-out-switcher" = pkgs.callPackage ./packages/pipewire-out-switcher { };
+            "tt-utils" = pkgs.callPackage ./packages/tt-utils { };
+            # Wofi scripts
+            "dm-pipewire-out-switcher" = pkgs.callPackage ./packages/wofi-scripts/dm-pipewire-out-switcher { };
+            "dm-radio" = pkgs.callPackage ./packages/wofi-scripts/dm-radio { };
+            # Notify scripts
+            "notify-brightness" = pkgs.callPackage ./packages/notify-scripts/notify-brightness { };
+            "notify-not-hyprprop" = pkgs.callPackage ./packages/notify-scripts/notify-not-hyprprop { };
+            "notify-pipewire-out-switcher" = pkgs.callPackage ./packages/notify-scripts/notify-pipewire-out-switcher { };
+            "notify-screenshot" = pkgs.callPackage ./packages/notify-scripts/notify-screenshot { };
+            "notify-volume" = pkgs.callPackage ./packages/notify-scripts/notify-volume { };
+            # Inputs
+            inherit (inputs'.levari.packages) levari;
+            inherit (inputs'.nixie.packages) lkddb-filter;
+            inherit (inputs'.nixie.packages) pxe-generate;
+            inherit (inputs'.nixie.packages) refind-generate;
+            inherit (inputs'.ping-sweep.packages) ping-sweep;
+            inherit (inputs'.codex-cli-nix.packages) codex;
+            # Patches
+            "python313" = pkgs.python313.override {
+              packageOverrides = _: _: {
+                inherit (nixpkgs-patched.python313Packages) trezor;
+              };
+            };
+          }
+          // (with flake.nixosConfigurations; {
+            "bandit" = bandit.config.system.build.kexecTree;
+            "torgue" = torgue.config.system.build.kexecTree;
+            "vladof" = vladof.config.system.build.kexecTree;
+            "maliwan" = maliwan.config.system.build.kexecTree;
+            "hyperion" = hyperion.config.system.build.kexecTree;
+          });
 
           # Whitelist hosts using agenix-rekey
           agenix-rekey.nixosConfigurations = {
@@ -196,7 +230,7 @@
                 nixpkgs.overlays = [
                   self.overlays.default
                 ];
-                system.stateVersion = "25.05";
+                system.stateVersion = "25.11";
               }
             ];
           };
@@ -216,8 +250,8 @@
               ({ config, ... }: {
                 home-manager = {
                   sharedModules = [
-                    inputs.nixvim.homeManagerModules.nixvim
-                    inputs.nix-index-database.hmModules.nix-index
+                    inputs.nixvim.homeModules.nixvim
+                    inputs.nix-index-database.homeModules.nix-index
                     {
                       programs.nix-index.enable = true;
                       programs.nix-index-database.comma.enable = true;

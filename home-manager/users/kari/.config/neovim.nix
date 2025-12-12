@@ -122,43 +122,47 @@
       # File browser
       neo-tree = {
         enable = true;
-        addBlankLineAtTop = true;
-        enableDiagnostics = true;
-        enableGitStatus = true;
-        closeIfLastWindow = true;
-        eventHandlers = {
-          neo_tree_buffer_enter = ''
-            function()
-              vim.opt_local.number = true;
-              vim.opt_local.relativenumber = true;
-            end
-          '';
-        };
-        window = {
-          autoExpandWidth = false;
-          mappings = {
-            "l".command = "open";
-            "h".command = "close_node";
-            "Y" = {
-              __raw = ''
-                function(state)
-                  local node = state.tree:get_node()
-                  local filepath = node:get_id()
-                  vim.fn.setreg('+', filepath)
-                  vim.notify('Copied: ' .. filepath)
-                end
-              '';
+        settings = {
+          add_blank_line_at_top = true;
+          enable_diagnostics = true;
+          enable_git_status = true;
+          close_if_last_window = true;
+          event_handlers = {
+            neo_tree_buffer_enter = ''
+              function()
+                vim.opt_local.number = true;
+                vim.opt_local.relativenumber = true;
+              end
+            '';
+          };
+          window = {
+            auto_expand_width = false;
+            mappings = {
+              "l".command = "open";
+              "h".command = "close_node";
+              "Y" = {
+                __raw = ''
+                  function(state)
+                    local node = state.tree:get_node()
+                    local filepath = node:get_id()
+                    vim.fn.setreg('+', filepath)
+                    vim.notify('Copied: ' .. filepath)
+                  end
+                '';
+              };
             };
           };
-        };
-        filesystem = {
-          useLibuvFileWatcher = true;
-          filteredItems = {
-            visible = true;
-            hideDotfiles = false;
-            neverShowByPattern = [ ".git" ".direnv" ".devenv" ];
+          filesystem = {
+            use_libuv_file_watcher = true;
+            filtered_items = {
+              visible = true;
+              hide_dotfiles = false;
+              never_show_by_pattern = [ ".git" ".direnv" ".devenv" ];
+            };
+            follow_current_file = {
+              enabled = true;
+            };
           };
-          followCurrentFile.enabled = true;
         };
       };
 

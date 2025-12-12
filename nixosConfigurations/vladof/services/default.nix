@@ -102,7 +102,7 @@ in
     virtualHosts =
       # Public services with ACME certs
       lib.mapAttrs'
-        (name: service: {
+        (_name: service: {
           name = service.addr;
           value = {
             useACMEHost = service.addr;
@@ -114,7 +114,7 @@ in
         publicServices
       # Private services with self-signed certs
       // lib.mapAttrs'
-        (name: service: {
+        (_name: service: {
           name = service.addr;
           value = {
             extraConfig = ''
@@ -152,7 +152,7 @@ in
     certs =
       # ACME certs from Let's Encrypt
       lib.mapAttrs'
-        (name: service: {
+        (_name: service: {
           name = service.addr;
           value = { };
         })

@@ -76,9 +76,6 @@ in
     programs.git = {
       enable = true;
       package = pkgs.gitFull;
-      aliases = {
-        uncommit = "reset --soft HEAD^";
-      };
       ignores = [
         ".knowledge"
         ".scripts"
@@ -86,7 +83,10 @@ in
         "PROMPTS.md"
         "MEMO.md"
       ];
-      extraConfig = {
+      settings = {
+        alias = {
+          uncommit = "reset --soft HEAD^";
+        };
         safe.directory = [ "*" ];
         pull.rebase = true;
         http = {
