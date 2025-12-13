@@ -2,9 +2,9 @@
 , pkgs
 , ...
 }: {
-  # Use the latest kernel
+  # Use LTS kernel
   boot.kernelParams = [ "boot.shell_on_fail" ];
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages;
 
   # Set the console keymap
   console.keyMap = "fi";

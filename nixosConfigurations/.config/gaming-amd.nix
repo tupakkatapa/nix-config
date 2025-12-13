@@ -30,7 +30,7 @@
     xpadneo.enable = true;
 
     # Xbox Wireless Adapter dongle
-    # xone.enable = true; # incompatible with Linux 6.18 (ida_simple_get deprecated)
+    xone.enable = true;
 
     # Firmware configurations
     enableRedistributableFirmware = true;
