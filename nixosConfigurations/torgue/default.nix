@@ -88,7 +88,7 @@
           DHCP = "ipv4";
           IPv6AcceptRA = true;
         };
-        address = [ "192.168.1.7/24" ]; # static IP
+        address = [ "10.42.0.7/24" ]; # static IP
       };
       "20-wan" = {
         linkConfig.RequiredForOnline = "routable";

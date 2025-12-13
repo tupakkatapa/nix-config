@@ -162,14 +162,13 @@ in
         exec = ''
           interface_name="enp3s0"
           local_ip=$(${pkgs.iproute2}/bin/ip -4 addr show $interface_name | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
-          ips=$(${pkgs.ping-sweep}/bin/ping-sweep -s 192.168.1.0/24)
+          ips=$(${pkgs.ping-sweep}/bin/ping-sweep -s 10.42.0.0/24)
 
           # Filters
           ips=$(echo "$ips" | grep -v "$local_ip")
-          # ips=$(echo "$ips" | grep -v "192.168.1.1")
 
           # Format
-          ip_suffixes=$(echo "$ips" | sed 's/192\.168\.1\././' | sort -n)
+          ip_suffixes=$(echo "$ips" | sed 's/10\.42\.0\././' | sort -n)
           echo '{"text": "'$ip_suffixes'"}'
         '';
         interval = 30;

@@ -8,7 +8,7 @@
 }:
 let
   # Service and container configuration
-  containerSubnet = "10.233.1";
+  containerSubnet = "10.23.0";
   servicesConfig = lib.mapAttrs
     (_name: service: service // {
       localAddress = "${containerSubnet}.${toString service.lastOctet}";

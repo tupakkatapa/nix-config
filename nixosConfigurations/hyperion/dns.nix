@@ -10,8 +10,9 @@ _:
         interface = [
           "127.0.0.1"
           "::1"
-          "192.168.1.2" # TESTING: Change to .1 for production
-          "172.16.16.1"
+          "10.42.0.1" # LAN
+          "10.42.1.1" # WiFi
+          "172.16.16.1" # WireGuard
         ];
 
         # Access control: default deny
@@ -20,8 +21,9 @@ _:
           "::/0 refuse"
           "127.0.0.0/8 allow"
           "::1 allow"
-          "192.168.1.0/24 allow"
-          "172.16.16.0/24 allow"
+          "10.42.0.0/24 allow" # LAN
+          "10.42.1.0/24 allow" # WiFi
+          "172.16.16.0/24 allow" # WireGuard
         ];
 
         port = 53;
@@ -75,26 +77,26 @@ _:
         local-zone = [ ''"coditon.com." transparent'' ];
 
         local-data = [
-          ''"vladof.coditon.com. IN A 192.168.1.8"''
-          # ''"plex.coditon.com. IN A 192.168.1.8"'' # Public service - use public DNS
-          ''"vault.coditon.com. IN A 192.168.1.8"''
-          ''"lib.coditon.com. IN A 192.168.1.8"''
-          ''"torrent.coditon.com. IN A 192.168.1.8"''
-          ''"dav.coditon.com. IN A 192.168.1.8"''
-          ''"chat.coditon.com. IN A 192.168.1.8"''
-          # ''"blog.coditon.com. IN A 192.168.1.8"'' # Public service - use public DNS
-          ''"index.coditon.com. IN A 192.168.1.8"''
-          ''"eth.coditon.com. IN A 192.168.1.25"''
-          ''"kaakkuri.coditon.com. IN A 192.168.1.25"''
-          ''"hyperion.coditon.com. IN A 192.168.1.2"'' # TESTING: Change to .1 for production
-          ''"router.coditon.com. IN A 192.168.1.2"'' # TESTING: Change to .1 for production
-          ''"torgue.coditon.com. IN A 192.168.1.7"''
+          ''"vladof.coditon.com. IN A 10.42.0.8"''
+          # ''"plex.coditon.com. IN A 10.42.0.8"'' # Public service - use public DNS
+          ''"vault.coditon.com. IN A 10.42.0.8"''
+          ''"lib.coditon.com. IN A 10.42.0.8"''
+          ''"torrent.coditon.com. IN A 10.42.0.8"''
+          ''"dav.coditon.com. IN A 10.42.0.8"''
+          ''"chat.coditon.com. IN A 10.42.0.8"''
+          # ''"blog.coditon.com. IN A 10.42.0.8"'' # Public service - use public DNS
+          ''"index.coditon.com. IN A 10.42.0.8"''
+          ''"eth.coditon.com. IN A 10.42.0.25"''
+          ''"kaakkuri.coditon.com. IN A 10.42.0.25"''
+          ''"hyperion.coditon.com. IN A 10.42.0.1"''
+          ''"router.coditon.com. IN A 10.42.0.1"''
+          ''"torgue.coditon.com. IN A 10.42.0.7"''
 
           # PTR records
-          ''"2.1.168.192.in-addr.arpa. IN PTR hyperion.coditon.com."'' # TESTING: Change to 1.1.168.192 for production
-          ''"7.1.168.192.in-addr.arpa. IN PTR torgue.coditon.com."''
-          ''"8.1.168.192.in-addr.arpa. IN PTR vladof.coditon.com."''
-          ''"25.1.168.192.in-addr.arpa. IN PTR kaakkuri.coditon.com."''
+          ''"1.0.42.10.in-addr.arpa. IN PTR hyperion.coditon.com."''
+          ''"7.0.42.10.in-addr.arpa. IN PTR torgue.coditon.com."''
+          ''"8.0.42.10.in-addr.arpa. IN PTR vladof.coditon.com."''
+          ''"25.0.42.10.in-addr.arpa. IN PTR kaakkuri.coditon.com."''
         ];
       };
 
@@ -104,4 +106,8 @@ _:
       };
     };
   };
+
+  # Static UID/GID for persistent storage
+  users.users.unbound.uid = 994;
+  users.groups.unbound.gid = 992;
 }

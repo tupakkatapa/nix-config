@@ -1,4 +1,4 @@
-_:
+{ config, ... }:
 {
   networking.useNetworkd = true;
   systemd.network.enable = true;
@@ -16,18 +16,52 @@ _:
         UseNTP = false;
       };
     };
-    # LAN managed by Nixie (br-upstream bridge)
+    # LAN is managed by Nixie
+  };
+
+  # WiFi Access Point
+  services.hostapd = {
+    enable = true;
+    radios.wlp0s20f3 = {
+      band = "2g"; # Intel CNVi doesn't support 5g
+      channel = 6;
+      countryCode = "FI";
+      wifi4.capabilities = [ "LDPC" "HT40+" "SHORT-GI-20" "SHORT-GI-40" ];
+      networks.wlp0s20f3 = {
+        ssid = "hyperion-2g";
+        authentication = {
+          mode = "wpa3-sae"; # no WPA2 fallback
+          saePasswords = [{ passwordFile = config.age.secrets.wifi-ap-password.path; }];
+        };
+      };
+    };
+  };
+
+  # Secrets
+  age.secrets.wifi-ap-password = {
+    rekeyFile = ./secrets/wifi-ap-password.age;
+    mode = "400";
+  };
+
+  # Wait for WiFi bridge before starting network services
+  # Intel CNVi can crash/recover at boot, delaying br-wifi creation
+  systemd.services.kea-dhcp4-server = {
+    after = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
+    wants = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
+  };
+  systemd.services.nginx = {
+    after = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
+    wants = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
   };
 
   boot.kernel.sysctl = {
-    # Packet forwarding
+    # Packet forwarding (IPv4)
     "net.ipv4.ip_forward" = 1;
     "net.ipv4.conf.all.forwarding" = 1;
 
-    # IPv6 disabled (no firewall rules yet)
+    # Disable IPv6
     "net.ipv6.conf.all.disable_ipv6" = 1;
     "net.ipv6.conf.default.disable_ipv6" = 1;
-    "net.ipv6.conf.enp1s0.disable_ipv6" = 1;
 
     # Anti-spoofing
     "net.ipv4.conf.all.rp_filter" = 1;

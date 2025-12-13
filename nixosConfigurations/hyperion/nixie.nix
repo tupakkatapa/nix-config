@@ -59,32 +59,43 @@
       enable = true;
       subnets = [
         {
-          name = "upstream";
+          name = "lan";
           serve = true;
-          address = "192.168.1.2"; # TESTING: Change to .1 for production
-          gateway = "192.168.1.1";
-          dns = "192.168.1.2"; # TESTING: Change to .1 for production
+          address = "10.42.0.1";
+          gateway = "10.42.0.1";
+          dns = "10.42.0.1";
           interfaces = [ "enp2s0" ];
           defaultMenu = "bandit";
           clients = [
             {
               menu = "torgue";
               mac = "d4:5d:64:d1:12:52";
-              address = "192.168.1.7";
+              address = "10.42.0.7";
             }
             {
               menu = "vladof";
               mac = "30:9c:23:3c:b9:01";
-              address = "192.168.1.8";
+              address = "10.42.0.8";
             }
             {
               menu = "kaakkuri-ephemeral-alpha";
               mac = "70:85:c2:b5:be:db";
-              address = "192.168.1.25";
+              address = "10.42.0.25";
             }
           ];
-          poolStart = "192.168.1.30";
-          poolEnd = "192.168.1.254";
+          poolStart = "10.42.0.30";
+          poolEnd = "10.42.0.254";
+        }
+        {
+          name = "wifi";
+          serve = true;
+          address = "10.42.1.1";
+          gateway = "10.42.1.1";
+          dns = "10.42.1.1";
+          interfaces = [ "wlp0s20f3" ];
+          defaultMenu = "bandit";
+          poolStart = "10.42.1.10";
+          poolEnd = "10.42.1.254";
         }
       ];
     };

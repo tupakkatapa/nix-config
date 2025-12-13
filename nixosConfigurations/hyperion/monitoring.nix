@@ -3,16 +3,7 @@ _:
   # Fail2ban - monitors SSH logs for attacks
   services.fail2ban = {
     enable = true;
-
-    # Whitelist LAN subnets
-    ignoreIP = [
-      "127.0.0.1/8"
-      "192.168.1.0/24" # LAN
-      "172.16.16.0/24" # WireGuard
-    ];
-
     maxretry = 5;
-
     bantime = "24h";
     bantime-increment = {
       enable = true;
@@ -40,10 +31,15 @@ _:
       "uname"
       "ethtool"
       "tcpstat"
+      "conntrack"
     ];
-    listenAddress = "192.168.1.2"; # TESTING: Change to .1 for production
+    listenAddress = "10.42.0.1";
   };
 
   # vnStat - monitors bandwidth usage
   services.vnstat.enable = true;
+
+  # Static UID/GID for persistent storage
+  users.users.vnstatd.uid = 993;
+  users.groups.vnstatd.gid = 991;
 }

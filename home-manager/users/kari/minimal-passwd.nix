@@ -76,7 +76,7 @@ in
     };
 
     mounts = [{
-      what = "sftp@192.168.1.8:/";
+      what = "sftp@10.42.0.8:/";
       where = "/mnt/sftp";
     }];
 
@@ -110,7 +110,7 @@ in
   # Add SFTP host to root's known hosts for non-interactive authentication
   services.openssh.knownHosts.vladof = {
     publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEJktZ00i+OxH4Azi1tLkwoYrJ0qo2RIZ5huzzK+g2w";
-    extraHostNames = [ "192.168.1.8" ];
+    extraHostNames = [ "10.42.0.8" ];
   };
 
   home-manager.users."${user}" = {
@@ -128,18 +128,19 @@ in
           addKeysToAgent = "yes";
         };
         "hyperion" = {
-          hostname = "192.168.1.2";
+          user = "core";
+          hostname = "10.42.0.1";
           extraOptions."StrictHostKeyChecking" = "no";
         };
         "torgue" = {
-          hostname = "192.168.1.7";
+          hostname = "10.42.0.7";
           extraOptions."StrictHostKeyChecking" = "no";
         };
         "vladof" = {
-          hostname = "192.168.1.8";
+          hostname = "10.42.0.8";
           extraOptions."StrictHostKeyChecking" = "no";
         };
-        "192.168.1.*".extraOptions."StrictHostKeyChecking" = "no";
+        "10.42.0.*".extraOptions."StrictHostKeyChecking" = "no";
       };
     };
     services.ssh-agent.enable = true;
@@ -205,6 +206,7 @@ in
     networks = {
       "OP9".pskRaw = "ext:psk_op9";
       "Pixel_1253".pskRaw = "ext:psk_op9";
+      "Hyperion".pskRaw = "ext:psk_hyp";
     };
     secretsFile = config.age.secrets.wpa-psk.path;
   };
@@ -220,7 +222,7 @@ in
         wireguardConfig.PrivateKeyFile = config.age.secrets.wg-home.path;
         wireguardPeers = [{
           PublicKey = "jRlrkYOWatx3pvJPt22uuWDiWJ8K9d+teJ2IEiMJ3SA=";
-          AllowedIPs = [ "192.168.1.0/24" "172.16.16.0/24" ];
+          AllowedIPs = [ "10.42.0.0/24" "172.16.16.0/24" ];
           Endpoint = [ "coditon.com:51820" ];
           PersistentKeepalive = 25;
         }];
@@ -253,14 +255,10 @@ in
           {
             Gateway = "172.16.16.1";
             GatewayOnLink = true;
-            Destination = "192.168.1.0/24";
+            Destination = "10.42.0.0/24";
           }
         ];
-        dns = [
-          "192.168.1.1" # pfsense
-          # "172.16.16.1" # vladof
-          "1.1.1.1" # cloudflare
-        ];
+        dns = [ "10.42.0.1" ];
       };
       "99-dinar" = {
         matchConfig.Name = "dinar";

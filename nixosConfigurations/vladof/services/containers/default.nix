@@ -93,7 +93,7 @@ in
           lib.mapAttrsToList
             (name: service: ''
               # ${name}
-              iptables -t nat -A PREROUTING -p tcp -d 192.168.1.8 --dport ${toString service.port} -j DNAT --to-destination ${service.localAddress}:${toString service.port}
+              iptables -t nat -A PREROUTING -p tcp -d 10.42.0.8 --dport ${toString service.port} -j DNAT --to-destination ${service.localAddress}:${toString service.port}
               iptables -t nat -A PREROUTING -p tcp -d 172.16.16.1 --dport ${toString service.port} -j DNAT --to-destination ${service.localAddress}:${toString service.port}
               iptables -A FORWARD -p tcp -d ${service.localAddress} --dport ${toString service.port} -j ACCEPT
             '')

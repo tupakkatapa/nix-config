@@ -41,7 +41,7 @@ in
     program = lib.concatStringsSep " \\\n\t" [
       "${config.home-manager.users."${user}".programs.firefox.package}/bin/firefox"
       "https://www.youtube.com"
-      "http://10.233.1.14:32400" # plex
+      "http://10.23.0.14:32400" # plex
     ];
     environment = {
       XKB_DEFAULT_LAYOUT = "fi";
@@ -77,7 +77,7 @@ in
           DHCP = "ipv4";
           IPv6AcceptRA = true;
         };
-        address = [ "192.168.1.8/24" ]; # static IP
+        address = [ "10.42.0.8/24" ]; # static IP
       };
     };
   };
@@ -100,18 +100,12 @@ in
   services.fail2ban = {
     enable = true;
     maxretry = 5;
-    ignoreIP = [
-      # Whitelisting some subnets:
-      "10.0.0.0/8"
-      "172.16.0.0/12"
-      "192.168.0.0/16"
-    ];
     bantime = "24h";
     bantime-increment = {
-      enable = true; # Enable increment of bantime after each violation
+      enable = true;
       multipliers = "1 2 4 8 16 32 64";
-      maxtime = "168h"; # Do not ban for more than 1 week
-      overalljails = true; # Calculate the bantime based on all the violations
+      maxtime = "10w";
+      overalljails = true;
     };
     jails = {
       apache-nohome-iptables = ''

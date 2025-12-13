@@ -8,7 +8,7 @@
         {
           name = "Self-Hosted";
           bookmarks = [
-            { name = "Pfsense"; url = "https://192.168.1.1:10443"; }
+            { name = "Hyperion"; url = "https://10.42.0.1"; }
             { name = "Radicale"; url = "https://dav.coditon.com/"; }
             { name = "Plex"; url = "https://plex.coditon.com"; }
             { name = "Torrent"; url = "https://torrent.coditon.com"; }
