@@ -1,7 +1,7 @@
 _: {
   networking.firewall.enable = true;
 
-  # nftables with flow offloading
+  # nftables with flow offloading and NAT
   networking.nftables = {
     enable = true;
     checkRuleset = false; # interfaces don't exist at build time
@@ -14,28 +14,33 @@ _: {
         }
       '';
     };
-  };
+    tables."nat" = {
+      family = "ip";
+      content = ''
+        chain prerouting {
+          type nat hook prerouting priority dstnat; policy accept;
 
-  # NAT and port forwarding
-  networking.nat = {
-    enable = true;
-    externalInterface = "enp1s0";
-    internalInterfaces = [ "br-lan" "br-wifi" ];
-    internalIPs = [ "10.42.0.0/24" "10.42.1.0/24" ];
+          # Port forwarding to Vladof
+          iifname "enp1s0" tcp dport 80 dnat to 10.42.0.8:80
+          iifname "enp1s0" tcp dport 443 dnat to 10.42.0.8:443
+          iifname "enp1s0" tcp dport 32400 dnat to 10.42.0.8:32400
+          iifname "enp1s0" tcp dport 54783 dnat to 10.42.0.8:54783
 
-    forwardPorts = [
-      # Vladof services
-      { destination = "10.42.0.8:80"; sourcePort = 80; proto = "tcp"; }
-      { destination = "10.42.0.8:443"; sourcePort = 443; proto = "tcp"; }
-      { destination = "10.42.0.8:32400"; sourcePort = 32400; proto = "tcp"; }
-      { destination = "10.42.0.8:54783"; sourcePort = 54783; proto = "tcp"; }
+          # Port forwarding to Kaakkuri
+          iifname "enp1s0" tcp dport 9001 dnat to 10.42.0.25:9001
+          iifname "enp1s0" tcp dport 30303 dnat to 10.42.0.25:30303
+          iifname "enp1s0" udp dport 30303 dnat to 10.42.0.25:30303
+          iifname "enp1s0" udp dport 51821 dnat to 10.42.0.25:51821
+        }
 
-      # Kaakkuri services
-      { destination = "10.42.0.25:9001"; sourcePort = 9001; proto = "tcp"; }
-      { destination = "10.42.0.25:30303"; sourcePort = 30303; proto = "tcp"; }
-      { destination = "10.42.0.25:30303"; sourcePort = 30303; proto = "udp"; }
-      { destination = "10.42.0.25:51821"; sourcePort = 51821; proto = "udp"; }
-    ];
+        chain postrouting {
+          type nat hook postrouting priority 100; policy accept;
+
+          # Masquerade all traffic going to WAN
+          oifname "enp1s0" masquerade
+        }
+      '';
+    };
   };
 
   # Firewall: explicit allow rules per interface
