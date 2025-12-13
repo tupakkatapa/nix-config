@@ -86,9 +86,8 @@
         matchConfig.Name = [ "enp3s0" ];
         networkConfig = {
           DHCP = "ipv4";
-          IPv6AcceptRA = true;
+          IPv6AcceptRA = false;
         };
-        address = [ "10.42.0.7/24" ]; # static IP
       };
       "20-wan" = {
         linkConfig.RequiredForOnline = "routable";

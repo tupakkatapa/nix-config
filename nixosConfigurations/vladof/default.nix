@@ -75,9 +75,8 @@ in
         matchConfig.Name = [ "enp0s31f6" ];
         networkConfig = {
           DHCP = "ipv4";
-          IPv6AcceptRA = true;
+          IPv6AcceptRA = false;
         };
-        address = [ "10.42.0.8/24" ]; # static IP
       };
     };
   };
