@@ -40,6 +40,10 @@
     deleteMissing = true;
     apiTokenFile = config.age.secrets.cloudflare-dns-token.path;
   };
+  systemd.services.cloudflare-dyndns = {
+    after = [ "unbound.service" ];
+    wants = [ "unbound.service" ];
+  };
 
   # Wait for WiFi bridge before starting network services
   # Intel CNVi can crash/recover at boot, delaying br-wifi creation
