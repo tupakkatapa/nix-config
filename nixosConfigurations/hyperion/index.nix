@@ -48,5 +48,10 @@ in
   services.nginx.virtualHosts."${domain}" = {
     default = true;
     root = indexPage;
+    listen = [
+      { addr = "10.42.0.1"; port = 80; }
+      { addr = "10.42.1.1"; port = 80; }
+      { addr = "172.16.16.1"; port = 80; }
+    ];
   };
 }
