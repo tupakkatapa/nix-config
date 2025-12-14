@@ -43,6 +43,13 @@ _: {
     };
   };
 
+  # Wait for bridges before starting nftables (flowtable needs them)
+  systemd.services.nftables = {
+    after = [ "sys-subsystem-net-devices-br\\x2dlan.device" "sys-subsystem-net-devices-br\\x2dwifi.device" ];
+    wants = [ "sys-subsystem-net-devices-br\\x2dlan.device" "sys-subsystem-net-devices-br\\x2dwifi.device" ];
+    serviceConfig.TimeoutStartSec = "30s";
+  };
+
   # Firewall: explicit allow rules per interface
   # SECURITY: Do NOT use trustedInterfaces
   networking.firewall = {
