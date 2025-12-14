@@ -7,7 +7,6 @@
 
   services.nixie = {
     enable = true;
-    openFirewall = false;
     dataDir = "${dataDir}/home/root/appdata/nixie";
     logDir = "${dataDir}/home/root/appdata/nixie/logs";
 
@@ -67,8 +66,6 @@
           name = "lan";
           serve = true;
           address = "10.42.0.1";
-          gateway = "10.42.0.1";
-          dns = "10.42.0.1";
           interfaces = [ "enp2s0" ];
           defaultMenu = "bandit";
           clients = [
@@ -95,8 +92,6 @@
           name = "wifi";
           serve = true;
           address = "10.42.1.1";
-          gateway = "10.42.1.1";
-          dns = "10.42.1.1";
           interfaces = [ "wlp0s20f3" ];
           defaultMenu = "bandit";
           poolStart = "10.42.1.10";
