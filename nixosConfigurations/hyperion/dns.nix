@@ -2,6 +2,7 @@
 let
   # Steven Black hosts converted to unbound format
   # Update with: nix shell nixpkgs#nix-prefetch-github -c nix-prefetch-github StevenBlack hosts
+  # Derived from: https://github.com/mirosval/unbound-blocklist
   unboundBlocklist = pkgs.stdenv.mkDerivation {
     name = "unbound-blocklist";
     src = pkgs.fetchFromGitHub {
