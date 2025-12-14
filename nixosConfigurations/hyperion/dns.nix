@@ -102,20 +102,21 @@ in
         local-zone = [ ''"coditon.com." transparent'' ];
 
         local-data = [
-          ''"vladof.coditon.com. IN A 10.42.0.8"''
-          # ''"plex.coditon.com. IN A 10.42.0.8"'' # Public service - use public DNS
-          ''"vault.coditon.com. IN A 10.42.0.8"''
-          ''"lib.coditon.com. IN A 10.42.0.8"''
-          ''"torrent.coditon.com. IN A 10.42.0.8"''
-          ''"dav.coditon.com. IN A 10.42.0.8"''
+          # Services
           ''"chat.coditon.com. IN A 10.42.0.8"''
-          # ''"blog.coditon.com. IN A 10.42.0.8"'' # Public service - use public DNS
+          ''"dav.coditon.com. IN A 10.42.0.8"''
           ''"index.coditon.com. IN A 10.42.0.8"''
-          ''"eth.coditon.com. IN A 10.42.0.25"''
+          ''"lib.coditon.com. IN A 10.42.0.8"''
+          ''"search.coditon.com. IN A 10.42.0.8"''
+          ''"torrent.coditon.com. IN A 10.42.0.8"''
+          ''"vault.coditon.com. IN A 10.42.0.8"''
+
+          # Hosts
           ''"kaakkuri.coditon.com. IN A 10.42.0.25"''
           ''"hyperion.coditon.com. IN A 10.42.0.1"''
           ''"router.coditon.com. IN A 10.42.0.1"''
           ''"torgue.coditon.com. IN A 10.42.0.7"''
+          ''"vladof.coditon.com. IN A 10.42.0.8"''
 
           # PTR records
           ''"1.0.42.10.in-addr.arpa. IN PTR hyperion.coditon.com."''
