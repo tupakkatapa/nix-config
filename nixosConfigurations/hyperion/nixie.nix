@@ -57,6 +57,11 @@
 
     dhcp = {
       enable = true;
+      wan = {
+        enable = true;
+        interface = "enp1s0";
+        ipv6.enable = true;
+      };
       subnets = [
         {
           name = "lan";

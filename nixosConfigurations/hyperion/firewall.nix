@@ -81,6 +81,12 @@ _: {
       # Anti-spoofing: drop RFC1918 from WAN (except our own ranges for hairpin NAT)
       iifname "enp1s0" ip saddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } drop
 
+      # Allow ICMPv6 for IPv6 to work (neighbor discovery, router advertisements, etc.)
+      ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, echo-request, echo-reply, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } accept
+
+      # Allow DHCPv6 client on WAN
+      iifname "enp1s0" udp sport 547 udp dport 546 accept
+
       # Rate limiting
       iifname { "br-lan", "wg0" } tcp dport 22 limit rate over 10/minute drop
       iifname { "br-lan", "wg0", "br-wifi" } udp dport 53 limit rate over 50/second drop
@@ -91,7 +97,10 @@ _: {
     '';
 
     extraForwardRules = ''
-      # Allow LAN → WAN
+      # Allow established/related (stateful)
+      ct state established,related accept
+
+      # Allow LAN → WAN (IPv4 + IPv6)
       iifname "br-lan" oifname "enp1s0" accept
 
       # Allow WireGuard → WAN and LAN
@@ -100,11 +109,17 @@ _: {
       # Allow WiFi → WAN only (no LAN access - guest network)
       iifname "br-wifi" oifname "enp1s0" accept
 
+      # Allow ICMPv6 forwarding (required for path MTU discovery, etc.)
+      ip6 nexthdr icmpv6 accept
+
       # Rate limit new connections (anti-DoS)
       ct state new limit rate over 100/second drop
 
       # Flow offloading (only established connections for security)
       meta l4proto { tcp, udp } ct state established flow add @f
+
+      # Block unsolicited WAN → LAN (defense in depth for IPv6)
+      iifname "enp1s0" oifname { "br-lan", "br-wifi" } drop
 
       # Logging (sampled)
       limit rate 1/minute log prefix "FORWARD DROP: "

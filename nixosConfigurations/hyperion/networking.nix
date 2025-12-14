@@ -1,23 +1,6 @@
 { config, ... }:
 {
-  networking.useNetworkd = true;
-  systemd.network.enable = true;
-
-  systemd.network = {
-    networks."10-wan" = {
-      matchConfig.Name = "enp1s0";
-      networkConfig = {
-        DHCP = "ipv4";
-        IPv6AcceptRA = false;
-      };
-      linkConfig.RequiredForOnline = "routable";
-      dhcpV4Config = {
-        UseDNS = false;
-        UseNTP = false;
-      };
-    };
-    # LAN is managed by Nixie
-  };
+  # NOTE: WAN and LAN networking is managed by Nixie
 
   # WiFi Access Point
   services.hostapd = {
@@ -54,15 +37,8 @@
     wants = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
   };
 
+  # Hardening
   boot.kernel.sysctl = {
-    # Packet forwarding (IPv4)
-    "net.ipv4.ip_forward" = 1;
-    "net.ipv4.conf.all.forwarding" = 1;
-
-    # Disable IPv6
-    "net.ipv6.conf.all.disable_ipv6" = 1;
-    "net.ipv6.conf.default.disable_ipv6" = 1;
-
     # Anti-spoofing
     "net.ipv4.conf.all.rp_filter" = 1;
     "net.ipv4.conf.default.rp_filter" = 1;
@@ -74,10 +50,14 @@
     "net.ipv4.conf.default.secure_redirects" = 0;
     "net.ipv4.conf.all.send_redirects" = 0;
     "net.ipv4.conf.default.send_redirects" = 0;
+    "net.ipv6.conf.all.accept_redirects" = 0;
+    "net.ipv6.conf.default.accept_redirects" = 0;
 
     # Source routing disabled
     "net.ipv4.conf.all.accept_source_route" = 0;
     "net.ipv4.conf.default.accept_source_route" = 0;
+    "net.ipv6.conf.all.accept_source_route" = 0;
+    "net.ipv6.conf.default.accept_source_route" = 0;
 
     # SYN flood protection
     "net.ipv4.tcp_syncookies" = 1;
