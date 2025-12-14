@@ -5,15 +5,17 @@ _: {
   networking.nftables = {
     enable = true;
     checkRuleset = false; # interfaces don't exist at build time
-    tables."nixos-fw" = {
-      family = "inet";
-      content = ''
-        flowtable f {
-          hook ingress priority 0;
-          devices = { enp1s0, br-lan };
-        }
-      '';
-    };
+    # TODO: Flowtable disabled: requires bridge devices to exist at nftables start time,
+    # but nftables must start before network for NAT to work (circular dependency)
+    # tables."nixos-fw" = {
+    #   family = "inet";
+    #   content = ''
+    #     flowtable f {
+    #       hook ingress priority 0;
+    #       devices = { enp1s0, br-lan, br-wifi };
+    #     }
+    #   '';
+    # };
     tables."nat" = {
       family = "ip";
       content = ''
@@ -41,13 +43,6 @@ _: {
         }
       '';
     };
-  };
-
-  # Wait for br-lan before starting nftables (flowtable needs it)
-  systemd.services.nftables = {
-    after = [ "sys-subsystem-net-devices-br\\x2dlan.device" ];
-    wants = [ "sys-subsystem-net-devices-br\\x2dlan.device" ];
-    serviceConfig.TimeoutStartSec = "30s";
   };
 
   # Firewall: explicit allow rules per interface
