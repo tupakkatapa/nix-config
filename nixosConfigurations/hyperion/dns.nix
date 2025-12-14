@@ -54,6 +54,9 @@ in
         val-permissive-mode = false;
         val-log-level = 1;
 
+        # Broken DNSSEC: cateee.net has stale DS record for non-existent key
+        domain-insecure = [ "cateee.net" ];
+
         # Rate limiting
         ip-ratelimit = 50;
         ratelimit = 1000;
