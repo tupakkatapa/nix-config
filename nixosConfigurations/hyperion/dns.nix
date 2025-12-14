@@ -1,4 +1,22 @@
-_:
+{ pkgs, ... }:
+let
+  # Steven Black hosts converted to unbound format
+  # Update with: nix shell nixpkgs#nix-prefetch-github -c nix-prefetch-github StevenBlack hosts
+  unboundBlocklist = pkgs.stdenv.mkDerivation {
+    name = "unbound-blocklist";
+    src = pkgs.fetchFromGitHub {
+      owner = "StevenBlack";
+      repo = "hosts";
+      rev = "88c487e3709e4c45f94264562c770a0ca5e65508";
+      hash = "sha256-DkcMg7kgNnn+FL9fxhsTaSa/Q0RkFanvTvcH65DIwa4=";
+    };
+    phases = [ "installPhase" ];
+    installPhase = ''
+      ${pkgs.gawk}/bin/awk '/^0\.0\.0\.0/ && $2 !~ /0\.0\.0\.0/ {print "local-zone: \""$2".\" always_null"}' \
+        $src/alternates/fakenews-gambling-porn/hosts > $out
+    '';
+  };
+in
 {
   services.unbound = {
     enable = true;
@@ -66,6 +84,9 @@ _:
         harden-algo-downgrade = true;
         harden-large-queries = true;
         harden-short-bufsize = true;
+
+        # Steven Black blocklist
+        include = "${unboundBlocklist}";
 
         unwanted-reply-threshold = 10000;
         do-not-query-localhost = false;
