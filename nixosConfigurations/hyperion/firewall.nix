@@ -52,17 +52,17 @@ _: {
 
     interfaces = {
       "br-lan" = {
-        allowedTCPPorts = [ 22 53 52080 9100 ]; # SSH, DNS, Nixie HTTP, Prometheus
+        allowedTCPPorts = [ 22 53 80 52080 9100 ]; # SSH, DNS, HTTP, Nixie HTTP, Prometheus
         allowedUDPPorts = [ 53 67 69 123 ]; # DNS, DHCP, TFTP, NTP
       };
 
       "wg0" = {
-        allowedTCPPorts = [ 22 53 ]; # SSH, DNS
+        allowedTCPPorts = [ 22 53 80 ]; # SSH, DNS, HTTP
         allowedUDPPorts = [ 53 123 ]; # DNS, NTP
       };
 
       "br-wifi" = {
-        allowedTCPPorts = [ 53 52080 ]; # DNS, Nixie HTTP
+        allowedTCPPorts = [ 53 80 52080 ]; # DNS, HTTP, Nixie HTTP
         allowedUDPPorts = [ 53 67 69 123 ]; # DNS, DHCP, TFTP, NTP
       };
 
