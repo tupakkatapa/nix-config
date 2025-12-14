@@ -43,6 +43,13 @@ _: {
     };
   };
 
+  # Wait for br-lan before starting nftables (flowtable needs it)
+  systemd.services.nftables = {
+    after = [ "sys-subsystem-net-devices-br\\x2dlan.device" ];
+    wants = [ "sys-subsystem-net-devices-br\\x2dlan.device" ];
+    serviceConfig.TimeoutStartSec = "30s";
+  };
+
   # Firewall: explicit allow rules per interface
   # SECURITY: Do NOT use trustedInterfaces
   networking.firewall = {
