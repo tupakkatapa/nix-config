@@ -10,7 +10,7 @@ _: {
       content = ''
         flowtable f {
           hook ingress priority 0;
-          devices = { enp1s0, br-lan, br-wifi };
+          devices = { enp1s0, br-lan };
         }
       '';
     };
@@ -41,13 +41,6 @@ _: {
         }
       '';
     };
-  };
-
-  # Wait for bridges before starting nftables (flowtable needs them)
-  systemd.services.nftables = {
-    after = [ "sys-subsystem-net-devices-br\\x2dlan.device" "sys-subsystem-net-devices-br\\x2dwifi.device" ];
-    wants = [ "sys-subsystem-net-devices-br\\x2dlan.device" "sys-subsystem-net-devices-br\\x2dwifi.device" ];
-    serviceConfig.TimeoutStartSec = "30s";
   };
 
   # Firewall: explicit allow rules per interface
