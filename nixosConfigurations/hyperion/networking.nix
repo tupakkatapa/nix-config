@@ -25,6 +25,21 @@
     rekeyFile = ./secrets/wifi-ap-password.age;
     mode = "400";
   };
+  age.secrets.cloudflare-dns-token = {
+    rekeyFile = ./secrets/cloudflare-dns-token.age;
+    mode = "400";
+  };
+
+  # Dynamic DNS
+  services.cloudflare-dyndns = {
+    enable = true;
+    domains = [ "coditon.com" ];
+    proxied = false;
+    ipv4 = true;
+    ipv6 = true;
+    deleteMissing = true;
+    apiTokenFile = config.age.secrets.cloudflare-dns-token.path;
+  };
 
   # Wait for WiFi bridge before starting network services
   # Intel CNVi can crash/recover at boot, delaying br-wifi creation
