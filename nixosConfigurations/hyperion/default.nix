@@ -21,7 +21,7 @@ in
   imports = [
     (import ./nixie.nix extendedArgs)
     (import ./persistence.nix extendedArgs)
-    (import ./index.nix extendedArgs)
+    (import ./dashboard extendedArgs)
     ../.config/motd.nix
     ../.config/yubikey.nix
     ./dns.nix
