@@ -1,44 +1,36 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, ... }:
 let
-  inherit (config.services) nixie;
-
-  # Build subnet_id -> bridge name mapping from nixie config
-  # Kea assigns IDs sequentially starting from 1 for subnets with serve=true
-  servedSubnets = lib.filter (s: s.serve or false) nixie.dhcp.subnets;
-  subnetBridgesArray = lib.concatStringsSep " " (lib.imap1
-    (i: subnet: "[${toString i}]=\"br-${subnet.name}\"")
-    servedSubnets);
-
-  networkStatusScript = pkgs.writeShellApplication {
-    name = "network-status";
-    runtimeInputs = [ pkgs.iproute2 ];
-    text = builtins.replaceStrings
-      [ "@subnetBridges@" ]
-      [ ''$\{_subnet_bridges[$subnet_id]:-unknown}'' ]
-      ''
-        declare -A _subnet_bridges=(${subnetBridgesArray})
-        ${builtins.readFile ./network-status.sh}
-      '';
-  };
+  inherit (config.services.nixie.dhcp.wan) interface;
 in
 {
-  # Systemd service to update network status
   systemd.services.network-status = {
-    description = "Update network host status";
-    after = [ "kea-dhcp4-server.service" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${networkStatusScript}/bin/network-status";
+      ExecStart = "${pkgs.iproute2}/bin/ip -j neigh show";
+      StandardOutput = "truncate:/run/network-status.json";
     };
   };
 
-  # Timer to run every 30 seconds
+  systemd.services.wan-ip = {
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.iproute2}/bin/ip -j -4 addr show ${interface}";
+      StandardOutput = "truncate:/run/wan-ip.json";
+    };
+  };
+
   systemd.timers.network-status = {
     wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnBootSec = "30s";
-      OnUnitActiveSec = "30s";
-      Unit = "network-status.service";
-    };
+    timerConfig = { OnBootSec = "10s"; OnUnitActiveSec = "30s"; };
+  };
+
+  systemd.timers.wan-ip = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = { OnBootSec = "10s"; OnUnitActiveSec = "60s"; };
+  };
+
+  services.nginx.virtualHosts."${config.networking.domain}".locations = {
+    "= /api/hosts.json".alias = "/run/network-status.json";
+    "= /api/wan.json".alias = "/run/wan-ip.json";
   };
 }

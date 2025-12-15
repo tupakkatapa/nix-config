@@ -57,10 +57,21 @@ let
 
   # === NODES ===
 
+  # Collect router's IPs on each bridge
+  routerIps = lib.filter (x: x != null) (map
+    (nd:
+      let net = lib.findFirst (n: n.id == nd.id) null networks;
+      in if net != null && net.address != [ ]
+      then { bridge = nd.id; ip = lib.head (lib.splitString "/" (lib.head net.address)); }
+      else null
+    )
+    (lib.filter (nd: nd.kind == "bridge") netdevs));
+
   routerNode = {
     id = config.networking.hostName;
     type = "router";
     label = config.networking.hostName;
+    ips = routerIps;
   };
 
   wanNode =
@@ -290,7 +301,8 @@ let
               let html = '<div class="tooltip-title">' + d.label + '</div>';
               if (d.interface) html += '<div class="tooltip-row">Interface: <span>' + d.interface + '</span></div>';
               if (d.interfaces?.length) html += '<div class="tooltip-row">Interfaces: <span>' + d.interfaces.join(', ') + '</span></div>';
-              if (d.ip) html += '<div class="tooltip-row">IP: <span>' + d.ip + '</span></div>';
+              if (d.ips?.length) d.ips.forEach(x => { html += '<div class="tooltip-row">' + x.bridge + ': <span>' + x.ip + '</span></div>'; });
+              if (d.ip && !d.dynamic) html += '<div class="tooltip-row">IP: <span>' + d.ip + '</span></div>';
               if (d.mac) html += '<div class="tooltip-row">MAC: <span>' + d.mac + '</span></div>';
               if (d.images?.length) html += '<div class="tooltip-row">Images: <span>' + d.images.join(', ') + '</span></div>';
               if (d.defaultImages?.length) html += '<div class="tooltip-row">Default: <span>' + d.defaultImages.join(', ') + '</span></div>';
@@ -316,16 +328,41 @@ let
           simulation.alpha(0.3).restart();
         }
 
+        // Fetch WAN IP
+        async function fetchWanIp() {
+          try {
+            const res = await fetch('/api/wan.json?_=' + Date.now());
+            if (!res.ok) return;
+            const data = await res.json();
+            // ip -j addr returns array with addr_info containing local IP
+            const addr = data[0]?.addr_info?.[0]?.local;
+            if (addr) {
+              const wanNode = nodes.find(n => n.interface);
+              if (wanNode) wanNode.ip = addr;
+            }
+          } catch (err) { console.error('WAN fetch error:', err); }
+        }
+
         // Fetch dynamic host status
         async function fetchStatus() {
           try {
             const res = await fetch('/api/hosts.json?_=' + Date.now());
             if (!res.ok) throw new Error('Failed to fetch');
-            const data = await res.json();
+            const raw = await res.json();
+
+            // Transform raw ip neigh output and filter to bridge interfaces, IPv4 only
+            const hosts = raw
+              .filter(h => h.dev && h.dev.startsWith('br-') && h.dst && !h.dst.includes(':'))
+              .map(h => ({
+                ip: h.dst,
+                mac: h.lladdr,
+                online: h.state && (h.state.includes('REACHABLE') || h.state.includes('DELAY') || h.state.includes('STALE')),
+                bridge: h.dev
+              }));
 
             // Index hosts by IP for efficient lookup
             const hostsByIp = {};
-            data.hosts.forEach(h => { hostsByIp[h.ip] = h; });
+            hosts.forEach(h => { hostsByIp[h.ip] = h; });
 
             // Update online status for declarative hosts
             nodes.forEach(n => {
@@ -337,14 +374,15 @@ let
 
             // Build set of current dynamic host IDs from API
             const currentDynamicIds = new Set();
-            data.hosts.forEach(h => {
+            hosts.forEach(h => {
+              if (!h.mac) return;
               const mac = h.mac.toLowerCase();
               if (!declarativeHosts[mac]) {
                 currentDynamicIds.add('dyn-' + mac.replace(/:/g, ""));
               }
             });
 
-            // Remove dynamic hosts that are no longer in leases
+            // Remove dynamic hosts that are no longer in ARP table
             for (let i = nodes.length - 1; i >= 0; i--) {
               if (nodes[i].dynamic && !currentDynamicIds.has(nodes[i].id)) {
                 const id = nodes[i].id;
@@ -359,7 +397,8 @@ let
 
             // Add/update dynamic hosts that aren't declarative
             const existingIds = new Set(nodes.map(n => n.id));
-            data.hosts.forEach(h => {
+            hosts.forEach(h => {
+              if (!h.mac) return;
               const mac = h.mac.toLowerCase();
               // Skip if this MAC belongs to a declarative host
               if (declarativeHosts[mac]) return;
@@ -369,7 +408,7 @@ let
                 const newNode = {
                   id,
                   type: 'host',
-                  label: h.hostname || h.ip,
+                  label: h.ip,
                   ip: h.ip,
                   mac: h.mac,
                   online: h.online,
@@ -386,7 +425,6 @@ let
                 const existing = nodes.find(n => n.id === id);
                 if (existing) {
                   existing.online = h.online;
-                  existing.label = h.hostname || h.ip;
                 }
               }
             });
@@ -415,9 +453,11 @@ let
           simulation.force('center', d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2)).alpha(0.3).restart();
         });
 
-        // Fetch status every 30 seconds
+        // Fetch status every 30 seconds, WAN IP every 60 seconds
         fetchStatus();
+        fetchWanIp();
         setInterval(fetchStatus, 30000);
+        setInterval(fetchWanIp, 60000);
       </script>
     </body>
     </html>
@@ -428,13 +468,5 @@ in
     default = true;
     root = indexPage;
     listen = map (addr: { inherit addr; port = 80; }) listenAddrs;
-    locations."= /api/hosts.json" = {
-      root = "/var/lib/network-status";
-      tryFiles = "/hosts.json =404";
-      extraConfig = ''
-        add_header Cache-Control "no-cache, no-store, must-revalidate";
-        add_header Access-Control-Allow-Origin "*";
-      '';
-    };
   };
 }
