@@ -77,7 +77,10 @@ in
     "vaultwarden-env".rekeyFile = ../../secrets/vaultwarden-env.age;
     "kavita-token".rekeyFile = ../../secrets/kavita-token.age;
     "searx-env".rekeyFile = ../../secrets/searx-env.age;
-    "radicale-admin-pass".rekeyFile = ../../secrets/radicale-admin-pass.age;
+    "radicale-admin-pass" = {
+      rekeyFile = ../../secrets/radicale-admin-pass.age;
+      mode = "0444";
+    };
   };
 
   # Host networking for all containers
