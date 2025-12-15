@@ -6,7 +6,7 @@ mkdir -p "$OUTPUT_DIR"
 
 # Get current ARP table (recently seen = online)
 declare -A arp_online
-while read -r ip dev iface lladdr mac state; do
+while read -r ip _dev _iface _lladdr mac _state; do
   if [[ $mac =~ ^([0-9a-f]{2}:){5}[0-9a-f]{2}$ ]]; then
     arp_online["$ip"]=1
   fi
@@ -17,7 +17,7 @@ done < <(ip neigh show)
 declare -A leases
 now=$(date +%s)
 if [[ -f $LEASE_FILE ]]; then
-  while IFS=, read -r address hwaddr client_id valid_lifetime expire subnet_id fqdn_fwd fqdn_rev hostname state user_context pool_id; do
+  while IFS=, read -r address hwaddr _client_id _valid_lifetime expire subnet_id _fqdn_fwd _fqdn_rev hostname state _user_context _pool_id; do
     # Skip header and empty lines
     [[ $address == "address" || -z $address ]] && continue
     # State 0 = default (active), 1 = declined, 2 = expired

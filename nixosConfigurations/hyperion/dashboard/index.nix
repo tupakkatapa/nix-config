@@ -428,8 +428,9 @@ in
     default = true;
     root = indexPage;
     listen = map (addr: { inherit addr; port = 80; }) listenAddrs;
-    locations."/api/hosts.json" = {
-      alias = "/var/lib/network-status/hosts.json";
+    locations."= /api/hosts.json" = {
+      root = "/var/lib/network-status";
+      tryFiles = "/hosts.json =404";
       extraConfig = ''
         add_header Cache-Control "no-cache, no-store, must-revalidate";
         add_header Access-Control-Allow-Origin "*";
