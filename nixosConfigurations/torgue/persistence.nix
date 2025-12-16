@@ -63,10 +63,10 @@ in
       fsType = "ext4";
       neededForBoot = true;
     };
-    "/mnt/boot" = {
-      device = "/dev/disk/by-uuid/CA7C-5C77";
-      fsType = "auto";
-    };
+    # "/mnt/boot" = {
+    #   device = "/dev/disk/by-uuid/CA7C-5C77";
+    #   fsType = "auto";
+    # };
   };
 
   # Mount '/nix/.rw-store' and '/tmp' to disk
@@ -78,17 +78,17 @@ in
   };
 
   # Update the rEFInd boot manager
-  services.refindGenerate = {
-    enable = true;
-    where = "/dev/disk/by-uuid/CA7C-5C77";
-    flakeUrl = "github:tupakkatapa/nix-config";
-    hosts = [ "bandit" ];
-    timeout = 1;
-  };
+  # services.refindGenerate = {
+  #   enable = true;
+  #   where = "/dev/disk/by-uuid/CA7C-5C77";
+  #   flakeUrl = "github:tupakkatapa/nix-config";
+  #   hosts = [ "bandit" ];
+  #   timeout = 1;
+  # };
 
   # Create host-specific directories
   systemd.tmpfiles.rules = [
-    "d /mnt/boot          755 root root -"
+    # "d /mnt/boot          755 root root -"
     "d /mnt/sftp          755 root root -"
     "d ${dataDir}/store   755 root root -"
 
