@@ -1,36 +1,41 @@
 { pkgs, config, ... }:
 let
   inherit (config.services.nixie.dhcp.wan) interface;
+
+  hostsScript = pkgs.writeScript "hosts-api" ''
+    #!${pkgs.bash}/bin/bash
+    echo "Content-Type: application/json"
+    echo ""
+    ${pkgs.iproute2}/bin/ip -j neigh show
+  '';
+
+  wanScript = pkgs.writeScript "wan-api" ''
+    #!${pkgs.bash}/bin/bash
+    echo "Content-Type: application/json"
+    echo ""
+    ${pkgs.iproute2}/bin/ip -j -4 addr show ${interface}
+  '';
 in
 {
-  systemd.services.network-status = {
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.iproute2}/bin/ip -j neigh show";
-      StandardOutput = "truncate:/run/network-status.json";
-    };
-  };
-
-  systemd.services.wan-ip = {
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.iproute2}/bin/ip -j -4 addr show ${interface}";
-      StandardOutput = "truncate:/run/wan-ip.json";
-    };
-  };
-
-  systemd.timers.network-status = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = { OnBootSec = "10s"; OnUnitActiveSec = "30s"; };
-  };
-
-  systemd.timers.wan-ip = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = { OnBootSec = "10s"; OnUnitActiveSec = "60s"; };
+  services.fcgiwrap.instances.api = {
+    socket.type = "tcp";
+    socket.address = "127.0.0.1:9001";
   };
 
   services.nginx.virtualHosts."${config.networking.domain}".locations = {
-    "= /api/hosts.json".alias = "/run/network-status.json";
-    "= /api/wan.json".alias = "/run/wan-ip.json";
+    "= /api/hosts.json" = {
+      extraConfig = ''
+        fastcgi_pass 127.0.0.1:9001;
+        fastcgi_param SCRIPT_FILENAME ${hostsScript};
+        include ${pkgs.nginx}/conf/fastcgi_params;
+      '';
+    };
+    "= /api/wan.json" = {
+      extraConfig = ''
+        fastcgi_pass 127.0.0.1:9001;
+        fastcgi_param SCRIPT_FILENAME ${wanScript};
+        include ${pkgs.nginx}/conf/fastcgi_params;
+      '';
+    };
   };
 }

@@ -453,11 +453,27 @@ let
           simulation.force('center', d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2)).alpha(0.3).restart();
         });
 
-        // Fetch status every 30 seconds, WAN IP every 60 seconds
-        fetchStatus();
-        fetchWanIp();
-        setInterval(fetchStatus, 30000);
-        setInterval(fetchWanIp, 60000);
+        // Fetch on load, then poll while tab is visible
+        let statusInterval, wanInterval;
+
+        function startPolling() {
+          fetchStatus();
+          fetchWanIp();
+          statusInterval = setInterval(fetchStatus, 5000);
+          wanInterval = setInterval(fetchWanIp, 30000);
+        }
+
+        function stopPolling() {
+          clearInterval(statusInterval);
+          clearInterval(wanInterval);
+        }
+
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) stopPolling();
+          else startPolling();
+        });
+
+        startPolling();
       </script>
     </body>
     </html>
