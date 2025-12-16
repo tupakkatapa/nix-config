@@ -27,6 +27,7 @@
           name = "appdata";
           dirs = [
             { name = "fail2ban"; mode = "755"; what = "/var/lib/fail2ban"; }
+            { name = "cloudflare-dyndns"; mode = "755"; what = "/var/lib/cloudflare-dyndns"; }
           ];
         }
         {
@@ -58,6 +59,20 @@
           name = "appdata";
           dirs = [
             { name = "vnstat"; mode = "755"; what = "/var/lib/vnstat"; }
+          ];
+        }
+      ];
+      kea = [
+        {
+          name = "appdata";
+          dirs = [
+            { name = "kea"; mode = "755"; what = "/var/lib/kea"; }
+          ];
+        }
+        {
+          name = "logs";
+          dirs = [
+            { name = "kea"; mode = "755"; what = "/var/log/kea"; }
           ];
         }
       ];
