@@ -47,6 +47,7 @@
     hyprwm-contrib.url = "github:hyprwm/contrib";
 
     # Netboot stuff
+    # nixie.url = "path:/mnt/860/home/kari/local-workspace/nixie";
     nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie?ref=jesse/dev31";
     runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
     sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount?ref=sync";
@@ -59,6 +60,7 @@
     ping-sweep.url = "github:tupakkatapa/ping-sweep";
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
+    claude-code-nix.url = "github:sadjow/claude-code-nix";
   };
 
   outputs = { self, ... }@inputs:
@@ -110,6 +112,7 @@
               tt-utils
               # Inputs
               codex
+              claude-code
               ping-sweep
               # Patches
               python313
@@ -167,6 +170,7 @@
             inherit (inputs'.nixie.packages) refind-generate;
             inherit (inputs'.ping-sweep.packages) ping-sweep;
             inherit (inputs'.codex-cli-nix.packages) codex;
+            inherit (inputs'.claude-code-nix.packages) claude-code;
             # Patches
             "python313" = pkgs.python313.override {
               packageOverrides = _: _: {

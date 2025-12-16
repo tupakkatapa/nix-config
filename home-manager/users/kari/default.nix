@@ -84,9 +84,9 @@ in
       wireguard-tools
 
       oterm
+      claude-code
     ]) ++
     (with unstable; [
-      claude-code
     ]);
   };
 }
