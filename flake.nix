@@ -178,11 +178,11 @@
             "trezorctl" = nixpkgs-patched.trezorctl;
             "trezor-agent" =
               let
-                trezor-no-click-check = pkgs.python3Packages.trezor.overridePythonAttrs (_old: {
+                trezor-no-click-check = nixpkgs-patched.python3Packages.trezor.overridePythonAttrs (_old: {
                   pythonRelaxDeps = [ "click" ];
                 });
               in
-              pkgs.python3Packages.trezor-agent.override {
+              nixpkgs-patched.python3Packages.trezor-agent.override {
                 trezor = trezor-no-click-check;
               };
           }
