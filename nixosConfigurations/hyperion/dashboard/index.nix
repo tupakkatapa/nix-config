@@ -180,10 +180,6 @@ let
         body, html {
           font-family: 'IBM Plex Mono', monospace;
           background: #121212;
-          background-image:
-            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-          background-size: 40px 40px;
           color: #fff;
           height: 100vh;
           overflow: hidden;
@@ -191,9 +187,9 @@ let
         svg { display: block; }
         .link { stroke: #333; stroke-width: 1.5; }
         .node rect, .node circle, .node polygon { fill: #fff; }
-        .node.online rect, .node.online circle, .node.online polygon { fill: #4ade80; }
-        .node.offline rect, .node.offline circle, .node.offline polygon { fill: #f87171; }
-        .node.dynamic rect { fill: #60a5fa; }
+        .node.reachable rect, .node.reachable circle, .node.reachable polygon { fill: #22c55e; }
+        .node.stale rect, .node.stale circle, .node.stale polygon { fill: #eab308; }
+        .node.failed rect, .node.failed circle, .node.failed polygon { fill: #ef4444; }
         .label { fill: #eee; font-size: 10px; text-anchor: middle; pointer-events: none; }
         .title { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-size: 18px; color: #eee; }
         .legend { position: absolute; bottom: 20px; left: 20px; background: #1f1f1f; border: 1px solid #333; border-radius: 10px; padding: 16px 20px; font-size: 11px; color: #888; }
@@ -203,9 +199,10 @@ let
         .legend-diamond { width: 10px; height: 10px; background: #fff; transform: rotate(45deg); }
         .legend-circle { width: 14px; height: 14px; background: #fff; border-radius: 50%; }
         .legend-square { width: 12px; height: 12px; background: #fff; }
-        .legend-line-online { width: 20px; height: 4px; background: #4ade80; border-radius: 2px; }
-        .legend-line-offline { width: 20px; height: 4px; background: #f87171; border-radius: 2px; }
-        .legend-line-dynamic { width: 20px; height: 4px; background: #60a5fa; border-radius: 2px; }
+        .legend-line-reachable { width: 20px; height: 4px; background: #22c55e; border-radius: 2px; }
+        .legend-line-stale { width: 20px; height: 4px; background: #eab308; border-radius: 2px; }
+        .legend-line-failed { width: 20px; height: 4px; background: #ef4444; border-radius: 2px; }
+        .legend-line-declarative { width: 20px; height: 4px; background: #fff; border-radius: 2px; }
         .legend-triangle { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid #fff; }
         .tooltip { position: absolute; background: #1f1f1f; border: 1px solid #333; border-radius: 6px; padding: 10px 14px; font-size: 11px; color: #ccc; pointer-events: none; opacity: 0; transition: opacity 0.15s; max-width: 250px; }
         .tooltip-title { color: #fff; font-size: 13px; font-weight: bold; margin-bottom: 6px; }
@@ -224,9 +221,10 @@ let
         <div class="legend-item"><div class="legend-icon"><div class="legend-square"></div></div> Host</div>
         <div class="legend-item"><div class="legend-icon"><div class="legend-triangle"></div></div> External</div>
         <div class="legend-title" style="margin-top: 12px;">Colors</div>
-        <div class="legend-item"><div class="legend-icon"><div class="legend-line-dynamic"></div></div> Dynamic</div>
-        <div class="legend-item"><div class="legend-icon"><div class="legend-line-online"></div></div> Online</div>
-        <div class="legend-item"><div class="legend-icon"><div class="legend-line-offline"></div></div> Offline</div>
+        <div class="legend-item"><div class="legend-icon"><div class="legend-line-declarative"></div></div> Declarative</div>
+        <div class="legend-item"><div class="legend-icon"><div class="legend-line-reachable"></div></div> Reachable</div>
+        <div class="legend-item"><div class="legend-icon"><div class="legend-line-stale"></div></div> Stale</div>
+        <div class="legend-item"><div class="legend-icon"><div class="legend-line-failed"></div></div> Failed</div>
       </div>
       <svg id="network"></svg>
       <div class="tooltip" id="tooltip"></div>
@@ -256,8 +254,45 @@ let
           .attr('width', window.innerWidth)
           .attr('height', window.innerHeight);
 
-        const linkGroup = svg.append('g');
-        const nodeGroup = svg.append('g');
+        // Grid pattern
+        const defs = svg.append('defs');
+        defs.append('pattern')
+          .attr('id', 'grid')
+          .attr('width', 40)
+          .attr('height', 40)
+          .attr('patternUnits', 'userSpaceOnUse')
+          .append('path')
+          .attr('d', 'M 40 0 L 0 0 0 40')
+          .attr('fill', 'none')
+          .attr('stroke', 'rgba(255,255,255,0.03)')
+          .attr('stroke-width', 1);
+
+        // Diagonal pattern for declarative nodes
+        const diagPattern = defs.append('pattern')
+          .attr('id', 'diag')
+          .attr('width', 6)
+          .attr('height', 6)
+          .attr('patternUnits', 'userSpaceOnUse')
+          .attr('patternTransform', 'rotate(45)');
+        diagPattern.append('rect').attr('width', 6).attr('height', 6).attr('fill', 'currentColor');
+        diagPattern.append('line').attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 6).attr('stroke', 'rgba(255,255,255,0.4)').attr('stroke-width', 2);
+
+        // Container for zoom/pan
+        const container = svg.append('g');
+        container.append('rect')
+          .attr('width', 10000)
+          .attr('height', 10000)
+          .attr('x', -5000)
+          .attr('y', -5000)
+          .attr('fill', 'url(#grid)');
+        const linkGroup = container.append('g');
+        const nodeGroup = container.append('g');
+
+        // Zoom behavior
+        const zoom = d3.zoom()
+          .scaleExtent([0.3, 4])
+          .on('zoom', e => container.attr('transform', e.transform));
+        svg.call(zoom);
         const tooltip = d3.select('#tooltip');
         const status = d3.select('#status');
 
@@ -269,21 +304,24 @@ let
 
         // Shape definitions by type
         const shapes = {
-          router: g => g.append('rect').attr('width', 14).attr('height', 14).attr('x', -7).attr('y', -7).attr('transform', 'rotate(45)'),
-          network: g => g.append('circle').attr('r', 7),
-          host: g => g.append('rect').attr('width', 14).attr('height', 14).attr('x', -7).attr('y', -7),
-          external: g => g.append('polygon').attr('points', '0,-8 7,6 -7,6')
+          router: g => g.append('rect').attr('width', 18).attr('height', 18).attr('x', -9).attr('y', -9).attr('transform', 'rotate(45)'),
+          network: g => g.append('circle').attr('r', 9),
+          host: g => g.append('rect').attr('width', 18).attr('height', 18).attr('x', -9).attr('y', -9),
+          external: g => g.append('polygon').attr('points', '0,-10 9,8 -9,8')
         };
 
         const getNodeClass = d => {
           let cls = 'node';
-          if (d.dynamic) cls += ' dynamic';
-          else if (d.online === true) cls += ' online';
-          else if (d.online === false) cls += ' offline';
+          // State colors apply to all hosts
+          if (d.state === 'reachable') cls += ' reachable';
+          else if (d.state === 'stale') cls += ' stale';
+          else if (d.state === 'failed') cls += ' failed';
+          // Declarative hosts get white border
+          if (d.declarative) cls += ' declarative';
           return cls;
         };
 
-        function updateGraph() {
+        function updateGraph(restartSimulation = true) {
           // Update links
           const link = linkGroup.selectAll('line').data(links, d => (d.source.id || d.source) + '-' + (d.target.id || d.target));
           link.exit().remove();
@@ -302,7 +340,7 @@ let
               if (d.interface) html += '<div class="tooltip-row">Interface: <span>' + d.interface + '</span></div>';
               if (d.interfaces?.length) html += '<div class="tooltip-row">Interfaces: <span>' + d.interfaces.join(', ') + '</span></div>';
               if (d.ips?.length) d.ips.forEach(x => { html += '<div class="tooltip-row">' + x.bridge + ': <span>' + x.ip + '</span></div>'; });
-              if (d.ip && !d.dynamic) html += '<div class="tooltip-row">IP: <span>' + d.ip + '</span></div>';
+              if (d.ip) html += '<div class="tooltip-row">IP: <span>' + d.ip + '</span></div>';
               if (d.mac) html += '<div class="tooltip-row">MAC: <span>' + d.mac + '</span></div>';
               if (d.images?.length) html += '<div class="tooltip-row">Images: <span>' + d.images.join(', ') + '</span></div>';
               if (d.defaultImages?.length) html += '<div class="tooltip-row">Default: <span>' + d.defaultImages.join(', ') + '</span></div>';
@@ -317,15 +355,34 @@ let
 
           // Draw shapes for new nodes
           Object.entries(shapes).forEach(([type, draw]) => draw(nodeEnter.filter(d => d.type === type)));
+
+          // Add pattern overlay for declarative nodes
+          nodeEnter.filter(d => d.declarative).each(function(d) {
+            const g = d3.select(this);
+            let overlay;
+            if (d.type === 'host') {
+              overlay = g.append('rect').attr('width', 18).attr('height', 18).attr('x', -9).attr('y', -9);
+            } else if (d.type === 'router') {
+              overlay = g.append('rect').attr('width', 18).attr('height', 18).attr('x', -9).attr('y', -9).attr('transform', 'rotate(45)');
+            } else if (d.type === 'network') {
+              overlay = g.append('circle').attr('r', 9);
+            } else if (d.type === 'external') {
+              overlay = g.append('polygon').attr('points', '0,-10 9,8 -9,8');
+            }
+            if (overlay) overlay.attr('fill', 'url(#diag)').attr('opacity', 0.3);
+          });
+
           nodeEnter.append('text').attr('class', 'label').attr('dy', 26).text(d => d.label);
 
-          // Update classes for existing nodes (online/offline status)
+          // Update classes for existing nodes (state changes)
           node.attr('class', getNodeClass);
 
-          // Restart simulation with new data
-          simulation.nodes(nodes);
-          simulation.force('link').links(links);
-          simulation.alpha(0.3).restart();
+          // Only restart simulation when topology changes (nodes added/removed)
+          if (restartSimulation) {
+            simulation.nodes(nodes);
+            simulation.force('link').links(links);
+            simulation.alpha(0.3).restart();
+          }
         }
 
         // Fetch WAN IP
@@ -351,12 +408,19 @@ let
             const raw = await res.json();
 
             // Transform raw ip neigh output and filter to bridge interfaces, IPv4 only
+            // States: REACHABLE (green), STALE/DELAY/PROBE (yellow), FAILED/INCOMPLETE/missing (red)
+            const getState = s => {
+              if (!s) return 'failed';
+              if (s.includes('REACHABLE')) return 'reachable';
+              if (s.includes('STALE') || s.includes('DELAY') || s.includes('PROBE')) return 'stale';
+              return 'failed';
+            };
             const hosts = raw
               .filter(h => h.dev && h.dev.startsWith('br-') && h.dst && !h.dst.includes(':'))
               .map(h => ({
                 ip: h.dst,
                 mac: h.lladdr,
-                online: h.state && (h.state.includes('REACHABLE') || h.state.includes('DELAY') || h.state.includes('STALE')),
+                state: getState(h.state),
                 bridge: h.dev
               }));
 
@@ -364,11 +428,14 @@ let
             const hostsByIp = {};
             hosts.forEach(h => { hostsByIp[h.ip] = h; });
 
-            // Update online status for declarative hosts
+            // Track if topology changed (nodes added/removed)
+            let topologyChanged = false;
+
+            // Update state for declarative hosts
             nodes.forEach(n => {
               if (n.type === 'host' && n.declarative) {
                 const dynHost = hostsByIp[n.ip];
-                n.online = dynHost ? dynHost.online : false;
+                n.state = dynHost ? dynHost.state : 'failed';
               }
             });
 
@@ -387,6 +454,7 @@ let
               if (nodes[i].dynamic && !currentDynamicIds.has(nodes[i].id)) {
                 const id = nodes[i].id;
                 nodes.splice(i, 1);
+                topologyChanged = true;
                 // Remove associated links
                 for (let j = links.length - 1; j >= 0; j--) {
                   const src = links[j].source.id || links[j].source;
@@ -411,11 +479,12 @@ let
                   label: h.ip,
                   ip: h.ip,
                   mac: h.mac,
-                  online: h.online,
+                  state: h.state,
                   dynamic: true,
                   bridge: h.bridge
                 };
                 nodes.push(newNode);
+                topologyChanged = true;
                 // Add link to bridge
                 if (h.bridge) {
                   links.push({ source: id, target: h.bridge });
@@ -424,13 +493,13 @@ let
                 // Update existing dynamic node
                 const existing = nodes.find(n => n.id === id);
                 if (existing) {
-                  existing.online = h.online;
+                  existing.state = h.state;
                 }
               }
             });
 
             status.text('Updated: ' + new Date().toLocaleTimeString());
-            updateGraph();
+            updateGraph(topologyChanged);
           } catch (err) {
             status.text('Status: error fetching');
             console.error(err);
@@ -450,7 +519,6 @@ let
 
         window.addEventListener('resize', () => {
           svg.attr('width', window.innerWidth).attr('height', window.innerHeight);
-          simulation.force('center', d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2)).alpha(0.3).restart();
         });
 
         // Fetch on load, then poll while tab is visible
