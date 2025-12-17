@@ -23,9 +23,9 @@ let
     services.resolved.enable = lib.mkForce false;
 
     # Direct resolv.conf configuration (documented workaround)
+    # Uses hyperion (router) DNS which provides filtering and privacy
     environment.etc."resolv.conf".text = ''
-      nameserver 1.1.1.1
-      nameserver 8.8.8.8
+      nameserver 10.42.0.1
     '';
 
     # Disable root login
