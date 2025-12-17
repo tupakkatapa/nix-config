@@ -1,18 +1,5 @@
 _:
 {
-  # Fail2ban - monitors SSH logs for attacks
-  services.fail2ban = {
-    enable = true;
-    maxretry = 5;
-    bantime = "24h";
-    bantime-increment = {
-      enable = true;
-      multipliers = "1 2 4 8 16 32 64";
-      maxtime = "10w";
-      overalljails = true;
-    };
-  };
-
   # Prometheus node exporter - monitors system metrics
   services.prometheus.exporters.node = {
     enable = true;

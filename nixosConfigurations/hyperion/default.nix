@@ -22,6 +22,7 @@ in
     (import ./nixie.nix extendedArgs)
     (import ./persistence.nix extendedArgs)
     (import ./dashboard extendedArgs)
+    ../.config/fail2ban.nix
     ../.config/motd.nix
     ../.config/yubikey.nix
     ./dns.nix
