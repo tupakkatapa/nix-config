@@ -1,4 +1,5 @@
-_: {
+_:
+{
   networking.firewall.enable = true;
 
   # nftables with flow offloading and NAT
@@ -25,8 +26,8 @@ _: {
           # Port forwarding to Vladof
           iifname "enp1s0" tcp dport 80 dnat to 10.42.0.8:80
           iifname "enp1s0" tcp dport 443 dnat to 10.42.0.8:443
-          iifname "enp1s0" tcp dport 32400 dnat to 10.42.0.8:32400
-          iifname "enp1s0" tcp dport 54783 dnat to 10.42.0.8:54783
+          iifname "enp1s0" tcp dport 32400 dnat to 10.42.0.8:32400   # Plex
+          iifname "enp1s0" tcp dport 54783 dnat to 10.42.0.8:54783   # Blog
 
           # Port forwarding to Kaakkuri
           iifname "enp1s0" tcp dport 9001 dnat to 10.42.0.25:9001
@@ -52,18 +53,18 @@ _: {
 
     interfaces = {
       "br-lan" = {
-        allowedTCPPorts = [ 22 53 80 52080 9100 ]; # SSH, DNS, HTTP, Nixie HTTP, Prometheus
+        allowedTCPPorts = [ 22 53 80 443 52080 ]; # SSH, DNS, HTTP, HTTPS, Nixie HTTP
         allowedUDPPorts = [ 53 67 69 123 ]; # DNS, DHCP, TFTP, NTP
       };
 
       "wg0" = {
-        allowedTCPPorts = [ 22 53 80 ]; # SSH, DNS, HTTP
+        allowedTCPPorts = [ 22 53 ]; # SSH, DNS
         allowedUDPPorts = [ 53 123 ]; # DNS, NTP
       };
 
       "br-wifi" = {
-        allowedTCPPorts = [ 53 80 52080 ]; # DNS, HTTP, Nixie HTTP
-        allowedUDPPorts = [ 53 67 69 123 ]; # DNS, DHCP, TFTP, NTP
+        allowedTCPPorts = [ 53 ]; # DNS
+        allowedUDPPorts = [ 53 67 123 ]; # DNS, DHCP, NTP
       };
 
       "enp1s0" = {
@@ -110,8 +111,8 @@ _: {
       # Rate limit new connections (anti-DoS)
       ct state new limit rate over 100/second drop
 
-      # Flow offloading (only established connections for security)
-      meta l4proto { tcp, udp } ct state established flow add @f
+      # TODO: Flow offloading disabled - flowtable @f not defined (see TODO above)
+      # meta l4proto { tcp, udp } ct state established flow add @f
 
       # Block unsolicited WAN → LAN (defense in depth for IPv6)
       iifname "enp1s0" oifname { "br-lan", "br-wifi" } drop

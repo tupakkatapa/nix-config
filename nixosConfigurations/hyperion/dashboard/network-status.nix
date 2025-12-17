@@ -25,6 +25,10 @@ in
   services.nginx.virtualHosts."${config.networking.domain}".locations = {
     "= /api/hosts.json" = {
       extraConfig = ''
+        # Security: restrict API to localhost only
+        allow 127.0.0.1;
+        deny all;
+
         fastcgi_pass 127.0.0.1:9001;
         fastcgi_param SCRIPT_FILENAME ${hostsScript};
         include ${pkgs.nginx}/conf/fastcgi_params;
@@ -32,6 +36,10 @@ in
     };
     "= /api/wan.json" = {
       extraConfig = ''
+        # Security: restrict API to localhost only
+        allow 127.0.0.1;
+        deny all;
+
         fastcgi_pass 127.0.0.1:9001;
         fastcgi_param SCRIPT_FILENAME ${wanScript};
         include ${pkgs.nginx}/conf/fastcgi_params;

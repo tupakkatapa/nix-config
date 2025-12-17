@@ -3,6 +3,17 @@ let
   networkd = config.systemd.network;
   inherit (config.services) nixie;
 
+  # Self-signed certificate for internal dashboard
+  selfSignedCert = pkgs.runCommand "self-signed-cert"
+    {
+      buildInputs = [ pkgs.openssl ];
+    } ''
+    mkdir -p $out
+    openssl req -x509 -newkey rsa:4096 -keyout $out/key.pem -out $out/cert.pem -days 3650 -nodes \
+      -subj "/CN=${domain}" \
+      -addext "subjectAltName = DNS:${domain}, IP:10.42.0.1"
+  '';
+
   # Get all netdevs (bridges, wireguard, etc.)
   netdevs = lib.mapAttrsToList
     (_: cfg: {
@@ -158,16 +169,6 @@ let
     (h: { name = lib.toLower h.mac; value = { inherit (h) id label ip; }; })
     hostNodes));
 
-
-  # Nginx listen addresses (all netdev IPs)
-  listenAddrs = lib.filter (a: a != null) (map
-    (nd:
-      let net = lib.findFirst (n: n.id == nd.id) null networks;
-      in if net != null && net.address != [ ]
-      then lib.head (lib.splitString "/" (lib.head net.address))
-      else null
-    )
-    netdevs);
 
   indexPage = pkgs.writeTextDir "index.html" ''
     <!DOCTYPE html>
@@ -551,6 +552,12 @@ in
   services.nginx.virtualHosts."${domain}" = {
     default = true;
     root = indexPage;
-    listen = map (addr: { inherit addr; port = 80; }) listenAddrs;
+    listen = [
+      { addr = "10.42.0.1"; port = 80; ssl = false; }
+      { addr = "10.42.0.1"; port = 443; ssl = true; }
+    ];
+    forceSSL = true;
+    sslCertificate = "${selfSignedCert}/cert.pem";
+    sslCertificateKey = "${selfSignedCert}/key.pem";
   };
 }
