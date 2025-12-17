@@ -25,8 +25,10 @@ in
   services.nginx.virtualHosts."${config.networking.domain}".locations = {
     "= /api/hosts.json" = {
       extraConfig = ''
-        # Security: restrict API to localhost only
+        # Security: restrict API to local networks
         allow 127.0.0.1;
+        allow 172.16.16.0/24;
+        allow 10.42.0.0/24;
         deny all;
 
         fastcgi_pass 127.0.0.1:9001;
@@ -36,8 +38,10 @@ in
     };
     "= /api/wan.json" = {
       extraConfig = ''
-        # Security: restrict API to localhost only
+        # Security: restrict API to local networks
         allow 127.0.0.1;
+        allow 172.16.16.0/24;
+        allow 10.42.0.0/24;
         deny all;
 
         fastcgi_pass 127.0.0.1:9001;
