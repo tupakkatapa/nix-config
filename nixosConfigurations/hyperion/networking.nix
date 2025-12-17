@@ -11,6 +11,14 @@
     SendHostname = false;
   };
 
+  # IPv6 privacy
+  systemd.network.networks."10-wan".networkConfig = {
+    IPv6LinkLocalAddressGenerationMode = "random";
+    IPv6PrivacyExtensions = "yes";
+  };
+  systemd.network.networks."br-lan".networkConfig.IPv6LinkLocalAddressGenerationMode = "random";
+  systemd.network.networks."br-wifi".networkConfig.IPv6LinkLocalAddressGenerationMode = "random";
+
   # WiFi Access Point
   services.hostapd = {
     enable = true;
