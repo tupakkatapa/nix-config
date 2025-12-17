@@ -2,6 +2,15 @@
 {
   # NOTE: WAN and LAN networking is managed by Nixie
 
+  # Disable systemd-resolved (Unbound handles DNS, resolved uses port 5353 for mDNS)
+  services.resolved.enable = false;
+
+  # WAN DHCP privacy
+  systemd.network.networks."10-wan".dhcpV4Config = {
+    Anonymize = true;
+    SendHostname = false;
+  };
+
   # WiFi Access Point
   services.hostapd = {
     enable = true;
@@ -45,6 +54,7 @@
     wants = [ "unbound.service" ];
     serviceConfig.DynamicUser = lib.mkForce false;
   };
+
   # Wait for WiFi bridge before starting network services
   # Intel CNVi can crash/recover at boot, delaying br-wifi creation
   systemd.services.kea-dhcp4-server = {
@@ -55,39 +65,5 @@
   systemd.services.nginx = {
     after = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
     wants = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
-  };
-
-  # Hardening
-  boot.kernel.sysctl = {
-    # Anti-spoofing
-    "net.ipv4.conf.all.rp_filter" = 1;
-    "net.ipv4.conf.default.rp_filter" = 1;
-
-    # ICMP redirect protection
-    "net.ipv4.conf.all.accept_redirects" = 0;
-    "net.ipv4.conf.default.accept_redirects" = 0;
-    "net.ipv4.conf.all.secure_redirects" = 0;
-    "net.ipv4.conf.default.secure_redirects" = 0;
-    "net.ipv4.conf.all.send_redirects" = 0;
-    "net.ipv4.conf.default.send_redirects" = 0;
-    "net.ipv6.conf.all.accept_redirects" = 0;
-    "net.ipv6.conf.default.accept_redirects" = 0;
-
-    # Source routing disabled
-    "net.ipv4.conf.all.accept_source_route" = 0;
-    "net.ipv4.conf.default.accept_source_route" = 0;
-    "net.ipv6.conf.all.accept_source_route" = 0;
-    "net.ipv6.conf.default.accept_source_route" = 0;
-
-    # SYN flood protection
-    "net.ipv4.tcp_syncookies" = 1;
-
-    # Martian packet logging
-    "net.ipv4.conf.all.log_martians" = 1;
-    "net.ipv4.conf.default.log_martians" = 1;
-
-    # ICMP protection
-    "net.ipv4.icmp_echo_ignore_broadcasts" = 1;
-    "net.ipv4.icmp_ignore_bogus_error_responses" = 1;
   };
 }

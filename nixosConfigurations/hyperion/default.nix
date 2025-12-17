@@ -26,6 +26,7 @@ in
     ../.config/yubikey.nix
     ./dns.nix
     ./firewall.nix
+    ./hardening.nix
     ./monitoring.nix
     ./networking.nix
     ./ntp.nix

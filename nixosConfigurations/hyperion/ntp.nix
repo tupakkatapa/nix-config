@@ -1,30 +1,35 @@
 _:
 {
-  # Chrony NTP server - critical for PXE boot
+  # Chrony NTP server - serves time to LAN clients, critical for PXE boot
   services.chrony = {
     enable = true;
+    servers = [ ]; # Using NTS servers in extraConfig
 
-    # NTP servers to sync from
-    servers = [
-      "0.nixos.pool.ntp.org"
-      "1.nixos.pool.ntp.org"
-      "2.nixos.pool.ntp.org"
-      "3.nixos.pool.ntp.org"
-    ];
-
-    # Allow LAN clients to sync time from this server
     extraConfig = ''
-      # Allow time queries from LAN
+      # NTS servers (encrypted + authenticated)
+      server time.cloudflare.com iburst nts
+      server nts.netnod.se iburst nts
+      server ptbtime1.ptb.de iburst nts
+      server ntppool1.time.nl iburst nts
+
+      # Fallback pool (unencrypted)
+      pool nixos.pool.ntp.org iburst maxsources 2
+
+      ntsdumpdir /var/lib/chrony
+      minsources 2
+
+      # Allow LAN/WiFi/WireGuard clients
       allow 10.42.0.0/24
-
-      # Allow time queries from WireGuard
-      allow 172.16.16.0/24
-
-      # Allow time queries from WiFi AP
       allow 10.42.1.0/24
+      allow 172.16.16.0/24
 
       # Serve time even if not synced (for initial PXE boot)
       local stratum 10
+
+      noclientlog
+      makestep 1.0 3
     '';
   };
+
+  systemd.services.chronyd.serviceConfig.StateDirectory = "chrony";
 }

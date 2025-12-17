@@ -1,8 +1,7 @@
 { pkgs, ... }:
 let
-  # Steven Black hosts converted to unbound format
-  # Update with: nix shell nixpkgs#nix-prefetch-github -c nix-prefetch-github StevenBlack hosts
-  # Derived from: https://github.com/mirosval/unbound-blocklist
+  # Steven Black blocklist
+  # Update: nix shell nixpkgs#nix-prefetch-github -c nix-prefetch-github StevenBlack hosts
   unboundBlocklist = pkgs.stdenv.mkDerivation {
     name = "unbound-blocklist";
     src = pkgs.fetchFromGitHub {
@@ -47,16 +46,12 @@ in
 
         port = 53;
 
-        # Security features
-        use-caps-for-id = true; # 0x20 randomization
+        # Security
+        use-caps-for-id = true;
         qname-minimisation = true;
-
-        # DNSSEC (auto-trust-anchor-file set automatically by enableRootTrustAnchor)
         val-permissive-mode = false;
         val-log-level = 1;
-
-        # Broken DNSSEC: cateee.net has stale DS record for non-existent key
-        domain-insecure = [ "cateee.net" ];
+        domain-insecure = [ "cateee.net" ]; # Broken DNSSEC
 
         # Rate limiting
         ip-ratelimit = 50;
@@ -68,17 +63,28 @@ in
         rrset-cache-slabs = 4;
         infra-cache-slabs = 4;
         key-cache-slabs = 4;
-
         rrset-cache-size = "32m";
         msg-cache-size = "16m";
         key-cache-size = "2m";
-
         edns-buffer-size = 1232;
 
         # Privacy
         hide-identity = true;
         hide-version = true;
         hide-trustanchor = true;
+        minimal-responses = true;
+        deny-any = true;
+        log-queries = false;
+        log-replies = false;
+        log-local-actions = false;
+        private-address = [
+          "10.0.0.0/8"
+          "172.16.0.0/12"
+          "192.168.0.0/16"
+          "169.254.0.0/16"
+          "fd00::/8"
+          "fe80::/10"
+        ];
 
         # Hardening
         harden-glue = true;
@@ -88,21 +94,18 @@ in
         harden-algo-downgrade = true;
         harden-large-queries = true;
         harden-short-bufsize = true;
-
-        # Steven Black blocklist
-        include = "${unboundBlocklist}";
-
         unwanted-reply-threshold = 10000;
         do-not-query-localhost = false;
         prefetch = true;
         prefetch-key = true;
         aggressive-nsec = true;
 
+        # Blocklist
+        include = "${unboundBlocklist}";
+
         # Local zone
         local-zone = [ ''"coditon.com." transparent'' ];
-
         local-data = [
-          # Services
           ''"chat.coditon.com. IN A 10.42.0.8"''
           ''"dav.coditon.com. IN A 10.42.0.8"''
           ''"index.coditon.com. IN A 10.42.0.8"''
@@ -110,15 +113,11 @@ in
           ''"search.coditon.com. IN A 10.42.0.8"''
           ''"torrent.coditon.com. IN A 10.42.0.8"''
           ''"vault.coditon.com. IN A 10.42.0.8"''
-
-          # Hosts
           ''"kaakkuri.coditon.com. IN A 10.42.0.25"''
           ''"hyperion.coditon.com. IN A 10.42.0.1"''
           ''"router.coditon.com. IN A 10.42.0.1"''
           ''"torgue.coditon.com. IN A 10.42.0.7"''
           ''"vladof.coditon.com. IN A 10.42.0.8"''
-
-          # PTR records
           ''"1.0.42.10.in-addr.arpa. IN PTR hyperion.coditon.com."''
           ''"7.0.42.10.in-addr.arpa. IN PTR torgue.coditon.com."''
           ''"8.0.42.10.in-addr.arpa. IN PTR vladof.coditon.com."''
@@ -130,10 +129,64 @@ in
         control-enable = true;
         control-interface = "127.0.0.1";
       };
+
+      # Forward to dnscrypt-proxy
+      forward-zone = [{
+        name = ".";
+        forward-addr = [ "127.0.0.1@5353" "::1@5353" ];
+      }];
     };
+  };
+
+  # Ensure unbound starts after dnscrypt-proxy
+  systemd.services.unbound = {
+    after = [ "dnscrypt-proxy.service" ];
+    wants = [ "dnscrypt-proxy.service" ];
   };
 
   # Static UID/GID for persistent storage
   users.users.unbound.uid = 994;
   users.groups.unbound.gid = 992;
+
+  # dnscrypt-proxy - encrypted DNS with anonymized routing
+  services.dnscrypt-proxy = {
+    enable = true;
+    settings = {
+      listen_addresses = [ "127.0.0.1:5353" "[::1]:5353" ];
+      ipv6_servers = true;
+      require_dnssec = true;
+      require_nolog = true;
+      require_nofilter = true;
+      fallback_resolvers = [ "9.9.9.9:53" ];
+      ignore_system_dns = true;
+      block_unqualified = true;
+      block_undelegated = true;
+      lb_strategy = "p2";
+      cache = false;
+
+      # Anonymized DNS (relay sees IP, resolver sees queries, neither sees both)
+      anonymized_dns = {
+        routes = [{
+          server_name = "*";
+          via = [ "anon-cs-finland" "anon-cs-sweden" "anon-cs-de" "anon-cs-nl" "anon-tiarap" "anon-scaleway-fr" ];
+        }];
+        skip_incompatible = true;
+      };
+
+      sources.public-resolvers = {
+        urls = [ "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md" ];
+        cache_file = "/var/cache/dnscrypt-proxy/public-resolvers.md";
+        minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+      };
+      sources.relays = {
+        urls = [ "https://download.dnscrypt.info/resolvers-list/v3/relays.md" ];
+        cache_file = "/var/cache/dnscrypt-proxy/relays.md";
+        minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+      };
+    };
+  };
+
+  systemd.tmpfiles.rules = [
+    "d /var/cache/dnscrypt-proxy 750 dnscrypt-proxy dnscrypt-proxy -"
+  ];
 }

@@ -34,7 +34,6 @@
           {
             PublicKey = "vdCiN71d/Qn2I1GF5wJnXNWcqBSVyWvjtpLSUykbLkA=";
             AllowedIPs = [ "172.16.16.3/32" ];
-            PersistentKeepalive = 25;
           }
         ];
       };

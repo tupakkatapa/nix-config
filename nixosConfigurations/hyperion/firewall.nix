@@ -2,21 +2,10 @@ _:
 {
   networking.firewall.enable = true;
 
-  # nftables with flow offloading and NAT
+  # nftables with NAT
   networking.nftables = {
     enable = true;
     checkRuleset = false; # interfaces don't exist at build time
-    # TODO: Flowtable disabled: requires bridge devices to exist at nftables start time,
-    # but nftables must start before network for NAT to work (circular dependency)
-    # tables."nixos-fw" = {
-    #   family = "inet";
-    #   content = ''
-    #     flowtable f {
-    #       hook ingress priority 0;
-    #       devices = { enp1s0, br-lan, br-wifi };
-    #     }
-    #   '';
-    # };
     tables."nat" = {
       family = "ip";
       content = ''
@@ -50,6 +39,7 @@ _:
   # SECURITY: Do NOT use trustedInterfaces
   networking.firewall = {
     trustedInterfaces = [ ];
+    filterForward = true; # Enable forward chain for extraForwardRules
 
     interfaces = {
       "br-lan" = {
@@ -96,6 +86,10 @@ _:
       # Allow established/related (stateful)
       ct state established,related accept
 
+      # Block external DNS (force clients through local resolver)
+      iifname { "br-lan", "br-wifi", "wg0" } oifname "enp1s0" tcp dport 53 reject with tcp reset
+      iifname { "br-lan", "br-wifi", "wg0" } oifname "enp1s0" udp dport 53 reject
+
       # Allow LAN → WAN (IPv4 + IPv6)
       iifname "br-lan" oifname "enp1s0" accept
 
@@ -110,9 +104,6 @@ _:
 
       # Rate limit new connections (anti-DoS)
       ct state new limit rate over 100/second drop
-
-      # TODO: Flow offloading disabled - flowtable @f not defined (see TODO above)
-      # meta l4proto { tcp, udp } ct state established flow add @f
 
       # Block unsolicited WAN → LAN (defense in depth for IPv6)
       iifname "enp1s0" oifname { "br-lan", "br-wifi" } drop
