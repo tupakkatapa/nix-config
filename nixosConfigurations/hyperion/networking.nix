@@ -71,7 +71,7 @@
     serviceConfig.DynamicUser = lib.mkForce false;
   };
   systemd.services.nginx = {
-    after = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
-    wants = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
+    after = [ "network-online.target" "sys-subsystem-net-devices-br\\x2dwifi.device" ];
+    wants = [ "network-online.target" "sys-subsystem-net-devices-br\\x2dwifi.device" ];
   };
 }
