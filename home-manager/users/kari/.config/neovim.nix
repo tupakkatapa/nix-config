@@ -152,8 +152,19 @@
                   function(state)
                     local node = state.tree:get_node()
                     local filepath = node:get_id()
-                    vim.fn.setreg('+', filepath)
-                    vim.notify('Copied: ' .. filepath)
+                    local filename = node.name
+
+                    local i = vim.fn.inputlist({
+                      'Copy to clipboard:',
+                      '1. Absolute: ' .. filepath,
+                      '2. Filename: ' .. filename,
+                    })
+
+                    local result = ({ filepath, filename })[i]
+                    if result then
+                      vim.fn.setreg('+', result)
+                      vim.notify('Copied: ' .. result)
+                    end
                   end
                 '';
               };
