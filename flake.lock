@@ -356,11 +356,11 @@
         "playwright": "playwright"
       },
       "locked": {
-        "lastModified": 1760296869,
-        "narHash": "sha256-P3gxiiXSSsrP5vaxrRmbC0HGk6G9bZO0UZwOu5HjDNI=",
+        "lastModified": 1766181035,
+        "narHash": "sha256-XPpC0Sgw0pR37RZ+8m/9ZR4nrD86ox6sSr2LqnBaXsQ=",
         "owner": "tupakkatapa",
         "repo": "coditon-md",
-        "rev": "eb17e26d7856832fafb0fb6798e420c8f8915f1d",
+        "rev": "99d2f67ac689f60a7beed9a4a655e99727f17bed",
         "type": "github"
       },
       "original": {
@@ -2421,11 +2421,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1765841762,
-        "narHash": "sha256-nHVH/2DSLP6+ECJ2KLGYwF2oF9/5VOhBBoG2HtE24IA=",
+        "lastModified": 1765948350,
+        "narHash": "sha256-dHPjq3QXPAy+2Dnlk4Ze8dr0jYHa32RvXoBOvoK2jMI=",
         "ref": "jesse/dev31",
-        "rev": "6250ca6940d63de69e8aac648868e94b2ce611d1",
-        "revCount": 65,
+        "rev": "c4eb21c76c907d918169bbd7ae094a7eebb5e54c",
+        "revCount": 66,
         "type": "git",
         "url": "ssh://git@github.com/majbacka-labs/nixie"
       },
