@@ -10,6 +10,6 @@ in
 {
   imports = [
     (import ./index.nix extendedArgs)
-    ./network-status.nix
+    ./api.nix
   ];
 }

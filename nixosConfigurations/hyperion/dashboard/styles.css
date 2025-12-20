@@ -28,7 +28,9 @@ svg { display: block; }
 .infobox-value:hover { background: #333; }
 .link-overlay { stroke: transparent; stroke-width: 1.5; }
 .link-overlay.active { stroke: #444; stroke-dasharray: 4 4; animation: flow 0.5s linear infinite; }
+.link-overlay.active.reverse { animation: flow-reverse 0.5s linear infinite; }
 @keyframes flow { to { stroke-dashoffset: -8; } }
+@keyframes flow-reverse { to { stroke-dashoffset: 8; } }
 .toast { position: fixed; top: 60px; right: 20px; background: #333; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 12px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
 .toast.show { opacity: 1; }
 .center-btn { position: absolute; top: 20px; right: 20px; width: 32px; height: 32px; background: #1f1f1f; border: 1px solid #333; border-radius: 6px; color: #888; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }

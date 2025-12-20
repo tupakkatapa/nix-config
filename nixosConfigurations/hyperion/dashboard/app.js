@@ -169,15 +169,30 @@ const getState = s => !s ? 'failed' : s.includes('REACHABLE') ? 'reachable' : /S
 
 async function poll() {
   try {
-    const [hostsRes, wanRes] = await Promise.all([
+    const [hostsRes, wanRes, wgRes] = await Promise.all([
       fetch('/api/hosts.json?_=' + Date.now()),
-      fetch('/api/wan.json?_=' + Date.now())
+      fetch('/api/wan.json?_=' + Date.now()),
+      fetch('/api/wg.json?_=' + Date.now())
     ]);
 
     if (wanRes.ok) {
       const wan = await wanRes.json();
       const wanNode = nodes.find(n => n.interface);
       if (wanNode && wan[0] && wan[0].addr_info && wan[0].addr_info[0]) wanNode.ip = wan[0].addr_info[0].local;
+    }
+
+    if (wgRes.ok) {
+      const wgData = await wgRes.json();
+      const wgPeers = wgData.flatMap(d => d.peers || []);
+      const now = Math.floor(Date.now() / 1000);
+      nodes.filter(n => n.type === 'external' && !n.interface).forEach(n => {
+        const peer = wgPeers.find(p => p.allowed_ips && p.allowed_ips.some(ip => ip.startsWith(n.label)));
+        if (peer) {
+          const age = now - peer.latest_handshake;
+          n.state = peer.latest_handshake === 0 ? 'failed' : age < 180 ? 'reachable' : 'stale';
+          n.endpoint = peer.endpoint;
+        }
+      });
     }
 
     if (!hostsRes.ok) throw new Error('hosts fetch failed');
@@ -227,31 +242,34 @@ async function poll() {
     status.text(getCounts() + ' | ' + new Date().toLocaleTimeString());
     render(changed);
 
-    // Apply flickering to links from reachable nodes to WAN
+    // Apply traffic animation on links from reachable hosts toward WAN
     const wanNode = nodes.find(n => n.interface);
     const routerNode = nodes.find(n => n.type === 'router');
     const activeLinks = new Set();
+    const rank = { host: 0, network: 1, router: 2, external: 3 };
 
     if (wanNode && routerNode) {
       nodes.filter(n => n.state === 'reachable').forEach(n => {
-        // Trace path: host -> bridge -> router -> WAN
         const hostLink = links.find(l => (l.source.id || l.source) === n.id || (l.target.id || l.target) === n.id);
         if (hostLink) {
-          activeLinks.add((hostLink.source.id || hostLink.source) + '-' + (hostLink.target.id || hostLink.target));
+          activeLinks.add(hostLink);
           const bridgeId = (hostLink.source.id || hostLink.source) === n.id ? (hostLink.target.id || hostLink.target) : (hostLink.source.id || hostLink.source);
-          const bridgeLink = links.find(l => ((l.source.id || l.source) === bridgeId && (l.target.id || l.target) === routerNode.id) ||
-                                              ((l.target.id || l.target) === bridgeId && (l.source.id || l.source) === routerNode.id));
-          if (bridgeLink) activeLinks.add((bridgeLink.source.id || bridgeLink.source) + '-' + (bridgeLink.target.id || bridgeLink.target));
+          const bridgeLink = links.find(l => ((l.source.id || l.source) === bridgeId || (l.target.id || l.target) === bridgeId) &&
+                                              ((l.source.id || l.source) === routerNode.id || (l.target.id || l.target) === routerNode.id));
+          if (bridgeLink) activeLinks.add(bridgeLink);
         }
-        const wanLink = links.find(l => ((l.source.id || l.source) === routerNode.id && (l.target.id || l.target) === wanNode.id) ||
-                                         ((l.target.id || l.target) === routerNode.id && (l.source.id || l.source) === wanNode.id));
-        if (wanLink) activeLinks.add((wanLink.source.id || wanLink.source) + '-' + (wanLink.target.id || wanLink.target));
+        const wanLink = links.find(l => ((l.source.id || l.source) === routerNode.id || (l.target.id || l.target) === routerNode.id) &&
+                                         ((l.source.id || l.source) === wanNode.id || (l.target.id || l.target) === wanNode.id));
+        if (wanLink) activeLinks.add(wanLink);
       });
     }
 
     linkOverlayG.selectAll('line').attr('class', d => {
-      const id = (d.source.id || d.source) + '-' + (d.target.id || d.target);
-      return activeLinks.has(id) ? 'link-overlay active' : 'link-overlay';
+      if (!activeLinks.has(d)) return 'link-overlay';
+      // Reverse if source has higher rank (closer to WAN) than target
+      const srcRank = rank[d.source.type] ?? 0;
+      const tgtRank = rank[d.target.type] ?? 0;
+      return srcRank > tgtRank ? 'link-overlay active reverse' : 'link-overlay active';
     });
   } catch (e) {
     indicator.attr('class', 'indicator error');
