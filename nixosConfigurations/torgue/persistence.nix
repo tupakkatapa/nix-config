@@ -23,6 +23,7 @@ in
             { name = "guitarix"; mode = "755"; what = "/home/kari/.config/guitarix"; }
             { name = "discord"; mode = "755"; what = "/home/kari/.config/discord"; }
             { name = "chrome"; mode = "755"; what = "/home/kari/.config/google-chrome"; }
+            { name = "guitar-rig"; mode = "755"; what = "/home/kari/.wine-nix/guitar-rig"; }
           ];
         }
         {
@@ -96,5 +97,6 @@ in
     "d /home/kari/.config 755 kari kari -"
     "d /home/kari/.local 755 kari kari -"
     "d /home/kari/.local/share 755 kari kari -"
+    "d /home/kari/.wine-nix 755 kari kari -"
   ];
 }
