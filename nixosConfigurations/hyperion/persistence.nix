@@ -28,6 +28,7 @@
           dirs = [
             { name = "fail2ban"; mode = "755"; what = "/var/lib/fail2ban"; }
             { name = "cloudflare-dyndns"; mode = "755"; what = "/var/lib/cloudflare-dyndns"; }
+            { name = "tetragon"; mode = "755"; what = "/var/lib/tetragon"; }
           ];
         }
         {
