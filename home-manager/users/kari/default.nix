@@ -71,6 +71,7 @@ in
       monitor-adjust
       guitarix
       gxplugins-lv2
+      calcurse
 
       # chromium
       # rpi-imager
