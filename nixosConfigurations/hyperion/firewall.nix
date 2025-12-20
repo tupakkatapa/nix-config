@@ -86,9 +86,21 @@ _:
       # Allow established/related (stateful)
       ct state established,related accept
 
+      # TODO: Rate limit forwarded services (WAN → LAN, per-service)
+      # iifname "enp1s0" tcp dport { 80, 443 } ct state new limit rate over 30/second drop
+      # iifname "enp1s0" tcp dport 32400 ct state new limit rate over 30/second drop   # Plex
+      # iifname "enp1s0" tcp dport 54783 ct state new limit rate over 10/second drop    # Blog
+      # iifname "enp1s0" tcp dport 30303 ct state new limit rate over 100/second drop  # Besu
+      # iifname "enp1s0" udp dport 30303 limit rate over 100/second drop
+      # iifname "enp1s0" tcp dport 9001 ct state new limit rate over 50/second drop    # Lighthouse
+
       # Block external DNS (force clients through local resolver)
       iifname { "br-lan", "br-wifi", "wg0" } oifname "enp1s0" tcp dport 53 reject with tcp reset
       iifname { "br-lan", "br-wifi", "wg0" } oifname "enp1s0" udp dport 53 reject
+
+      # Egress blocks (defense in depth)
+      oifname "enp1s0" tcp dport { 23, 25, 135, 137, 138, 139, 445 } drop  # Telnet, SMTP, RPC, SMB
+      oifname "enp1s0" udp dport { 137, 138, 139, 445 } drop               # NetBIOS/SMB
 
       # Allow LAN → WAN (IPv4 + IPv6)
       iifname "br-lan" oifname "enp1s0" accept
