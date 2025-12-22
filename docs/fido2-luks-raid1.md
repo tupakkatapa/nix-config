@@ -58,6 +58,19 @@ nix-shell -p btrfs-progs cryptsetup parted util-linux systemd
   `sudo btrfs balance start -dconvert=raid1 -mconvert=raid1 /mnt/data`
 - Boot wiring: add `boot.initrd.luks.devices.primary` with the by-id part for `/dev/sdY2`, rebuild, reboot
 
+## Ad-hoc resync (manual backup)
+
+If the backup disk isn't unlocked at boot (LUKS config commented out), use this to occasionally resync:
+
+- Unlock: `sudo systemd-cryptsetup attach backup /dev/disk/by-id/<drive>-part1`
+- Scan: `sudo btrfs device scan`
+- Verify both devices visible: `sudo btrfs filesystem show /mnt/data`
+- Rebalance unmirrored chunks: `sudo btrfs balance start -dprofiles=single /mnt/data`
+- Monitor: `sudo btrfs balance status /mnt/data`
+- When done, detach: `sudo systemd-cryptsetup detach backup`
+
+If `-dprofiles=single` finds nothing, the array is already fully mirrored.
+
 ## References
 - Multi-token FIDO2 LUKS: https://juuso.dev/blogPosts/fido2-luks/multi-token-fido2-luks.html
 - agenix: https://github.com/ryantm/agenix
