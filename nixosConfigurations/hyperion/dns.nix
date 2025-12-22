@@ -1,7 +1,6 @@
 { pkgs, ... }:
 let
-  # DNSCrypt resolver lists - fetched at build time to avoid CDN issues
-  # Signatures are verified at build time - build fails if mismatch
+  # DNSCrypt resolver lists - verify signatures at build time
   dnscryptMinisignKey = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
   dnscryptLists = pkgs.stdenv.mkDerivation {
     name = "dnscrypt-lists";
@@ -15,15 +14,14 @@ let
         url = "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md.minisig";
         hash = "sha256-41n2lXlUl8WXugPU+0LFaHSF+Wi6YifoQOA44S6z/EA=";
       })
-      # TODO: Re-enable when CDN syncs - currently signature mismatch
-      # (pkgs.fetchurl {
-      #   url = "https://download.dnscrypt.info/resolvers-list/v3/relays.md";
-      #   hash = "sha256-sfgNYDvz1qgLUS1CRb4V6/CZIMUCZJJJHxP3hWwODH4=";
-      # })
-      # (pkgs.fetchurl {
-      #   url = "https://download.dnscrypt.info/resolvers-list/v3/relays.md.minisig";
-      #   hash = "sha256-Nc5cY1K71H5WZOUQ2N1zR5nGT8xitrN0DWLQ56V0wr0=";
-      # })
+      (pkgs.fetchurl {
+        url = "https://download.dnscrypt.info/resolvers-list/v3/relays.md";
+        hash = "sha256-PYgcjLAZbxr3xGUbAO1Mx/yMkJiWVeBbNPWVgIzXgrs=";
+      })
+      (pkgs.fetchurl {
+        url = "https://download.dnscrypt.info/resolvers-list/v3/relays.md.minisig";
+        hash = "sha256-Nc5cY1K71H5WZOUQ2N1zR5nGT8xitrN0DWLQ56V0wr0=";
+      })
     ];
     phases = [ "installPhase" ];
     installPhase = ''
@@ -33,10 +31,9 @@ let
         cp "$src" "$out/$name"
       done
 
-      # Verify signatures at build time
+      # Verify signatures
       minisign -Vm "$out/public-resolvers.md" -P ${dnscryptMinisignKey}
-      # TODO: Re-enable when CDN syncs
-      # minisign -Vm "$out/relays.md" -P ${dnscryptMinisignKey}
+      minisign -Vm "$out/relays.md" -P ${dnscryptMinisignKey}
     '';
   };
 
@@ -204,26 +201,26 @@ in
       lb_strategy = "p2";
       cache = false;
 
-      # TODO: Re-enable anonymized DNS when CDN syncs
-      # anonymized_dns = {
-      #   routes = [{
-      #     server_name = "*";
-      #     via = [ "anon-cs-finland" "anon-cs-sweden" "anon-cs-de" "anon-cs-nl" "anon-tiarap" "anon-scaleway-fr" ];
-      #   }];
-      #   skip_incompatible = true;
-      # };
+      # Anonymized DNS (relay sees IP, resolver sees queries, neither sees both)
+      anonymized_dns = {
+        routes = [{
+          server_name = "*";
+          via = [ "anon-cs-finland" "anon-cs-sweden" "anon-cs-de" "anon-cs-nl" "anon-tiarap" "anon-scaleway-fr" ];
+        }];
+        skip_incompatible = true;
+      };
 
       sources.public-resolvers = {
         urls = [ ];
         cache_file = "${dnscryptLists}/public-resolvers.md";
         minisign_key = dnscryptMinisignKey;
       };
-      # TODO: Re-enable when CDN syncs
-      # sources.relays = {
-      #   urls = [ ];
-      #   cache_file = "${dnscryptLists}/relays.md";
-      #   minisign_key = dnscryptMinisignKey;
-      # };
+
+      sources.relays = {
+        urls = [ ];
+        cache_file = "${dnscryptLists}/relays.md";
+        minisign_key = dnscryptMinisignKey;
+      };
     };
   };
 }
