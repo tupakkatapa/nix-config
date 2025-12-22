@@ -23,6 +23,14 @@ in
         hostPath = "${dataDir}/sftp/dnld";
         isReadOnly = false;
       };
+      "/media/movies" = {
+        hostPath = "${dataDir}/sftp/media/movies";
+        isReadOnly = true;
+      };
+      "/media/series" = {
+        hostPath = "${dataDir}/sftp/media/series";
+        isReadOnly = true;
+      };
     };
 
     config = { pkgs, ... }: (globalContainerConfig "transmission") // {
