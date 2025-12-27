@@ -75,7 +75,10 @@
       allowedTCPPorts = [ 8080 ]; # magic port
     };
     useDHCP = false;
-    wireless.enable = true;
+    wireless = {
+      enable = true;
+      userControlled.enable = true;
+    };
   };
   systemd.network = {
     enable = true;
