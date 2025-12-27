@@ -27,10 +27,14 @@
             bind_address = "0.0.0.0";
             secret_key = "@SEARX_SECRET_KEY@";
           };
-          search.formats = [
-            "html"
-            "json"
-          ];
+          search = {
+            safe_search = 2;
+            default_lang = "en-US";
+            formats = [
+              "html"
+              "json"
+            ];
+          };
         };
         environmentFile = "/etc/searx-env";
       };
