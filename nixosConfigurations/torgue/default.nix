@@ -80,6 +80,10 @@
   systemd.network = {
     enable = true;
     wait-online.anyInterface = true;
+    links."10-wol" = {
+      matchConfig.MACAddress = "d4:5d:64:d1:12:52";
+      linkConfig.WakeOnLan = "magic";
+    };
     networks = {
       "10-wan" = {
         linkConfig.RequiredForOnline = "routable";
