@@ -1,4 +1,5 @@
-{ dataDir
+{ lib
+, dataDir
 , servicesConfig
 , globalContainerConfig
 , ...
@@ -34,6 +35,9 @@ in
           "llama3.2:3b"
         ];
       };
+
+      # Disable DynamicUser to work with bind-mounted state directory
+      systemd.services.ollama.serviceConfig.DynamicUser = lib.mkForce false;
     };
   };
 
