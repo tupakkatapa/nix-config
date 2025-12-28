@@ -81,7 +81,7 @@ let
     ];
   };
 
-  wanNode = let iface = nixie.dhcp.wan.interface; in {
+  wanNode = let iface = nixie.wan.interface; in {
     id = iface;
     type = "external";
     label = "wan";

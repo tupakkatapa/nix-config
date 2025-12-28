@@ -7,6 +7,7 @@
 
   services.nixie = {
     enable = true;
+    prune = true;
     dataDir = "${dataDir}/home/root/appdata/nixie";
     logDir = "${dataDir}/home/root/appdata/nixie/logs";
 
@@ -54,13 +55,14 @@
       ];
     };
 
+    wan = {
+      enable = true;
+      interface = "enp1s0";
+      ipv6.enable = true;
+    };
+
     dhcp = {
       enable = true;
-      wan = {
-        enable = true;
-        interface = "enp1s0";
-        ipv6.enable = true;
-      };
       subnets = [
         {
           name = "lan";

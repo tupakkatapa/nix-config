@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }:
 let
-  inherit (config.services.nixie.dhcp.wan) interface;
+  inherit (config.services.nixie.wan) interface;
 
   mkScript = name: cmd: pkgs.writeScript "${name}-api" ''
     #!${pkgs.bash}/bin/bash
