@@ -69,16 +69,10 @@ in
 
     home.packages = (with pkgs; [
       monitor-adjust
+      tui-suite
+
       guitarix
       gxplugins-lv2
-      calcurse
-
-      # chromium
-      # rpi-imager
-      # appimage-run
-
-      # Work
-      # libreoffice
 
       # Networking
       wireguard-go

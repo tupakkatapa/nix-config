@@ -1,0 +1,12 @@
+[package]
+name = "mustui"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tuigreat.workspace = true
+ratatui.workspace = true
+crossterm.workspace = true
+rodio = "0.19"
+mpris-server = "0.8"
+tokio = { version = "1", features = ["rt", "sync", "macros"] }

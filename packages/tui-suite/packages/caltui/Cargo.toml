@@ -1,0 +1,10 @@
+[package]
+name = "caltui"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tuigreat.workspace = true
+ratatui.workspace = true
+crossterm.workspace = true
+chrono = "0.4"

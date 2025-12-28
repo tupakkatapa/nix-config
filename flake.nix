@@ -106,11 +106,9 @@
           overlayAttrs = {
             inherit (config.packages)
               # Custom packages used in configurations
-              dm-scripts
+              kb-shortcuts
               monitor-adjust
-              notify-scripts
-              pipewire-out-switcher
-              tt-utils
+              tui-suite
               # Inputs
               codex
               claude-code
@@ -139,7 +137,13 @@
           devenv.shells.default = {
             packages = [
               config.agenix-rekey.package
+              pkgs.alsa-lib.dev
+              pkgs.pkg-config
             ];
+            languages.rust = {
+              enable = true;
+              components = [ "cargo" "clippy" ];
+            };
             env = {
               NIX_CONFIG = ''
                 accept-flake-config = true
@@ -147,9 +151,21 @@
                 warn-dirty = false
               '';
             };
-            git-hooks.hooks.treefmt = {
-              enable = true;
-              package = config.treefmt.build.wrapper;
+            git-hooks.hooks = {
+              treefmt = {
+                enable = true;
+                package = config.treefmt.build.wrapper;
+              };
+              pedantic-clippy = {
+                enable = true;
+                entry = "bash -c 'cd packages/tui-suite && cargo clippy -- -D clippy::pedantic'";
+                files = "\\.rs$";
+                pass_filenames = false;
+              };
+              shellcheck = {
+                enable = true;
+                files = "\\.sh$";
+              };
             };
             # Workaround for https://github.com/cachix/devenv/issues/760
             containers = pkgs.lib.mkForce { };
@@ -158,13 +174,11 @@
           # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
           packages = {
             "2mp3" = pkgs.callPackage ./packages/2mp3 { };
-            "dm-scripts" = pkgs.callPackage ./packages/dm-scripts { };
             "fat-nix-deps" = pkgs.callPackage ./packages/fat-nix-deps { };
+            "kb-shortcuts" = pkgs.callPackage ./packages/kb-shortcuts { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
-            "notify-scripts" = pkgs.callPackage ./packages/notify-scripts { };
             "pinit" = pkgs.callPackage ./packages/pinit { };
-            "pipewire-out-switcher" = pkgs.callPackage ./packages/pipewire-out-switcher { };
-            "tt-utils" = pkgs.callPackage ./packages/tt-utils { };
+            "tui-suite" = pkgs.callPackage ./packages/tui-suite { };
             # Inputs
             inherit (inputs'.levari.packages) levari;
             inherit (inputs'.nixie.packages) lkddb-filter;

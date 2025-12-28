@@ -4,13 +4,15 @@
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) FONT THEME;
+  inherit (config.home.sessionVariables) FONT THEME TERMINAL;
   colors = customLib.colors.${THEME};
   rice = import ./config.nix { inherit customLib config; };
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
-  pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
-  blueberry = "${pkgs.blueberry}/bin/blueberry";
+  voltui = "${pkgs.tui-suite}/bin/voltui";
+  blutui = "${pkgs.tui-suite}/bin/blutui";
+  nettui = "${pkgs.tui-suite}/bin/nettui";
+  caltui = "${pkgs.tui-suite}/bin/caltui";
 in
 {
   programs.waybar = {
@@ -108,7 +110,7 @@ in
           headset = "";
           default = [ "" "" "" ];
         };
-        on-click = pavucontrol;
+        on-click = "${TERMINAL} -a tui-suite -e ${voltui}";
       };
 
       bluetooth = {
@@ -118,7 +120,7 @@ in
         tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
         tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
         tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
-        on-click = blueberry;
+        on-click = "${TERMINAL} -a tui-suite -e ${blutui}";
       };
 
       network = {
@@ -126,11 +128,13 @@ in
         format-ethernet = " wired";
         format-disconnected = "";
         tooltip = false;
+        on-click = "${TERMINAL} -a tui-suite -e ${nettui}";
       };
 
       "clock#datetime" = {
         format = "{:%d.%m.%Y | %H:%M}";
         tooltip-format = "<tt><small>{calendar}</small></tt>";
+        on-click = "${TERMINAL} -a tui-suite -e ${caltui}";
         calendar = {
           mode = "year";
           "mode-mon-col" = 3;

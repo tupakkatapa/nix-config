@@ -118,7 +118,6 @@ in
     };
 
     home.packages = with pkgs; [
-      tt-utils
       ping-sweep
       eza
     ];

@@ -44,20 +44,16 @@ let
     move = "CTRL";
   };
 
-  notify = {
-    brightness = "${pkgs.notify-scripts}/bin/notify-brightness";
-    not-hyprprop = "${pkgs.notify-scripts}/bin/notify-not-hyprprop";
-    pipewire-out-switcher = "${pkgs.notify-scripts}/bin/notify-pipewire-out-switcher";
-    screenshot = "${pkgs.notify-scripts}/bin/notify-screenshot";
-    volume = "${pkgs.notify-scripts}/bin/notify-volume";
-  };
-
-  dm = {
-    pipewire-out-switcher = "${pkgs.dm-scripts}/bin/dm-pipewire-out-switcher";
-    radio = "${pkgs.dm-scripts}/bin/dm-radio";
+  kb = {
+    brightness = "${pkgs.kb-shortcuts}/bin/brightness";
+    not-hyprprop = "${pkgs.kb-shortcuts}/bin/not-hyprprop";
+    pipewire-out-switcher = "${pkgs.kb-shortcuts}/bin/pipewire-out-switcher";
+    screenshot = "${pkgs.kb-shortcuts}/bin/screenshot";
+    volume = "${pkgs.kb-shortcuts}/bin/volume";
   };
 
   hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
+  tui = "${pkgs.tui-suite}/bin";
 in
 {
   # hyprland.nix
@@ -78,13 +74,21 @@ in
       ''
         bind = ${mod}, S, submap, scripts
         submap = scripts
-        bind = , c, exec, ${hyprpicker} -a -n
+        bind = , a, exec, ${TERMINAL} -a tui-suite -e ${tui}/voltui
+        bind = , a, submap, reset
+        bind = , b, exec, ${TERMINAL} -a tui-suite -e ${tui}/blutui
+        bind = , b, submap, reset
+        bind = , c, exec, ${TERMINAL} -a tui-suite -e ${tui}/caltui
         bind = , c, submap, reset
-        bind = , p, exec, ${dm.pipewire-out-switcher}
+        bind = , k, exec, ${TERMINAL} -a tui-suite -e ${tui}/kaltui
+        bind = , k, submap, reset
+        bind = , m, exec, ${TERMINAL} -a tui-suite -e ${tui}/mustui ~/Media/music/Artists
+        bind = , m, submap, reset
+        bind = , n, exec, ${TERMINAL} -a tui-suite -e ${tui}/nettui
+        bind = , n, submap, reset
+        bind = , p, exec, ${hyprpicker} -a -n
         bind = , p, submap, reset
-        bind = , r, exec, ${dm.radio}
-        bind = , r, submap, reset
-        bind = , w, exec, ${notify.not-hyprprop}
+        bind = , w, exec, ${kb.not-hyprprop}
         bind = , w, submap, reset
         bind = , escape, submap, reset
         submap = reset
@@ -139,13 +143,13 @@ in
 
       bind = [
         # Brightness
-        ",XF86MonBrightnessUp,   exec, ${notify.brightness} set +5%"
-        ",XF86MonBrightnessDown, exec, ${notify.brightness} set 5%-"
+        ",XF86MonBrightnessUp,   exec, ${kb.brightness} set +5%"
+        ",XF86MonBrightnessDown, exec, ${kb.brightness} set 5%-"
 
         # Volume
-        ",XF86AudioRaiseVolume, exec, ${notify.volume} -i 5"
-        ",XF86AudioLowerVolume, exec, ${notify.volume} -d 5"
-        ",XF86AudioMute,        exec, ${notify.volume} -t"
+        ",XF86AudioRaiseVolume, exec, ${kb.volume} -i 5"
+        ",XF86AudioLowerVolume, exec, ${kb.volume} -d 5"
+        ",XF86AudioMute,        exec, ${kb.volume} -t"
 
         # General
         "${mod} SHIFT, Return, exec, wofi"
@@ -161,9 +165,9 @@ in
         # Misc
         "${mod} SHIFT, R, exec, hyprctl reload && notify-send \"Hyprland reloaded\""
         "${mod} SHIFT, W, exec, pkill waybar; waybar & notify-send \"Waybar reloaded\""
-        "${mod}, XF86AudioRaiseVolume, exec, ${notify.pipewire-out-switcher}"
-        ", Print, exec, ${notify.screenshot} \"$HOME\""
-        "SUPER, Print, exec, ${notify.screenshot} \"$HOME\" fullscreen"
+        "${mod}, XF86AudioRaiseVolume, exec, ${kb.pipewire-out-switcher}"
+        ", Print, exec, ${kb.screenshot} \"$HOME\""
+        "SUPER, Print, exec, ${kb.screenshot} \"$HOME\" fullscreen"
 
         # Window management
         "${mod}, D,     pseudo"
@@ -232,9 +236,9 @@ in
         "float, title:QEMU"
         "size 1400 800, title:QEMU"
 
-        "center, class:pavucontrol"
-        "float, class:pavucontrol"
-        "size 1400 800, class:pavucontrol"
+        "center, title:^(Extension)$"
+        "float, title:^(Extension)$"
+        "size 1400 800, title:^(Extension)$"
 
         "center, title:^(Picture-in-Picture)$"
         "float, title:^(Picture-in-Picture)$"
@@ -246,6 +250,10 @@ in
         "center, class:foot"
         "float, class:foot"
         "size 1400 800, class:foot"
+
+        "center, class:tui-suite"
+        "float, class:tui-suite"
+        "size 1400 800, class:tui-suite"
 
         "center, class:org.gnome.Nautilus"
         "float, class:org.gnome.Nautilus"

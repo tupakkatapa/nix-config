@@ -1,0 +1,10 @@
+[package]
+name = "blutui"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tuigreat.workspace = true
+ratatui.workspace = true
+crossterm.workspace = true
+libc = "0.2"

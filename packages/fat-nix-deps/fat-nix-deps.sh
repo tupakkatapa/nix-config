@@ -97,7 +97,8 @@ get_package_size() {
 format_size() {
   local size_mb="$1"
   if awk "BEGIN {exit !($size_mb < 1)}"; then
-    local size_kib=$(awk "BEGIN {printf \"%.1f\", $size_mb * 1024}")
+    local size_kib
+    size_kib=$(awk "BEGIN {printf \"%.1f\", $size_mb * 1024}")
     echo "${size_kib} KiB"
   else
     echo "${size_mb} MiB"
@@ -132,7 +133,8 @@ analyze_package() {
   fi
 
   # Format root size for display
-  local root_size_display=$(format_size "$root_size_mb")
+  local root_size_display
+  root_size_display=$(format_size "$root_size_mb")
 
   # Mark based on mathematical properties
   # Only flag: Small root pulling in large dependency (ratio > 5x, chain > 2)
@@ -150,7 +152,7 @@ build_dependency_chain() {
   local current="$pkg_path"
   local chain=()
 
-  while [ $depth -lt $max_depth ]; do
+  while [ "$depth" -lt "$max_depth" ]; do
     local referrers
     referrers=$(nix-store --query --referrers "$current" 2>/dev/null | grep -v "^$current$" || echo "")
 
@@ -227,7 +229,8 @@ main() {
   log ""
 
   # Generate path-info in /tmp
-  local PATH_INFO_FILE="/tmp/path-info-$(date +%s).txt"
+  local PATH_INFO_FILE
+  PATH_INFO_FILE="/tmp/path-info-$(date +%s).txt"
   log "Generating path-info..."
   nix path-info --impure -rsSh "$flake_attr" >"$PATH_INFO_FILE"
   log "Generated: $PATH_INFO_FILE"
