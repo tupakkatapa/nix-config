@@ -14,6 +14,10 @@ in
 
   # Home-manager config
   home-manager.users."${user}" = {
+    imports = [
+      ./.config/claude.nix
+    ];
+
     # Default apps
     xdg.mimeApps.enable = true;
     xdg.mimeApps.defaultApplications = customLib.xdg.createMimes {
@@ -79,7 +83,6 @@ in
       wireguard-tools
 
       oterm
-      claude-code
     ]) ++
     (with unstable; [
     ]);

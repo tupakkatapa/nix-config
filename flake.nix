@@ -266,6 +266,7 @@
                   sharedModules = [
                     inputs.nixvim.homeModules.nixvim
                     inputs.nix-index-database.homeModules.nix-index
+                    self.homeModules.claudeCode
                     {
                       programs.nix-index.enable = true;
                       programs.nix-index-database.comma.enable = true;
@@ -357,6 +358,11 @@
             autoScrcpy.imports = [ ./nixosModules/auto-scrcpy.nix ];
             rsyncBackup.imports = [ ./nixosModules/rsync-backup.nix ];
             stateSaver.imports = [ ./nixosModules/state-saver.nix ];
+          };
+
+          # Home-manager modules
+          homeModules = {
+            claudeCode.imports = [ ./homeModules/claude-code.nix ];
           };
         };
     };

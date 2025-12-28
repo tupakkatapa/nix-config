@@ -18,7 +18,7 @@ in
         {
           name = "appdata";
           dirs = [
-            { name = "claude"; mode = "755"; what = "/home/kari/.claude"; }
+            { name = "claude-projects"; mode = "755"; what = "/home/kari/.claude/projects"; }
             { name = "firefox"; mode = "755"; what = "/home/kari/.mozilla"; }
             { name = "guitarix"; mode = "755"; what = "/home/kari/.config/guitarix"; }
           ];
