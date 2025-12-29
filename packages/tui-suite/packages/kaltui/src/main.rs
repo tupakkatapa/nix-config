@@ -196,6 +196,8 @@ impl CalcTui {
                 self.input.push('*');
                 self.status.clear();
             }
+            // Calculate
+            '=' => self.evaluate(),
             _ => {
                 // Show error for invalid characters
                 self.status = format!(" Invalid input: '{c}'");
@@ -488,7 +490,11 @@ impl App for CalcTui {
                 _ => {}
             },
             Action::Top => {
-                if self.current_tab() == 1 && !self.history.is_empty() {
+                if self.current_tab() == 0 && self.focus == 0 {
+                    // In calculator input, '0' should be a digit (tuigreat maps 0 to Top)
+                    self.input.push('0');
+                    self.status.clear();
+                } else if self.current_tab() == 1 && !self.history.is_empty() {
                     self.history_state.select(Some(0));
                 }
             }
@@ -565,7 +571,7 @@ impl App for CalcTui {
                 ("^ ()", "Power, parens"),
                 ("p", "Paste"),
                 ("y", "Yank (copy)"),
-                ("Enter", "Calculate"),
+                ("= / Enter", "Calculate"),
                 ("d", "Clear all"),
                 ("q", "Quit"),
             ];

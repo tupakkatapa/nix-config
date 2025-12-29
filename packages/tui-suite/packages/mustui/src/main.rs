@@ -1172,6 +1172,30 @@ impl MusicTui {
                     }
                 );
             }
+            Action::Refresh | Action::Char('r') => {
+                // Pick random from focused list and play
+                match self.focus {
+                    0 if !self.artists.items().is_empty() => {
+                        let idx = Self::simple_random(self.artists.items().len());
+                        self.artists.select(idx);
+                        self.load_albums_for_selected_artist();
+                        self.load_songs_for_selected_album();
+                        self.play_selected()?;
+                    }
+                    1 if !self.albums.items().is_empty() => {
+                        let idx = Self::simple_random(self.albums.items().len());
+                        self.albums.select(idx);
+                        self.load_songs_for_selected_album();
+                        self.play_selected()?;
+                    }
+                    2 if !self.songs.items().is_empty() => {
+                        let idx = Self::simple_random(self.songs.items().len());
+                        self.songs.select(idx);
+                        self.play_selected()?;
+                    }
+                    _ => {}
+                }
+            }
             _ => {}
         }
         Ok(())
@@ -1339,7 +1363,10 @@ impl App for MusicTui {
             | Action::VolumeUp
             | Action::VolumeDown
             | Action::Delete
-            | Action::Char(' ' | '>' | '<' | 'a' | 'S') => self.handle_playback_action(action)?,
+            | Action::Refresh
+            | Action::Char(' ' | '>' | '<' | 'a' | 'S' | 'r') => {
+                self.handle_playback_action(action)?;
+            }
             // Jump to char (vim-style f/F)
             Action::JumpTo => {
                 if self.current_tab() == 0 {
@@ -1407,6 +1434,7 @@ impl App for MusicTui {
                     ("</>", "Prev/Next song"),
                     ("f/F", "Jump to char"),
                     ("p", "Jump to playing"),
+                    ("r", "Play random"),
                     ("S", "Toggle shuffle"),
                     ("a", "Toggle auto-play"),
                     ("o", "Open directory"),

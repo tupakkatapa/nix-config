@@ -91,40 +91,51 @@ pub fn create_combined_sink(name: &str, sink_names: &[&str]) -> Result<(), Strin
 }
 
 /// Get existing combined sinks
+/// Uses short format since `PipeWire` JSON doesn't include module index
 pub fn get_combined_modules() -> AppResult<Vec<(u32, String)>> {
     let output = Command::new("pactl")
-        .args(["--format=json", "list", "modules"])
+        .args(["list", "modules", "short"])
         .output()?;
 
-    let json: serde_json::Value =
-        serde_json::from_slice(&output.stdout).unwrap_or(serde_json::json!([]));
-
-    let modules = json
-        .as_array()
-        .map(|arr| {
-            arr.iter()
-                .filter_map(|module| {
-                    let name = module["name"].as_str()?;
-                    if name != "module-combine-sink" {
-                        return None;
-                    }
-                    // PipeWire module indexes are small positive integers
-                    let index = u32::try_from(module["index"].as_u64()?).ok()?;
-                    let args = module["argument"].as_str().unwrap_or("");
-                    // Extract sink_name from arguments
-                    let sink_name = args
-                        .split_whitespace()
-                        .find(|s| s.starts_with("sink_name="))
-                        .and_then(|s| s.strip_prefix("sink_name="))
-                        .unwrap_or("combined")
-                        .to_string();
-                    Some((index, sink_name))
-                })
-                .collect()
+    let text = String::from_utf8_lossy(&output.stdout);
+    let modules: Vec<(u32, String)> = text
+        .lines()
+        .filter_map(|line| {
+            // Format: index\tmodule-name\targuments
+            let mut parts = line.split('\t');
+            let index: u32 = parts.next()?.parse().ok()?;
+            let name = parts.next()?;
+            if name != "module-combine-sink" {
+                return None;
+            }
+            let args = parts.next().unwrap_or("");
+            let sink_name = extract_sink_name(args);
+            Some((index, sink_name))
         })
-        .unwrap_or_default();
+        .collect();
 
     Ok(modules)
+}
+
+/// Extract `sink_name` from module arguments string
+fn extract_sink_name(args: &str) -> String {
+    // Try to find sink_name= in various formats
+    for part in args.split(|c: char| c.is_whitespace() || c == '\t') {
+        if let Some(name) = part.strip_prefix("sink_name=") {
+            // Remove any quotes
+            return name.trim_matches('"').trim_matches('\'').to_string();
+        }
+    }
+    // Fallback: try regex-like search for sink_name=value pattern
+    if let Some(start) = args.find("sink_name=") {
+        let rest = &args[start + 10..];
+        let end = rest
+            .find(|c: char| c.is_whitespace() || c == '\t')
+            .unwrap_or(rest.len());
+        let name = &rest[..end];
+        return name.trim_matches('"').trim_matches('\'').to_string();
+    }
+    "combined".to_string()
 }
 
 /// Remove a combined sink by module index

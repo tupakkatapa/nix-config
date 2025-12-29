@@ -209,9 +209,18 @@ impl PwTui {
             .collect();
 
         // Find the next available number for combined sink
+        // Check both modules list AND existing sink names (in case module parsing failed)
         let mut next_num = 1u32;
         for (_, name) in &self.combined_modules {
             if let Some(num_str) = name.strip_prefix("combined_")
+                && let Ok(num) = num_str.parse::<u32>()
+            {
+                next_num = next_num.max(num + 1);
+            }
+        }
+        // Also check existing sinks in case module detection failed
+        for sink in self.sinks.items() {
+            if let Some(num_str) = sink.name.strip_prefix("combined_")
                 && let Ok(num) = num_str.parse::<u32>()
             {
                 next_num = next_num.max(num + 1);
@@ -381,17 +390,25 @@ impl PwTui {
             ])
             .split(area);
 
-        // Sinks with selection indicators
-        let items: Vec<ListItem> = self
+        // Sinks with selection indicators (exclude combined sinks)
+        // Build filtered list with original indices for selection tracking
+        let filtered_sinks: Vec<(usize, &Sink)> = self
             .sinks
             .items()
             .iter()
             .enumerate()
-            .map(|(i, sink)| {
+            .filter(|(_, sink)| !sink.name.starts_with("combined_"))
+            .collect();
+
+        let items: Vec<ListItem> = filtered_sinks
+            .iter()
+            .map(|(original_idx, sink)| {
                 let selected = self.selected_for_combine.contains(&sink.name);
                 let checkbox = if selected { "[x]" } else { "[ ]" };
                 let text = format!("{} {}", checkbox, sink.description);
-                let style = if Some(i) == self.sinks.selected_index() && !self.combine_right_focus {
+                let style = if Some(*original_idx) == self.sinks.selected_index()
+                    && !self.combine_right_focus
+                {
                     Style::default().add_modifier(Modifier::REVERSED)
                 } else if selected {
                     self.theme.highlight()
@@ -503,18 +520,57 @@ impl PwTui {
         }
     }
 
+    /// Move to next non-combined sink (for Combine tab navigation)
+    fn next_non_combined(&mut self) {
+        let items = self.sinks.items();
+        if items.is_empty() {
+            return;
+        }
+        let start = self.sinks.selected_index().map_or(0, |i| i + 1);
+        for i in 0..items.len() {
+            let idx = (start + i) % items.len();
+            if !items[idx].name.starts_with("combined_") {
+                self.sinks.select(idx);
+                return;
+            }
+        }
+    }
+
+    /// Move to previous non-combined sink (for Combine tab navigation)
+    fn prev_non_combined(&mut self) {
+        let items = self.sinks.items();
+        if items.is_empty() {
+            return;
+        }
+        let start = self
+            .sinks
+            .selected_index()
+            .unwrap_or(0)
+            .checked_sub(1)
+            .unwrap_or(items.len() - 1);
+        for i in 0..items.len() {
+            let idx = (start + items.len() - i) % items.len();
+            if !items[idx].name.starts_with("combined_") {
+                self.sinks.select(idx);
+                return;
+            }
+        }
+    }
+
     fn handle_navigation(&mut self, action: Action) {
         match action {
             Action::Down => match self.current_tab() {
                 1 => self.sources.next(),
                 2 if self.combine_right_focus => self.combined_next(),
-                0 | 2 => self.sinks.next(),
+                2 => self.next_non_combined(),
+                0 => self.sinks.next(),
                 _ => {}
             },
             Action::Up => match self.current_tab() {
                 1 => self.sources.previous(),
                 2 if self.combine_right_focus => self.combined_previous(),
-                0 | 2 => self.sinks.previous(),
+                2 => self.prev_non_combined(),
+                0 => self.sinks.previous(),
                 _ => {}
             },
             Action::Left => {

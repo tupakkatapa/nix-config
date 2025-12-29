@@ -85,8 +85,8 @@ impl KeyHandler {
             KeyCode::Char('?') => Action::Help,
             KeyCode::Char('r') => Action::Refresh,
 
-            // Audio controls
-            KeyCode::Char('+' | '=') => Action::VolumeUp,
+            // Audio controls (only + for volume, = passes through for calculators etc)
+            KeyCode::Char('+') => Action::VolumeUp,
             KeyCode::Char('-' | '_') => Action::VolumeDown,
             KeyCode::Char('m') => Action::Mute,
 
