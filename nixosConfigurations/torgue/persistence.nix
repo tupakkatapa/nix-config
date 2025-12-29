@@ -94,5 +94,6 @@ in
     "d /home/kari/.config 755 kari kari -"
     "d /home/kari/.local 755 kari kari -"
     "d /home/kari/.local/share 755 kari kari -"
+    "d /home/kari/.claude 755 kari kari -"
   ];
 }
