@@ -72,7 +72,10 @@ in
     wait-online.anyInterface = true;
     links."10-wol" = {
       matchConfig.MACAddress = "30:9c:23:3c:b9:01";
-      linkConfig.WakeOnLan = "magic";
+      linkConfig = {
+        NamePolicy = "kernel database onboard slot path";
+        WakeOnLan = "magic";
+      };
     };
     networks = {
       "10-wan" = {
