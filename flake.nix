@@ -59,8 +59,7 @@
     mozid.url = "github:tupakkatapa/mozid";
     ping-sweep.url = "github:tupakkatapa/ping-sweep";
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
-    codex-cli-nix.url = "github:sadjow/codex-cli-nix";
-    claude-code-nix.url = "github:sadjow/claude-code-nix";
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
 
   outputs = { self, ... }@inputs:
@@ -185,8 +184,7 @@
             inherit (inputs'.nixie.packages) pxe-generate;
             inherit (inputs'.nixie.packages) refind-generate;
             inherit (inputs'.ping-sweep.packages) ping-sweep;
-            inherit (inputs'.codex-cli-nix.packages) codex;
-            inherit (inputs'.claude-code-nix.packages) claude-code;
+            inherit (inputs'.llm-agents.packages) claude-code;
             # Patches - trezorctl needs patched nixpkgs (trezor 0.20) for click 8.2 compat
             # trezor-agent needs OLD trezor 0.13 API with click relaxed
             "trezorctl" = nixpkgs-patched.trezorctl;
