@@ -1,4 +1,3 @@
-# https://github.com/hyper-dot/Arch-Hyprland
 { pkgs
 , customLib
 , unstable
@@ -15,7 +14,7 @@ in
   # Home-manager config
   home-manager.users."${user}" = {
     imports = [
-      ./.config/claude.nix
+      ./.config/claude
     ];
 
     # Default apps
