@@ -41,6 +41,12 @@
           ];
         }
         {
+          name = "Social";
+          bookmarks = [
+            { name = "X"; url = "https://x.com/"; }
+          ];
+        }
+        {
           name = "Cloud & Infrastructure";
           bookmarks = [
             { name = "Cloudflare"; url = "https://dash.cloudflare.com/"; }
@@ -93,7 +99,7 @@
             { name = "NixOS Search Options"; url = "https://search.nixos.org/options?"; }
             { name = "NixOS Search Packages"; url = "https://search.nixos.org/packages?"; }
             { name = "Nixpkgs Issues"; url = "https://github.com/NixOS/nixpkgs/issues"; }
-            { name = "Home Manager Search"; url = "https://mipmip.github.io/home-manager-option-search/"; }
+            { name = "Home Manager Search"; url = "https://home-manager-options.extranix.com/"; }
             { name = "NixOS Wiki"; url = "https://nixos.wiki/"; }
             { name = "Flake Parts"; url = "https://flake.parts/"; }
             { name = "Nixvim docs"; url = "https://nix-community.github.io/nixvim/"; }
