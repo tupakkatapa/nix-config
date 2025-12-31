@@ -13,9 +13,8 @@ in
     # MCP servers
     mcpServers = {
       nixos = {
-        command = "uvx";
-        args = [ "mcp-nixos" ];
-        env.UV_PYTHON_PREFERENCE = "only-system";
+        command = "nix";
+        args = [ "run" "github:utensils/mcp-nixos" "--" ];
       };
       context7 = {
         command = "npx";
@@ -44,5 +43,5 @@ in
   };
 
   # MCP server dependencies
-  home.packages = with pkgs; [ uv python3 nodejs ];
+  home.packages = with pkgs; [ nodejs ];
 }
