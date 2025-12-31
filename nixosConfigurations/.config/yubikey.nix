@@ -9,6 +9,12 @@
   services.yubikey-agent.enable = true;
   programs.yubikey-touch-detector.enable = true;
 
+  # Preserve SSH_AUTH_SOCK for sudo so YubiKey-backed SSH keys work
+  # This allows nix to fetch private repos when running sudo nixos-rebuild
+  security.sudo.extraConfig = ''
+    Defaults env_keep += "SSH_AUTH_SOCK"
+  '';
+
   # U2F
   # Logging-in
   # nix-shell -p pam_u2f
