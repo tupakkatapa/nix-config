@@ -26,6 +26,9 @@ in
       };
     };
 
+    # Global CLAUDE.md - applies to all projects
+    memory.source = ./CLAUDE.md;
+
     # Plugin management via homeModules.claudeCode extension
     plugins.fromGitHub = [{
       owner = "obra";

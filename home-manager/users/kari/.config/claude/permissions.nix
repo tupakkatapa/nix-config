@@ -70,24 +70,17 @@
 
     # Network (trusted domains)
     "WebFetch(domain:github.com)"
+    "WebFetch(domain:api.github.com)"
     "WebFetch(domain:raw.githubusercontent.com)"
-    "WebFetch(domain:nixos.org)"
-    "WebFetch(domain:nixos.wiki)"
-    "WebFetch(domain:wiki.nixos.org)"
-    "WebFetch(domain:discourse.nixos.org)"
-    "WebFetch(domain:search.nixos.org)"
-    "WebFetch(domain:nix.dev)"
     "WebSearch"
 
     # Skills
     "Skill(superpowers:*)"
 
     # MCP servers
-    "mcp__ruv-swarm"
-    "mcp__claude-flow@alpha"
-    "mcp__flow-nexus"
-    "mcp__nixos"
-    "mcp__context7"
+    "mcp__claude-flow__*"
+    "mcp__nixos__*"
+    "mcp__context7__*"
 
     # Development tools
     "Bash(pre-commit run:*)"
@@ -126,7 +119,6 @@
     # Network
     "Bash(curl:*)"
     "Bash(wget:*)"
-    "WebFetch"
 
     # Process management
     "Bash(kill:*)"
