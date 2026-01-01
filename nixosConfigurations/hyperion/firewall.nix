@@ -117,11 +117,6 @@ _:
       # Rate limit new connections (anti-DoS)
       ct state new limit rate over 100/second drop
 
-      # Allow port-forwarded services (WAN → LAN)
-      iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.8 tcp dport { 80, 443, 32400, 54783 } accept
-      iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.25 tcp dport { 9001, 30303 } accept
-      iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.25 udp dport { 30303, 51821 } accept
-
       # Block unsolicited WAN → LAN (defense in depth for IPv6)
       iifname "enp1s0" oifname { "br-lan", "br-wifi" } drop
 
