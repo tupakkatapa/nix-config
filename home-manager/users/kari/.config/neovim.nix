@@ -95,7 +95,6 @@
       todo-comments.enable = true;
       comment.enable = true;
       rainbow-delimiters.enable = true;
-      mini-notify.enable = true;
       hardtime = {
         enable = true;
         settings.max_count = 0;
