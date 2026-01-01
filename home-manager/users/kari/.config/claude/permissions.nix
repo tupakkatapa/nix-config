@@ -4,6 +4,8 @@
     "Grep(*)"
     "LS(*)"
     "Read(*)"
+    "Write(*)"
+    "Edit(*)"
     "Search(*)"
     "Task(*)"
     "TodoWrite(*)"
@@ -99,6 +101,9 @@
   ];
 
   ask = [
+    # Nix (can run arbitrary commands)
+    "Bash(nix-shell:*)"
+
     # Git (destructive ops not in allow)
     "Bash(git:*)"
     "Bash(gh:*)"

@@ -5,6 +5,7 @@ in
 {
   programs.claude-code = {
     enable = true;
+    skillsDir = ./skills;
 
     settings.permissions = {
       inherit (permissions) allow ask deny;

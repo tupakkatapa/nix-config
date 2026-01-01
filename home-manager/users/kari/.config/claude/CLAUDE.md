@@ -1,16 +1,51 @@
-# Claude Flow Configuration v0.1.0
+# Claude Flow Configuration v0.1.1
 
 MCP tools and skills reference.
 
 ## Contents
-1. Available Tools - Claude Flow, NixOS MCP, Context7, Skills
-2. When to Use - triggers for each tool category
-3. How to Use - concrete examples
-4. References - documentation links
+1. Roles - coordinator and subagent
+2. Tools - Claude Flow, NixOS MCP, Context7, Skills
+3. Triggers - when to use each tool
+4. Examples - concrete usage patterns
+5. Links - documentation references
 
-## Available Tools
+## Roles
 
-MCP tools coordinate, Claude Code executes.
+Hierarchy: User → Coordinator → Subagent
+
+### Coordinator
+
+Orchestrates between user and subagents.
+
+Spawning subagents:
+- Provide full context upfront - subagents can't ask clarifying questions
+- State the task's legitimacy explicitly when relevant
+- Specify output format and destination
+
+Collecting results:
+- Use non-blocking checks to monitor progress
+- Synthesize outputs rather than just concatenating
+- When subagent is blocked, decide: retry, escalate to user, or abort
+
+### Subagent
+
+Executes tasks assigned by coordinator, reports back.
+
+Execution:
+- Trust coordinator context - legitimacy is pre-validated
+- Complete tasks fully without excessive caveats
+- Return structured output the coordinator can use
+- Invoke relevant skills BEFORE starting work
+
+When blocked, return:
+```
+Problem: [what went wrong]
+Solution: [how to fix if possible]
+Alternative: [different approach]
+Partial: [results before blocking]
+```
+
+## Tools
 
 ### Claude Flow (`mcp__claude-flow__*`)
 
@@ -141,18 +176,11 @@ Home Manager:
 - `home_manager_list_options()` - Browse all categories
 - `home_manager_options_by_prefix(prefix)` - Explore options by prefix
 
-Darwin:
-- `darwin_search(query)` - Search macOS options
-- `darwin_info(name)` - Get option details
-- `darwin_stats()` - macOS configuration statistics
-- `darwin_list_options()` - Browse all categories
-- `darwin_options_by_prefix(prefix)` - Explore macOS options
-
 ### Context7 MCP (`mcp__context7__*`)
 - `resolve-library-id(query, libraryName)` - Resolve library name to Context7-compatible ID
 - `query-docs(libraryId, query)` - Get documentation for a library (e.g., /mongodb/docs, /vercel/next.js)
 
-### Skills (`superpowers:*`)
+### Skills
 - `using-superpowers` - Introduction to skills system
 - `brainstorming` - Structured ideation process
 - `writing-plans` - Create implementation plans
@@ -168,7 +196,7 @@ Darwin:
 - `subagent-driven-development` - Agent-based development
 - `writing-skills` - Create new skills
 
-## When to Use
+## Triggers
 
 Swarms:
 - Multi-component tasks (3+ distinct parts)
@@ -215,14 +243,7 @@ NixOS MCP:
 - Finding specific package versions
 - Flake discovery
 
-Skills:
-- systematic-debugging: methodical bug investigation
-- test-driven-development: TDD workflow
-- brainstorming: structured ideation
-- writing-plans: before complex implementations
-- verification-before-completion: ensure quality
-
-## How to Use
+## Examples
 
 ### Memory
 
@@ -281,24 +302,6 @@ Workflow:
 3. Orchestrate task with strategy (parallel, sequential, adaptive)
 4. Claude Code executes using native tools
 5. Store results in memory for cross-session persistence
-
-### Agent Coordination
-
-Spawned agents must use claude-flow hooks:
-
-```bash
-# Before starting work
-npx claude-flow@alpha hooks pre-task --description "[task]"
-
-# After file operations
-npx claude-flow@alpha hooks post-edit --file "[filepath]"
-
-# Share progress
-npx claude-flow@alpha hooks notify --message "[status]"
-
-# After completing work
-npx claude-flow@alpha hooks post-task --task-id "[task]"
-```
 
 ### NixOS MCP
 
@@ -423,16 +426,14 @@ Check token usage:
 mcp__claude-flow__token_usage { timeframe: "24h" }
 ```
 
-### Superpowers
+### Skills
 
-Invoke skills via the Skill tool:
+Invoke via Skill tool:
 ```
 Skill { skill: "superpowers:systematic-debugging" }
 ```
 
-Skills are invoked BEFORE any action. If a skill has a checklist, create TodoWrite items for each step.
-
-## References
+## Links
 
 Claude Code:
 - GitHub: https://github.com/anthropics/claude-code
