@@ -47,6 +47,17 @@
           timeout = 1;
         }
         {
+          name = "maliwan";
+          flakeUrl = "github:tupakkatapa/nix-config";
+          hosts = [ "maliwan" "bandit" ];
+          default = "maliwan";
+          rollbacks = {
+            enable = true;
+            keep = 2;
+          };
+          timeout = 1;
+        }
+        {
           name = "bandit";
           flakeUrl = "github:tupakkatapa/nix-config";
           hosts = [ "bandit" ];
@@ -80,6 +91,11 @@
               menu = "vladof";
               mac = "30:9c:23:3c:b9:01";
               address = "10.42.0.8";
+            }
+            {
+              menu = "maliwan";
+              mac = "18:3d:2d:d2:de:41";
+              address = "10.42.0.9";
             }
             {
               menu = "kaakkuri-ephemeral-alpha";
