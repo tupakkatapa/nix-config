@@ -1,5 +1,6 @@
 {
   allow = [
+    # Core tools
     "Glob(*)"
     "Grep(*)"
     "LS(*)"
@@ -10,18 +11,28 @@
     "Task(*)"
     "TodoWrite(*)"
 
-    # Git
+    # Git (both exact and with args)
     "Bash(git status)"
+    "Bash(git status:*)"
+    "Bash(git log)"
     "Bash(git log:*)"
+    "Bash(git diff)"
     "Bash(git diff:*)"
+    "Bash(git show)"
     "Bash(git show:*)"
+    "Bash(git branch)"
     "Bash(git branch:*)"
+    "Bash(git remote)"
     "Bash(git remote:*)"
     "Bash(git add:*)"
     "Bash(git rev-parse:*)"
+    "Bash(git stash)"
+    "Bash(git stash:*)"
 
-    # Github CLI
+    # GitHub CLI
     "Bash(gh run list:*)"
+    "Bash(gh pr:*)"
+    "Bash(gh issue:*)"
 
     # Nix
     "Bash(nix:*)"
@@ -62,29 +73,27 @@
     "Bash(readlink:*)"
     "Bash(basename:*)"
     "Bash(dirname:*)"
-    "Bash(dmesg:*)"
 
-    # Systemd (read-only)
+    # System info (read-only)
+    "Bash(dmesg:*)"
     "Bash(systemctl list-units:*)"
     "Bash(systemctl list-timers:*)"
     "Bash(systemctl status:*)"
     "Bash(journalctl:*)"
 
-    # Network (trusted domains)
+    # Web
     "WebFetch(domain:github.com)"
     "WebFetch(domain:api.github.com)"
     "WebFetch(domain:raw.githubusercontent.com)"
     "WebSearch"
 
-    # Skills
+    # Skills & MCP
     "Skill(superpowers:*)"
-
-    # MCP servers
     "mcp__claude-flow__*"
     "mcp__nixos__*"
     "mcp__context7__*"
 
-    # Development tools
+    # Development
     "Bash(pre-commit run:*)"
     "Bash(make:*)"
     "Bash(just:*)"
@@ -95,71 +104,18 @@
     "Bash(python:*)"
     "Bash(uv:*)"
 
-    # File operations (non-destructive)
+    # File operations
     "Bash(cp:*)"
     "Bash(mv:*)"
-  ];
-
-  ask = [
-    # Nix (can run arbitrary commands)
-    "Bash(nix-shell:*)"
-
-    # Git (destructive ops not in allow)
-    "Bash(git:*)"
-    "Bash(gh:*)"
-
-    # File operations
-    "Bash(chmod:*)"
-    "Bash(chown:*)"
     "Bash(rm:*)"
-    "Bash(ln:*)"
-    "Bash(rsync:*)"
-    "Bash(tar:*)"
-    "Bash(zip:*)"
-    "Bash(unzip:*)"
-
-    # Systemd (control ops not in allow)
-    "Bash(systemctl:*)"
-
-    # Network
-    "Bash(curl:*)"
-    "Bash(wget:*)"
-
-    # Process management
-    "Bash(kill:*)"
-    "Bash(killall:*)"
-    "Bash(pkill:*)"
-
-    # Privileged
-    "Bash(sudo:*)"
   ];
 
   deny = [
-    # Secrets
+    # Secrets - always block
     "Read(**/.env)"
     "Read(**/.ssh/*)"
     "Read(**/.gnupg/*)"
-
-    # Dangerous file operations
-    "Bash(rm -rf:*)"
-    "Bash(dd:*)"
-    "Bash(mkfs:*)"
-
-    # System-level operations
-    "Bash(nixos-rebuild:*)"
-
-    # Power control
-    "Bash(reboot:*)"
-    "Bash(shutdown:*)"
-    "Bash(poweroff:*)"
-
-    # Remote access
-    "Bash(ssh:*)"
-    "Bash(scp:*)"
-    "Bash(sftp:*)"
-
-    # Network tunneling
-    "Bash(nc:*)"
-    "Bash(netcat:*)"
+    "Read(**/*secret*)"
+    "Read(**/*credential*)"
   ];
 }

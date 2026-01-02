@@ -8,7 +8,7 @@ in
     skillsDir = ./skills;
 
     settings.permissions = {
-      inherit (permissions) allow ask deny;
+      inherit (permissions) allow deny;
     };
 
     # MCP servers
