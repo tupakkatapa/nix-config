@@ -153,9 +153,9 @@
 
   # Shutdown Settings & Sanitizing
   "privacy.sanitize.sanitizeOnShutdown" = true;
-  # "privacy.clearOnShutdown.cookies" = true;
+  "privacy.clearOnShutdown.cookies" = false;
   "privacy.clearOnShutdown.offlineApps" = true;
-  # "privacy.clearOnShutdown_v2.cookiesAndStorage" = true;
+  "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
   "privacy.clearOnShutdown_v2.downloads" = true;
   "privacy.clearOnShutdown_v2.formdata" = true;
   "privacy.sanitize.timeSpan" = 0;
