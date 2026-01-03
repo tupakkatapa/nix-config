@@ -206,7 +206,7 @@ in
     networks = {
       "OP9".pskRaw = "ext:psk_op9";
       "Pixel_1253".pskRaw = "ext:psk_op9";
-      "Hyperion".pskRaw = "ext:psk_hyp";
+      "hyperion-2g".pskRaw = "ext:psk_hyp";
     };
     secretsFile = config.age.secrets.wpa-psk.path;
   };
