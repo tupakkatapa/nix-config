@@ -78,13 +78,18 @@ let
   privateServices = lib.filterAttrs (_: service: service.private) servicesConfig;
 
   # Self-signed cert for private services
-  # To rotate, run in this directory:
-  #   openssl req -x509 -newkey rsa:4096 -keyout selfsigned-key.pem -out selfsigned-cert.pem \
-  #     -days 3650 -nodes -subj "/CN=*.${domain}" -addext "subjectAltName = DNS:*.${domain}"
-  #   agenix rekey -e ../secrets/selfsigned-key.age < selfsigned-key.pem
-  #   rm selfsigned-key.pem
   selfSignedCertPem = ./selfsigned-cert.pem;
   selfSignedCertKey = config.age.secrets.selfsigned-key.path;
+  # To rotate, run in this directory:
+  #   openssl req -x509 -newkey rsa:4096 -keyout selfsigned-key.pem -out selfsigned-cert.pem \
+  #     -days 3650 -nodes -subj "/CN=*.coditon.com" \
+  #     -addext "subjectAltName = DNS:*.coditon.com, DNS:coditon.com" \
+  #     -addext "basicConstraints = CA:FALSE" \
+  #     -addext "keyUsage = digitalSignature, keyEncipherment" \
+  #     -addext "extendedKeyUsage = serverAuth"
+  #   cat selfsigned-cert.pem | wl-copy --type text/plain
+  #   agenix rekey -f ../secrets/selfsigned-key.age
+  #   rm selfsigned-key.pem
 
   # Generate DER format
   selfSignedCertDer = pkgs.runCommand "selfsigned-cert-der"

@@ -18,10 +18,16 @@ in
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-      extraPolicies.ExtensionSettings =
-        { "*".installation_mode = "blocked"; }
-        # https://github.com/tupakkatapa/mozid
-        // mozid.lib.mkExtensions (import ./extensions.nix);
+      extraPolicies = {
+        ExtensionSettings =
+          { "*".installation_mode = "blocked"; }
+          # https://github.com/tupakkatapa/mozid
+          // mozid.lib.mkExtensions (import ./extensions.nix);
+        # Trust self-signed cert
+        Certificates.Install = [
+          "${../../../../../nixosConfigurations/vladof/services/selfsigned-cert.pem}"
+        ];
+      };
     };
 
     profiles =
