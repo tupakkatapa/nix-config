@@ -56,7 +56,7 @@ in
       # Nix
       nfc = "nix flake check --impure --accept-flake-config";
       buidl = "sudo nixos-rebuild test --impure --flake path:$HOME/nix-config#$(hostname) --accept-flake-config";
-      rbuidl = "nixos-rebuild test --impure --ask-sudo-password --use-remote-sudo --flake .#X --target-host 10.42.0.X";
+      rbuidl = "nixos-rebuild test --impure --ask-sudo-password --sudo --flake .#X --target-host $USER@10.42.0.X";
       gc = "nix-collect-garbage -d";
       ns = "nix-shell -p";
 
