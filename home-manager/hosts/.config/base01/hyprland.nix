@@ -236,10 +236,6 @@ in
         "float, title:QEMU"
         "size 1400 800, title:QEMU"
 
-        "center, title:^(Extension)$"
-        "float, title:^(Extension)$"
-        "size 1400 800, title:^(Extension)$"
-
         "center, title:^(Picture-in-Picture)$"
         "float, title:^(Picture-in-Picture)$"
         "pin, title:^(Picture-in-Picture)$"
