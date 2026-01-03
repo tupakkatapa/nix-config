@@ -26,7 +26,6 @@ in
     ../.config/fail2ban.nix
     ../.config/motd.nix
     ../.config/pipewire.nix
-    ../.config/trust-vladof-cert.nix
     ../.config/yubikey.nix
   ];
 
