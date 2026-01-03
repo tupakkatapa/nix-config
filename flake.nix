@@ -49,7 +49,7 @@
     # Netboot stuff
     nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie?ref=jesse/dev31";
     runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
-    sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount?ref=sync";
+    sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount";
     store-remount.url = "github:ponkila/nixos-store-remount";
 
     # Other

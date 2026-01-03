@@ -71,7 +71,11 @@ in
 
     # Define the YubiKey resident key as the identifier and disable automount
     defaults = {
-      identityFile = "/home/${user}/.ssh/id_ed25519_sk_yubikey";
+      identityFile = [
+        config.age.secrets.ed25519-sk-yubikey.path
+        config.age.secrets.ed25519-sk-yubikey-2.path
+        config.age.secrets.ed25519-sk-trezor.path
+      ];
       autoMount = false;
     };
 
@@ -99,13 +103,6 @@ in
         where = "/home/${user}/.config/retroarch";
       }
     ];
-    # syncs = [
-    #   {
-    #     what = "/mnt/sftp/code/workspace";
-    #     where = "/home/${user}/Workspace";
-    #     timer = 10; # minutes
-    #   }
-    # ];
   };
   # Add SFTP host to root's known hosts for non-interactive authentication
   services.openssh.knownHosts.vladof = {
@@ -122,6 +119,7 @@ in
         "*" = {
           identityFile = [
             config.age.secrets.ed25519-sk-yubikey.path
+            config.age.secrets.ed25519-sk-yubikey-2.path
             config.age.secrets.ed25519-sk-trezor.path
           ];
           forwardAgent = true;
