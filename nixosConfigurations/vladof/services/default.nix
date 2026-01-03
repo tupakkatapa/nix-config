@@ -77,15 +77,21 @@ let
   publicServices = lib.filterAttrs (_: service: !service.private) servicesConfig;
   privateServices = lib.filterAttrs (_: service: service.private) servicesConfig;
 
-  # Generate self-signed cert for private services
-  selfSignedCert = pkgs.runCommand "self-signed-cert"
+  # Self-signed cert for private services
+  # To rotate, run in this directory:
+  #   openssl req -x509 -newkey rsa:4096 -keyout selfsigned-key.pem -out selfsigned-cert.pem \
+  #     -days 3650 -nodes -subj "/CN=*.${domain}" -addext "subjectAltName = DNS:*.${domain}"
+  #   agenix rekey -e ../secrets/selfsigned-key.age < selfsigned-key.pem
+  #   rm selfsigned-key.pem
+  selfSignedCertPem = ./selfsigned-cert.pem;
+  selfSignedCertKey = config.age.secrets.selfsigned-key.path;
+
+  # Generate DER format
+  selfSignedCertDer = pkgs.runCommand "selfsigned-cert-der"
     {
       buildInputs = [ pkgs.openssl ];
     } ''
-    mkdir -p $out
-    openssl req -x509 -newkey rsa:4096 -keyout $out/key.pem -out $out/cert.pem -days 3650 -nodes \
-      -subj "/CN=*.${domain}" \
-      -addext "subjectAltName = DNS:*.${domain}"
+    openssl x509 -in ${selfSignedCertPem} -outform DER -out $out
   '';
 
   # Generate index page
@@ -118,7 +124,7 @@ in
           name = service.addr;
           value = {
             extraConfig = ''
-              tls ${selfSignedCert}/cert.pem ${selfSignedCert}/key.pem
+              tls ${selfSignedCertPem} ${selfSignedCertKey}
               reverse_proxy http://${service.localAddress}:${toString service.port}
             '';
           };
@@ -127,8 +133,18 @@ in
       // {
         "index.${domain}" = {
           extraConfig = ''
-            tls ${selfSignedCert}/cert.pem ${selfSignedCert}/key.pem
+            tls ${selfSignedCertPem} ${selfSignedCertKey}
             root * ${indexPage}
+            file_server
+          '';
+        };
+        # Serve the self-signed cert for easy download on any device
+        "cert.${domain}" = {
+          extraConfig = ''
+            tls ${selfSignedCertPem} ${selfSignedCertKey}
+            rewrite * /${domain}.cer
+            root * ${pkgs.linkFarm "cert-download" [{ name = "${domain}.cer"; path = selfSignedCertDer; }]}
+            header Content-Disposition "attachment; filename=${domain}.cer"
             file_server
           '';
         };
@@ -183,6 +199,11 @@ in
       rekeyFile = ../secrets/acme-cf-dns-token.age;
       group = "acme";
       mode = "440";
+    };
+    "selfsigned-key" = {
+      rekeyFile = ../secrets/selfsigned-key.age;
+      owner = "caddy";
+      mode = "400";
     };
   };
 }

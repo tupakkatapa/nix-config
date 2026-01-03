@@ -17,6 +17,7 @@
     ../.config/pipewire.nix
     ../.config/podman.nix
     ../.config/tuigreet-hypr.nix
+    ../.config/trust-vladof-cert.nix
     ../.config/yubikey.nix
     ./persistence.nix
   ];
