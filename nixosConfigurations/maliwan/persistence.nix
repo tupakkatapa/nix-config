@@ -22,6 +22,10 @@ in
             { name = "firefox"; mode = "755"; what = "/home/kari/.mozilla"; }
             { name = "discord"; mode = "755"; what = "/home/kari/.config/discord"; }
             { name = "chrome"; mode = "755"; what = "/home/kari/.config/google-chrome"; }
+            { name = "gh"; mode = "755"; what = "/home/kari/.config/gh"; }
+            { name = "gcloud"; mode = "755"; what = "/home/kari/.config/gcloud"; }
+            { name = "pulumi"; mode = "755"; what = "/home/kari/.pulumi"; }
+            { name = "doppler"; mode = "700"; what = "/home/kari/.doppler"; }
           ];
         }
         {
