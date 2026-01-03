@@ -1,41 +1,23 @@
 { pkgs, ... }:
 let
   # DNSCrypt resolver lists - verify signatures at build time
+  # Update: nix shell nixpkgs#nix-prefetch-github -c nix-prefetch-github DNSCrypt dnscrypt-resolvers
   dnscryptMinisignKey = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
-  dnscryptLists = pkgs.stdenv.mkDerivation {
-    name = "dnscrypt-lists";
-    nativeBuildInputs = [ pkgs.minisign ];
-    srcs = [
-      (pkgs.fetchurl {
-        url = "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md";
-        hash = "sha256-/5lHM5bcMKsifK0POZOnPX6Coee8s+jo7z6bIaRySxo=";
-      })
-      (pkgs.fetchurl {
-        url = "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md.minisig";
-        hash = "sha256-41n2lXlUl8WXugPU+0LFaHSF+Wi6YifoQOA44S6z/EA=";
-      })
-      (pkgs.fetchurl {
-        url = "https://download.dnscrypt.info/resolvers-list/v3/relays.md";
-        hash = "sha256-PYgcjLAZbxr3xGUbAO1Mx/yMkJiWVeBbNPWVgIzXgrs=";
-      })
-      (pkgs.fetchurl {
-        url = "https://download.dnscrypt.info/resolvers-list/v3/relays.md.minisig";
-        hash = "sha256-Nc5cY1K71H5WZOUQ2N1zR5nGT8xitrN0DWLQ56V0wr0=";
-      })
-    ];
-    phases = [ "installPhase" ];
-    installPhase = ''
-      mkdir -p $out
-      for src in $srcs; do
-        name=$(stripHash "$src")
-        cp "$src" "$out/$name"
-      done
-
-      # Verify signatures
-      minisign -Vm "$out/public-resolvers.md" -P ${dnscryptMinisignKey}
-      minisign -Vm "$out/relays.md" -P ${dnscryptMinisignKey}
-    '';
+  dnscryptListsSrc = pkgs.fetchFromGitHub {
+    owner = "DNSCrypt";
+    repo = "dnscrypt-resolvers";
+    rev = "0975c492be42e03931e907a6173e8906d261ddc8";
+    hash = "sha256-Iiiy4Hr1imJrzI0yxsX9XEe6OHwILStMNcBjLJsFhiY=";
   };
+  dnscryptLists = pkgs.runCommand "dnscrypt-lists-verified"
+    {
+      nativeBuildInputs = [ pkgs.minisign ];
+    } ''
+    mkdir -p $out/v3
+    cp ${dnscryptListsSrc}/v3/*.md ${dnscryptListsSrc}/v3/*.minisig $out/v3/
+    minisign -Vm $out/v3/public-resolvers.md -P ${dnscryptMinisignKey}
+    minisign -Vm $out/v3/relays.md -P ${dnscryptMinisignKey}
+  '';
 
   # Steven Black blocklist
   # Update: nix shell nixpkgs#nix-prefetch-github -c nix-prefetch-github StevenBlack hosts
@@ -213,13 +195,13 @@ in
 
       sources.public-resolvers = {
         urls = [ ];
-        cache_file = "${dnscryptLists}/public-resolvers.md";
+        cache_file = "${dnscryptLists}/v3/public-resolvers.md";
         minisign_key = dnscryptMinisignKey;
       };
 
       sources.relays = {
         urls = [ ];
-        cache_file = "${dnscryptLists}/relays.md";
+        cache_file = "${dnscryptLists}/v3/relays.md";
         minisign_key = dnscryptMinisignKey;
       };
     };
