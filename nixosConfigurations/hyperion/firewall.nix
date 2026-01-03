@@ -54,7 +54,7 @@ _:
 
       "br-wifi" = {
         allowedTCPPorts = [ 53 ]; # DNS
-        allowedUDPPorts = [ 53 67 123 ]; # DNS, DHCP, NTP
+        allowedUDPPorts = [ 53 67 123 51820 ]; # DNS, DHCP, NTP, WireGuard
       };
 
       "enp1s0" = {
