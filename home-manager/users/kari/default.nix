@@ -41,9 +41,15 @@ in
     };
     xdg.configFile."mimeapps.list".force = true;
 
-    # Environment variables
+    # oterm
     home.sessionVariables = {
       OLLAMA_URL = "https://chat.coditon.com/";
+      SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
+      REQUESTS_CA_BUNDLE = "/etc/ssl/certs/ca-bundle.crt";
+    };
+    xdg.dataFile."oterm/config.json".text = builtins.toJSON {
+      theme = "gruvbox";
+      splash-screen = false;
     };
 
     # Custom desktop entry for opening files in nvim via terminal
