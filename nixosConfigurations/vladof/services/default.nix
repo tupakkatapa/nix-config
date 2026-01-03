@@ -77,26 +77,17 @@ let
   publicServices = lib.filterAttrs (_: service: !service.private) servicesConfig;
   privateServices = lib.filterAttrs (_: service: service.private) servicesConfig;
 
-  # Self-signed cert for private services
-  selfSignedCertPem = ./selfsigned-cert.pem;
-  selfSignedCertKey = config.age.secrets.selfsigned-key.path;
-  # To rotate, run in this directory:
-  #   openssl req -x509 -newkey rsa:4096 -keyout selfsigned-key.pem -out selfsigned-cert.pem \
-  #     -days 3650 -nodes -subj "/CN=*.coditon.com" \
-  #     -addext "subjectAltName = DNS:*.coditon.com, DNS:coditon.com" \
-  #     -addext "basicConstraints = CA:FALSE" \
-  #     -addext "keyUsage = digitalSignature, keyEncipherment" \
-  #     -addext "extendedKeyUsage = serverAuth"
-  #   cat selfsigned-cert.pem | wl-copy --type text/plain
-  #   agenix rekey -f ../secrets/selfsigned-key.age
-  #   rm selfsigned-key.pem
+  # CA + server cert hierarchy for private services
+  caCertPem = ./certs/ca-cert.pem;
+  serverCertPem = ./certs/server-cert.pem;
+  serverCertKey = config.age.secrets.server-key.path;
 
-  # Generate DER format
-  selfSignedCertDer = pkgs.runCommand "selfsigned-cert-der"
+  # Generate DER format of CA cert for Android
+  caCertDer = pkgs.runCommand "ca-cert-der"
     {
       buildInputs = [ pkgs.openssl ];
     } ''
-    openssl x509 -in ${selfSignedCertPem} -outform DER -out $out
+    openssl x509 -in ${caCertPem} -outform DER -out $out
   '';
 
   # Generate index page
@@ -129,7 +120,7 @@ in
           name = service.addr;
           value = {
             extraConfig = ''
-              tls ${selfSignedCertPem} ${selfSignedCertKey}
+              tls ${serverCertPem} ${serverCertKey}
               reverse_proxy http://${service.localAddress}:${toString service.port}
             '';
           };
@@ -138,7 +129,7 @@ in
       // {
         "index.${domain}" = {
           extraConfig = ''
-            tls ${selfSignedCertPem} ${selfSignedCertKey}
+            tls ${serverCertPem} ${serverCertKey}
             root * ${indexPage}
             file_server
           '';
@@ -146,9 +137,9 @@ in
         # Serve the self-signed cert for easy download on any device
         "cert.${domain}" = {
           extraConfig = ''
-            tls ${selfSignedCertPem} ${selfSignedCertKey}
+            tls ${serverCertPem} ${serverCertKey}
             rewrite * /${domain}.cer
-            root * ${pkgs.linkFarm "cert-download" [{ name = "${domain}.cer"; path = selfSignedCertDer; }]}
+            root * ${pkgs.linkFarm "cert-download" [{ name = "${domain}.cer"; path = caCertDer; }]}
             header Content-Disposition "attachment; filename=${domain}.cer"
             file_server
           '';
@@ -205,8 +196,8 @@ in
       group = "acme";
       mode = "440";
     };
-    "selfsigned-key" = {
-      rekeyFile = ../secrets/selfsigned-key.age;
+    "server-key" = {
+      rekeyFile = ../secrets/server-key.age;
       owner = "caddy";
       mode = "400";
     };

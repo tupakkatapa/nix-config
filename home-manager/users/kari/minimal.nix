@@ -11,9 +11,9 @@ let
   optionalPaths = paths: builtins.filter (path: builtins.pathExists path) paths;
 in
 {
-  # Trust vladof's self-signed cert for private services
+  # Trust vladof's CA cert for private services
   security.pki.certificateFiles = [
-    ../../../nixosConfigurations/vladof/services/selfsigned-cert.pem
+    ../../../nixosConfigurations/vladof/services/certs/ca-cert.pem
   ];
 
   users.users.${user} = {

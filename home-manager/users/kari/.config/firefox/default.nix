@@ -23,9 +23,9 @@ in
           { "*".installation_mode = "blocked"; }
           # https://github.com/tupakkatapa/mozid
           // mozid.lib.mkExtensions (import ./extensions.nix);
-        # Trust self-signed cert
+        # Trust CA cert for private services
         Certificates.Install = [
-          "${../../../../../nixosConfigurations/vladof/services/selfsigned-cert.pem}"
+          "${../../../../../nixosConfigurations/vladof/services/certs/ca-cert.pem}"
         ];
       };
     };

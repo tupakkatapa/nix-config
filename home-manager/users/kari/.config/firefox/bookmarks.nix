@@ -19,6 +19,7 @@
             { name = "Kavita"; url = "https://lib.coditon.com"; }
             { name = "Search"; url = "https://search.coditon.com"; }
             { name = "Nextcloud"; url = "https://next.coditon.com"; }
+            { name = "Cert"; url = "https://cert.coditon.com"; }
           ];
         }
         {
