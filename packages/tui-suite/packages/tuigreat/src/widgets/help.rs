@@ -63,7 +63,7 @@ pub fn centered_rect_percent(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
 /// Center a fixed-size rectangle within a container
 #[must_use]
 pub fn centered_rect(width: u16, height: u16, r: Rect) -> Rect {
-    let x = r.x + (r.width.saturating_sub(width)) / 2;
-    let y = r.y + (r.height.saturating_sub(height)) / 2;
+    let x = r.x.saturating_add((r.width.saturating_sub(width)) / 2);
+    let y = r.y.saturating_add((r.height.saturating_sub(height)) / 2);
     Rect::new(x, y, width.min(r.width), height.min(r.height))
 }

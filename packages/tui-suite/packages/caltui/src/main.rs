@@ -36,7 +36,9 @@ impl CalTui {
 
     fn days_in_month(year: i32, month: u32) -> u32 {
         let next_month = if month == 12 {
-            NaiveDate::from_ymd_opt(year + 1, 1, 1)
+            // Safely handle year overflow
+            year.checked_add(1)
+                .and_then(|y| NaiveDate::from_ymd_opt(y, 1, 1))
         } else {
             NaiveDate::from_ymd_opt(year, month + 1, 1)
         };
@@ -57,7 +59,9 @@ impl CalTui {
     fn prev_month(&mut self) {
         if self.month == 1 {
             self.month = 12;
-            self.year -= 1;
+            if self.year > 1 {
+                self.year -= 1;
+            }
         } else {
             self.month -= 1;
         }
@@ -67,7 +71,9 @@ impl CalTui {
     fn next_month(&mut self) {
         if self.month == 12 {
             self.month = 1;
-            self.year += 1;
+            if self.year < 9999 {
+                self.year += 1;
+            }
         } else {
             self.month += 1;
         }
@@ -75,13 +81,19 @@ impl CalTui {
     }
 
     fn prev_year(&mut self) {
-        self.year -= 1;
-        self.clamp_day();
+        // Limit to year 1 (chrono's minimum practical year)
+        if self.year > 1 {
+            self.year -= 1;
+            self.clamp_day();
+        }
     }
 
     fn next_year(&mut self) {
-        self.year += 1;
-        self.clamp_day();
+        // Limit to year 9999 to avoid overflow and chrono limits
+        if self.year < 9999 {
+            self.year += 1;
+            self.clamp_day();
+        }
     }
 
     fn clamp_day(&mut self) {

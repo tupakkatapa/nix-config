@@ -262,7 +262,7 @@ dependencies = [
 
 [[package]]
 name = "blutui"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "crossterm",
  "libc",
@@ -296,7 +296,7 @@ checksum = "b35204fbdc0b3f4446b89fc1ac2cf84a8a68971995d0bf2e925ec7cd960f9cb3"
 
 [[package]]
 name = "caltui"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "chrono",
  "crossterm",
@@ -937,7 +937,7 @@ dependencies = [
 
 [[package]]
 name = "kaltui"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "crossterm",
  "ratatui",
@@ -1070,7 +1070,7 @@ dependencies = [
 
 [[package]]
 name = "mustui"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "crossterm",
  "mpris-server",
@@ -1111,7 +1111,7 @@ dependencies = [
 
 [[package]]
 name = "nettui"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "crossterm",
  "libc",
@@ -1866,7 +1866,7 @@ dependencies = [
 
 [[package]]
 name = "tuigreat"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "crossterm",
  "ratatui",
@@ -1932,7 +1932,7 @@ checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
 
 [[package]]
 name = "voltui"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "crossterm",
  "ratatui",

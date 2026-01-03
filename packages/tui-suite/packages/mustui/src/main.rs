@@ -2,6 +2,7 @@ mod library;
 mod mpris;
 mod playback;
 
+use std::collections::HashSet;
 use std::env;
 use std::fs::File;
 use std::io::BufReader;
@@ -58,6 +59,7 @@ struct MusicTui {
     playing_artist: Option<String>,
     playing_album: Option<String>,
     playing_song: Option<usize>,
+    playing_song_path: Option<PathBuf>,
     /// Volume stored as 0-100 percent to avoid float-to-int casts
     volume_pct: u8,
     start_time: Option<Instant>,
@@ -132,6 +134,7 @@ impl MusicTui {
             playing_artist: None,
             playing_album: None,
             playing_song: None,
+            playing_song_path: None,
             volume_pct: 50,
             start_time: None,
             pause_duration: Duration::ZERO,
@@ -215,6 +218,9 @@ impl MusicTui {
 
     /// Simple random number based on time
     fn simple_random(max: usize) -> usize {
+        if max == 0 {
+            return 0;
+        }
         let nanos = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .map(|d| d.as_nanos())
@@ -242,6 +248,7 @@ impl MusicTui {
         self.playing_song = Some(idx);
 
         if let Some(song) = self.songs.items().get(idx).cloned() {
+            self.playing_song_path = Some(song.path.clone());
             self.play_song(&song)?;
         }
         Ok(())
@@ -261,6 +268,7 @@ impl MusicTui {
 
     fn play_selected(&mut self) -> AppResult<()> {
         if let Some(song) = self.songs.selected().cloned() {
+            self.playing_song_path = Some(song.path.clone());
             self.play_song(&song)?;
             self.playing_artist = self.artists.selected().map(|a| a.name.clone());
             self.playing_album = self.albums.selected().map(|a| a.name.clone());
@@ -271,9 +279,10 @@ impl MusicTui {
 
     fn play_song(&mut self, song: &Song) -> AppResult<()> {
         if let Some(ref handle) = self.stream_handle {
-            // Stop current playback
-            if let Some(ref sink) = self.sink {
-                sink.stop();
+            // Stop and drop current sink to free resources
+            if let Some(old_sink) = self.sink.take() {
+                old_sink.stop();
+                drop(old_sink);
             }
 
             // Create new sink and play
@@ -298,10 +307,16 @@ impl MusicTui {
     fn toggle_pause(&mut self) {
         if let Some(ref sink) = self.sink {
             if self.playback.paused {
+                // Resuming - restart the timer from now
                 sink.play();
                 self.playback.paused = false;
+                self.start_time = Some(Instant::now());
                 self.status = " Playing".to_string();
             } else {
+                // Pausing - accumulate elapsed time before pausing
+                if let Some(start) = self.start_time {
+                    self.pause_duration += start.elapsed();
+                }
                 sink.pause();
                 self.playback.paused = true;
                 self.status = " Paused".to_string();
@@ -318,6 +333,7 @@ impl MusicTui {
         self.playing_artist = None;
         self.playing_album = None;
         self.playing_song = None;
+        self.playing_song_path = None;
         self.playback.paused = false;
         self.start_time = None;
         self.song_duration = None;
@@ -366,9 +382,16 @@ impl MusicTui {
     fn next_song_sequential(&mut self) -> AppResult<()> {
         let len = self.songs.items().len();
         if len == 0 {
+            self.playback.auto_play = false;
+            self.status = " No songs available".to_string();
             return Ok(());
         }
-        let next_idx = match self.playing_song {
+        // Find current song by path, not stale index
+        let current_idx = self
+            .playing_song_path
+            .as_ref()
+            .and_then(|p| self.songs.items().iter().position(|s| &s.path == p));
+        let next_idx = match current_idx {
             Some(idx) => (idx + 1) % len,
             None => 0,
         };
@@ -379,13 +402,20 @@ impl MusicTui {
     fn next_song_shuffle_album(&mut self) -> AppResult<()> {
         let len = self.songs.items().len();
         if len == 0 {
+            self.playback.auto_play = false;
+            self.status = " No songs available".to_string();
             return Ok(());
         }
+        // Find current song by path to avoid repeating
+        let current_idx = self
+            .playing_song_path
+            .as_ref()
+            .and_then(|p| self.songs.items().iter().position(|s| &s.path == p));
         let next_idx = if len == 1 {
             0
         } else {
             let mut candidate = Self::simple_random(len);
-            if Some(candidate) == self.playing_song {
+            if Some(candidate) == current_idx {
                 candidate = (candidate + 1) % len;
             }
             candidate
@@ -412,11 +442,22 @@ impl MusicTui {
         }
 
         if all_songs.is_empty() {
+            self.playback.auto_play = false;
+            self.status = " No songs available".to_string();
             return Ok(());
         }
 
-        // Pick random song
-        let idx = Self::simple_random(all_songs.len());
+        // Find current song index to avoid repeating
+        let current_idx = self
+            .playing_song_path
+            .as_ref()
+            .and_then(|p| all_songs.iter().position(|(_, s)| &s.path == p));
+
+        // Pick random song, avoiding current
+        let mut idx = Self::simple_random(all_songs.len());
+        if all_songs.len() > 1 && Some(idx) == current_idx {
+            idx = (idx + 1) % all_songs.len();
+        }
         let (album_idx, song) = all_songs[idx].clone();
 
         // Update album selection and songs list
@@ -440,19 +481,32 @@ impl MusicTui {
 
         // Scan entire library for songs
         let mut all_songs: Vec<Song> = Vec::new();
-        scan_songs_recursive(&root, &mut all_songs);
+        let mut visited: HashSet<PathBuf> = HashSet::new();
+        scan_songs_recursive(&root, &mut all_songs, &mut visited);
 
         if all_songs.is_empty() {
+            self.playback.auto_play = false;
+            self.status = " No songs available".to_string();
             return Ok(());
         }
 
-        // Pick random song
-        let idx = Self::simple_random(all_songs.len());
+        // Find current song index to avoid repeating
+        let current_idx = self
+            .playing_song_path
+            .as_ref()
+            .and_then(|p| all_songs.iter().position(|s| &s.path == p));
+
+        // Pick random song, avoiding current
+        let mut idx = Self::simple_random(all_songs.len());
+        if all_songs.len() > 1 && Some(idx) == current_idx {
+            idx = (idx + 1) % all_songs.len();
+        }
         let song = all_songs[idx].clone();
 
         // Find the album containing this song (parent directory)
         let Some(album_path) = song.path.parent().map(std::path::Path::to_path_buf) else {
             // Fallback: just play it
+            self.playing_song_path = Some(song.path.clone());
             self.play_song(&song)?;
             self.playing_song = None;
             return Ok(());
@@ -489,6 +543,7 @@ impl MusicTui {
         }
 
         // Fallback: play directly if we couldn't navigate to it
+        self.playing_song_path = Some(song.path.clone());
         self.play_song(&song)?;
         self.playing_artist = None;
         self.playing_album = album_path
@@ -515,36 +570,48 @@ impl MusicTui {
     }
 
     fn prev_song_sequential(&mut self) -> AppResult<()> {
-        if self.songs.items().is_empty() {
+        let len = self.songs.items().len();
+        if len == 0 {
+            self.playback.auto_play = false;
+            self.status = " No songs available".to_string();
             return Ok(());
         }
-
-        let prev_idx = match self.playing_song {
+        // Find current song by path, not stale index
+        let current_idx = self
+            .playing_song_path
+            .as_ref()
+            .and_then(|p| self.songs.items().iter().position(|s| &s.path == p));
+        let prev_idx = match current_idx {
             Some(idx) => {
                 if idx == 0 {
-                    self.songs.items().len() - 1
+                    len - 1
                 } else {
                     idx - 1
                 }
             }
             None => 0,
         };
-
         self.songs.select(prev_idx);
-        self.play_selected()?;
-        Ok(())
+        self.play_selected()
     }
 
     fn prev_song_shuffle_album(&mut self) -> AppResult<()> {
         let len = self.songs.items().len();
         if len == 0 {
+            self.playback.auto_play = false;
+            self.status = " No songs available".to_string();
             return Ok(());
         }
+        // Find current song by path to avoid repeating
+        let current_idx = self
+            .playing_song_path
+            .as_ref()
+            .and_then(|p| self.songs.items().iter().position(|s| &s.path == p));
         let prev_idx = if len == 1 {
             0
         } else {
             let mut candidate = Self::simple_random(len);
-            if Some(candidate) == self.playing_song {
+            if Some(candidate) == current_idx {
                 candidate = (candidate + 1) % len;
             }
             candidate
@@ -606,11 +673,11 @@ impl MusicTui {
             self.load_songs_for_selected_album();
         }
 
-        // Jump to song
-        if let Some(song_idx) = self.playing_song
-            && song_idx < self.songs.items().len()
+        // Jump to song by path (more reliable after shuffle changes context)
+        if let Some(ref song_path) = self.playing_song_path
+            && let Some(idx) = self.songs.items().iter().position(|s| &s.path == song_path)
         {
-            self.songs.select(song_idx);
+            self.songs.select(idx);
         }
 
         self.status = " Jumped to playing".to_string();
@@ -638,9 +705,17 @@ impl MusicTui {
             lines.push(Line::from(format!("Album: {album}")));
         }
 
-        if let Some(song_idx) = self.playing_song {
-            if let Some(song) = self.songs.items().get(song_idx) {
+        if let Some(ref song_path) = self.playing_song_path {
+            // Look up song by path for accurate display after shuffle
+            if let Some(song) = self.songs.items().iter().find(|s| &s.path == song_path) {
                 let name = &song.name;
+                lines.push(Line::from(format!("Song: {name}")));
+            } else {
+                // Song not in current list - get name from path
+                let name = song_path
+                    .file_stem()
+                    .and_then(|s| s.to_str())
+                    .unwrap_or("Unknown");
                 lines.push(Line::from(format!("Song: {name}")));
             }
         } else {
@@ -648,14 +723,20 @@ impl MusicTui {
         }
 
         // Time elapsed / total
-        if let Some(start) = self.start_time {
-            let elapsed = if self.playback.paused {
-                self.pause_duration
-            } else {
-                start.elapsed()
-            };
-            let elapsed_str = Self::format_duration(elapsed);
+        // pause_duration accumulates time from previous play segments
+        // start_time marks when current segment started (reset on resume)
+        let elapsed = if self.playback.paused {
+            // When paused, pause_duration contains all accumulated time
+            self.pause_duration
+        } else if let Some(start) = self.start_time {
+            // When playing, add current segment time to accumulated
+            self.pause_duration + start.elapsed()
+        } else {
+            Duration::ZERO
+        };
 
+        if elapsed > Duration::ZERO || self.song_duration.is_some() {
+            let elapsed_str = Self::format_duration(elapsed);
             let time_str = if let Some(total) = self.song_duration {
                 let total_str = Self::format_duration(total);
                 format!("Time: {elapsed_str} / {total_str}")
@@ -667,7 +748,7 @@ impl MusicTui {
 
         let state = if self.playback.paused {
             "Paused"
-        } else if self.playing_song.is_some() {
+        } else if self.playing_song_path.is_some() {
             "Playing"
         } else {
             "Stopped"
@@ -900,6 +981,11 @@ impl MusicTui {
                 playing_album_idx,
             );
         } else {
+            // Look up playing song by path for accurate marker
+            let playing_song_idx = self
+                .playing_song_path
+                .as_ref()
+                .and_then(|path| self.songs.items().iter().position(|s| &s.path == path));
             self.albums.render_with_marker(
                 frame,
                 content_chunks[0],
@@ -914,7 +1000,7 @@ impl MusicTui {
                 " Songs ",
                 &self.theme,
                 self.focus == 2,
-                self.playing_song,
+                playing_song_idx,
             );
         }
     }
@@ -1229,7 +1315,7 @@ impl App for MusicTui {
                     }
                 }
                 MprisCommand::Pause => {
-                    if !self.playback.paused && self.playing_song.is_some() {
+                    if !self.playback.paused && self.playing_song_path.is_some() {
                         self.toggle_pause();
                     }
                 }
@@ -1245,7 +1331,7 @@ impl App for MusicTui {
 
         // Check if current song finished and auto-play is enabled
         if self.playback.auto_play
-            && self.playing_song.is_some()
+            && self.playing_song_path.is_some()
             && !self.playback.paused
             && let Some(ref sink) = self.sink
             && sink.empty()

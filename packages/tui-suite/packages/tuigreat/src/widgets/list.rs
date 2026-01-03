@@ -52,6 +52,8 @@ impl<T> SelectableList<T> {
 
     pub fn set_items(&mut self, items: Vec<T>) {
         self.items = items;
+        self.search_matches.clear();
+        self.current_match = None;
         if self.items.is_empty() {
             self.state.select(None);
         } else if self.state.selected().is_none() {
@@ -366,17 +368,25 @@ impl<T> SelectableList<T> {
                 if has_query && self.search_matches.contains(&i) {
                     let lower = full_text.to_lowercase();
                     if let Some(pos) = lower.find(&query_lower) {
-                        let before = &full_text[..pos];
-                        let matched = &full_text[pos..pos + query_lower.len()];
-                        let after = &full_text[pos + query_lower.len()..];
-                        return ListItem::new(Line::from(vec![
-                            Span::raw(before.to_string()),
-                            Span::styled(
-                                matched.to_string(),
-                                theme.highlight().add_modifier(Modifier::UNDERLINED),
-                            ),
-                            Span::raw(after.to_string()),
-                        ]));
+                        // Calculate end position safely using char boundaries
+                        let match_end = pos + query_lower.len();
+                        // Verify positions are valid char boundaries
+                        if full_text.is_char_boundary(pos)
+                            && full_text.is_char_boundary(match_end)
+                            && match_end <= full_text.len()
+                        {
+                            let before = &full_text[..pos];
+                            let matched = &full_text[pos..match_end];
+                            let after = &full_text[match_end..];
+                            return ListItem::new(Line::from(vec![
+                                Span::raw(before.to_string()),
+                                Span::styled(
+                                    matched.to_string(),
+                                    theme.highlight().add_modifier(Modifier::UNDERLINED),
+                                ),
+                                Span::raw(after.to_string()),
+                            ]));
+                        }
                     }
                 }
 

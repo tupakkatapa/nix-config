@@ -97,6 +97,12 @@ impl PwTui {
         self.sinks.set_items(get_sinks()?);
         self.sources.set_items(get_sources()?);
         self.combined_modules = get_combined_modules()?;
+        // Ensure combined_selected stays in bounds after refresh
+        if self.combined_modules.is_empty() {
+            self.combined_selected = 0;
+        } else {
+            self.combined_selected = self.combined_selected.min(self.combined_modules.len() - 1);
+        }
         Ok(())
     }
 
@@ -112,10 +118,8 @@ impl PwTui {
                     Command::new("pactl")
                         .args(["set-sink-volume", &sink.name, vol])
                         .output()?;
-                    self.status = format!(
-                        " Volume: {}%",
-                        (i16::from(sink.volume) + i16::from(delta) * 5).max(0)
-                    );
+                    let new_vol = (i16::from(sink.volume) + i16::from(delta) * 5).clamp(0, 100);
+                    self.status = format!(" Volume: {new_vol}%");
                 }
             }
             1 => {
@@ -124,10 +128,8 @@ impl PwTui {
                     Command::new("pactl")
                         .args(["set-source-volume", &source.name, vol])
                         .output()?;
-                    self.status = format!(
-                        " Volume: {}%",
-                        (i16::from(source.volume) + i16::from(delta) * 5).max(0)
-                    );
+                    let new_vol = (i16::from(source.volume) + i16::from(delta) * 5).clamp(0, 100);
+                    self.status = format!(" Volume: {new_vol}%");
                 }
             }
             _ => {}
@@ -215,7 +217,7 @@ impl PwTui {
             if let Some(num_str) = name.strip_prefix("combined_")
                 && let Ok(num) = num_str.parse::<u32>()
             {
-                next_num = next_num.max(num + 1);
+                next_num = next_num.max(num.saturating_add(1));
             }
         }
         // Also check existing sinks in case module detection failed
@@ -223,7 +225,7 @@ impl PwTui {
             if let Some(num_str) = sink.name.strip_prefix("combined_")
                 && let Ok(num) = num_str.parse::<u32>()
             {
-                next_num = next_num.max(num + 1);
+                next_num = next_num.max(num.saturating_add(1));
             }
         }
         let combined_name = format!("combined_{next_num}");
@@ -247,13 +249,8 @@ impl PwTui {
             match remove_combined_sink(*module_id) {
                 Ok(()) => {
                     self.status = format!(" Removed: {display_name}");
+                    // refresh() handles bounds adjustment for combined_selected
                     let _ = self.refresh();
-                    // Adjust selection if needed
-                    if self.combined_selected > 0
-                        && self.combined_selected >= self.combined_modules.len()
-                    {
-                        self.combined_selected = self.combined_modules.len().saturating_sub(1);
-                    }
                 }
                 Err(e) => self.status = format!(" Error: {e}"),
             }

@@ -10,6 +10,8 @@ use tuigreat::{
     yank,
 };
 
+const MAX_HISTORY: usize = 1000;
+
 struct CalcTui {
     theme: Theme,
     tabs: Tabs,
@@ -50,16 +52,39 @@ impl CalcTui {
 
         match Self::parse_and_eval(&self.input.clone()) {
             Ok(value) => {
-                self.result = format_number(value);
-                self.history.push((self.input.clone(), self.result.clone()));
-                self.input.clear();
-                self.status = " Calculated".to_string();
+                if value.is_finite() {
+                    self.result = format_number(value);
+                    self.history.push((self.input.clone(), self.result.clone()));
+                    if self.history.len() > MAX_HISTORY {
+                        self.history.drain(0..(self.history.len() - MAX_HISTORY));
+                    }
+                    self.input.clear();
+                    self.status = " Calculated".to_string();
+                } else {
+                    self.result = "Error".to_string();
+                    self.status = " Error: Invalid result".to_string();
+                }
             }
             Err(e) => {
                 self.result.clear();
                 self.status = format!(" Error: {e}");
             }
         }
+    }
+
+    fn validate_parens(expr: &str) -> bool {
+        let mut depth = 0i32;
+        for c in expr.chars() {
+            match c {
+                '(' => depth += 1,
+                ')' => depth -= 1,
+                _ => {}
+            }
+            if depth < 0 {
+                return false;
+            }
+        }
+        depth == 0
     }
 
     fn parse_and_eval(expr: &str) -> Result<f64, &'static str> {
@@ -69,27 +94,26 @@ impl CalcTui {
             return Err("Empty expression");
         }
 
+        // Validate balanced parentheses
+        if !Self::validate_parens(&expr) {
+            return Err("Unmatched parentheses");
+        }
+
         // Handle addition and subtraction (lowest precedence)
-        let mut depth = 0;
+        let mut depth: i32 = 0;
         let mut last_op = None;
         let bytes = expr.as_bytes();
 
         for (i, &c) in bytes.iter().enumerate().rev() {
             match c {
                 b')' => depth += 1,
-                b'(' => depth -= 1,
+                b'(' => depth = depth.saturating_sub(1),
                 b'+' | b'-' if depth == 0 && i > 0 => {
-                    if i > 0 {
-                        let prev = bytes[i - 1];
-                        if prev != b'+'
-                            && prev != b'-'
-                            && prev != b'*'
-                            && prev != b'/'
-                            && prev != b'('
-                        {
-                            last_op = Some((i, c as char));
-                            break;
-                        }
+                    let prev = bytes[i - 1];
+                    if prev != b'+' && prev != b'-' && prev != b'*' && prev != b'/' && prev != b'('
+                    {
+                        last_op = Some((i, c as char));
+                        break;
                     }
                 }
                 _ => {}
@@ -97,6 +121,9 @@ impl CalcTui {
         }
 
         if let Some((i, op)) = last_op {
+            if i == 0 || i + 1 >= expr.len() {
+                return Err("Invalid expression");
+            }
             let left = Self::parse_and_eval(&expr[..i])?;
             let right = Self::parse_and_eval(&expr[i + 1..])?;
             return Ok(match op {
@@ -112,7 +139,7 @@ impl CalcTui {
         for (i, &c) in bytes.iter().enumerate().rev() {
             match c {
                 b')' => depth += 1,
-                b'(' => depth -= 1,
+                b'(' => depth = depth.saturating_sub(1),
                 b'*' | b'/' if depth == 0 => {
                     last_op = Some((i, c as char));
                     break;
@@ -122,12 +149,15 @@ impl CalcTui {
         }
 
         if let Some((i, op)) = last_op {
+            if i == 0 || i + 1 >= expr.len() {
+                return Err("Invalid expression");
+            }
             let left = Self::parse_and_eval(&expr[..i])?;
             let right = Self::parse_and_eval(&expr[i + 1..])?;
             return Ok(match op {
                 '*' => left * right,
                 '/' => {
-                    if right == 0.0 {
+                    if right.abs() < f64::EPSILON {
                         return Err("Division by zero");
                     }
                     left / right
@@ -142,7 +172,7 @@ impl CalcTui {
         for (i, &c) in bytes.iter().enumerate() {
             match c {
                 b'(' => depth += 1,
-                b')' => depth -= 1,
+                b')' => depth = depth.saturating_sub(1),
                 b'^' if depth == 0 => {
                     last_op = Some((i, '^'));
                     break;
@@ -152,9 +182,16 @@ impl CalcTui {
         }
 
         if let Some((i, _)) = last_op {
+            if i == 0 || i + 1 >= expr.len() {
+                return Err("Invalid expression");
+            }
             let left = Self::parse_and_eval(&expr[..i])?;
             let right = Self::parse_and_eval(&expr[i + 1..])?;
-            return Ok(left.powf(right));
+            let result = left.powf(right);
+            if !result.is_finite() {
+                return Err("Invalid result");
+            }
+            return Ok(result);
         }
 
         // Handle parentheses
@@ -338,7 +375,13 @@ impl CalcTui {
             1 => self
                 .history_state
                 .selected()
-                .and_then(|i| self.history.get(self.history.len() - 1 - i))
+                .and_then(|i| {
+                    if i < self.history.len() {
+                        self.history.get(self.history.len() - 1 - i)
+                    } else {
+                        None
+                    }
+                })
                 .map(|(_, r)| r.clone())
                 .unwrap_or_default(),
             _ => String::new(),
@@ -393,7 +436,8 @@ impl CalcTui {
 
 fn format_number(n: f64) -> String {
     // Try to format as integer with thousands separator if it's a whole number
-    if n.fract() == 0.0
+    // Use epsilon comparison since float == 0.0 is unreliable
+    if n.fract().abs() < f64::EPSILON
         && let Ok(int_val) = format!("{n:.0}").parse::<i64>()
     {
         return format_with_thousands(int_val);
@@ -419,9 +463,12 @@ fn format_number(n: f64) -> String {
 }
 
 fn format_with_thousands(n: i64) -> String {
-    let negative = n < 0;
-    let s = n.abs().to_string();
-    let chars: Vec<char> = s.chars().collect();
+    let (negative, abs_str) = if n == i64::MIN {
+        (true, "9223372036854775808".to_string())
+    } else {
+        (n < 0, n.abs().to_string())
+    };
+    let chars: Vec<char> = abs_str.chars().collect();
     let mut result = String::new();
 
     for (i, c) in chars.iter().enumerate() {

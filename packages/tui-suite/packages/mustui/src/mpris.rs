@@ -59,7 +59,7 @@ pub fn spawn_mpris_server() -> MprisHandle {
         let local = LocalSet::new();
         local.block_on(&rt, async move {
             // Use "a_mustui" to sort before firefox alphabetically for playerctl priority
-            let player = match Player::builder("org.mpris.MediaPlayer2.a_mustui")
+            let player = match Player::builder("a_mustui")
                 .can_play(true)
                 .can_pause(true)
                 .can_go_next(true)

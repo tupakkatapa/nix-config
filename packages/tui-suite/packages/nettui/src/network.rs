@@ -233,8 +233,14 @@ fn parse_wpa_cli_output(output: &str, interface: &str) -> Vec<WifiNetwork> {
     networks
 }
 
-pub fn connect_wifi(interface: &str, ssid: &str, _password: Option<&str>) -> AppResult<String> {
-    // List configured networks and find the one matching SSID
+/// Escape a string for use in `wpa_cli` quoted parameters
+fn escape_wpa_cli_param(s: &str) -> String {
+    // wpa_cli expects double-quoted strings; escape embedded quotes and backslashes
+    s.replace('\\', "\\\\").replace('"', "\\\"")
+}
+
+pub fn connect_wifi(interface: &str, ssid: &str, password: Option<&str>) -> AppResult<String> {
+    // First check if network is already configured
     let list_output = sudo_cmd("wpa_cli")
         .args(["-i", interface, "list_networks"])
         .output()?;
@@ -254,7 +260,90 @@ pub fn connect_wifi(interface: &str, ssid: &str, _password: Option<&str>) -> App
         }
     }
 
-    Ok(format!("'{ssid}' not configured"))
+    // Network not configured - add it with password if provided
+    let Some(psk) = password else {
+        return Ok(format!("'{ssid}' not configured (no password provided)"));
+    };
+
+    if psk.is_empty() {
+        return Ok(format!("'{ssid}' not configured (empty password)"));
+    }
+
+    // Add new network
+    let add_output = sudo_cmd("wpa_cli")
+        .args(["-i", interface, "add_network"])
+        .output()?;
+    let add_str = String::from_utf8_lossy(&add_output.stdout);
+    let network_id = add_str.trim();
+
+    // Validate network_id is a number
+    if network_id.parse::<u32>().is_err() {
+        return Ok("Failed to add network".to_string());
+    }
+
+    // Set SSID (must be quoted for wpa_cli)
+    let ssid_quoted = format!("\"{}\"", escape_wpa_cli_param(ssid));
+    let ssid_output = sudo_cmd("wpa_cli")
+        .args([
+            "-i",
+            interface,
+            "set_network",
+            network_id,
+            "ssid",
+            &ssid_quoted,
+        ])
+        .output()?;
+    if !String::from_utf8_lossy(&ssid_output.stdout).contains("OK") {
+        let _ = sudo_cmd("wpa_cli")
+            .args(["-i", interface, "remove_network", network_id])
+            .output();
+        return Ok("Failed to set SSID".to_string());
+    }
+
+    // Set PSK (must be quoted for wpa_cli)
+    let psk_quoted = format!("\"{}\"", escape_wpa_cli_param(psk));
+    let psk_output = sudo_cmd("wpa_cli")
+        .args([
+            "-i",
+            interface,
+            "set_network",
+            network_id,
+            "psk",
+            &psk_quoted,
+        ])
+        .output()?;
+    if !String::from_utf8_lossy(&psk_output.stdout).contains("OK") {
+        let _ = sudo_cmd("wpa_cli")
+            .args(["-i", interface, "remove_network", network_id])
+            .output();
+        return Ok("Failed to set password".to_string());
+    }
+
+    // Enable network
+    let enable_output = sudo_cmd("wpa_cli")
+        .args(["-i", interface, "enable_network", network_id])
+        .output()?;
+    if !String::from_utf8_lossy(&enable_output.stdout).contains("OK") {
+        let _ = sudo_cmd("wpa_cli")
+            .args(["-i", interface, "remove_network", network_id])
+            .output();
+        return Ok("Failed to enable network".to_string());
+    }
+
+    // Select the network to connect
+    let select_output = sudo_cmd("wpa_cli")
+        .args(["-i", interface, "select_network", network_id])
+        .output()?;
+    if !select_output.status.success() {
+        return Ok("Failed to select network".to_string());
+    }
+
+    // Save configuration
+    let _ = sudo_cmd("wpa_cli")
+        .args(["-i", interface, "save_config"])
+        .output();
+
+    Ok(format!("Connecting to {ssid}"))
 }
 
 pub fn toggle_interface(

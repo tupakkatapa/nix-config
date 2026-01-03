@@ -1,5 +1,6 @@
 //! Music library scanning and data types.
 
+use std::collections::HashSet;
 use std::env;
 use std::fs;
 use std::path::PathBuf;
@@ -210,20 +211,29 @@ pub fn scan_albums_in_artist(artist_path: &PathBuf) -> Vec<Album> {
 /// Scan songs in an album directory.
 pub fn scan_songs(album: &Album) -> Vec<Song> {
     let mut songs = Vec::new();
-    scan_songs_recursive(&album.path, &mut songs);
+    let mut visited = HashSet::new();
+    scan_songs_recursive(&album.path, &mut songs, &mut visited);
     songs.sort_by(|a, b| a.name.cmp(&b.name));
     songs
 }
 
 /// Recursively scan for songs in a directory.
-pub fn scan_songs_recursive(dir: &PathBuf, songs: &mut Vec<Song>) {
+pub fn scan_songs_recursive(dir: &PathBuf, songs: &mut Vec<Song>, visited: &mut HashSet<PathBuf>) {
+    let Ok(canonical) = fs::canonicalize(dir) else {
+        return;
+    };
+
+    if !visited.insert(canonical) {
+        return;
+    }
+
     let Ok(entries) = fs::read_dir(dir) else {
         return;
     };
     for entry in entries.flatten() {
         let path = entry.path();
         if path.is_dir() {
-            scan_songs_recursive(&path, songs);
+            scan_songs_recursive(&path, songs, visited);
         } else if path.is_file()
             && let Some(ext) = path.extension().and_then(|e| e.to_str())
             && AUDIO_EXTENSIONS.contains(&ext.to_lowercase().as_str())

@@ -41,10 +41,15 @@ impl Tabs {
     }
 
     pub fn next(&mut self) {
-        self.selected = (self.selected + 1) % self.titles.len();
+        if !self.titles.is_empty() {
+            self.selected = (self.selected + 1) % self.titles.len();
+        }
     }
 
     pub fn previous(&mut self) {
+        if self.titles.is_empty() {
+            return;
+        }
         if self.selected == 0 {
             self.selected = self.titles.len() - 1;
         } else {
@@ -77,7 +82,10 @@ impl Tabs {
         let tabs_width: usize = self.titles.iter().map(|t| t.len() + 5).sum::<usize>() + 2;
 
         // Fill with spaces to push title to the right
-        let fill_width = area.width as usize - 1 - tabs_width - title_width;
+        let fill_width = (area.width as usize)
+            .saturating_sub(1)
+            .saturating_sub(tabs_width)
+            .saturating_sub(title_width);
         if fill_width > 0 {
             spans.push(Span::raw(" ".repeat(fill_width)));
         }

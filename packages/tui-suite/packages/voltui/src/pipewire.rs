@@ -175,7 +175,12 @@ pub fn get_sinks() -> AppResult<Vec<Sink>> {
                         .as_object()
                         .and_then(|v| v.values().next())
                         .and_then(|ch| ch["value_percent"].as_str())
-                        .and_then(|s| s.trim_end_matches('%').parse().ok())
+                        .and_then(|s| {
+                            s.trim_end_matches('%')
+                                .parse::<u32>()
+                                .ok()
+                                .map(|v| v.min(100) as u8)
+                        })
                         .unwrap_or(0);
 
                     Some(Sink {
@@ -221,7 +226,12 @@ pub fn get_sources() -> AppResult<Vec<Source>> {
                         .as_object()
                         .and_then(|v| v.values().next())
                         .and_then(|ch| ch["value_percent"].as_str())
-                        .and_then(|s| s.trim_end_matches('%').parse().ok())
+                        .and_then(|s| {
+                            s.trim_end_matches('%')
+                                .parse::<u32>()
+                                .ok()
+                                .map(|v| v.min(100) as u8)
+                        })
                         .unwrap_or(0);
 
                     Some(Source {

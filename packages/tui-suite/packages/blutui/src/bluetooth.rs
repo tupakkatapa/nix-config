@@ -258,24 +258,30 @@ pub fn scan(start: bool) {
             && let Some(mut child) = guard.take()
         {
             let _ = child.kill();
+            let _ = child.wait();
         }
     }
 }
 
 // Restart discovery to keep it active (bluez stops after timeout)
 pub fn restart_discovery() {
-    // Send scan on command to existing process or restart
-    if let Ok(mut guard) = SCAN_PROCESS.lock()
-        && let Some(ref mut child) = *guard
-        && let Some(ref mut stdin) = child.stdin
-    {
-        let _ = writeln!(stdin, "scan on");
-        return;
-    }
+    let needs_restart = if let Ok(mut guard) = SCAN_PROCESS.lock() {
+        if let Some(ref mut child) = *guard
+            && let Some(ref mut stdin) = child.stdin
+        {
+            let _ = writeln!(stdin, "scan on");
+            false
+        } else {
+            true
+        }
+    } else {
+        true
+    };
 
-    // Fallback: restart scanning
-    scan(false);
-    scan(true);
+    if needs_restart {
+        scan(false);
+        scan(true);
+    }
 }
 
 pub fn connect_device(address: &str) -> AppResult<()> {
@@ -302,6 +308,7 @@ pub fn start_pairing(address: &str) -> AppResult<()> {
         && let Some(mut child) = guard.take()
     {
         let _ = child.kill();
+        let _ = child.wait();
     }
 
     // Start interactive bluetoothctl for pairing with agent
@@ -345,7 +352,9 @@ pub fn get_pending_passkey() -> Option<String> {
             let fd = stdout.as_raw_fd();
             unsafe {
                 let flags = libc::fcntl(fd, libc::F_GETFL);
-                libc::fcntl(fd, libc::F_SETFL, flags | libc::O_NONBLOCK);
+                if flags != -1 {
+                    libc::fcntl(fd, libc::F_SETFL, flags | libc::O_NONBLOCK);
+                }
             }
         }
 
@@ -393,6 +402,7 @@ pub fn confirm_passkey(accept: bool) {
         && let Some(mut child) = guard.take()
     {
         let _ = child.kill();
+        let _ = child.wait();
     }
 }
 
