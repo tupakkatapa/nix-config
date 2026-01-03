@@ -47,7 +47,6 @@
     hyprwm-contrib.url = "github:hyprwm/contrib";
 
     # Netboot stuff
-    # nixie.url = "path:/mnt/860/home/kari/local-workspace/nixie";
     nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie?ref=jesse/dev31";
     runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
     sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount?ref=sync";
