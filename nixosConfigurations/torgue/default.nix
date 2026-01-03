@@ -49,20 +49,11 @@
     "aarch64-linux"
   ];
 
-  # https://github.com/nix-community/home-manager/issues/3113
-  programs.dconf.enable = true;
-
   # Wireless VR Streaming
   # programs.alvr = {
   #   enable = true;
   #   openFirewall = true;
   # };
-
-  # Enable ADB for android development
-  programs.adb.enable = true;
-
-  # Required if swaylock is installed via home-manager
-  security.pam.services.swaylock = { };
 
   # Required for automounting
   # services.udisks2.enable = true;

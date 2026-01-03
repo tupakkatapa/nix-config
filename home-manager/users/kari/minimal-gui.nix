@@ -8,6 +8,12 @@ in
   # This configuration extends the minimal version
   imports = [ ./minimal.nix ];
 
+  # Required for home-manager GTK apps
+  programs.dconf.enable = true;
+
+  # Required for swaylock via home-manager
+  security.pam.services.swaylock = { };
+
   # Home-manager config
   home-manager.users."${user}" = {
     imports = [

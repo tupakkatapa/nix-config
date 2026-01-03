@@ -11,10 +11,8 @@ in
   # This configuration extends the minimal-passwd and minimal-gui versions
   imports = [ ./minimal-passwd.nix ./minimal-gui.nix ];
 
-  # Trust vladof's self-signed cert for private services
-  security.pki.certificateFiles = [
-    ../../../nixosConfigurations/vladof/services/selfsigned-cert.pem
-  ];
+  # Android development
+  programs.adb.enable = true;
 
   # Home-manager config
   home-manager.users."${user}" = {
