@@ -7,8 +7,19 @@ in
     enable = true;
     skillsDir = ./skills;
 
-    settings.permissions = {
-      inherit (permissions) allow deny;
+    settings = {
+      alwaysThinkingEnabled = true;
+      permissions = {
+        inherit (permissions) allow deny;
+      };
+      hooks = {
+        UserPromptSubmit = [{
+          hooks = [{
+            type = "command";
+            command = "echo 'ultrathink:'";
+          }];
+        }];
+      };
     };
 
     # MCP servers
