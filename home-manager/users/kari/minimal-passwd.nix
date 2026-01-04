@@ -57,9 +57,6 @@ in
     # hashedPasswordFile = config.age.secrets.password.path;
   };
 
-  # Enable Trezor support
-  services.trezord.enable = true;
-
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [
     "d /home/${user}/.ssh 755 ${user} ${user} -"
@@ -184,18 +181,11 @@ in
         sendemail.smtpserver = "${pkgs.msmtp}/bin/msmtp";
       };
     };
-    programs.gpg = {
-      enable = true;
-      homedir = "/home/${user}/.gnupg/trezor";
-      settings = {
-        default-key = "Jesse Karjalainen <jesse@ponkila.com>";
-        agent-program = "${pkgs.trezor-agent}/bin/trezor-gpg-agent";
-      };
-    };
+
+    # VPN tools
     home.packages = with pkgs; [
-      trezor-agent
-      # trezor-suite
-      trezorctl
+      wireguard-go
+      wireguard-tools
     ];
   };
 

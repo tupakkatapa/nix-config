@@ -14,6 +14,9 @@ in
   # Android development
   programs.adb.enable = true;
 
+  # Trezor hardware wallet
+  services.trezord.enable = true;
+
   # Home-manager config
   home-manager.users."${user}" = {
     imports = [
@@ -79,6 +82,16 @@ in
         "foot -e $SHELL -c 'echo \"\\$ sudo sftp-mount\" && sudo sftp-mount && sleep 1 || read -p \"Press enter to continue..\"'"
       ] else [ ]);
 
+    # Trezor GPG signing
+    programs.gpg = {
+      enable = true;
+      homedir = "/home/${user}/.gnupg/trezor";
+      settings = {
+        default-key = "Jesse Karjalainen <jesse@ponkila.com>";
+        agent-program = "${pkgs.trezor-agent}/bin/trezor-gpg-agent";
+      };
+    };
+
     home.packages = (with pkgs; [
       monitor-adjust
       tui-suite
@@ -86,9 +99,9 @@ in
       guitarix
       gxplugins-lv2
 
-      # Networking
-      wireguard-go
-      wireguard-tools
+      # Trezor
+      trezor-agent
+      trezorctl
 
       oterm
     ]) ++
