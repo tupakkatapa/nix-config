@@ -257,6 +257,7 @@ in
           }
         ];
         dns = [ "10.42.0.1" ];
+        domains = [ "~coditon.com" ];
       };
       "99-dinar" = {
         matchConfig.Name = "dinar";

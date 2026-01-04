@@ -125,6 +125,7 @@ in
         # Local zone
         local-zone = [ ''"coditon.com." transparent'' ];
         local-data = [
+          ''"coditon.com. IN A 10.42.0.1"''
           ''"cert.coditon.com. IN A 10.42.0.8"''
           ''"chat.coditon.com. IN A 10.42.0.8"''
           ''"dav.coditon.com. IN A 10.42.0.8"''
