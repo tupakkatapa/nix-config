@@ -19,6 +19,9 @@
 
     # Enable clock and voltage adjustment for AMD GPU
     "amdgpu.ppfeaturemask=0xffffffff"
+
+    # Fix s2idle suspend/resume
+    "amd_pstate=active"
   ];
 
   # Load I2C modules for hw communication
