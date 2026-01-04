@@ -288,6 +288,8 @@
             { name = "Claude"; url = "https://claude.ai/"; }
             { name = "Microsoft Copilot"; url = "https://copilot.microsoft.com/"; }
             { name = "Grok"; url = "https://grok.com/"; }
+            { name = "HuggingFace"; url = "https://huggingface.co/models"; }
+            { name = "Ollama"; url = "https://ollama.com/library"; }
           ];
         }
         {
