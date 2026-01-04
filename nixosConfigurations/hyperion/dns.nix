@@ -139,9 +139,11 @@ in
           ''"router.coditon.com. IN A 10.42.0.1"''
           ''"torgue.coditon.com. IN A 10.42.0.7"''
           ''"vladof.coditon.com. IN A 10.42.0.8"''
+          ''"maliwan.coditon.com. IN A 10.42.0.9"''
           ''"1.0.42.10.in-addr.arpa. IN PTR hyperion.coditon.com."''
           ''"7.0.42.10.in-addr.arpa. IN PTR torgue.coditon.com."''
           ''"8.0.42.10.in-addr.arpa. IN PTR vladof.coditon.com."''
+          ''"9.0.42.10.in-addr.arpa. IN PTR maliwan.coditon.com."''
           ''"25.0.42.10.in-addr.arpa. IN PTR kaakkuri.coditon.com."''
         ];
       };
