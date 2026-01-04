@@ -107,7 +107,6 @@ in
 
       input = {
         kb_layout = "fi";
-        kb_options = "caps:escape";
         numlock_by_default = true;
         repeat_delay = 300;
         repeat_rate = 50;
