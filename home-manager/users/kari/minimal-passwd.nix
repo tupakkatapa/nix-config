@@ -138,7 +138,10 @@ in
         "10.42.0.*".extraOptions."StrictHostKeyChecking" = "no";
       };
     };
-    services.ssh-agent.enable = true;
+    services.ssh-agent = {
+      enable = true;
+      enableFishIntegration = true;
+    };
 
     # Electronic mail
     accounts.email.accounts."ponkila" = {
