@@ -6,6 +6,9 @@
   programs.nixvim = {
     enable = true;
 
+    # Telescope deps
+    extraPackages = with pkgs; [ fd ripgrep ];
+
     clipboard = {
       register = "unnamedplus";
       providers.wl-copy.enable = true;
@@ -60,11 +63,11 @@
       }
       # BufferLine navigation
       {
-        key = "J";
+        key = "<Tab>";
         action = ":BufferLineCycleNext<CR>";
       }
       {
-        key = "K";
+        key = "<S-Tab>";
         action = ":BufferLineCyclePrev<CR>";
       }
       {
@@ -91,17 +94,15 @@
 
     plugins = {
       nix.enable = true;
-      gitsigns.enable = true;
-      todo-comments.enable = true;
       comment.enable = true;
-      rainbow-delimiters.enable = true;
       hardtime = {
         enable = true;
         settings.max_count = 0;
       };
       bufdelete.enable = true;
       markdown-preview.enable = true;
-      web-devicons.enable = true;
+
+      # Git
       lazygit = {
         enable = true;
         settings = {
@@ -109,9 +110,20 @@
           floating_window_scaling_factor = 0.9;
         };
       };
-      luasnip.enable = true;
+      gitsigns.enable = true;
 
-      # Tabline plugin
+      # Fuzzy finder
+      telescope = {
+        enable = true;
+        extensions.fzf-native.enable = true;
+        keymaps = {
+          "<leader>ff" = "find_files";
+          "<leader>fg" = "live_grep";
+        };
+        settings.pickers.find_files.hidden = true;
+      };
+
+      # UI
       bufferline = {
         enable = true;
         settings.options = {
@@ -184,7 +196,6 @@
         };
       };
 
-      # Status line
       lualine = {
         enable = true;
         settings = {
@@ -212,16 +223,7 @@
         };
       };
 
-      # Indentation guides
-      indent-blankline = {
-        enable = true;
-        settings.scope = {
-          enabled = true;
-          show_start = true;
-        };
-      };
-
-      # Language server protocols
+      # LSP
       lsp = {
         enable = true;
         servers = {
@@ -232,7 +234,7 @@
       lsp-format.enable = true;
       lsp-lines.enable = true;
 
-      # A completion
+      # Completion
       cmp = {
         enable = true;
         settings = {
@@ -250,8 +252,19 @@
           ];
         };
       };
+      luasnip.enable = true;
 
       # Highlighting
+      rainbow-delimiters.enable = true;
+      todo-comments.enable = true;
+      web-devicons.enable = true;
+      indent-blankline = {
+        enable = true;
+        settings.scope = {
+          enabled = true;
+          show_start = true;
+        };
+      };
       treesitter = {
         enable = true;
         settings.indent.enable = true;
