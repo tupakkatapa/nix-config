@@ -169,20 +169,20 @@ in
     };
     programs.msmtp.enable = true;
 
-    # Signing commits
+    # Git signing and identity
     programs.git = {
-      signing.key = "A3B346665514836DCE851842A2429183508FCEFF";
-      signing.signByDefault = if config.networking.hostName == "maliwan" then false else true;
+      signing = {
+        format = "ssh";
+        key = "/home/${user}/.ssh/id_ed25519_sk_yubikey";
+        signByDefault = true;
+      };
       settings = {
         user = {
           email = "jesse@ponkila.com";
           name = "Jesse Karjalainen";
         };
-        sendemail = {
-          smtpserver = "${pkgs.msmtp}/bin/msmtp";
-        };
+        sendemail.smtpserver = "${pkgs.msmtp}/bin/msmtp";
       };
-      lfs.enable = true;
     };
     programs.gpg = {
       enable = true;

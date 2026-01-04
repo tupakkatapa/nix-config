@@ -69,6 +69,7 @@ in
       [
         ./.config/direnv.nix
         ./.config/fish.nix
+        ./.config/git.nix
         ./.config/neovim.nix
         ./.config/tmux.nix
         ./.config/yazi.nix
@@ -76,30 +77,6 @@ in
       # Importing host-spesific home-manager config if it exists
       ++ optionalPaths
         [ ../../hosts/${config.networking.hostName}/default.nix ];
-
-    # Git
-    programs.git = {
-      enable = true;
-      package = pkgs.gitFull;
-      ignores = [
-        ".knowledge"
-        ".scripts"
-        "TODO.md"
-        "PROMPTS.md"
-        "MEMO.md"
-      ];
-      settings = {
-        alias = {
-          uncommit = "reset --soft HEAD^";
-        };
-        safe.directory = [ "*" ];
-        pull.rebase = true;
-        http = {
-          # https://stackoverflow.com/questions/22369200/git-pull-push-error-rpc-failed-result-22-http-code-408
-          postBuffer = "524288000";
-        };
-      };
-    };
 
     # Scripts and files
     home.sessionPath = [ "$HOME/.local/bin" ];
@@ -123,8 +100,9 @@ in
     };
 
     home.packages = with pkgs; [
-      ping-sweep
       eza
+      isd
+      ping-sweep
     ];
 
     programs.home-manager.enable = true;
