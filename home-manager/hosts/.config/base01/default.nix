@@ -6,9 +6,10 @@
   ];
 
   home.packages = with pkgs; [
-    wl-clipboard
-    wf-recorder
     libnotify
+    wf-recorder
+    wl-clipboard
+    wlsunset
   ];
 
   home.sessionVariables = {

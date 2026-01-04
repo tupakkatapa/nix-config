@@ -138,6 +138,7 @@ in
         "dunst"
         "swayidle -w"
         "wl-clipboard-history -t"
+        "wlsunset -l 65.0 -L 25.5"
         "waybar"
       ];
 
