@@ -6,9 +6,7 @@
     age-plugin-fido2-hmac
     yubikey-manager
   ];
-  # yubikey-agent is for PIV, not needed for FIDO2 (ED25519-SK keys)
-  # Using ssh-agent from home-manager instead (services.ssh-agent.enable)
-  services.yubikey-agent.enable = false;
+  services.yubikey-agent.enable = true;
   programs.yubikey-touch-detector.enable = true;
 
   # Preserve SSH_AUTH_SOCK for sudo so YubiKey-backed SSH keys work
