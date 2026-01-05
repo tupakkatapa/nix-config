@@ -82,16 +82,6 @@ in
         "foot -e $SHELL -c 'echo \"\\$ sudo sftp-mount\" && sudo sftp-mount && sleep 1 || read -p \"Press enter to continue..\"'"
       ] else [ ]);
 
-    # Trezor GPG signing
-    programs.gpg = {
-      enable = true;
-      homedir = "/home/${user}/.gnupg/trezor";
-      settings = {
-        default-key = "Jesse Karjalainen <jesse@ponkila.com>";
-        agent-program = "${pkgs.trezor-agent}/bin/trezor-gpg-agent";
-      };
-    };
-
     home.packages = (with pkgs; [
       monitor-adjust
       tui-suite
@@ -100,7 +90,6 @@ in
       gxplugins-lv2
 
       # Trezor
-      trezor-agent
       trezorctl
 
       oterm

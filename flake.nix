@@ -112,8 +112,7 @@
               claude-code
               ping-sweep
               # Patches
-              trezorctl
-              trezor-agent
+              python313
               ;
           };
 
@@ -190,18 +189,12 @@
             inherit (inputs'.nixie.packages) refind-generate;
             inherit (inputs'.ping-sweep.packages) ping-sweep;
             inherit (inputs'.llm-agents.packages) claude-code;
-            # Patches - trezorctl needs patched nixpkgs (trezor 0.20) for click 8.2 compat
-            # trezor-agent needs OLD trezor 0.13 API with click relaxed
-            "trezorctl" = nixpkgs-patched.trezorctl;
-            "trezor-agent" =
-              let
-                trezor-old-relaxed = pkgs.python3Packages.trezor.overridePythonAttrs (_old: {
-                  pythonRelaxDeps = [ "click" ];
-                });
-              in
-              pkgs.python3Packages.trezor-agent.override {
-                trezor = trezor-old-relaxed;
+            # Patches - trezor needs patched nixpkgs for click 8.2 compat
+            "python313" = pkgs.python313.override {
+              packageOverrides = _: _: {
+                inherit (nixpkgs-patched.python313Packages) trezor;
               };
+            };
           }
           // (with flake.nixosConfigurations; {
             "bandit" = bandit.config.system.build.kexecTree;
