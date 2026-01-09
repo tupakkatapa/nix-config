@@ -163,12 +163,6 @@
                 enable = true;
                 files = "\\.sh$";
               };
-              flake-check = {
-                enable = true;
-                entry = "nix flake check --no-build --all-systems --impure";
-                files = "\\.nix$";
-                pass_filenames = false;
-              };
             };
             # Workaround for https://github.com/cachix/devenv/issues/760
             containers = pkgs.lib.mkForce { };
