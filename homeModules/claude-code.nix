@@ -10,7 +10,7 @@ let
   pluginsCfg = cfg.plugins;
   homeDir = config.home.homeDirectory;
 
-  # Transform plugin configs into fetchable sources
+  # Transform marketplace plugin configs into fetchable sources
   processedPlugins = map
     (p: rec {
       name = p.repo;
@@ -25,6 +25,19 @@ let
       };
     })
     pluginsCfg.fromGitHub;
+
+  # Transform direct plugin configs (no marketplace required)
+  processedDirectPlugins = map
+    (p: rec {
+      inherit (p) name;
+      id = "${name}@local";
+      inherit (p) version rev;
+      src = pkgs.fetchFromGitHub
+        {
+          inherit (p) owner repo rev hash;
+        } + (if p.subdir != null then "/${p.subdir}" else "");
+    })
+    pluginsCfg.fromGitHubDirect;
 
   # Deduplicate marketplaces shared by multiple plugins
   uniqueMarketplaces = lib.unique (map
@@ -48,6 +61,12 @@ let
       cp -rT ${p.src} $out/cache/${p.marketplace}/${p.name}/${p.version}
     '') processedPlugins}
 
+    # Direct plugins (no marketplace)
+    ${lib.concatMapStringsSep "\n" (p: ''
+      mkdir -p $out/cache/local/${p.name}/${p.version}
+      cp -rT ${p.src} $out/cache/local/${p.name}/${p.version}
+    '') processedDirectPlugins}
+
     # Registry files (timestamps hardcoded for reproducibility)
     cat > $out/known_marketplaces.json << 'EOF'
     ${builtins.toJSON (lib.listToAttrs (
@@ -68,7 +87,8 @@ let
     ${builtins.toJSON {
       version = 2;
       plugins = lib.listToAttrs (
-        map
+        # Marketplace plugins
+        (map
           (p: lib.nameValuePair p.id [{
             scope = "user";
             installPath = "${homeDir}/.claude/plugins/cache/${p.marketplace}/${p.name}/${p.version}";
@@ -78,7 +98,20 @@ let
             gitCommitSha = p.rev;
             isLocal = false;
           }])
-          processedPlugins
+          processedPlugins)
+        ++
+        # Direct plugins
+        (map
+          (p: lib.nameValuePair p.id [{
+            scope = "user";
+            installPath = "${homeDir}/.claude/plugins/cache/local/${p.name}/${p.version}";
+            inherit (p) version rev;
+            installedAt = "2025-01-01T00:00:00.000Z";
+            lastUpdated = "2025-01-01T00:00:00.000Z";
+            gitCommitSha = p.rev;
+            isLocal = true;
+          }])
+          processedDirectPlugins)
       );
     }}
     EOF
@@ -147,12 +180,58 @@ in
       default = [ ];
       description = "Plugins to install from GitHub (requires plugin + marketplace sources)";
     };
+
+    fromGitHubDirect = lib.mkOption {
+      type = lib.types.listOf (lib.types.submodule {
+        options = {
+          name = lib.mkOption {
+            type = lib.types.str;
+            example = "ralph-wiggum";
+            description = "Plugin name (used in install path and ID)";
+          };
+          owner = lib.mkOption {
+            type = lib.types.str;
+            example = "anthropics";
+            description = "GitHub owner of the repository";
+          };
+          repo = lib.mkOption {
+            type = lib.types.str;
+            example = "claude-code";
+            description = "GitHub repository name";
+          };
+          subdir = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = null;
+            example = "plugins/ralph-wiggum";
+            description = "Subdirectory within the repo containing the plugin";
+          };
+          version = lib.mkOption {
+            type = lib.types.str;
+            example = "1.0.0";
+            description = "Plugin version (informational)";
+          };
+          rev = lib.mkOption {
+            type = lib.types.str;
+            example = "abc123...";
+            description = "Git commit SHA";
+          };
+          hash = lib.mkOption {
+            type = lib.types.str;
+            example = "sha256-...";
+            description = "Nix SRI hash";
+          };
+        };
+      });
+      default = [ ];
+      description = "Plugins to install directly from GitHub (no marketplace required)";
+    };
   };
 
-  config = lib.mkIf (cfg.enable && pluginsCfg.fromGitHub != [ ]) {
+  config = lib.mkIf (cfg.enable && (pluginsCfg.fromGitHub != [ ] || pluginsCfg.fromGitHubDirect != [ ])) {
     programs.claude-code.settings = lib.mkMerge [{
       enabledPlugins = lib.listToAttrs (
-        map (p: lib.nameValuePair p.id true) processedPlugins
+        (map (p: lib.nameValuePair p.id true) processedPlugins)
+        ++ (map (p: lib.nameValuePair p.id true) processedDirectPlugins)
       );
     }];
 

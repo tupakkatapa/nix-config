@@ -33,8 +33,7 @@ digraph translate_epub {
 |------|--------------|
 | Extract | `nix-shell -p unzip --run 'unzip book.epub -d extracted/'` |
 | Find chapters | `ls extracted/OEBPS/Text/*.xhtml` |
-| Init swarm | `mcp__claude-flow__swarm_init` topology=mesh |
-| Spawn agents | `Task` tool with subagent_type=general-purpose |
+| Spawn agents | Multiple `Task` calls in single message (parallel) |
 | Rebuild | `nix-shell -p zip --run 'zip -X0 output.epub mimetype && zip -rX9 output.epub META-INF OEBPS'` |
 | Cleanup | `rm -r extracted/` |
 

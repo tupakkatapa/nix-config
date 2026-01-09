@@ -17,6 +17,7 @@ in
   # Home-manager config
   home-manager.users."${user}" = {
     imports = [
+      ./.config/claude-bridge.nix
       ./.config/foot.nix
       ./.config/firefox
       ./.config/mpv.nix

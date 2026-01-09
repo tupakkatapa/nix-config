@@ -135,6 +135,7 @@
             { name = "Netdata"; url = "https://www.netdata.cloud/"; }
             { name = "Pulumi"; url = "https://www.pulumi.com/"; }
             { name = "Doppler"; url = "https://www.doppler.com/"; }
+            { name = "Sentry"; url = "https://sentry.io/"; }
             { name = "n8n"; url = "https://n8n.io/"; }
             { name = "RunPod"; url = "https://www.runpod.io/"; }
           ];
@@ -220,6 +221,16 @@
     {
       name = "Tools";
       bookmarks = [
+        {
+          name = "Claude";
+          bookmarks = [
+            { name = "Summarize"; url = "javascript:(function(){fetch('http://localhost:8787/?action=summarize&screenshot=true&url='+encodeURIComponent(location.href)).then(r=>r.json()).then(d=>alert(d.result)).catch(e=>alert('Error: '+e))})()"; }
+            { name = "TLDR"; url = "javascript:(function(){fetch('http://localhost:8787/?action=tldr&screenshot=true&url='+encodeURIComponent(location.href)).then(r=>r.json()).then(d=>alert(d.result)).catch(e=>alert('Error: '+e))})()"; }
+            { name = "Todo"; url = "javascript:(function(){fetch('http://localhost:8787/?action=todo&screenshot=true&url='+encodeURIComponent(location.href)).then(r=>r.json()).then(d=>alert(d.result)).catch(e=>alert('Error: '+e))})()"; }
+            { name = "Explain"; url = "javascript:(function(){fetch('http://localhost:8787/?action=explain&screenshot=true&url='+encodeURIComponent(location.href)).then(r=>r.json()).then(d=>alert(d.result)).catch(e=>alert('Error: '+e))})()"; }
+            { name = "Critique"; url = "javascript:(function(){fetch('http://localhost:8787/?action=critique&screenshot=true&url='+encodeURIComponent(location.href)).then(r=>r.json()).then(d=>alert(d.result)).catch(e=>alert('Error: '+e))})()"; }
+          ];
+        }
         {
           name = "Collab";
           bookmarks = [
