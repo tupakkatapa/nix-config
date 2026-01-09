@@ -78,7 +78,16 @@
       {
         mode = "n";
         key = "<leader>p";
-        action = ":MarkdownPreview<CR>";
+        action.__raw = ''
+          function()
+            local ft = vim.bo.filetype
+            if ft == "markdown" then
+              vim.cmd("Markview toggle")
+            elseif ft == "csv" then
+              vim.cmd("CsvViewToggle")
+            end
+          end
+        '';
       }
       {
         mode = "n";
@@ -100,7 +109,14 @@
         settings.max_count = 0;
       };
       bufdelete.enable = true;
-      markdown-preview.enable = true;
+      markview = {
+        enable = true;
+        settings.initial_state = false;
+      };
+      csvview = {
+        enable = true;
+        settings.view.display_mode = "border";
+      };
 
       # Git
       lazygit = {
@@ -273,6 +289,7 @@
         grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
           bash
           c # c is implicit dependency, not specifying it will lead to healtcheck errors
+          csv
           diff
           fish
           git_config
@@ -284,8 +301,8 @@
           lua
           luadoc
           make
-          markdown # dep of noice
-          markdown_inline # dep of noice
+          markdown # dep of markview
+          markdown_inline # dep of markview
           nix
           query # implicit
           regex
