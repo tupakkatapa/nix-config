@@ -35,6 +35,12 @@
             PublicKey = "vdCiN71d/Qn2I1GF5wJnXNWcqBSVyWvjtpLSUykbLkA=";
             AllowedIPs = [ "172.16.16.3/32" ];
           }
+          # Boox
+          {
+            PublicKey = "IZHDryL8A0tM70q/8yU4Cjmd6oZm294C2XQ0RQVWMWY=";
+            AllowedIPs = [ "172.16.16.4/32" ];
+            PersistentKeepalive = 25;
+          }
         ];
       };
     };
