@@ -137,6 +137,7 @@
             { name = "Doppler"; url = "https://www.doppler.com/"; }
             { name = "n8n"; url = "https://n8n.io/"; }
             { name = "RunPod"; url = "https://www.runpod.io/"; }
+            { name = "Sentry"; url = "https://sentry.io/"; }
           ];
         }
         {
