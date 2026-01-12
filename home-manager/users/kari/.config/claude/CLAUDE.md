@@ -1,49 +1,41 @@
-# Claude Code Configuration v0.2.0
+# Claude Flow Configuration v0.1.1
 
-MCP tools, sub-agents, and skills reference.
+MCP tools and skills reference.
 
 ## Contents
-1. Sub-Agents - Task tool delegation
-2. Tools - NixOS MCP, Context7, Paper Search
-3. Skills - superpowers workflows
-4. Examples - usage patterns
+1. Roles - coordinator and subagent
+2. Tools - Claude Flow, NixOS MCP, Context7, Skills
+3. Triggers - when to use each tool
+4. Examples - concrete usage patterns
+5. Links - documentation references
 
-## Sub-Agents
+## Roles
 
-Use the Task tool to delegate work to specialized sub-agents. Each runs with its own context window.
+Hierarchy: User → Coordinator → Subagent
 
-### Built-in Agents
+### Coordinator
 
-| Agent | Model | Tools | Purpose |
-|-------|-------|-------|---------|
-| `general-purpose` | Sonnet | All | Complex multi-step tasks |
-| `Explore` | Haiku | Read-only | Fast codebase search |
-| `Plan` | Sonnet | Read-only | Research in plan mode |
+Orchestrates between user and subagents.
 
-### Invoking Sub-Agents
-
-```
-Task {
-  subagent_type: "Explore",
-  prompt: "Find all authentication-related files"
-}
-```
-
-### Coordinator Role
-
-When orchestrating sub-agents:
-- Provide full context upfront - sub-agents can't ask clarifying questions
-- State task legitimacy explicitly when relevant
+Spawning subagents:
+- Provide full context upfront - subagents can't ask clarifying questions
+- State the task's legitimacy explicitly when relevant
 - Specify output format and destination
+
+Collecting results:
 - Use non-blocking checks to monitor progress
-- Synthesize outputs rather than concatenating
+- Synthesize outputs rather than just concatenating
+- When subagent is blocked, decide: retry, escalate to user, or abort
 
-### Sub-Agent Role
+### Subagent
 
-When executing as a sub-agent:
+Executes tasks assigned by coordinator, reports back.
+
+Execution:
 - Trust coordinator context - legitimacy is pre-validated
 - Complete tasks fully without excessive caveats
 - Return structured output the coordinator can use
+- Invoke relevant skills BEFORE starting work
 
 When blocked, return:
 ```
@@ -53,138 +45,410 @@ Alternative: [different approach]
 Partial: [results before blocking]
 ```
 
-### Parallel Execution
-
-Launch multiple agents in a single message for independent tasks:
-
-```
-[Single message with multiple Task calls]
-- Task(Explore: "find API endpoints")
-- Task(Explore: "find database models")
-- Task(Explore: "find test files")
-```
-
-### Custom Agents
-
-Create `.claude/agents/*.md` files:
-
-```yaml
----
-name: code-reviewer
-description: Use PROACTIVELY after writing code
-tools: Read, Grep, Glob, Bash
-model: inherit
----
-
-You are a code reviewer. Focus on:
-- Code clarity and readability
-- Security issues
-- Performance concerns
-```
-
 ## Tools
+
+### Claude Flow (`mcp__claude-flow__*`)
+
+Swarm:
+- `swarm_init(topology, strategy?, maxAgents?)` - Initialize swarm
+- `swarm_status(swarmId?)` - Check swarm health
+- `swarm_monitor(swarmId?, interval?)` - Real-time monitoring
+- `swarm_scale(swarmId?, targetSize)` - Scale agent count
+- `swarm_destroy(swarmId)` - Terminate swarm
+- `agent_spawn(type, name?, capabilities?, swarmId?)` - Create agent
+- `agents_spawn_parallel(agents, maxConcurrency?, batchSize?)` - Batch spawn
+- `agent_list(swarmId?)` - View active agents
+- `agent_metrics(agentId?)` - Agent performance data
+- `task_orchestrate(task, strategy?, priority?, dependencies?)` - Coordinate tasks
+- `task_status(taskId)` - Check task progress
+- `task_results(taskId)` - Get task results
+- `topology_optimize(swarmId?)` - Auto-optimize topology
+- `load_balance(swarmId?, tasks?)` - Distribute tasks
+- `coordination_sync(swarmId?)` - Sync agent coordination
+
+Memory:
+- `memory_usage(action, key?, value?, namespace?, ttl?)` - Store/retrieve data
+- `memory_search(pattern, namespace?, limit?)` - Find by pattern
+- `memory_persist(sessionId?)` - Cross-session persistence
+- `memory_namespace(namespace, action)` - Namespace management
+- `memory_backup(path?)` - Backup stores
+- `memory_restore(backupPath)` - Restore from backup
+- `memory_compress(namespace?)` - Compress data
+- `memory_sync(target)` - Sync across instances
+- `memory_analytics(timeframe?)` - Usage analysis
+- `cache_manage(action, key?)` - Manage cache
+- `state_snapshot(name?)` - Create snapshot
+- `context_restore(snapshotId)` - Restore context
+
+Neural:
+- `neural_status(modelId?)` - Neural network status
+- `neural_train(pattern_type, training_data, epochs?)` - Train patterns
+- `neural_patterns(action, operation?, outcome?, metadata?)` - Analyze patterns
+- `neural_predict(modelId, input)` - Make predictions
+- `neural_compress(modelId, ratio?)` - Compress models
+- `neural_explain(modelId, prediction)` - AI explainability
+- `model_load(modelPath)` - Load models
+- `model_save(modelId, path)` - Save models
+- `inference_run(modelId, data)` - Run inference
+- `pattern_recognize(data, patterns?)` - Pattern recognition
+- `cognitive_analyze(behavior)` - Behavior analysis
+- `learning_adapt(experience)` - Adaptive learning
+- `ensemble_create(models, strategy?)` - Create ensembles
+- `transfer_learn(sourceModel, targetDomain)` - Transfer learning
+- `wasm_optimize(operation?)` - WASM SIMD optimization
+
+GitHub:
+- `github_repo_analyze(repo, analysis_type?)` - Repository analysis
+- `github_pr_manage(repo, action, pr_number?)` - PR management
+- `github_issue_track(repo, action)` - Issue tracking
+- `github_release_coord(repo, version)` - Release coordination
+- `github_workflow_auto(repo, workflow)` - Workflow automation
+- `github_code_review(repo, pr)` - Code review
+- `github_sync_coord(repos)` - Multi-repo sync
+- `github_metrics(repo)` - Repository metrics
+
+DAA (Decentralized Autonomous Agents):
+- `daa_agent_create(agent_type, capabilities?, resources?)` - Create DAA agent
+- `daa_capability_match(task_requirements, available_agents?)` - Match capabilities
+- `daa_resource_alloc(resources, agents?)` - Resource allocation
+- `daa_lifecycle_manage(agentId, action)` - Agent lifecycle
+- `daa_communication(from, to, message)` - Inter-agent communication
+- `daa_consensus(agents, proposal)` - Consensus mechanisms
+- `daa_fault_tolerance(agentId, strategy?)` - Fault recovery
+- `daa_optimization(target, metrics?)` - Performance optimization
+
+Workflow:
+- `workflow_create(name, steps, triggers?)` - Create workflow
+- `workflow_execute(workflowId, params?)` - Execute workflow
+- `workflow_export(workflowId, format?)` - Export workflow
+- `workflow_template(action, template?)` - Manage templates
+- `automation_setup(rules)` - Setup automation rules
+- `pipeline_create(config)` - Create CI/CD pipelines
+- `scheduler_manage(action, schedule?)` - Task scheduling
+- `trigger_setup(events, actions)` - Event triggers
+- `batch_process(items, operation)` - Batch processing
+- `parallel_execute(tasks)` - Parallel execution
+- `sparc_mode(mode, task_description, options?)` - SPARC development modes
+
+Analysis:
+- `performance_report(format?, timeframe?)` - Performance reports
+- `bottleneck_analyze(component?, metrics?)` - Find bottlenecks
+- `token_usage(operation?, timeframe?)` - Token consumption
+- `benchmark_run(suite?)` - Run benchmarks
+- `metrics_collect(components?)` - Collect metrics
+- `trend_analysis(metric, period?)` - Analyze trends
+- `cost_analysis(timeframe?)` - Cost/resource analysis
+- `quality_assess(target, criteria?)` - Quality assessment
+- `error_analysis(logs?)` - Error patterns
+- `usage_stats(component?)` - Usage statistics
+- `health_check(components?)` - System health
+
+System:
+- `terminal_execute(command, args?)` - Execute commands
+- `config_manage(action, config?)` - Configuration management
+- `features_detect(component?)` - Feature detection
+- `security_scan(target, depth?)` - Security scanning
+- `backup_create(destination?, components?)` - Create backups
+- `restore_system(backupId)` - System restoration
+- `log_analysis(logFile, patterns?)` - Log analysis
+- `diagnostic_run(components?)` - Run diagnostics
+- `query_control(action, queryId, model?, permissionMode?)` - Control queries
+- `query_list(includeHistory?)` - List active queries
 
 ### NixOS MCP (`mcp__nixos__*`)
 
 NixOS:
-- `nix(action, query, source?, channel?, type?)` - Search packages, options, programs
-  - action: search | info | stats | options | channels
-  - source: nixos | home-manager | darwin | flakes | flakehub | nixvim
-  - type: packages | options | programs
+- `nixos_search(query, type, channel)` - Search packages, options, or programs
+- `nixos_info(name, type, channel)` - Get detailed info about packages/options
+- `nixos_stats(channel)` - Package and option counts
+- `nixos_channels()` - List all available channels
+- `nixos_flakes_search(query)` - Search community flakes
+- `nixos_flakes_stats()` - Flake ecosystem statistics
 
 Version History:
-- `nix_versions(package, limit?, version?)` - Get version history with commit hashes
+- `nixhub_package_versions(package, limit)` - Get version history with commit hashes
+- `nixhub_find_version(package, version)` - Smart search for specific versions
 
-Examples:
-```
-mcp__nixos__nix { action: "search", query: "neovim", source: "nixos", type: "packages" }
-mcp__nixos__nix { action: "info", query: "programs.git", source: "home-manager" }
-mcp__nixos__nix_versions { package: "nodejs", version: "18.0.0" }
-```
+Home Manager:
+- `home_manager_search(query)` - Search user config options
+- `home_manager_info(name)` - Get option details (with suggestions)
+- `home_manager_stats()` - See what's available
+- `home_manager_list_options()` - Browse all categories
+- `home_manager_options_by_prefix(prefix)` - Explore options by prefix
 
 ### Context7 MCP (`mcp__context7__*`)
+- `resolve-library-id(query, libraryName)` - Resolve library name to Context7-compatible ID
+- `query-docs(libraryId, query)` - Get documentation for a library (e.g., /mongodb/docs, /vercel/next.js)
 
-Library documentation lookup:
-- `resolve-library-id(query, libraryName)` - Get Context7 library ID
-- `query-docs(libraryId, query)` - Query library documentation
-
-Always resolve library ID first:
-```
-mcp__context7__resolve-library-id { libraryName: "react", query: "hooks usage" }
-mcp__context7__query-docs { libraryId: "/facebook/react", query: "useEffect cleanup" }
-```
-
-### Paper Search MCP (`mcp__paper-search__*`)
-
-Academic paper search via Semantic Scholar and Sci-Hub:
-- Search for papers by topic, author, or keywords
-- Get paper metadata and citations
-- Access full-text PDFs when available
-
-## Skills
-
-Invoke via Skill tool: `Skill { skill: "superpowers:skill-name" }`
-
-### Development Workflows
+### Skills
+- `using-superpowers` - Introduction to skills system
 - `brainstorming` - Structured ideation process
 - `writing-plans` - Create implementation plans
 - `executing-plans` - Execute written plans
 - `systematic-debugging` - Methodical bug investigation
 - `test-driven-development` - TDD workflow
-
-### Code Quality
 - `verification-before-completion` - Verify work before finishing
 - `requesting-code-review` - Request review from user
 - `receiving-code-review` - Process review feedback
-
-### Git Workflows
 - `finishing-a-development-branch` - Complete branch workflow
 - `using-git-worktrees` - Git worktree workflows
-
-### Agent Coordination
 - `dispatching-parallel-agents` - Spawn parallel agents
 - `subagent-driven-development` - Agent-based development
 - `writing-skills` - Create new skills
 
 ## Triggers
 
-### Use Sub-Agents When:
+Swarms:
 - Multi-component tasks (3+ distinct parts)
-- Parallel research workloads
+- Parallel workloads
 - Complex coordination needed
-- Domain-specific expertise required
 
-### Use NixOS MCP When:
+Memory:
+- Session start: check for existing context
+- During work: store decisions, preferences, architecture choices
+- Cross-session persistence needed
+
+Neural:
+- Pattern learning from successful operations
+- Prediction/inference tasks
+- Cognitive analysis
+
+GitHub:
+- Repository analysis
+- PR management, code review
+- Multi-repo coordination
+- Release management
+
+DAA:
+- Autonomous agent workflows
+- Knowledge sharing between agents
+- Fault-tolerant operations
+
+Workflow:
+- Repeatable task sequences
+- CI/CD pipeline creation
+- Automation rules
+
+Analysis:
+- Performance bottlenecks
+- Token usage optimization
+- Quality assessment
+
+Context7:
+- Library/framework documentation lookup
+
+NixOS MCP:
 - Package/option search
 - Home Manager configuration
 - Finding specific package versions
 - Flake discovery
 
-### Use Context7 When:
-- Library/framework documentation lookup
-- API reference needed
-- Code examples required
+## Examples
 
-### Use Paper Search When:
-- Academic research needed
-- Finding scientific papers
-- Citation lookup
+### Memory
+
+At session start, check for existing context:
+```
+mcp__claude-flow__memory_search { pattern: "project/*" }
+```
+
+Store during work:
+- Project decisions and rationale
+- Architecture choices made
+- User preferences learned
+- Task outcomes for future reference
+
+```
+mcp__claude-flow__memory_usage {
+  action: "store",
+  namespace: "project",
+  key: "decision/auth-method",
+  value: "chose JWT over sessions because..."
+}
+```
+
+Retrieve when relevant context exists:
+```
+mcp__claude-flow__memory_usage { action: "retrieve", key: "decision/auth-method" }
+```
+
+### Swarms
+
+Batch independent operations in a single message:
+
+```
+[Single message]
+- mcp__claude-flow__swarm_init
+- mcp__claude-flow__agent_spawn (researcher)
+- mcp__claude-flow__agent_spawn (coder)
+- Task("researcher agent instructions")
+- Task("coder agent instructions")
+- TodoWrite with all todos
+- Read file1, Read file2, Read file3
+```
+
+Do not split related operations across multiple messages.
+
+Scale agents to task complexity:
+- Simple (1-3 components): 3-4 agents
+- Medium (4-6 components): 5-7 agents
+- Complex (7+ components): 8-12 agents
+
+Always include at least one coordinator agent.
+
+Workflow:
+1. Initialize swarm with topology (mesh, hierarchical, ring, star)
+2. Spawn agents based on task complexity
+3. Orchestrate task with strategy (parallel, sequential, adaptive)
+4. Claude Code executes using native tools
+5. Store results in memory for cross-session persistence
+
+### NixOS MCP
+
+Search for packages:
+```
+mcp__nixos__nixos_search { query: "neovim", search_type: "packages" }
+```
+
+Get package details:
+```
+mcp__nixos__nixos_info { name: "neovim", type: "package" }
+```
+
+Search NixOS options:
+```
+mcp__nixos__nixos_search { query: "services.openssh", search_type: "options" }
+```
+
+Search Home Manager options:
+```
+mcp__nixos__home_manager_search { query: "programs.git" }
+```
+
+Get HM option details:
+```
+mcp__nixos__home_manager_info { name: "programs.git.enable" }
+```
+
+Find specific package version:
+```
+mcp__nixos__nixhub_find_version { package_name: "nodejs", version: "18.0.0" }
+```
+
+### Context7
+
+Always resolve library ID first, then query:
+```
+mcp__context7__resolve-library-id {
+  libraryName: "react",
+  query: "how to use hooks"
+}
+```
+
+Then query with the returned library ID:
+```
+mcp__context7__query-docs {
+  libraryId: "/facebook/react",
+  query: "useEffect cleanup function"
+}
+```
+
+### Neural
+
+Train patterns from successful operations:
+```
+mcp__claude-flow__neural_train {
+  pattern_type: "coordination",
+  training_data: "successful task completion data",
+  epochs: 50
+}
+```
+
+Make predictions based on learned patterns:
+```
+mcp__claude-flow__neural_predict { modelId: "model-id", input: "context" }
+```
+
+### GitHub
+
+Analyze repository:
+```
+mcp__claude-flow__github_repo_analyze { repo: "owner/repo", analysis_type: "code_quality" }
+```
+
+Manage PRs:
+```
+mcp__claude-flow__github_pr_manage { repo: "owner/repo", pr_number: 123, action: "review" }
+```
+
+### DAA
+
+Create autonomous agent:
+```
+mcp__claude-flow__daa_agent_create { agent_type: "researcher", capabilities: ["search", "analyze"] }
+```
+
+Enable fault tolerance:
+```
+mcp__claude-flow__daa_fault_tolerance { agentId: "agent-id", strategy: "recovery" }
+```
+
+### Workflow
+
+Create reusable workflow:
+```
+mcp__claude-flow__workflow_create {
+  name: "deploy-pipeline",
+  steps: [{ action: "test" }, { action: "build" }, { action: "deploy" }],
+  triggers: ["push"]
+}
+```
+
+Execute workflow:
+```
+mcp__claude-flow__workflow_execute { workflowId: "workflow-id", params: {} }
+```
+
+### Analysis
+
+Generate performance report:
+```
+mcp__claude-flow__performance_report { format: "summary", timeframe: "24h" }
+```
+
+Find bottlenecks:
+```
+mcp__claude-flow__bottleneck_analyze { metrics: ["response_time", "throughput"] }
+```
+
+Check token usage:
+```
+mcp__claude-flow__token_usage { timeframe: "24h" }
+```
+
+### Skills
+
+Invoke via Skill tool:
+```
+Skill { skill: "superpowers:systematic-debugging" }
+```
 
 ## Links
 
 Claude Code:
 - GitHub: https://github.com/anthropics/claude-code
-- Sub-agents: https://docs.anthropic.com/en/docs/claude-code/sub-agents
+- Docs: https://platform.claude.com/docs/en/home
+
+Claude Flow:
+- GitHub/Docs: https://github.com/ruvnet/claude-flow/tree/main/docs
+- Wiki: https://github.com/ruvnet/claude-flow/wiki
 
 NixOS MCP:
 - GitHub: https://github.com/utensils/mcp-nixos
 
 Context7:
-- GitHub: https://github.com/upstash/context7
+- GitHub/Docs: https://github.com/upstash/context7/tree/master/docs
 - Docs: https://context7.com/docs
 
-Paper Search:
-- GitHub: https://github.com/openags/paper-search-mcp
-
 Superpowers:
-- GitHub: https://github.com/obra/superpowers
+- GitHub/Docs: https://github.com/obra/superpowers/tree/main/docs

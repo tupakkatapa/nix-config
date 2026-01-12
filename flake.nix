@@ -107,7 +107,6 @@
               kb-shortcuts
               monitor-adjust
               tui-suite
-              claude-bridge
               # Inputs
               codex
               claude-code
@@ -177,7 +176,6 @@
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
             "pinit" = pkgs.callPackage ./packages/pinit { };
             "tui-suite" = pkgs.callPackage ./packages/tui-suite { };
-            "claude-bridge" = pkgs.callPackage ./packages/claude-bridge { };
             # Inputs
             inherit (inputs'.levari.packages) levari;
             inherit (inputs'.nixie.packages) lkddb-filter;

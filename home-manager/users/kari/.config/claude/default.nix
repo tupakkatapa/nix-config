@@ -6,7 +6,6 @@ in
   programs.claude-code = {
     enable = true;
     skillsDir = ./skills;
-    commandsDir = ./commands;
 
     settings = {
       alwaysThinkingEnabled = true;
@@ -33,9 +32,9 @@ in
         command = "npx";
         args = [ "-y" "@upstash/context7-mcp" ];
       };
-      paper-search = {
-        command = "uvx";
-        args = [ "paper-search-mcp" ];
+      claude-flow = {
+        command = "npx";
+        args = [ "claude-flow@alpha" "mcp" "start" ];
       };
     };
 
@@ -55,17 +54,6 @@ in
         rev = "d466ee3584579088a4ee9a694f3059fa73c17ff1";
         hash = "sha256-4juZafMOd+JnP5z1r3EyDqyL9PGlPnOCA/e3I/5kfNQ=";
       };
-    }];
-
-    # Direct plugins (no marketplace required)
-    plugins.fromGitHubDirect = [{
-      name = "ralph-wiggum";
-      owner = "anthropics";
-      repo = "claude-code";
-      subdir = "plugins/ralph-wiggum";
-      version = "1.0.0";
-      rev = "f34e2535b4fcf5fcc6cb0b566111c588b04873ee";
-      hash = "sha256-Y8xes6JuZBLKZOsKsZ2tg7Q886ABPc1KzZdq+rPak8A=";
     }];
   };
 

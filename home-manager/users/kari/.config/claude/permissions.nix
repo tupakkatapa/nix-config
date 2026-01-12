@@ -34,19 +34,8 @@
     "Bash(gh pr:*)"
     "Bash(gh issue:*)"
 
-    # Nix (non-destructive only)
-    "Bash(nix search:*)"
-    "Bash(nix eval:*)"
-    "Bash(nix flake show:*)"
-    "Bash(nix flake metadata:*)"
-    "Bash(nix flake info:*)"
-    "Bash(nix path-info:*)"
-    "Bash(nix derivation show:*)"
-    "Bash(nix show-derivation:*)"
-    "Bash(nix log:*)"
-    "Bash(nix why-depends:*)"
-    "Bash(nix hash:*)"
-    "Bash(nix repl:*)"
+    # Nix
+    "Bash(nix:*)"
 
     # File system (read-only)
     "Bash(ls:*)"
@@ -100,9 +89,9 @@
 
     # Skills & MCP
     "Skill(superpowers:*)"
+    "mcp__claude-flow__*"
     "mcp__nixos__*"
     "mcp__context7__*"
-    "mcp__paper-search__*"
 
     # Development
     "Bash(pre-commit run:*)"
@@ -118,6 +107,7 @@
     # File operations
     "Bash(cp:*)"
     "Bash(mv:*)"
+    "Bash(rm:*)"
   ];
 
   deny = [
