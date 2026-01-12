@@ -39,5 +39,7 @@
     pciutils
     lsof
     dig
+    jq
+    jc
   ];
 }
