@@ -107,7 +107,6 @@
     # File operations
     "Bash(cp:*)"
     "Bash(mv:*)"
-    "Bash(rm:*)"
   ];
 
   deny = [
