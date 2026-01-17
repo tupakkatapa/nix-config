@@ -111,7 +111,7 @@
       bufdelete.enable = true;
       markview = {
         enable = true;
-        settings.initial_state = false;
+        settings.preview.enable = false;
       };
       csvview = {
         enable = true;
