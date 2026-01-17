@@ -60,8 +60,9 @@ in
     };
   };
 
-  # Ensure host directories for the bind mount exist
+  # Ensure host directories for the bind mount exist with correct ownership
   systemd.tmpfiles.rules = [
     "d ${dataDir}/home/plex/appdata/plex 755 ${uid} ${uid} -"
+    "Z ${dataDir}/home/plex/appdata/plex - ${uid} ${uid} -"
   ];
 }

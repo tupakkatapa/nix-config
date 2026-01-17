@@ -61,8 +61,9 @@ in
     };
   };
 
-  # Ensure host directories for potential writable state exist
+  # Ensure host directories for potential writable state exist with correct ownership
   systemd.tmpfiles.rules = [
     "d ${dataDir}/home/coditon-md/appdata 755 ${uid} ${uid} -"
+    "Z ${dataDir}/home/coditon-md/appdata - ${uid} ${uid} -"
   ];
 }

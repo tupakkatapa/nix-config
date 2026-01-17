@@ -41,8 +41,9 @@ in
     };
   };
 
-  # Ensure host directories for the bind mount exist
+  # Ensure host directories for the bind mount exist with correct ownership
   systemd.tmpfiles.rules = [
     "d ${dataDir}/home/ollama/appdata/ollama/models 755 ${uid} ${uid} -"
+    "Z ${dataDir}/home/ollama/appdata/ollama - ${uid} ${uid} -"
   ];
 }

@@ -126,9 +126,10 @@ in
   };
   users.groups.hass.gid = lib.mkForce uid;
 
-  # Ensure data directory exists
+  # Ensure data directory exists with correct ownership
   systemd.tmpfiles.rules = [
     "d ${dataDir}/home/home-assistant/appdata/hass 755 ${toString uid} ${toString uid} -"
+    "Z ${dataDir}/home/home-assistant/appdata/hass - ${toString uid} ${toString uid} -"
   ];
 
   # Use custom data directory instead of default StateDirectory

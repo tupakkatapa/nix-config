@@ -45,8 +45,9 @@ in
     };
   };
 
-  # Ensure host directories for the bind mount exist
+  # Ensure host directories for the bind mount exist with correct ownership
   systemd.tmpfiles.rules = [
     "d ${dataDir}/home/kavita/appdata/kavita 755 ${uid} ${uid} -"
+    "Z ${dataDir}/home/kavita/appdata/kavita - ${uid} ${uid} -"
   ];
 }

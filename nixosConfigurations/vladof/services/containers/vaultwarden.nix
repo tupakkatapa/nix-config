@@ -49,8 +49,9 @@ in
     };
   };
 
-  # Ensure host directories for the bind mount exist
+  # Ensure host directories for the bind mount exist with correct ownership
   systemd.tmpfiles.rules = [
-    "d ${dataDir}/home/vaultwarden/appdata/vaultwarden  755 ${uid} ${uid} -"
+    "d ${dataDir}/home/vaultwarden/appdata/vaultwarden 755 ${uid} ${uid} -"
+    "Z ${dataDir}/home/vaultwarden/appdata/vaultwarden - ${uid} ${uid} -"
   ];
 }
