@@ -31,3 +31,6 @@ fi
 
 notify-send "Screenshot saved in $1" \
   -h string:x-canonical-private-synchronous:anything
+
+# Open file manager at screenshot directory
+xdg-open "$1"
