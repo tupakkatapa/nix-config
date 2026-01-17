@@ -1,17 +1,17 @@
 { lib
 , dataDir
-, servicesConfig
+, containerConfig
 , globalContainerConfig
 , ...
 }:
 let
-  uid = builtins.toString servicesConfig.ollama.uid;
+  uid = builtins.toString containerConfig.ollama.uid;
 in
 {
   containers.ollama = {
     autoStart = true;
     privateNetwork = true;
-    inherit (servicesConfig.ollama) hostAddress localAddress;
+    inherit (containerConfig.ollama) hostAddress localAddress;
 
     # Bind mount the persistent data directory
     bindMounts = {
@@ -26,7 +26,7 @@ in
         enable = true;
         package = pkgs.ollama;
         openFirewall = true;
-        inherit (servicesConfig.ollama) port;
+        inherit (containerConfig.ollama) port;
         host = "0.0.0.0";
         acceleration = false;
         loadModels = [

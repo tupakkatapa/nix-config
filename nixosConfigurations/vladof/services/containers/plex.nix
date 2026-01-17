@@ -1,16 +1,16 @@
 { dataDir
-, servicesConfig
+, containerConfig
 , globalContainerConfig
 , ...
 }:
 let
-  uid = builtins.toString servicesConfig.plex.uid;
+  uid = builtins.toString containerConfig.plex.uid;
 in
 {
   containers.plex = {
     autoStart = true;
     privateNetwork = true;
-    inherit (servicesConfig.plex) hostAddress localAddress;
+    inherit (containerConfig.plex) hostAddress localAddress;
 
     # Bind mount the persistent data directory
     bindMounts = {
@@ -55,7 +55,7 @@ in
 
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [ servicesConfig.plex.port ];
+        allowedTCPPorts = [ containerConfig.plex.port ];
       };
     };
   };

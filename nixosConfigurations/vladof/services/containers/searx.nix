@@ -1,5 +1,5 @@
 { config
-, servicesConfig
+, containerConfig
 , globalContainerConfig
 , ...
 }:
@@ -7,7 +7,7 @@
   containers.searx = {
     autoStart = true;
     privateNetwork = true;
-    inherit (servicesConfig.searx) hostAddress localAddress;
+    inherit (containerConfig.searx) hostAddress localAddress;
 
     # Bind mount the environment file
     bindMounts = {
@@ -23,7 +23,7 @@
         package = pkgs.searxng;
         settings = {
           server = {
-            inherit (servicesConfig.searx) port;
+            inherit (containerConfig.searx) port;
             bind_address = "0.0.0.0";
             secret_key = "@SEARX_SECRET_KEY@";
           };
@@ -41,7 +41,7 @@
 
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [ servicesConfig.searx.port ];
+        allowedTCPPorts = [ containerConfig.searx.port ];
       };
     };
   };

@@ -1,8 +1,8 @@
 { pkgs
 , lib
 , domain
-, servicesConfig
-,
+, containerConfig
+, serviceConfig
 }:
 let
   # HTML file content with inline CSS
@@ -74,9 +74,9 @@ let
         <h1>Services on ${domain}</h1>
         <ul>
           ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: service: ''
-        <li><a href="http://${service.addr}">${name}</a></li>
+        <li><a href="https://${service.addr}">${name}</a></li>
       '')
-      servicesConfig)}
+      (containerConfig // serviceConfig))}
         </ul>
       </div>
     </body>

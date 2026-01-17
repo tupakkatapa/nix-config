@@ -1,17 +1,17 @@
 { lib
 , dataDir
-, servicesConfig
+, containerConfig
 , globalContainerConfig
 , ...
 }:
 let
-  uid = builtins.toString servicesConfig.transmission.uid;
+  uid = builtins.toString containerConfig.transmission.uid;
 in
 {
   containers.transmission = {
     autoStart = true;
     privateNetwork = true;
-    inherit (servicesConfig.transmission) hostAddress localAddress;
+    inherit (containerConfig.transmission) hostAddress localAddress;
 
     # Bind mount the persistent data directory
     bindMounts = {
@@ -47,7 +47,7 @@ in
           download-queue-enabled = false;
           rpc-authentication-required = false;
           rpc-bind-address = "0.0.0.0";
-          rpc-port = servicesConfig.transmission.port;
+          rpc-port = containerConfig.transmission.port;
           rpc-host-whitelist-enabled = false;
           rpc-whitelist-enabled = false;
           # Force verification of existing torrents
@@ -71,7 +71,7 @@ in
 
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [ servicesConfig.transmission.port ];
+        allowedTCPPorts = [ containerConfig.transmission.port ];
       };
     };
   };

@@ -1,17 +1,17 @@
 { config
 , dataDir
-, servicesConfig
+, containerConfig
 , globalContainerConfig
 , ...
 }:
 let
-  uid = builtins.toString servicesConfig.kavita.uid;
+  uid = builtins.toString containerConfig.kavita.uid;
 in
 {
   containers.kavita = {
     autoStart = true;
     privateNetwork = true;
-    inherit (servicesConfig.kavita) hostAddress localAddress;
+    inherit (containerConfig.kavita) hostAddress localAddress;
 
     # Bind mount the persistent data directory
     bindMounts = {
@@ -34,13 +34,13 @@ in
         enable = true;
         dataDir = "/var/lib/kavita";
         tokenKeyFile = "/etc/kavita-token";
-        settings.Port = servicesConfig.kavita.port;
+        settings.Port = containerConfig.kavita.port;
         user = "kavita";
       };
 
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [ servicesConfig.kavita.port ];
+        allowedTCPPorts = [ containerConfig.kavita.port ];
       };
     };
   };

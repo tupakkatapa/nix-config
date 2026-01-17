@@ -9,6 +9,7 @@
           name = "Self-Hosted";
           bookmarks = [
             { name = "Hyperion"; url = "https://10.42.0.1"; }
+            { name = "Home Assistant"; url = "https://home.coditon.com"; }
             { name = "Radicale"; url = "https://dav.coditon.com/"; }
             { name = "Plex"; url = "https://plex.coditon.com"; }
             { name = "Torrent"; url = "https://torrent.coditon.com"; }

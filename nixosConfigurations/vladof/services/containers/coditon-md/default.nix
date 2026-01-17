@@ -1,5 +1,5 @@
 { pkgs
-, servicesConfig
+, containerConfig
 , inputs
 , globalContainerConfig
 , dataDir
@@ -11,13 +11,13 @@ let
     mkdir -p $out
     cp -r ${./contents}/* $out
   '';
-  uid = builtins.toString servicesConfig.coditon-md.uid;
+  uid = builtins.toString containerConfig.coditon-md.uid;
 in
 {
   containers.coditon-md = {
     autoStart = true;
     privateNetwork = true;
-    inherit (servicesConfig.coditon-md) hostAddress localAddress;
+    inherit (containerConfig.coditon-md) hostAddress localAddress;
 
     # Bind mount the blog contents
     bindMounts = {
@@ -34,7 +34,7 @@ in
 
       services.coditon-md = {
         enable = true;
-        inherit (servicesConfig.coditon-md) port;
+        inherit (containerConfig.coditon-md) port;
         dataDir = "/blog-contents";
         name = "Jesse Karjalainen";
         image = "/blog-contents/profile.jpg";
@@ -56,7 +56,7 @@ in
 
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [ servicesConfig.coditon-md.port ];
+        allowedTCPPorts = [ containerConfig.coditon-md.port ];
       };
     };
   };

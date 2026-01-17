@@ -134,6 +134,7 @@ in
           ''"search.coditon.com. IN A 10.42.0.8"''
           ''"torrent.coditon.com. IN A 10.42.0.8"''
           ''"vault.coditon.com. IN A 10.42.0.8"''
+          ''"home.coditon.com. IN A 10.42.0.8"''
           ''"kaakkuri.coditon.com. IN A 10.42.0.25"''
           ''"hyperion.coditon.com. IN A 10.42.0.1"''
           ''"router.coditon.com. IN A 10.42.0.1"''

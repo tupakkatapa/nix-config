@@ -1,17 +1,17 @@
 { config
 , dataDir
-, servicesConfig
+, containerConfig
 , globalContainerConfig
 , ...
 }:
 let
-  uid = builtins.toString servicesConfig.vaultwarden.uid;
+  uid = builtins.toString containerConfig.vaultwarden.uid;
 in
 {
   containers.vaultwarden = {
     autoStart = true;
     privateNetwork = true;
-    inherit (servicesConfig.vaultwarden) hostAddress localAddress;
+    inherit (containerConfig.vaultwarden) hostAddress localAddress;
 
     # Bind mount the persistent data directory
     bindMounts = {
@@ -33,8 +33,8 @@ in
         config = {
           # Example: https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
           # Defaults: https://github.com/dani-garcia/vaultwarden/blob/main/src/config.rs
-          domain = "https://${servicesConfig.vaultwarden.addr}";
-          rocketPort = servicesConfig.vaultwarden.port;
+          domain = "https://${containerConfig.vaultwarden.addr}";
+          rocketPort = containerConfig.vaultwarden.port;
           rocketAddress = "0.0.0.0";
           signupsAllowed = false;
           showPasswordHint = false;
@@ -44,7 +44,7 @@ in
 
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [ servicesConfig.vaultwarden.port ];
+        allowedTCPPorts = [ containerConfig.vaultwarden.port ];
       };
     };
   };

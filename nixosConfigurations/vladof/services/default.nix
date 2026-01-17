@@ -7,9 +7,9 @@
 , ...
 }:
 let
-  # Service and container configuration
+  # Container configuration
   containerSubnet = "10.23.0";
-  servicesConfig = lib.mapAttrs
+  containerConfig = lib.mapAttrs
     (_name: service: service // {
       localAddress = "${containerSubnet}.${toString service.lastOctet}";
       hostAddress = "${containerSubnet}.1";
@@ -73,9 +73,22 @@ let
       };
     };
 
+  # Service configuration
+  serviceConfig = {
+    home-assistant = {
+      addr = "home.${domain}";
+      port = 8123;
+      private = true;
+      uid = 10010;
+    };
+  };
+
   # Filter for public and private services
-  publicServices = lib.filterAttrs (_: service: !service.private) servicesConfig;
-  privateServices = lib.filterAttrs (_: service: service.private) servicesConfig;
+  publicServices = lib.filterAttrs (_: service: !service.private) containerConfig;
+  privateServices = lib.filterAttrs (_: service: service.private) containerConfig;
+
+  # Filter host services by public/private
+  privateHostServices = lib.filterAttrs (_: service: service.private) serviceConfig;
 
   # CA + server cert hierarchy for private services
   caCertPem = ./certs/ca-cert.pem;
@@ -91,11 +104,12 @@ let
   '';
 
   # Generate index page
-  indexPage = import ./index.nix { inherit pkgs lib domain servicesConfig; };
+  indexPage = import ./index.nix { inherit pkgs lib domain containerConfig serviceConfig; };
 in
 {
   imports = [
-    (import ./containers { inherit pkgs lib config domain dataDir servicesConfig containerSubnet inputs; })
+    (import ./containers { inherit pkgs lib config domain dataDir containerConfig containerSubnet inputs; })
+    (import ./home-assistant { inherit lib dataDir; haConfig = serviceConfig.home-assistant; })
   ];
 
   # Reverse proxy
@@ -126,6 +140,18 @@ in
           };
         })
         privateServices
+      # Private host services with self-signed certs
+      // lib.mapAttrs'
+        (_name: service: {
+          name = service.addr;
+          value = {
+            extraConfig = ''
+              tls ${serverCertPem} ${serverCertKey}
+              reverse_proxy http://127.0.0.1:${toString service.port}
+            '';
+          };
+        })
+        privateHostServices
       // {
         "index.${domain}" = {
           extraConfig = ''

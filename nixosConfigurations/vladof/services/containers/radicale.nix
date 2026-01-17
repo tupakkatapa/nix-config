@@ -1,17 +1,17 @@
 { dataDir
-, servicesConfig
+, containerConfig
 , globalContainerConfig
 , config
 , ...
 }:
 let
-  uid = builtins.toString servicesConfig.radicale.uid;
+  uid = builtins.toString containerConfig.radicale.uid;
 in
 {
   containers.radicale = {
     autoStart = true;
     privateNetwork = true;
-    inherit (servicesConfig.radicale) hostAddress localAddress;
+    inherit (containerConfig.radicale) hostAddress localAddress;
 
     # Bind mount the persistent data directory
     bindMounts = {
@@ -29,7 +29,7 @@ in
       services.radicale = {
         enable = true;
         settings = {
-          server.hosts = [ "0.0.0.0:${builtins.toString servicesConfig.radicale.port}" ];
+          server.hosts = [ "0.0.0.0:${builtins.toString containerConfig.radicale.port}" ];
           storage.filesystem_folder = "/var/lib/radicale/collections";
           auth = {
             type = "htpasswd";
@@ -41,7 +41,7 @@ in
 
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [ servicesConfig.radicale.port ];
+        allowedTCPPorts = [ containerConfig.radicale.port ];
       };
     };
   };

@@ -3,7 +3,7 @@
 , config
 , domain
 , dataDir
-, servicesConfig
+, containerConfig
 , inputs
 , ...
 }:
@@ -35,11 +35,11 @@ let
     users.users."${serviceName}" = {
       isSystemUser = true;
       home = "/var/lib/${serviceName}";
-      uid = lib.mkForce servicesConfig."${serviceName}".uid;
+      uid = lib.mkForce containerConfig."${serviceName}".uid;
       group = serviceName;
     };
     users.groups."${serviceName}" = {
-      gid = lib.mkForce servicesConfig."${serviceName}".uid;
+      gid = lib.mkForce containerConfig."${serviceName}".uid;
     };
   };
 
@@ -55,20 +55,20 @@ in
         group = name;
         extraGroups = [ "sftp" ];
       })
-      servicesConfig;
-    groups = lib.mapAttrs (_name: service: { gid = lib.mkForce service.uid; }) servicesConfig;
+      containerConfig;
+    groups = lib.mapAttrs (_name: service: { gid = lib.mkForce service.uid; }) containerConfig;
   };
 
   # Containers
   imports = [
-    (import ./kavita.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
-    (import ./vaultwarden.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
-    (import ./transmission.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
-    (import ./searx.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
-    (import ./ollama.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
-    (import ./plex.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
-    (import ./radicale.nix { inherit config lib domain dataDir servicesConfig globalContainerConfig; })
-    (import ./coditon-md { inherit config lib pkgs domain dataDir servicesConfig inputs globalContainerConfig; })
+    (import ./kavita.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
+    (import ./vaultwarden.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
+    (import ./transmission.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
+    (import ./searx.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
+    (import ./ollama.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
+    (import ./plex.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
+    (import ./radicale.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
+    (import ./coditon-md { inherit config lib pkgs domain dataDir containerConfig inputs globalContainerConfig; })
   ];
   boot.enableContainers = true;
 
@@ -100,7 +100,7 @@ in
               iptables -t nat -A PREROUTING -p tcp -d 172.16.16.1 --dport ${toString service.port} -j DNAT --to-destination ${service.localAddress}:${toString service.port}
               iptables -A FORWARD -p tcp -d ${service.localAddress} --dport ${toString service.port} -j ACCEPT
             '')
-            servicesConfig
+            containerConfig
         );
     };
   };
