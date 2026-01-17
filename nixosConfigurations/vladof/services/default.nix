@@ -79,7 +79,6 @@ let
       addr = "home.${domain}";
       port = 8123;
       private = true;
-      uid = 10010;
     };
   };
 
@@ -109,7 +108,7 @@ in
 {
   imports = [
     (import ./containers { inherit pkgs lib config domain dataDir containerConfig containerSubnet inputs; })
-    (import ./home-assistant { inherit lib dataDir; haConfig = serviceConfig.home-assistant; })
+    (import ./home-assistant { inherit dataDir; haConfig = serviceConfig.home-assistant; })
   ];
 
   # Reverse proxy

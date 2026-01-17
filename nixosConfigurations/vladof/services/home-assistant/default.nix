@@ -1,9 +1,8 @@
-{ lib
-, dataDir
+{ dataDir
 , haConfig
 }:
 let
-  inherit (haConfig) uid port;
+  inherit (haConfig) port;
 
   # Import modular configs
   dashboard = import ./dashboard.nix;
@@ -15,14 +14,13 @@ in
     enable = true;
     openFirewall = true;
     configWritable = false;
+    configDir = "${dataDir}/home/home-assistant/appdata/hass";
 
     extraComponents = [
-      "zha"
       "default_config"
       "met"
-      # "mobile_app"
-      "backup"
       "wake_on_lan"
+      "zha"
     ];
 
     lovelaceConfig = dashboard;
@@ -117,22 +115,9 @@ in
     };
   };
 
-  # Match UID from previous container setup
-  users.users.hass = {
-    isSystemUser = true;
-    group = "hass";
-    uid = lib.mkForce uid;
-    extraGroups = [ "dialout" ];
-  };
-  users.groups.hass.gid = lib.mkForce uid;
-
   # Ensure data directory exists with correct ownership
   systemd.tmpfiles.rules = [
-    "d ${dataDir}/home/home-assistant/appdata/hass 755 ${toString uid} ${toString uid} -"
-    "Z ${dataDir}/home/home-assistant/appdata/hass - ${toString uid} ${toString uid} -"
+    "d ${dataDir}/home/home-assistant/appdata/hass 755 hass hass -"
+    "Z ${dataDir}/home/home-assistant/appdata/hass - hass hass -"
   ];
-
-  # Use custom data directory instead of default StateDirectory
-  systemd.services.home-assistant.serviceConfig.StateDirectory = lib.mkForce [ ];
-  services.home-assistant.configDir = "${dataDir}/home/home-assistant/appdata/hass";
 }
