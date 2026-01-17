@@ -62,6 +62,7 @@ nix-shell -p btrfs-progs cryptsetup parted util-linux systemd
 
 If the backup disk isn't unlocked at boot (LUKS config commented out), use this to occasionally resync:
 
+- Find stable path: `ls -l /dev/disk/by-id | grep sdX1`
 - Unlock: `sudo systemd-cryptsetup attach backup /dev/disk/by-id/<drive>-part1`
 - Scan: `sudo btrfs device scan`
 - Verify both devices visible: `sudo btrfs filesystem show /mnt/data`

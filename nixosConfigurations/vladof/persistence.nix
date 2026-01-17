@@ -38,6 +38,10 @@
       neededForBoot = true;
       options = [ "degraded" ]; # Allow mounting with missing RAID1 device
     };
+    "/mnt/jhvst" = {
+      device = "/dev/disk/by-label/jhvst";
+      fsType = "btrfs";
+    };
     # "/mnt/boot" = {
     #   device = "/dev/disk/by-uuid/3C60-8E75";
     #   fsType = "vfat";
