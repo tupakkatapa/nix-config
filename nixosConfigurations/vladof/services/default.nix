@@ -109,6 +109,7 @@ in
   imports = [
     (import ./containers { inherit pkgs lib config domain dataDir containerConfig containerSubnet inputs; })
     (import ./home-assistant { inherit dataDir; haConfig = serviceConfig.home-assistant; })
+    (import ./garage.nix { inherit pkgs config; })
   ];
 
   # Reverse proxy
