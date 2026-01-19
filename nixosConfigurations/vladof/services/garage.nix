@@ -48,6 +48,18 @@ in
     mode = "400";
   };
 
+  # Create garage user and group explicitly
+  systemd.services.garage.serviceConfig = {
+    DynamicUser = false;
+    User = "garage";
+    Group = "garage";
+  };
+  users.users.garage = {
+    isSystemUser = true;
+    group = "garage";
+  };
+  users.groups.garage = { };
+
   # Open firewall for internal access
   networking.firewall.allowedTCPPorts = [
     3900 # S3 API
@@ -57,16 +69,10 @@ in
     3904 # K2V API
   ];
 
-  # Ensure garage directories exist
+  # Ensure garage directories exist with correct ownership
   systemd.tmpfiles.rules = [
-    "d ${garageDir}          755 garage garage -"
-    "d ${garageDir}/metadata 755 garage garage -"
-    "d ${garageDir}/data     755 garage garage -"
+    "d ${garageDir}          0750 garage garage -"
+    "d ${garageDir}/metadata 0750 garage garage -"
+    "d ${garageDir}/data     0750 garage garage -"
   ];
-
-  # Ensure jhvst mount is available before starting
-  systemd.services.garage = {
-    after = [ "mnt-jhvst.mount" ];
-    requires = [ "mnt-jhvst.mount" ];
-  };
 }
