@@ -105,6 +105,7 @@
   services.refindGenerate = {
     enable = true;
     dataDir = "${dataDir}/home/root/appdata/refind";
+    prune = true;
     rollbacks = {
       enable = true;
       keep = 4;
