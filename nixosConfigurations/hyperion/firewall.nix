@@ -59,7 +59,17 @@ _:
 
       "enp1s0" = {
         allowedTCPPorts = [ ];
-        allowedUDPPorts = [ 51820 ]; # WireGuard
+        allowedUDPPorts = [ 51820 51822 51823 ]; # WireGuard (wg0, wg1, wg2)
+      };
+
+      "wg1" = {
+        allowedTCPPorts = [ 22 53 ]; # SSH, DNS
+        allowedUDPPorts = [ 53 123 ]; # DNS, NTP
+      };
+
+      "wg2" = {
+        allowedTCPPorts = [ 22 53 ]; # SSH, DNS
+        allowedUDPPorts = [ 53 123 ]; # DNS, NTP
       };
     };
 
@@ -74,9 +84,9 @@ _:
       iifname "enp1s0" udp sport 547 udp dport 546 accept
 
       # Rate limiting
-      iifname { "br-lan", "wg0" } tcp dport 22 limit rate over 10/minute drop
-      iifname { "br-lan", "wg0", "br-wifi" } udp dport 53 limit rate over 50/second drop
-      iifname { "br-lan", "wg0", "br-wifi" } udp dport 123 limit rate over 10/second drop
+      iifname { "br-lan", "wg0", "wg1", "wg2" } tcp dport 22 limit rate over 10/minute drop
+      iifname { "br-lan", "wg0", "wg1", "wg2", "br-wifi" } udp dport 53 limit rate over 50/second drop
+      iifname { "br-lan", "wg0", "wg1", "wg2", "br-wifi" } udp dport 123 limit rate over 10/second drop
 
       # Logging (sampled to avoid flooding)
       limit rate 1/minute log prefix "INPUT DROP: "
@@ -95,8 +105,8 @@ _:
       # iifname "enp1s0" tcp dport 9001 ct state new limit rate over 50/second drop    # Lighthouse
 
       # Block external DNS (force clients through local resolver)
-      iifname { "br-lan", "br-wifi", "wg0" } oifname "enp1s0" tcp dport 53 reject with tcp reset
-      iifname { "br-lan", "br-wifi", "wg0" } oifname "enp1s0" udp dport 53 reject
+      iifname { "br-lan", "br-wifi", "wg0", "wg1", "wg2" } oifname "enp1s0" tcp dport 53 reject with tcp reset
+      iifname { "br-lan", "br-wifi", "wg0", "wg1", "wg2" } oifname "enp1s0" udp dport 53 reject
 
       # Egress blocks (defense in depth)
       oifname "enp1s0" tcp dport { 23, 25, 135, 137, 138, 139, 445 } drop  # Telnet, SMTP, RPC, SMB
@@ -107,6 +117,15 @@ _:
 
       # Allow WireGuard → WAN and LAN
       iifname "wg0" oifname { "enp1s0", "br-lan" } accept
+
+      # wg1: only garage on vladof (10.42.0.8), no other LAN access
+      iifname "wg1" oifname "br-lan" ip daddr 10.42.0.8 tcp dport { 3900, 3901, 3902, 3903 } accept
+      iifname "wg1" oifname "br-lan" drop
+      iifname "wg1" oifname "enp1s0" accept
+
+      # wg2: WAN only, no LAN access
+      iifname "wg2" oifname "br-lan" drop
+      iifname "wg2" oifname "enp1s0" accept
 
       # Allow WiFi → WAN only (no LAN access - guest network)
       iifname "br-wifi" oifname "enp1s0" accept
