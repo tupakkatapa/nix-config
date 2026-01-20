@@ -29,15 +29,15 @@
     modules = [
       {
         name = "games";
-        path = ../.config/games.nix;
+        imports = [ ../.config/games.nix ];
       }
       {
         name = "retroarch";
-        path = ../.config/retroarch.nix;
+        imports = [ ../.config/retroarch.nix ];
       }
       {
         name = "ai-tools";
-        path = ../.config/ai-tools.nix;
+        imports = [ ../.config/ai-tools.nix ];
       }
     ];
   };
