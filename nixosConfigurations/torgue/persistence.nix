@@ -21,6 +21,7 @@ in
             { name = "claude-projects"; mode = "755"; what = "/home/kari/.claude/projects"; }
             { name = "firefox"; mode = "755"; what = "/home/kari/.mozilla"; }
             { name = "guitarix"; mode = "755"; what = "/home/kari/.config/guitarix"; }
+            { name = "zrythm"; mode = "755"; what = "/home/kari/.local/share/zrythm"; }
             { name = "gh"; mode = "755"; what = "/home/kari/.config/gh"; }
             { name = "gcloud"; mode = "755"; what = "/home/kari/.config/gcloud"; }
             { name = "pulumi"; mode = "755"; what = "/home/kari/.pulumi"; }

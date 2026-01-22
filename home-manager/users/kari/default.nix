@@ -86,9 +86,6 @@ in
       monitor-adjust
       tui-suite
 
-      guitarix
-      gxplugins-lv2
-
       # Trezor
       trezorctl
 

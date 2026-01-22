@@ -39,6 +39,10 @@
         name = "ai-tools";
         imports = [ ../.config/ai-tools.nix ];
       }
+      {
+        name = "daw";
+        imports = [ ../.config/daw.nix ];
+      }
     ];
   };
 
