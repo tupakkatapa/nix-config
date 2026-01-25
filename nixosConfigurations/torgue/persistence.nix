@@ -25,7 +25,6 @@ in
             { name = "gh"; mode = "755"; what = "/home/kari/.config/gh"; }
             { name = "gcloud"; mode = "755"; what = "/home/kari/.config/gcloud"; }
             { name = "pulumi"; mode = "755"; what = "/home/kari/.pulumi"; }
-            { name = "doppler"; mode = "700"; what = "/home/kari/.doppler"; }
           ];
         }
         {
@@ -53,6 +52,7 @@ in
           name = "other";
           dirs = [
             { name = "nix-config"; mode = "755"; what = "/home/kari/nix-config"; }
+            { name = "local-workspace"; mode = "755"; what = "/home/kari/Workspace/local"; }
           ];
         }
       ];
@@ -100,5 +100,6 @@ in
     "d /home/kari/.local 755 kari kari -"
     "d /home/kari/.local/share 755 kari kari -"
     "d /home/kari/.claude 755 kari kari -"
+    "d /home/kari/Workspace 755 kari kari -"
   ];
 }

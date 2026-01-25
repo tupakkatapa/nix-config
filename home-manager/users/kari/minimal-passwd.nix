@@ -96,6 +96,10 @@ in
         where = "/home/${user}/Downloads";
       }
       {
+        what = "/mnt/sftp/code/workspace";
+        where = "/home/${user}/Workspace/remote";
+      }
+      {
         what = "/mnt/sftp/appdata/retroarch";
         where = "/home/${user}/.config/retroarch";
       }
