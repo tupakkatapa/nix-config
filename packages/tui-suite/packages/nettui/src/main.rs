@@ -750,8 +750,7 @@ impl App for NetTui {
                         .borders(Borders::ALL)
                         .border_type(Theme::BORDER_TYPE)
                         .border_style(self.theme.border());
-                    let msg =
-                        Paragraph::new(" Wi-Fi scanning requires wpa_supplicant").block(block);
+                    let msg = Paragraph::new(" Wi-Fi scanning requires iwd").block(block);
                     frame.render_widget(msg, main_chunks[1]);
                 } else if !self.has_wifi_enabled() {
                     let block = Block::default()

@@ -71,9 +71,13 @@
       allowedTCPPorts = [ 8080 ]; # magic port
     };
     useDHCP = false;
-    wireless = {
+    wireless.iwd = {
       enable = true;
-      userControlled.enable = true;
+      settings = {
+        General.StateDirectory = "/etc/iwd";
+        Network.EnableIPv6 = true;
+        Settings.AutoConnect = false;
+      };
     };
   };
   systemd.network = {

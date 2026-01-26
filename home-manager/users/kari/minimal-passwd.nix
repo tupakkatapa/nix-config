@@ -21,7 +21,16 @@ in
       rekeyFile = ./secrets/wg-home.age;
       owner = "systemd-network";
     };
-    "wpa-psk".rekeyFile = ./secrets/wpa-psk.age;
+    "iwd-hyperion" = {
+      rekeyFile = ./secrets/iwd-hyperion.age;
+      path = "/etc/iwd/hyperion.psk";
+      mode = "0600";
+    };
+    "iwd-pixel" = {
+      rekeyFile = ./secrets/iwd-pixel.age;
+      path = "/etc/iwd/pixel.psk";
+      mode = "0600";
+    };
     "ed25519-sk-yubikey" = {
       rekeyFile = ./secrets/ed25519-sk-yubikey.age;
       path = "/home/${user}/.ssh/id_ed25519_sk_yubikey";
@@ -194,16 +203,6 @@ in
       wireguard-go
       wireguard-tools
     ];
-  };
-
-  # WPA PSK's
-  networking.wireless = {
-    networks = {
-      "OP9".pskRaw = "ext:psk_op9";
-      "Pixel_1253".pskRaw = "ext:psk_op9";
-      "hyperion-2g".pskRaw = "ext:psk_hyp";
-    };
-    secretsFile = config.age.secrets.wpa-psk.path;
   };
 
   # Wireguard

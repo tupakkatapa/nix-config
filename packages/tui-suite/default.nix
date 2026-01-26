@@ -24,7 +24,7 @@ pkgs.rustPlatform.buildRustPackage {
     wrapProgram $out/bin/blutui \
       --prefix PATH : ${lib.makeBinPath [ pkgs.bluez pkgs.systemd ]}
     wrapProgram $out/bin/nettui \
-      --prefix PATH : ${lib.makeBinPath [ pkgs.systemd pkgs.wpa_supplicant ]}
+      --prefix PATH : ${lib.makeBinPath [ pkgs.systemd pkgs.iwd ]}
   '';
 
   src = lib.sourceByRegex ./. [

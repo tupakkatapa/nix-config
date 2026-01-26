@@ -74,16 +74,6 @@ pub fn run_with_sudo(program: &str, args: &[&str], password: Option<&str>) -> Ap
     }
 }
 
-fn sudo_cmd(program: &str) -> Command {
-    if needs_sudo() {
-        let mut cmd = Command::new(SUDO);
-        cmd.args(["--non-interactive", program]);
-        cmd
-    } else {
-        Command::new(program)
-    }
-}
-
 #[derive(Clone)]
 pub struct Interface {
     pub name: String,
@@ -158,18 +148,24 @@ pub fn get_interfaces() -> AppResult<Vec<Interface>> {
 }
 
 pub fn scan_wifi(interface: &str) -> AppResult<Vec<WifiNetwork>> {
-    // Trigger scan
-    let _ = sudo_cmd("wpa_cli").args(["-i", interface, "scan"]).output();
+    // Trigger scan (iwd doesn't require sudo)
+    let _ = Command::new("iwctl")
+        .args(["station", interface, "scan"])
+        .output();
+
+    // Small delay to let scan complete
+    std::thread::sleep(std::time::Duration::from_millis(500));
 
     // Get results
-    let output = sudo_cmd("wpa_cli")
-        .args(["-i", interface, "scan_results"])
+    let output = Command::new("iwctl")
+        .args(["station", interface, "get-networks"])
         .output()?;
 
     if output.status.success() {
-        Ok(parse_wpa_cli_output(
+        let connected = get_connected_network(interface);
+        Ok(parse_iwctl_networks(
             &String::from_utf8_lossy(&output.stdout),
-            interface,
+            connected.as_deref(),
         ))
     } else {
         Ok(vec![])
@@ -178,172 +174,161 @@ pub fn scan_wifi(interface: &str) -> AppResult<Vec<WifiNetwork>> {
 
 pub fn wifi_scan_available() -> bool {
     Command::new("which")
-        .arg("wpa_cli")
+        .arg("iwctl")
         .output()
         .map(|o| o.status.success())
         .unwrap_or(false)
 }
 
-fn parse_wpa_cli_output(output: &str, interface: &str) -> Vec<WifiNetwork> {
-    // Get current connected network
-    let status_output = sudo_cmd("wpa_cli")
-        .args(["-i", interface, "status"])
+/// Get currently connected network from iwctl station show
+fn get_connected_network(interface: &str) -> Option<String> {
+    let output = Command::new("iwctl")
+        .args(["station", interface, "show"])
         .output()
-        .ok();
+        .ok()?;
 
-    let connected_ssid = status_output.and_then(|out| {
-        let s = String::from_utf8_lossy(&out.stdout);
-        s.lines()
-            .find(|l| l.starts_with("ssid="))
-            .map(|l| l.trim_start_matches("ssid=").to_string())
-    });
-
-    let networks: Vec<WifiNetwork> = output
-        .lines()
-        .skip(1) // Skip header
-        .filter_map(|line| {
-            let parts: Vec<&str> = line.split('\t').collect();
-            if parts.len() < 5 {
-                return None;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    for line in stdout.lines() {
+        let trimmed = line.trim();
+        if trimmed.starts_with("Connected network") {
+            // Format: "Connected network   SSID"
+            let parts: Vec<&str> = trimmed.splitn(2, "Connected network").collect();
+            if parts.len() == 2 {
+                return Some(parts[1].trim().to_string());
             }
+        }
+    }
+    None
+}
 
-            let ssid = (*parts.get(4)?).to_string();
-            if ssid.is_empty() {
-                return None;
+/// Parse iwctl get-networks output
+/// Format:
+/// ```
+///                                Available networks                             *
+/// --------------------------------------------------------------------------------
+///       Network name                      Security            Signal
+/// --------------------------------------------------------------------------------
+///       hyperion-2g                       psk                 ****
+///   >   OP9                               psk                 ***
+/// ```
+fn parse_iwctl_networks(output: &str, connected: Option<&str>) -> Vec<WifiNetwork> {
+    let mut networks = Vec::new();
+    let mut in_data = false;
+    let mut header_count = 0;
+
+    for line in output.lines() {
+        // Skip until we've passed both header separator lines
+        if line.contains("----") {
+            header_count += 1;
+            if header_count >= 2 {
+                in_data = true;
             }
+            continue;
+        }
 
-            // Convert signal level (dBm) to percentage
-            let signal_dbm: i32 = parts.get(2)?.parse().unwrap_or(-80);
-            // Result is always 0-100, fits in u8
-            let signal_raw = (signal_dbm + 100).clamp(0, 60) * 100 / 60;
-            let signal = u8::try_from(signal_raw).unwrap_or(0);
+        if !in_data {
+            continue;
+        }
 
-            let flags = parts.get(3)?;
-            let secured = flags.contains("WPA") || flags.contains("WEP");
+        let trimmed = line.trim();
+        if trimmed.is_empty() {
+            continue;
+        }
 
-            Some(WifiNetwork {
-                ssid: ssid.clone(),
-                signal,
-                secured,
-                connected: connected_ssid.as_ref() == Some(&ssid),
-            })
-        })
-        .collect();
+        // Check if connected (starts with >)
+        let is_connected_indicator = line.trim_start().starts_with('>');
+        let line_clean = if is_connected_indicator {
+            line.trim_start().trim_start_matches('>').trim_start()
+        } else {
+            trimmed
+        };
+
+        // Parse the line - it's space-separated with variable spacing
+        // We need to extract: SSID, Security, Signal
+        // Signal is at the end (asterisks like ****)
+        // Security is before signal (psk, open, etc.)
+
+        // Find signal strength (asterisks at end)
+        let signal_chars: String = line_clean
+            .chars()
+            .rev()
+            .take_while(|c| *c == '*' || c.is_whitespace())
+            .collect::<String>()
+            .chars()
+            .rev()
+            .collect();
+        let signal_count = signal_chars.chars().filter(|c| *c == '*').count();
+        #[allow(
+            clippy::cast_possible_truncation,
+            clippy::cast_sign_loss,
+            clippy::cast_precision_loss
+        )]
+        let signal = ((signal_count as f32 / 4.0) * 100.0) as u8;
+
+        // Remove signal from end
+        let without_signal = line_clean.trim_end_matches(|c: char| c == '*' || c.is_whitespace());
+
+        // Security is the last word before signal
+        let parts: Vec<&str> = without_signal.split_whitespace().collect();
+        if parts.len() < 2 {
+            continue;
+        }
+
+        let security = parts.last().unwrap_or(&"");
+        let secured = *security != "open";
+
+        // SSID is everything before security
+        let ssid = parts[..parts.len() - 1].join(" ");
+
+        if ssid.is_empty() || ssid == "Network name" {
+            continue;
+        }
+
+        let is_connected = connected.is_some_and(|c| c == ssid) || is_connected_indicator;
+
+        networks.push(WifiNetwork {
+            ssid,
+            signal,
+            secured,
+            connected: is_connected,
+        });
+    }
 
     networks
 }
 
-/// Escape a string for use in `wpa_cli` quoted parameters
-fn escape_wpa_cli_param(s: &str) -> String {
-    // wpa_cli expects double-quoted strings; escape embedded quotes and backslashes
-    s.replace('\\', "\\\\").replace('"', "\\\"")
-}
-
 pub fn connect_wifi(interface: &str, ssid: &str, password: Option<&str>) -> AppResult<String> {
-    // First check if network is already configured
-    let list_output = sudo_cmd("wpa_cli")
-        .args(["-i", interface, "list_networks"])
-        .output()?;
+    // For iwd, connection is simple:
+    // - If network is known (saved), just connect
+    // - If new network with password, use --passphrase
 
-    let output_str = String::from_utf8_lossy(&list_output.stdout);
-    for line in output_str.lines().skip(1) {
-        let parts: Vec<&str> = line.split('\t').collect();
-        if parts.len() >= 2 && parts[1] == ssid {
-            let network_id = parts[0];
-            let select_output = sudo_cmd("wpa_cli")
-                .args(["-i", interface, "select_network", network_id])
-                .output()?;
-
-            if select_output.status.success() {
-                return Ok(format!("Connecting to {ssid}"));
-            }
+    let output = if let Some(psk) = password {
+        if psk.is_empty() {
+            return Ok(format!("'{ssid}' requires a password"));
         }
-    }
-
-    // Network not configured - add it with password if provided
-    let Some(psk) = password else {
-        return Ok(format!("'{ssid}' not configured (no password provided)"));
+        // Connect with passphrase (iwd will save it)
+        Command::new("iwctl")
+            .args(["--passphrase", psk, "station", interface, "connect", ssid])
+            .output()?
+    } else {
+        // Try connecting (works for open networks or saved networks)
+        Command::new("iwctl")
+            .args(["station", interface, "connect", ssid])
+            .output()?
     };
 
-    if psk.is_empty() {
-        return Ok(format!("'{ssid}' not configured (empty password)"));
+    if output.status.success() {
+        Ok(format!("Connecting to {ssid}"))
+    } else {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        if stderr.contains("passphrase") || stderr.contains("Passphrase") {
+            Ok(format!("'{ssid}' requires a password"))
+        } else if stderr.is_empty() {
+            Ok(format!("Connecting to {ssid}"))
+        } else {
+            Ok(format!("Failed: {}", stderr.trim()))
+        }
     }
-
-    // Add new network
-    let add_output = sudo_cmd("wpa_cli")
-        .args(["-i", interface, "add_network"])
-        .output()?;
-    let add_str = String::from_utf8_lossy(&add_output.stdout);
-    let network_id = add_str.trim();
-
-    // Validate network_id is a number
-    if network_id.parse::<u32>().is_err() {
-        return Ok("Failed to add network".to_string());
-    }
-
-    // Set SSID (must be quoted for wpa_cli)
-    let ssid_quoted = format!("\"{}\"", escape_wpa_cli_param(ssid));
-    let ssid_output = sudo_cmd("wpa_cli")
-        .args([
-            "-i",
-            interface,
-            "set_network",
-            network_id,
-            "ssid",
-            &ssid_quoted,
-        ])
-        .output()?;
-    if !String::from_utf8_lossy(&ssid_output.stdout).contains("OK") {
-        let _ = sudo_cmd("wpa_cli")
-            .args(["-i", interface, "remove_network", network_id])
-            .output();
-        return Ok("Failed to set SSID".to_string());
-    }
-
-    // Set PSK (must be quoted for wpa_cli)
-    let psk_quoted = format!("\"{}\"", escape_wpa_cli_param(psk));
-    let psk_output = sudo_cmd("wpa_cli")
-        .args([
-            "-i",
-            interface,
-            "set_network",
-            network_id,
-            "psk",
-            &psk_quoted,
-        ])
-        .output()?;
-    if !String::from_utf8_lossy(&psk_output.stdout).contains("OK") {
-        let _ = sudo_cmd("wpa_cli")
-            .args(["-i", interface, "remove_network", network_id])
-            .output();
-        return Ok("Failed to set password".to_string());
-    }
-
-    // Enable network
-    let enable_output = sudo_cmd("wpa_cli")
-        .args(["-i", interface, "enable_network", network_id])
-        .output()?;
-    if !String::from_utf8_lossy(&enable_output.stdout).contains("OK") {
-        let _ = sudo_cmd("wpa_cli")
-            .args(["-i", interface, "remove_network", network_id])
-            .output();
-        return Ok("Failed to enable network".to_string());
-    }
-
-    // Select the network to connect
-    let select_output = sudo_cmd("wpa_cli")
-        .args(["-i", interface, "select_network", network_id])
-        .output()?;
-    if !select_output.status.success() {
-        return Ok("Failed to select network".to_string());
-    }
-
-    // Save configuration
-    let _ = sudo_cmd("wpa_cli")
-        .args(["-i", interface, "save_config"])
-        .output();
-
-    Ok(format!("Connecting to {ssid}"))
 }
 
 pub fn toggle_interface(
