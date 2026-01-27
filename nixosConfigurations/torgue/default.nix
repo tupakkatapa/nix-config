@@ -41,7 +41,8 @@
       }
       {
         name = "daw";
-        imports = [ ../.config/daw.nix ];
+        imports = [ /mnt/860/home/kari/other/daw.nix ];
+        skipValidation = true;
       }
     ];
   };

@@ -1,4 +1,4 @@
-_: {
+{ pkgs, ... }: {
   services.pipewire = {
     enable = true;
     alsa = {
@@ -8,6 +8,12 @@ _: {
     jack.enable = true;
     pulse.enable = true;
   };
+
+  # Utilities
+  environment.systemPackages = with pkgs; [
+    alsa-utils
+    qpwgraph
+  ];
 
   # Make pipewire realtime-capable
   security.rtkit.enable = true;
@@ -39,4 +45,17 @@ _: {
       value = "99999";
     }
   ];
+
+  # Real-time audio settings
+  boot = {
+    kernel.sysctl."vm.swappiness" = 10;
+    kernelModules = [ "snd-seq" "snd-rawmidi" ];
+    kernelParams = [ "threadirqs" ];
+  };
+  services.udev.extraRules = ''
+    KERNEL=="rtc0", GROUP="audio"
+    KERNEL=="hpet", GROUP="audio"
+    DEVPATH=="/devices/virtual/misc/cpu_dma_latency", OWNER="root", GROUP="audio", MODE="0660"
+  '';
+  powerManagement.cpuFreqGovernor = "performance";
 }

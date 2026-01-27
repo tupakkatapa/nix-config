@@ -3279,11 +3279,11 @@
         "treefmt-nix": "treefmt-nix_5"
       },
       "locked": {
-        "lastModified": 1768950626,
-        "narHash": "sha256-nhuOnoJ6c+X617skj5UBlKlLj3cd+9sb63hHCuyfC1Y=",
+        "lastModified": 1769478750,
+        "narHash": "sha256-ZH6i9K4RCxPuUilo/TXMDSztZO8ocrzZT+09pJQ9HjU=",
         "owner": "tupakkatapa",
         "repo": "nixos-runtime-modules",
-        "rev": "7e877f8b89784335a66e628d5dd8c026d6e98805",
+        "rev": "fc3c03033cc1dc00f4938a370b74c4a9e928ca28",
         "type": "github"
       },
       "original": {
