@@ -346,7 +346,6 @@
           # NixOS modules
           nixosModules = {
             autoScrcpy.imports = [ ./nixosModules/auto-scrcpy.nix ];
-            rsyncBackup.imports = [ ./nixosModules/rsync-backup.nix ];
             stateSaver.imports = [ ./nixosModules/state-saver.nix ];
           };
 

@@ -8,10 +8,6 @@
     storageMode = "local";
   };
 
-  # environment.systemPackages = with pkgs; [
-  #   wayvnc
-  # ];
-
   imports = [
     ../.config/gaming-amd.nix
     ../.config/keyd.nix
@@ -27,10 +23,6 @@
     flakeUrl = "path:/home/kari/nix-config";
     builtinModules.enable = true;
     modules = [
-      {
-        name = "games";
-        imports = [ ../.config/games.nix ];
-      }
       {
         name = "retroarch";
         imports = [ ../.config/retroarch.nix ];
@@ -54,15 +46,6 @@
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
   ];
-
-  # Wireless VR Streaming
-  # programs.alvr = {
-  #   enable = true;
-  #   openFirewall = true;
-  # };
-
-  # Required for automounting
-  # services.udisks2.enable = true;
 
   # Connectivity
   networking = {

@@ -20,7 +20,6 @@ in
           dirs = [
             { name = "claude-projects"; mode = "755"; what = "/home/kari/.claude/projects"; }
             { name = "firefox"; mode = "755"; what = "/home/kari/.mozilla"; }
-            { name = "guitarix"; mode = "755"; what = "/home/kari/.config/guitarix"; }
             { name = "bitwig-config"; mode = "755"; what = "/home/kari/.BitwigStudio"; }
             { name = "bitwig-projects"; mode = "755"; what = "/home/kari/Bitwig Studio"; }
             { name = "gh"; mode = "755"; what = "/home/kari/.config/gh"; }
@@ -33,13 +32,6 @@ in
           dirs = [
             { name = "steam"; mode = "755"; what = "/home/kari/.steam"; }
             { name = "steam/install"; mode = "755"; what = "/home/kari/.local/share/Steam"; }
-            { name = "games"; mode = "755"; what = "/home/kari/Games"; }
-            { name = "anime-game-launcher"; mode = "755"; what = "/home/kari/.local/share/anime-game-launcher"; }
-            { name = "osu-lazer"; mode = "755"; what = "/home/kari/.local/share/osu"; }
-            { name = "runelite"; mode = "755"; what = "/home/kari/.runelite"; }
-            { name = "bottles"; mode = "755"; what = "/home/kari/.local/share/bottles"; }
-            { name = "minecraft"; mode = "755"; what = "/home/kari/.local/share/PrismLauncher"; }
-            { name = "heroic"; mode = "755"; what = "/home/kari/.config/heroic"; }
           ];
         }
         {
@@ -67,10 +59,6 @@ in
       fsType = "ext4";
       neededForBoot = true;
     };
-    # "/mnt/boot" = {
-    #   device = "/dev/disk/by-uuid/CA7C-5C77";
-    #   fsType = "auto";
-    # };
   };
 
   # Mount '/nix/.rw-store' and '/tmp' to disk
@@ -81,18 +69,8 @@ in
     options = [ "bind" ];
   };
 
-  # Update the rEFInd boot manager
-  # services.refindGenerate = {
-  #   enable = true;
-  #   where = "/dev/disk/by-uuid/CA7C-5C77";
-  #   flakeUrl = "github:tupakkatapa/nix-config";
-  #   hosts = [ "bandit" ];
-  #   timeout = 1;
-  # };
-
   # Create host-specific directories
   systemd.tmpfiles.rules = [
-    # "d /mnt/boot          755 root root -"
     "d /mnt/sftp          755 root root -"
     "d ${dataDir}/store   755 root root -"
 

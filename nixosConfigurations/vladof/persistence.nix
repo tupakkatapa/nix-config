@@ -42,10 +42,6 @@
       device = "/dev/disk/by-label/jhvst";
       fsType = "btrfs";
     };
-    # "/mnt/boot" = {
-    #   device = "/dev/disk/by-uuid/3C60-8E75";
-    #   fsType = "vfat";
-    # };
   };
 
   # FIDO2 LUKS configuration
@@ -63,20 +59,8 @@
     options = [ "bind" ];
   };
 
-  # Update the rEFInd boot manager
-  # services.refindGenerate = {
-  #   enable = true;
-  #   rollbacks.enable = true;
-  #   where = "/dev/disk/by-uuid/3C60-8E75";
-  #   flakeUrl = "github:tupakkatapa/nix-config";
-  #   hosts = [ "vladof" "bandit" ];
-  #   default = "vladof";
-  #   timeout = 1;
-  # };
-
   # Create host-specific directories
   systemd.tmpfiles.rules = [
-    # "d /mnt/boot          755 root root -"
     "d ${dataDir}/backups  700 root root -"
     "d ${dataDir}/sftp     755 root root -"
     "d ${dataDir}/store    755 root root -"

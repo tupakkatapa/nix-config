@@ -23,7 +23,6 @@ in
             { name = "gh"; mode = "755"; what = "/home/kari/.config/gh"; }
             { name = "gcloud"; mode = "755"; what = "/home/kari/.config/gcloud"; }
             { name = "pulumi"; mode = "755"; what = "/home/kari/.pulumi"; }
-            { name = "doppler"; mode = "700"; what = "/home/kari/.doppler"; }
           ];
         }
         {
@@ -37,6 +36,7 @@ in
           name = "other";
           dirs = [
             { name = "nix-config"; mode = "755"; what = "/home/kari/nix-config"; }
+            { name = "local-workspace"; mode = "755"; what = "/home/kari/Workspace/local"; }
           ];
         }
       ];
@@ -50,10 +50,6 @@ in
       fsType = "ext4";
       neededForBoot = true;
     };
-    # "/mnt/boot" = {
-    #   device = "/dev/disk/by-uuid/<uuid>";
-    #   fsType = "auto";
-    # };
   };
 
   # Mount '/nix/.rw-store' and '/tmp' to disk
@@ -64,18 +60,8 @@ in
     options = [ "bind" ];
   };
 
-  # Update the rEFInd boot manager
-  # services.refindGenerate = {
-  #   enable = true;
-  #   where = "/dev/disk/by-uuid/<uuid-2>";
-  #   flakeUrl = "github:tupakkatapa/nix-config";
-  #   hosts = [ "bandit" ];
-  #   timeout = 1;
-  # };
-
   # Create host-specific directories
   systemd.tmpfiles.rules = [
-    "d /mnt/boot          755 root root -"
     "d /mnt/sftp          755 root root -"
     "d ${dataDir}/store   755 root root -"
 

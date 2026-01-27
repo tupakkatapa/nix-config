@@ -19,9 +19,6 @@
   # Saiko's automatic gc
   sys2x.gc.useDiskAware = true;
 
-  # Required for automounting
-  # services.udisks2.enable = true;
-
   # Connectivity
   networking = {
     hostName = "maliwan";
