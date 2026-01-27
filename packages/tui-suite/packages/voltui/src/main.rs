@@ -160,6 +160,45 @@ impl PwTui {
         Ok(())
     }
 
+    fn restart_pipewire(&mut self) {
+        self.status = " Restarting PipeWire...".to_string();
+
+        // Stop all services
+        let _ = Command::new("systemctl")
+            .args([
+                "--user",
+                "stop",
+                "pipewire",
+                "pipewire-pulse",
+                "wireplumber",
+            ])
+            .output();
+
+        // Small delay
+        std::thread::sleep(std::time::Duration::from_millis(500));
+
+        // Start services in order
+        let _ = Command::new("systemctl")
+            .args([
+                "--user",
+                "start",
+                "pipewire",
+                "wireplumber",
+                "pipewire-pulse",
+            ])
+            .output();
+
+        // Wait for services to stabilize
+        std::thread::sleep(std::time::Duration::from_millis(1000));
+
+        // Refresh the device lists
+        if self.refresh().is_ok() {
+            self.status = " PipeWire restarted".to_string();
+        } else {
+            self.status = " PipeWire restarted (refresh failed)".to_string();
+        }
+    }
+
     fn set_default(&mut self) {
         match self.current_tab() {
             0 => {
@@ -725,6 +764,7 @@ impl App for PwTui {
                 self.jump_mode = Some(false);
                 self.status = " Jump back to: ".to_string();
             }
+            Action::Char('R') => self.restart_pipewire(),
             action if self.current_tab() == 2 => self.handle_combine_action(action),
             action => self.handle_navigation(action),
         }
@@ -776,6 +816,7 @@ impl App for PwTui {
                     ("Enter", "Toggle selection"),
                     ("c", "Create combined"),
                     ("d", "Delete combined"),
+                    ("R", "Restart PipeWire"),
                     ("q", "Quit"),
                 ]
             } else {
@@ -791,6 +832,7 @@ impl App for PwTui {
                     ("Enter", "Set default"),
                     ("+/-", "Volume"),
                     ("m", "Mute"),
+                    ("R", "Restart PipeWire"),
                     ("q", "Quit"),
                 ]
             };
