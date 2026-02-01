@@ -4,7 +4,7 @@ Subagent orchestration, MCP tools, skills for references.
 
 ## Contents
 1. Roles - coordinator and subagent
-2. Tools - Native Subagents, Claude-Mem, NixOS MCP, Context7, Skills
+2. Tools - Native Subagents, Claude-Mem, NixOS MCP, Context7, Skills, Ralph Loop
 3. Triggers - when to use each tool
 4. Examples - concrete usage patterns
 5. Links - documentation references
@@ -132,6 +132,32 @@ Meta:
 - `using-superpowers` - Skills system intro
 - `writing-skills` - Create new skills
 
+### Ralph Loop (`/ralph-loop`)
+
+Iterative development loop. User starts it, you work inside it.
+
+Commands:
+- `/ralph-loop PROMPT [--max-iterations N] [--completion-promise TEXT]`
+- `/cancel-ralph`
+
+How it works:
+- When you try to exit, the stop hook re-feeds the SAME PROMPT
+- Your previous work persists in files and git - use it to improve
+- Loop ends when: max iterations reached OR you output the completion promise
+
+When inside a Ralph Loop:
+- DO: Check files/git for your previous iteration's work
+- DO: Build incrementally on what exists
+- DO: Run tests/linters to verify progress
+- DO: Output `<promise>TEXT</promise>` when the promise is genuinely TRUE
+- DON'T: Output false promises to escape
+- DON'T: Start from scratch each iteration
+- DON'T: Claim completion without verification
+
+Subagents vs Ralph Loop:
+- Subagents: Parallel work on different components
+- Ralph Loop: Sequential iterations on the SAME task until done
+
 ## Triggers
 
 Subagents:
@@ -153,6 +179,11 @@ NixOS MCP:
 - Home Manager configuration
 - Finding specific package versions
 - Flake discovery
+
+Ralph Loop (user-initiated, you work inside):
+- User wants iterative refinement until "done"
+- Task has verifiable completion (tests pass, linter clean)
+- Work benefits from seeing previous attempts
 
 ## Examples
 
@@ -256,6 +287,26 @@ Invoke via Skill tool:
 Skill { skill: "superpowers:systematic-debugging" }
 ```
 
+### Ralph Loop
+
+User starts loop (you don't start it):
+```
+/ralph-loop "Build REST API with tests" --max-iterations 10 --completion-promise "All tests passing"
+```
+
+Your first action inside loop - check what exists:
+```
+git log --oneline -5
+ls -la src/
+```
+
+Each iteration:
+1. Check previous work (files, git)
+2. Identify what's missing or broken
+3. Make incremental progress
+4. Verify with tests/linters
+5. If promise is TRUE, output: `<promise>All tests passing</promise>`
+
 ## Links
 
 Claude Code:
@@ -273,3 +324,6 @@ Context7:
 
 Superpowers:
 - GitHub: https://github.com/obra/superpowers
+
+Ralph Wiggum:
+- GitHub: https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum
