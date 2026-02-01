@@ -20,6 +20,15 @@ in
         inherit (permissions) allow deny;
       };
       hooks = {
+        SessionStart = [{
+          hooks = [{
+            type = "command";
+            command = ''
+              echo "Read ~/.claude/CLAUDE.md (global) and ./CLAUDE.md (project) if not already.
+              echo "Use configured skills and MCP tools. Check memory, use subagents for parallel work."
+            '';
+          }];
+        }];
         UserPromptSubmit = [{
           hooks = [{
             type = "command";

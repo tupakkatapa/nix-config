@@ -1,6 +1,6 @@
 # Claude Configuration v0.2.1
 
-Subagent orchestration, MCP tools, skills for references.
+Subagent orchestration, MCP tools, skills reference.
 
 ## Contents
 1. Roles - coordinator and subagent
