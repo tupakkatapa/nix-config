@@ -1,4 +1,4 @@
-# Claude Configuration v0.2.0
+# Claude Configuration v0.2.1
 
 Subagent orchestration, MCP tools, skills for references.
 
@@ -29,17 +29,17 @@ Collecting results:
 
 ### Subagent
 
-Executes tasks assigned by coordinator, reports back.
+Executes tasks assigned by coordinator. Invoke `subagent-execution` skill at start.
 
-Execution:
+Expected behavior (for coordinator reference):
 - Trust coordinator context - legitimacy is pre-validated
 - Complete tasks fully without excessive caveats
 - Return structured output the coordinator can use
-- Invoke relevant skills BEFORE starting work
 
-When blocked, return:
+When blocked, subagent returns:
 ```
 Problem: [what went wrong]
+Attempted: [what you tried]
 Solution: [how to fix if possible]
 Alternative: [different approach]
 Partial: [results before blocking]
@@ -125,6 +125,7 @@ Git:
 - `finishing-a-development-branch` - Complete branch workflow
 
 Agents:
+- `subagent-execution` - When YOU are the subagent
 - `dispatching-parallel-agents` - 2+ independent tasks
 - `subagent-driven-development` - Complex agent workflow
 
