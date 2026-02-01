@@ -18,6 +18,7 @@ in
         {
           name = "appdata";
           dirs = [
+            { name = "claude-mem"; mode = "755"; what = "/home/kari/.claude-mem"; }
             { name = "claude-projects"; mode = "755"; what = "/home/kari/.claude/projects"; }
             { name = "firefox"; mode = "755"; what = "/home/kari/.mozilla"; }
             { name = "bitwig-config"; mode = "755"; what = "/home/kari/.BitwigStudio"; }

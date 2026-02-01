@@ -1,5 +1,8 @@
 # Claude Code plugin management extension for programs.claude-code
 # Hashes: nix-prefetch-github owner repo --rev <rev>
+#
+# THIS MODULE IS UNREVIEWED AI SLOP, BUT IT WORKS
+#
 { lib
 , config
 , pkgs
@@ -10,8 +13,8 @@ let
   pluginsCfg = cfg.plugins;
   homeDir = config.home.homeDirectory;
 
-  # Transform plugin configs into fetchable sources
-  processedPlugins = map
+  # Process plugins with separate marketplaces
+  processedWithMarketplace = map
     (p: rec {
       name = p.repo;
       marketplace = p.marketplace.repo;
@@ -23,18 +26,42 @@ let
       marketplaceSrc = pkgs.fetchFromGitHub {
         inherit (p.marketplace) owner repo rev hash;
       };
+      marketplaceInfo = {
+        inherit (p.marketplace) owner repo;
+      };
     })
     pluginsCfg.fromGitHub;
 
-  # Deduplicate marketplaces shared by multiple plugins
+  # Process self-contained plugins (repo is both plugin and marketplace)
+  processedSelfContained = map
+    (p: rec {
+      name = p.name or p.repo;
+      marketplace = p.repo;
+      id = "${name}@${marketplace}";
+      inherit (p) version rev;
+      pluginSubdir = p.pluginSubdir or null;
+      src = pkgs.fetchFromGitHub {
+        inherit (p) owner repo rev hash;
+      };
+      # For self-contained, the repo itself is the marketplace
+      marketplaceSrc = src;
+      marketplaceInfo = {
+        inherit (p) owner repo;
+      };
+    })
+    pluginsCfg.selfContained;
+
+  allPlugins = processedWithMarketplace ++ processedSelfContained;
+
+  # Deduplicate marketplaces
   uniqueMarketplaces = lib.unique (map
     (p: {
       name = p.marketplace;
       src = p.marketplaceSrc;
     })
-    processedPlugins);
+    allPlugins);
 
-  # Build complete plugins directory with cache, marketplaces, and registries
+  # Build complete plugins directory
   pluginsDir = pkgs.runCommand "claude-plugins" { } ''
     mkdir -p $out/{cache,marketplaces}
 
@@ -45,25 +72,30 @@ let
 
     ${lib.concatMapStringsSep "\n" (p: ''
       mkdir -p $out/cache/${p.marketplace}/${p.name}/${p.version}
-      cp -rT ${p.src} $out/cache/${p.marketplace}/${p.name}/${p.version}
-    '') processedPlugins}
+      ${if p.pluginSubdir or null != null then ''
+        cp -rT ${p.src}/${p.pluginSubdir} $out/cache/${p.marketplace}/${p.name}/${p.version}
+      '' else ''
+        cp -rT ${p.src} $out/cache/${p.marketplace}/${p.name}/${p.version}
+      ''}
+    '') allPlugins}
 
-    # Registry files (timestamps hardcoded for reproducibility)
+    # Registry: known_marketplaces.json
     cat > $out/known_marketplaces.json << 'EOF'
     ${builtins.toJSON (lib.listToAttrs (
-      lib.unique (map
-        (p: lib.nameValuePair p.marketplace.repo {
+      map
+        (p: lib.nameValuePair p.marketplace {
           source = {
             source = "github";
-            repo = "${p.marketplace.owner}/${p.marketplace.repo}";
+            repo = "${p.marketplaceInfo.owner}/${p.marketplaceInfo.repo}";
           };
-          installLocation = "${homeDir}/.claude/plugins/marketplaces/${p.marketplace.repo}";
+          installLocation = "${homeDir}/.claude/plugins/marketplaces/${p.marketplace}";
           lastUpdated = "2025-01-01T00:00:00.000Z";
         })
-        pluginsCfg.fromGitHub)
+        allPlugins
     ))}
     EOF
 
+    # Registry: installed_plugins.json
     cat > $out/installed_plugins.json << 'EOF'
     ${builtins.toJSON {
       version = 2;
@@ -78,7 +110,7 @@ let
             gitCommitSha = p.rev;
             isLocal = false;
           }])
-          processedPlugins
+          allPlugins
       );
     }}
     EOF
@@ -92,67 +124,85 @@ in
         options = {
           owner = lib.mkOption {
             type = lib.types.str;
-            example = "obra";
             description = "GitHub owner of the plugin repository";
           };
           repo = lib.mkOption {
             type = lib.types.str;
-            example = "superpowers";
             description = "GitHub repository name (also used as plugin name)";
           };
           version = lib.mkOption {
             type = lib.types.str;
-            example = "4.0.3";
             description = "Plugin version (informational, used in install path)";
           };
           rev = lib.mkOption {
             type = lib.types.str;
-            example = "b9e16498b9b6b06defa34cf0d6d345cd2c13ad31";
             description = "Git commit SHA for the plugin";
           };
           hash = lib.mkOption {
             type = lib.types.str;
-            example = "sha256-0/biMK5A9DwXI/UeouBX2aopkUslzJPiNi+eZFkkzXI=";
-            description = "Nix SRI hash (use nix-prefetch-github to obtain)";
+            description = "Nix SRI hash";
           };
           marketplace = lib.mkOption {
             type = lib.types.submodule {
               options = {
-                owner = lib.mkOption {
-                  type = lib.types.str;
-                  example = "obra";
-                  description = "GitHub owner of the marketplace repository";
-                };
-                repo = lib.mkOption {
-                  type = lib.types.str;
-                  example = "superpowers-marketplace";
-                  description = "GitHub repository name of the marketplace";
-                };
-                rev = lib.mkOption {
-                  type = lib.types.str;
-                  example = "d466ee3584579088a4ee9a694f3059fa73c17ff1";
-                  description = "Git commit SHA for the marketplace";
-                };
-                hash = lib.mkOption {
-                  type = lib.types.str;
-                  example = "sha256-4juZafMOd+JnP5z1r3EyDqyL9PGlPnOCA/e3I/5kfNQ=";
-                  description = "Nix SRI hash (use nix-prefetch-github to obtain)";
-                };
+                owner = lib.mkOption { type = lib.types.str; };
+                repo = lib.mkOption { type = lib.types.str; };
+                rev = lib.mkOption { type = lib.types.str; };
+                hash = lib.mkOption { type = lib.types.str; };
               };
             };
-            description = "Marketplace the plugin belongs to";
+            description = "Separate marketplace repository";
           };
         };
       });
       default = [ ];
-      description = "Plugins to install from GitHub (requires plugin + marketplace sources)";
+      description = "Plugins with separate marketplace repositories";
+    };
+
+    selfContained = lib.mkOption {
+      type = lib.types.listOf (lib.types.submodule {
+        options = {
+          owner = lib.mkOption {
+            type = lib.types.str;
+            description = "GitHub owner";
+          };
+          repo = lib.mkOption {
+            type = lib.types.str;
+            description = "GitHub repository name (also used as marketplace name)";
+          };
+          name = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = null;
+            description = "Plugin name (defaults to repo name)";
+          };
+          version = lib.mkOption {
+            type = lib.types.str;
+            description = "Plugin version";
+          };
+          rev = lib.mkOption {
+            type = lib.types.str;
+            description = "Git commit SHA";
+          };
+          hash = lib.mkOption {
+            type = lib.types.str;
+            description = "Nix SRI hash";
+          };
+          pluginSubdir = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = null;
+            description = "Subdirectory containing the plugin (e.g., 'plugin')";
+          };
+        };
+      });
+      default = [ ];
+      description = "Self-contained plugins where the repo is both plugin and marketplace";
     };
   };
 
-  config = lib.mkIf (cfg.enable && pluginsCfg.fromGitHub != [ ]) {
+  config = lib.mkIf (cfg.enable && allPlugins != [ ]) {
     programs.claude-code.settings = lib.mkMerge [{
       enabledPlugins = lib.listToAttrs (
-        map (p: lib.nameValuePair p.id true) processedPlugins
+        map (p: lib.nameValuePair p.id true) allPlugins
       );
     }];
 

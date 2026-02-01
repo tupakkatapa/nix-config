@@ -89,7 +89,7 @@
 
     # Skills & MCP
     "Skill(superpowers:*)"
-    "mcp__claude-flow__*"
+    "mcp__claude-mem__*"
     "mcp__nixos__*"
     "mcp__context7__*"
 
