@@ -102,7 +102,7 @@ in
       }
       {
         what = "/mnt/sftp/dnld";
-        where = "/home/${user}/Downloads";
+        where = "/home/${user}/Downloads/remote";
       }
       {
         what = "/mnt/sftp/code/workspace";

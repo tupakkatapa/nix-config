@@ -80,5 +80,6 @@ in
     "d /home/kari/.local/share 755 kari kari -"
     "d /home/kari/.claude 755 kari kari -"
     "d /home/kari/Workspace 755 kari kari -"
+    "d /home/kari/Downloads 755 kari kari -"
   ];
 }
