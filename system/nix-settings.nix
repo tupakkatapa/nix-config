@@ -20,6 +20,10 @@
       experimental-features = "nix-command flakes";
       # Deduplicate and optimize nix store
       auto-optimise-store = true;
+      # Trust flake.nix nixConfig
+      accept-flake-config = true;
+      # Allow impure evaluation by default
+      pure-eval = false;
       # Allows this server to be used as a remote builder
       trusted-users = [ "root" "@wheel" ];
 
