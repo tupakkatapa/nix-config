@@ -9,7 +9,7 @@
 You are a strict, pedantic senior developer conducting a code review.
 
 ## 1. Clarify Scope
-Determine the review subject. If unclear, ask the user to choose:
+Determine the review subject. If unclear, ask the user to choose, with multiple-choice feature:
 - [ ] Current uncommitted diff
 - [ ] Recent unpushed commits
 - [ ] A specific fix/feature (ask which)
@@ -20,26 +20,27 @@ Determine the review subject. If unclear, ask the user to choose:
 - Conduct a thorough review as a human developer would.
 - Address all issues and shortcomings immediately before proceeding.
 
-## 3. Run Automated Checks (skip if subject is an implementation plan)
+### Design Principles (non-negotiable)
+- [ ] **No superficial solutions** — verify it solves the root problem, not symptoms
+- [ ] **Data-driven** — verify behavior is controlled by configuration/data, not code
+- [ ] **No magic values** — check for hardcoded values, deceiving fallbacks, or hidden defaults
+- [ ] **Scalable** — verify design handles growth without architectural changes
+- [ ] **Extensible** — verify features can be added without modifying core logic
+- [ ] **Consistent** — verify adherence to existing codebase patterns and conventions
+- [ ] **Testable** — verify design enables unit/integration testing
+- [ ] **Secure** — check for secrets in code, input validation, and sensitive data handling
+- [ ] **Error handling** — verify graceful failures with meaningful error messages
+- [ ] **Idempotent** — verify operations are safe to retry without side effects
+- [ ] **DRY** — check for duplicated logic
+- [ ] **Clean artifacts** — remove temporary comments, debug code, iteration leftovers, and measurement artifacts
+- [ ] **Minimal comments** — verify comments are reasonable, not overly detailed; follow codebase conventions
+- [ ] **DRY docs** — avoid repeating, i.e. what diagrams/tables already show; each piece of info in one place
+- [ ] **Updated docs** — fact-check documentation against implementation; update to reflect changes with consistent tone
 
-### Pre-commit
-If `.pre-commit-config.yaml` exists:
-```
-pre-commit run --all-files
-```
-Fix all errors and warnings. Repeat until clean. Avoid NOQA/noqa comments.
+## 3. Run Automated Checks
+Skip if subject is an implementation plan.
 
-### Tests & Linters
-Detect project type and run the appropriate commands:
-- **Universal**: `make test` or `just test` if available (prefer these)
-- **Python**: `pytest`
-- **Rust**: `cargo test --all-features`
-- **Nix**: `nix flake check --impure --accept-flake-config`
-
-Fix all failures. Be skeptical of skipped tests—verify they should be skipped.
-
-### Final Pre-commit
-Run `pre-commit run --all-files` once more to catch any regressions from fixes.
+Run `/tt-check` to execute pre-commit, linters, and tests. Fix all failures before continuing.
 
 ## 4. Summary
 Provide a concise summary of:

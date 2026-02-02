@@ -25,6 +25,12 @@
     type = "ed25519";
   }];
 
+  # Create /bin/bash symlink
+  system.activationScripts.binbash = ''
+    mkdir -p /bin
+    ln -sf ${pkgs.bash}/bin/bash /bin/bash
+  '';
+
   # Essential packages
   environment.systemPackages = with pkgs; [
     btrfs-progs

@@ -104,6 +104,7 @@
           overlayAttrs = {
             inherit (config.packages)
               # Custom packages used in configurations
+              chroma-mcp
               kb-shortcuts
               monitor-adjust
               tui-suite
@@ -114,6 +115,8 @@
               # Patches
               python313
               ;
+            # Not a single derivation
+            claude-plugins = pkgs.callPackage ./packages/claude-plugins { };
           };
 
           # Nix code formatter -> 'nix fmt'
@@ -171,6 +174,7 @@
           # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
           packages = {
             "2mp3" = pkgs.callPackage ./packages/2mp3 { };
+            "chroma-mcp" = pkgs.callPackage ./packages/chroma-mcp { };
             "fat-nix-deps" = pkgs.callPackage ./packages/fat-nix-deps { };
             "kb-shortcuts" = pkgs.callPackage ./packages/kb-shortcuts { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };

@@ -1,8 +1,6 @@
 # Claude Code plugin management extension for programs.claude-code
 # Hashes: nix-prefetch-github owner repo --rev <rev>
 #
-# THIS MODULE IS UNREVIEWED AI SLOP, BUT IT WORKS
-#
 { lib
 , config
 , pkgs
@@ -10,48 +8,34 @@
 }:
 let
   cfg = config.programs.claude-code;
-  pluginsCfg = cfg.plugins;
   homeDir = config.home.homeDirectory;
 
-  # Process plugins with separate marketplaces
-  processedWithMarketplace = map
-    (p: rec {
-      name = p.repo;
-      marketplace = p.marketplace.repo;
-      id = "${name}@${marketplace}";
-      inherit (p) version rev;
-      src = pkgs.fetchFromGitHub {
-        inherit (p) owner repo rev hash;
-      };
-      marketplaceSrc = pkgs.fetchFromGitHub {
-        inherit (p.marketplace) owner repo rev hash;
-      };
+  # Process plugins from packages with passthru.claudePlugin metadata
+  allPlugins = map
+    (p: {
+      name = p.passthru.claudePlugin.pname;
+      inherit (p.passthru.claudePlugin) version;
+      inherit (p.passthru.claudePlugin) rev;
+      inherit (p.passthru.claudePlugin) id;
+      inherit (p.passthru.claudePlugin) runtimeInputs;
+      inherit (p.passthru.claudePlugin) activationScript;
+      marketplace = p.passthru.claudePlugin.marketplace.name;
+      marketplaceSrc = p.passthru.claudePlugin.marketplace.src;
       marketplaceInfo = {
-        inherit (p.marketplace) owner repo;
+        inherit (p.passthru.claudePlugin.marketplace) owner;
+        inherit (p.passthru.claudePlugin.marketplace) repo;
       };
+      pluginSrc = p; # The derivation itself has plugin files
     })
-    pluginsCfg.fromGitHub;
+    cfg.plugins;
 
-  # Process self-contained plugins (repo is both plugin and marketplace)
-  processedSelfContained = map
-    (p: rec {
-      name = p.name or p.repo;
-      marketplace = p.repo;
-      id = "${name}@${marketplace}";
-      inherit (p) version rev;
-      pluginSubdir = p.pluginSubdir or null;
-      src = pkgs.fetchFromGitHub {
-        inherit (p) owner repo rev hash;
-      };
-      # For self-contained, the repo itself is the marketplace
-      marketplaceSrc = src;
-      marketplaceInfo = {
-        inherit (p) owner repo;
-      };
-    })
-    pluginsCfg.selfContained;
+  # Collect runtime inputs from all plugins
+  allRuntimeInputs = lib.unique (lib.flatten (map (p: p.runtimeInputs) allPlugins));
 
-  allPlugins = processedWithMarketplace ++ processedSelfContained;
+  # Collect activation scripts from all plugins
+  allActivationScripts = lib.concatMapStrings
+    (p: if p.activationScript != "" then p.activationScript + "\n" else "")
+    allPlugins;
 
   # Deduplicate marketplaces
   uniqueMarketplaces = lib.unique (map
@@ -72,11 +56,7 @@ let
 
     ${lib.concatMapStringsSep "\n" (p: ''
       mkdir -p $out/cache/${p.marketplace}/${p.name}/${p.version}
-      ${if p.pluginSubdir or null != null then ''
-        cp -rT ${p.src}/${p.pluginSubdir} $out/cache/${p.marketplace}/${p.name}/${p.version}
-      '' else ''
-        cp -rT ${p.src} $out/cache/${p.marketplace}/${p.name}/${p.version}
-      ''}
+      cp -rT ${p.pluginSrc} $out/cache/${p.marketplace}/${p.name}/${p.version}
     '') allPlugins}
 
     # Registry: known_marketplaces.json
@@ -118,97 +98,46 @@ let
 
 in
 {
-  options.programs.claude-code.plugins = {
-    fromGitHub = lib.mkOption {
-      type = lib.types.listOf (lib.types.submodule {
-        options = {
-          owner = lib.mkOption {
-            type = lib.types.str;
-            description = "GitHub owner of the plugin repository";
-          };
-          repo = lib.mkOption {
-            type = lib.types.str;
-            description = "GitHub repository name (also used as plugin name)";
-          };
-          version = lib.mkOption {
-            type = lib.types.str;
-            description = "Plugin version (informational, used in install path)";
-          };
-          rev = lib.mkOption {
-            type = lib.types.str;
-            description = "Git commit SHA for the plugin";
-          };
-          hash = lib.mkOption {
-            type = lib.types.str;
-            description = "Nix SRI hash";
-          };
-          marketplace = lib.mkOption {
-            type = lib.types.submodule {
-              options = {
-                owner = lib.mkOption { type = lib.types.str; };
-                repo = lib.mkOption { type = lib.types.str; };
-                rev = lib.mkOption { type = lib.types.str; };
-                hash = lib.mkOption { type = lib.types.str; };
-              };
-            };
-            description = "Separate marketplace repository";
-          };
-        };
-      });
-      default = [ ];
-      description = "Plugins with separate marketplace repositories";
-    };
-
-    selfContained = lib.mkOption {
-      type = lib.types.listOf (lib.types.submodule {
-        options = {
-          owner = lib.mkOption {
-            type = lib.types.str;
-            description = "GitHub owner";
-          };
-          repo = lib.mkOption {
-            type = lib.types.str;
-            description = "GitHub repository name (also used as marketplace name)";
-          };
-          name = lib.mkOption {
-            type = lib.types.nullOr lib.types.str;
-            default = null;
-            description = "Plugin name (defaults to repo name)";
-          };
-          version = lib.mkOption {
-            type = lib.types.str;
-            description = "Plugin version";
-          };
-          rev = lib.mkOption {
-            type = lib.types.str;
-            description = "Git commit SHA";
-          };
-          hash = lib.mkOption {
-            type = lib.types.str;
-            description = "Nix SRI hash";
-          };
-          pluginSubdir = lib.mkOption {
-            type = lib.types.nullOr lib.types.str;
-            default = null;
-            description = "Subdirectory containing the plugin (e.g., 'plugin')";
-          };
-        };
-      });
-      default = [ ];
-      description = "Self-contained plugins where the repo is both plugin and marketplace";
-    };
+  options.programs.claude-code.plugins = lib.mkOption {
+    type = lib.types.listOf lib.types.package;
+    default = [ ];
+    description = "List of claude plugin packages (built with mkClaudePlugin)";
   };
 
   config = lib.mkIf (cfg.enable && allPlugins != [ ]) {
+    # Collect runtime inputs from all plugins
+    home.packages = allRuntimeInputs;
+
     programs.claude-code.settings = lib.mkMerge [{
       enabledPlugins = lib.listToAttrs (
         map (p: lib.nameValuePair p.id true) allPlugins
       );
     }];
 
-    home.file.".claude/plugins/installed_plugins.json".source = "${pluginsDir}/installed_plugins.json";
-    home.file.".claude/plugins/known_marketplaces.json".source = "${pluginsDir}/known_marketplaces.json";
-    home.file.".claude/plugins/cache".source = "${pluginsDir}/cache";
-    home.file.".claude/plugins/marketplaces".source = "${pluginsDir}/marketplaces";
+    # Copy plugin files to writable locations (not symlinks)
+    # This allows plugins like claude-mem to write to their directories
+    home.activation.claudePlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      # Remove old symlinks if they exist
+      [ -L "${homeDir}/.claude/plugins/cache" ] && rm "${homeDir}/.claude/plugins/cache"
+      [ -L "${homeDir}/.claude/plugins/marketplaces" ] && rm "${homeDir}/.claude/plugins/marketplaces"
+      [ -L "${homeDir}/.claude/plugins/installed_plugins.json" ] && rm "${homeDir}/.claude/plugins/installed_plugins.json"
+      [ -L "${homeDir}/.claude/plugins/known_marketplaces.json" ] && rm "${homeDir}/.claude/plugins/known_marketplaces.json"
+
+      # Create plugins directory
+      mkdir -p "${homeDir}/.claude/plugins"
+
+      # Copy with write permissions (rsync preserves structure, --chmod adds write)
+      ${pkgs.rsync}/bin/rsync -a --chmod=u+w "${pluginsDir}/cache" "${homeDir}/.claude/plugins/"
+      ${pkgs.rsync}/bin/rsync -a --chmod=u+w "${pluginsDir}/marketplaces" "${homeDir}/.claude/plugins/"
+
+      # Copy JSON files (writable so Claude Code can update them)
+      cp -f "${pluginsDir}/installed_plugins.json" "${homeDir}/.claude/plugins/"
+      cp -f "${pluginsDir}/known_marketplaces.json" "${homeDir}/.claude/plugins/"
+      chmod u+w "${homeDir}/.claude/plugins/installed_plugins.json"
+      chmod u+w "${homeDir}/.claude/plugins/known_marketplaces.json"
+
+      # Run plugin-specific activation scripts
+      ${allActivationScripts}
+    '';
   };
 }

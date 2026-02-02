@@ -1,13 +1,14 @@
-# Claude Configuration v0.2.1
+# Claude Configuration v0.2.2
 
 Subagent orchestration, MCP tools, skills reference.
 
 ## Contents
 1. Roles - coordinator and subagent
-2. Tools - Native Subagents, Claude-Mem, NixOS MCP, Context7, Skills, Ralph Loop
+2. Tools - Native Subagents, Claude-Mem, NixOS MCP, Context7, Skills, Commands, Ralph Loop
 3. Triggers - when to use each tool
-4. Examples - concrete usage patterns
-5. Links - documentation references
+4. NixOS Development - available packages, missing tools
+5. Examples - concrete usage patterns
+6. Links - documentation references
 
 ## Roles
 
@@ -65,7 +66,7 @@ Spawning:
 - `Task(..., run_in_background=true)` - Background execution
 - Multiple Task calls in one message - Parallel execution
 
-### Claude-Mem (`mcp__claude-mem__*`)
+### Claude-Mem (`mcp__plugin_claude-mem_mcp-search__*`)
 
 Persistent memory across sessions. Automatic capture via hooks.
 
@@ -104,12 +105,28 @@ Home Manager:
 - `resolve-library-id(query, libraryName)` - Resolve library name to Context7-compatible ID
 - `query-docs(libraryId, query)` - Get documentation for a library (e.g., /mongodb/docs, /vercel/next.js)
 
+### Sequential Thinking MCP (`mcp__sequential-thinking__*`)
+- `sequentialthinking` - Dynamic problem-solving through thought sequences
+  - Parameters: `thought`, `thoughtNumber`, `totalThoughts`, `nextThoughtNeeded`
+  - Optional: `isRevision`, `revisesThought`, `branchFromThought`, `branchId`
+
+### Filesystem MCP (`mcp__filesystem__*`)
+- `read_file` / `read_multiple_files` - Read file contents
+- `write_file` - Create/overwrite files
+- `edit_file` - Line-based edits with diff output
+- `list_directory` / `directory_tree` - Directory listings
+- `search_files` - Glob pattern search
+- `get_file_info` / `move_file` / `create_directory` - File operations
+- Allowed paths: `/home/kari/Workspace`, `/home/kari/nix-config`
+
 ### Skills
 
 Planning:
-- `brainstorming` - Before creative/feature work
-- `writing-plans` - Multi-step task planning
-- `executing-plans` - Execute written plans
+- `brainstorming` - Explore ideas without implementation intent
+- `writing-plans` - Create plans for later implementation
+- `executing-plans` - Implement a previously written plan
+
+Note: For immediate plan-and-implement, use `/tt-implement`.
 
 Implementation:
 - `test-driven-development` - TDD workflow
@@ -132,6 +149,23 @@ Agents:
 Meta:
 - `using-superpowers` - Skills system intro
 - `writing-skills` - Create new skills
+
+### Commands
+
+User-invoked workflows via `/command`. Auto-invoke when user intent clearly matches:
+
+Development:
+- `/tt-implement` - Plan and implement a feature/fix
+- `/tt-review` - Code review, calls `/tt-check`
+- `/tt-check` - Run pre-commit, linters, tests
+- `/tt-commit` - Prepare and create commit (amend if unpushed)
+- `/tt-security` - Comprehensive security review
+
+Utility:
+- `/tt-explain` - Explain topic/code, calls `/tt-mermaid` if diagrams help
+- `/tt-mermaid` - Create and display Mermaid diagrams
+
+Typical flow: implement → review → commit
 
 ### Ralph Loop (`/ralph-loop`)
 
@@ -186,6 +220,20 @@ Ralph Loop (user-initiated, you work inside):
 - Task has verifiable completion (tests pass, linter clean)
 - Work benefits from seeing previous attempts
 
+## NixOS Development
+
+User runs NixOS. All infrastructure (machines, router) configured in `~/nix-config` (upstream: github.com/tupakkatapa/nix-config).
+
+Check what's available:
+- Current project packages: read `shell.nix` or `flake.nix` devShell
+- System-wide packages: `nix eval --json github:tupakkatapa/nix-config#nixosConfigurations.$HOSTNAME.config.environment.systemPackages --apply 'builtins.map (p: p.name)'`
+- All hosts: `nix eval --json github:tupakkatapa/nix-config#nixosConfigurations --apply builtins.attrNames`
+
+When a tool is missing ("command not found"):
+- NEVER suggest `apt install`, `brew install`, `pip install`, or similar
+- Temporary: run `nix-shell -p <package>` or `, <command>` (comma runs from nixpkgs)
+- Permanent: ask user to add package to `shell.nix` or `flake.nix` devShell, then `direnv reload` and restart this Claude session
+
 ## Examples
 
 ### Subagents
@@ -223,17 +271,17 @@ Task(subagent_type="tester", prompt="Run full test suite", run_in_background=tru
 
 Search for past context:
 ```
-mcp__claude-mem__search { query: "authentication implementation" }
+mcp__plugin_claude-mem_mcp-search__search { query: "authentication implementation" }
 ```
 
 Get timeline around an observation:
 ```
-mcp__claude-mem__timeline { observation_id: "obs-123" }
+mcp__plugin_claude-mem_mcp-search__timeline { anchor: 123 }
 ```
 
 Get full observation details:
 ```
-mcp__claude-mem__get_observations { ids: ["obs-123", "obs-456"] }
+mcp__plugin_claude-mem_mcp-search__get_observations { ids: [123, 456] }
 ```
 
 ### NixOS MCP

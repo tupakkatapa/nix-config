@@ -21,6 +21,7 @@
             { name = "Search"; url = "https://search.coditon.com"; }
             { name = "Nextcloud"; url = "https://next.coditon.com"; }
             { name = "Cert"; url = "https://cert.coditon.com"; }
+            { name = "Claude-Mem"; url = "http://127.0.0.1:37777/"; }
           ];
         }
         {

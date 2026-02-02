@@ -38,6 +38,7 @@
     "Bash(nix:*)"
 
     # File system (read-only)
+    "Bash(ls)"
     "Bash(ls:*)"
     "Bash(eza:*)"
     "Bash(find:*)"
@@ -53,8 +54,10 @@
     "Bash(lsblk:*)"
 
     # Shell utilities
+    "Bash(which)"
     "Bash(which:*)"
     "Bash(echo:*)"
+    "Bash(for:*)"
     "Bash(rg:*)"
     "Bash(grep:*)"
     "Bash(jq:*)"
@@ -88,10 +91,12 @@
     "WebSearch"
 
     # Skills & MCP
-    "Skill(superpowers:*)"
-    "mcp__claude-mem__*"
+    "Skill(*)"
+    "mcp__plugin_claude-mem_mcp-search__*"
     "mcp__nixos__*"
     "mcp__context7__*"
+    "mcp__filesystem__*"
+    "mcp__sequential-thinking__*"
 
     # Development
     "Bash(pre-commit run:*)"
