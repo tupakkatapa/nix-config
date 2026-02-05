@@ -37,6 +37,7 @@ in
       ];
 
       modules-right = [
+        "custom/claude-afk"
         "custom/ping-sweep"
         "tray"
         "pulseaudio"
@@ -162,6 +163,13 @@ in
 
       tray = { spacing = 10; };
 
+      "custom/claude-afk" = {
+        exec = "systemctl --user is-active --quiet claude-afk && echo '󰂞 afk' || echo '󰂛 afk'";
+        interval = 5;
+        on-click = "systemctl --user is-active --quiet claude-afk && systemctl --user stop claude-afk || systemctl --user start claude-afk";
+        tooltip = false;
+      };
+
       "custom/ping-sweep" = {
         exec = ''
           interface_name="enp3s0"
@@ -226,6 +234,7 @@ in
       #custom-player,
       #custom-hostname,
       #custom-ping-sweep,
+      #custom-claude-afk,
       #window,
       #bluetooth {
         padding: 0 15px;

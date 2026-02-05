@@ -3,6 +3,17 @@ let
   permissions = import ./permissions.nix;
 in
 {
+  # Claude Code AFK notification service
+  systemd.user.services.claude-afk = {
+    Unit.Description = "Claude Code AFK notification mode";
+    Service = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.coreutils}/bin/true";
+      ExecStartPost = "${pkgs.curl}/bin/curl -s -H 'Title: AFK Mode' -H 'Tags: robot' -d 'Notifications enabled' https://ntfy.coditon.com/claude";
+    };
+  };
+
   programs.claude-code = {
     enable = true;
     skillsDir = ./skills;
@@ -34,10 +45,17 @@ in
             '';
           }];
         }];
-        UserPromptSubmit = [{
+        Stop = [{
           hooks = [{
             type = "command";
-            command = "echo 'ultrathink:'";
+            command = "notify-send -u normal 'Claude Code' 'Stopped - needs attention'; systemctl --user is-active --quiet claude-afk && curl -s -H 'Title: Claude Code' -H 'Priority: high' -H 'Tags: robot' -d 'Stopped - needs attention' https://ntfy.coditon.com/claude || true";
+          }];
+        }];
+        PreToolUse = [{
+          matcher = "AskUserQuestion";
+          hooks = [{
+            type = "command";
+            command = "notify-send -u normal 'Claude Code' 'Question - needs input'; systemctl --user is-active --quiet claude-afk && curl -s -H 'Title: Claude Code' -H 'Priority: high' -H 'Tags: question' -d 'Question - needs input' https://ntfy.coditon.com/claude || true";
           }];
         }];
       };
@@ -75,5 +93,5 @@ in
   };
 
   # MCP server dependencies
-  home.packages = with pkgs; [ nodejs uv ];
+  home.packages = with pkgs; [ nodejs ];
 }

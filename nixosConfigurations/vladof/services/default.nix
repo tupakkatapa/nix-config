@@ -71,6 +71,13 @@ let
         lastOctet = 13;
         uid = 10004;
       };
+      ntfy = {
+        addr = "ntfy.${domain}";
+        port = 44912;
+        private = true;
+        lastOctet = 19;
+        uid = 10010;
+      };
     };
 
   # Service configuration
