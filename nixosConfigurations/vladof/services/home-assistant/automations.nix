@@ -43,12 +43,26 @@
     }];
     action = [
       {
-        service = "switch.turn_on";
-        target.entity_id = "switch.torgue";
+        "if" = [{
+          condition = "state";
+          entity_id = "input_boolean.morning_alarm_wol";
+          state = "on";
+        }];
+        "then" = [{
+          service = "switch.turn_on";
+          target.entity_id = "switch.torgue";
+        }];
       }
       {
-        service = "input_boolean.turn_off";
-        target.entity_id = "input_boolean.morning_alarm";
+        "if" = [{
+          condition = "state";
+          entity_id = "input_boolean.morning_alarm_repeat";
+          state = "off";
+        }];
+        "then" = [{
+          service = "input_boolean.turn_off";
+          target.entity_id = "input_boolean.morning_alarm";
+        }];
       }
     ];
   }

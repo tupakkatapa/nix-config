@@ -53,9 +53,12 @@
         {
           type = "entities";
           title = "Wake Up";
+          show_header_toggle = false;
           entities = [
             "input_boolean.morning_alarm"
             "input_datetime.morning_alarm_time"
+            "input_boolean.morning_alarm_repeat"
+            "input_boolean.morning_alarm_wol"
           ];
         }
         # Wake on LAN
@@ -169,6 +172,30 @@
               name = "Candle";
               tap_action = { action = "call-service"; service = "script.temp_candle"; };
               icon = "mdi:candle";
+            }
+          ];
+        }
+        # Vanity presets
+        {
+          type = "horizontal-stack";
+          cards = [
+            {
+              type = "button";
+              name = "Purple";
+              tap_action = { action = "call-service"; service = "script.vanity_purple"; };
+              icon = "mdi:palette";
+            }
+            {
+              type = "button";
+              name = "Ocean";
+              tap_action = { action = "call-service"; service = "script.vanity_ocean"; };
+              icon = "mdi:waves";
+            }
+            {
+              type = "button";
+              name = "Sunset";
+              tap_action = { action = "call-service"; service = "script.vanity_sunset"; };
+              icon = "mdi:weather-sunset";
             }
           ];
         }

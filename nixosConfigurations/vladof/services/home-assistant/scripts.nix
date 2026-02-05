@@ -100,6 +100,71 @@
     }];
   };
 
+  # Vanity presets
+  vanity_purple = {
+    alias = "Purple";
+    sequence = [
+      {
+        service = "light.turn_on";
+        target.entity_id = [ "light.innr_rb_282_c" "light.innr_rb_282_c_4" ];
+        data = {
+          rgb_color = [ 133 2 85 ];
+          brightness_pct = 20;
+        };
+      }
+      {
+        service = "light.turn_on";
+        target.entity_id = [ "light.innr_rb_282_c_2" "light.innr_rb_282_c_3" ];
+        data = {
+          rgb_color = [ 51 0 102 ];
+          brightness_pct = 20;
+        };
+      }
+    ];
+  };
+  vanity_ocean = {
+    alias = "Ocean";
+    sequence = [
+      {
+        service = "light.turn_on";
+        target.entity_id = [ "light.innr_rb_282_c" "light.innr_rb_282_c_4" ];
+        data = {
+          rgb_color = [ 0 102 255 ];
+          brightness_pct = 20;
+        };
+      }
+      {
+        service = "light.turn_on";
+        target.entity_id = [ "light.innr_rb_282_c_2" "light.innr_rb_282_c_3" ];
+        data = {
+          rgb_color = [ 0 204 204 ];
+          brightness_pct = 20;
+        };
+      }
+    ];
+  };
+  vanity_sunset = {
+    alias = "Sunset";
+    sequence = [
+      {
+        service = "light.turn_on";
+        target.entity_id = [ "light.innr_rb_282_c" "light.innr_rb_282_c_4" ];
+        data = {
+          rgb_color = [ 255 102 0 ];
+          brightness_pct = 20;
+        };
+      }
+      {
+        service = "light.turn_on";
+        target.entity_id = [ "light.innr_rb_282_c_2" "light.innr_rb_282_c_3" ];
+        data = {
+          rgb_color = [ 255 51 102 ];
+          brightness_pct = 20;
+        };
+      }
+    ];
+  };
+
   # Scene scripts
   good_morning = {
     alias = "Good Morning";

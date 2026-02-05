@@ -55,6 +55,14 @@ in
           name = "Enabled";
           icon = "mdi:weather-sunset-up";
         };
+        morning_alarm_repeat = {
+          name = "Repeat";
+          icon = "mdi:repeat";
+        };
+        morning_alarm_wol = {
+          name = "Wake PC";
+          icon = "mdi:desktop-tower";
+        };
       };
 
       input_datetime = {
