@@ -77,6 +77,7 @@ in
       vim = mkIf hasNeovim "nvim";
       amimullvad = "curl https://am.i.mullvad.net/connected";
       kill-docker = "docker system reset --force";
+      cc = mkIf hasTmux "tmux new-session 'claude -c'";
     };
     functions = {
       fish_greeting = "";
@@ -89,13 +90,6 @@ in
         set fish_cursor_insert      line       blink
         set fish_cursor_replace_one underscore blink
         set fish_cursor_visual      block
-
-        ${lib.optionalString hasTmux ''
-        # Autostart tmux when in an SSH session
-        if set -q SSH_CONNECTION; and not set -q TMUX
-          tmux new-session -A -s ssh
-        end
-        ''}
 
         # Function to handle missing commands with comma
         # function fish_command_not_found --on-event fish_command_not_found
