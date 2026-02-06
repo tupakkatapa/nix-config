@@ -1,6 +1,13 @@
 { pkgs, ... }:
 let
   permissions = import ./permissions.nix;
+
+  # ntfy notification helper
+  notify = message: ''
+    notify-send -u normal 'Claude Code' '${message}'; \
+    systemctl --user is-active --quiet claude-afk && \
+    curl -s -H 'Title: Claude Code' -H 'Priority: default' -H 'Tags: robot' -H 'Icon: https://www.anthropic.com/favicon.ico' -d '${message}' https://ntfy.coditon.com/claude || true
+  '';
 in
 {
   # Claude Code AFK notification service
@@ -10,7 +17,7 @@ in
       Type = "oneshot";
       RemainAfterExit = true;
       ExecStart = "${pkgs.coreutils}/bin/true";
-      ExecStartPost = "${pkgs.curl}/bin/curl -s -H 'Title: AFK Mode' -H 'Tags: robot' -d 'Notifications enabled' https://ntfy.coditon.com/claude";
+      ExecStartPost = "${pkgs.curl}/bin/curl -s -H 'Title: AFK Mode' -H 'Tags: robot' -H 'Icon: https://www.anthropic.com/favicon.ico' -d 'Notifications enabled' https://ntfy.coditon.com/claude";
     };
   };
 
@@ -48,14 +55,14 @@ in
         Stop = [{
           hooks = [{
             type = "command";
-            command = "notify-send -u normal 'Claude Code' 'Stopped - needs attention'; systemctl --user is-active --quiet claude-afk && curl -s -H 'Title: Claude Code' -H 'Priority: high' -H 'Tags: robot' -d 'Stopped - needs attention' https://ntfy.coditon.com/claude || true";
+            command = notify "Stopped - needs attention";
           }];
         }];
         PreToolUse = [{
           matcher = "AskUserQuestion";
           hooks = [{
             type = "command";
-            command = "notify-send -u normal 'Claude Code' 'Question - needs input'; systemctl --user is-active --quiet claude-afk && curl -s -H 'Title: Claude Code' -H 'Priority: high' -H 'Tags: question' -d 'Question - needs input' https://ntfy.coditon.com/claude || true";
+            command = notify "Question - needs input";
           }];
         }];
       };
