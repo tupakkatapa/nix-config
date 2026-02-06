@@ -25,6 +25,25 @@
     type = "ed25519";
   }];
 
+  # Only swap to avoid OOM
+  boot.kernel.sysctl."vm.swappiness" = 0;
+
+  # Compressed RAM swap
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 50;
+  };
+
+  # Early OOM killer
+  services.earlyoom = {
+    enable = true;
+    enableNotifications = true;
+  };
+
+  # Limit journal size
+  services.journald.extraConfig = "SystemMaxUse=128M";
+
   # Create /bin/bash symlink
   system.activationScripts.binbash = ''
     mkdir -p /bin

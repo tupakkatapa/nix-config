@@ -16,7 +16,7 @@
     ./persistence.nix
   ];
 
-  # Saiko's automatic gc
+  # Disk-aware garbage collection
   sys2x.gc.useDiskAware = true;
 
   # Connectivity

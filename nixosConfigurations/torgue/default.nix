@@ -39,7 +39,7 @@
     ];
   };
 
-  # Saiko's automatic gc
+  # Disk-aware garbage collection
   sys2x.gc.useDiskAware = true;
 
   # Support for cross compilation

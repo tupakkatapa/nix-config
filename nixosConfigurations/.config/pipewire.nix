@@ -48,7 +48,6 @@
 
   # Real-time audio settings
   boot = {
-    kernel.sysctl."vm.swappiness" = 10;
     kernelModules = [ "snd-seq" "snd-rawmidi" ];
     kernelParams = [ "threadirqs" ];
   };
