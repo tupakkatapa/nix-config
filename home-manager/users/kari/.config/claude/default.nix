@@ -21,20 +21,43 @@ in
     };
   };
 
+  # Cleanup orphaned Claude subagents which clogs RAM
+  systemd.user.services.claude-cleanup = {
+    Unit.Description = "Kill orphaned Claude Code subagents";
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.writeShellScript "claude-cleanup" ''
+        ${pkgs.procps}/bin/ps -eo pid,ppid,args | \
+          ${pkgs.gnugrep}/bin/grep 'claude-wrapped_.*stream-json' | \
+          ${pkgs.gawk}/bin/awk '$2 == 1 {print $1}' | \
+          ${pkgs.findutils}/bin/xargs -r ${pkgs.util-linux}/bin/kill -9 || true
+      ''}";
+    };
+  };
+  systemd.user.timers.claude-cleanup = {
+    Unit.Description = "Periodic cleanup of orphaned Claude subagents";
+    Timer = {
+      OnBootSec = "15m";
+      OnUnitActiveSec = "15m";
+    };
+    Install.WantedBy = [ "timers.target" ];
+  };
+
   programs.claude-code = {
     enable = true;
     skillsDir = ./skills;
 
-    # Custom slash commands
-    commands = {
-      "tt-check" = builtins.readFile ./commands/tt-check.md;
-      "tt-commit" = builtins.readFile ./commands/tt-commit.md;
-      "tt-implement" = builtins.readFile ./commands/tt-implement.md;
-      "tt-review" = builtins.readFile ./commands/tt-review.md;
-      "tt-security" = builtins.readFile ./commands/tt-security.md;
-      "tt-explain" = builtins.readFile ./commands/tt-explain.md;
-      "tt-mermaid" = builtins.readFile ./commands/tt-mermaid.md;
-    };
+    # Custom slash commands (auto-discovered from ./commands/)
+    commands =
+      let
+        commandDir = ./commands;
+        commandFiles = builtins.attrNames (builtins.readDir commandDir);
+        mkCommand = filename: {
+          name = builtins.replaceStrings [ ".md" ] [ "" ] filename;
+          value = builtins.readFile "${commandDir}/${filename}";
+        };
+      in
+      builtins.listToAttrs (map mkCommand commandFiles);
 
     settings = {
       alwaysThinkingEnabled = true;
