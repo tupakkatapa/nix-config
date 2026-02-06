@@ -77,7 +77,7 @@ in
       vim = mkIf hasNeovim "nvim";
       amimullvad = "curl https://am.i.mullvad.net/connected";
       kill-docker = "docker system reset --force";
-      cc = mkIf hasTmux "tmux new-session 'claude -c'";
+      claude = mkIf hasTmux "tmux new-session 'claude -c'";
     };
     functions = {
       fish_greeting = "";

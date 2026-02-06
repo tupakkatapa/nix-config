@@ -3,12 +3,18 @@
 Subagent orchestration, MCP tools, skills reference.
 
 ## Contents
-1. Roles - coordinator and subagent
-2. Tools - Native Subagents, Claude-Mem, NixOS MCP, Context7, Skills, Commands, Ralph Loop
-3. Triggers - when to use each tool
-4. NixOS Development - available packages, missing tools
-5. Examples - concrete usage patterns
-6. Links - documentation references
+1. Principles - core behavioral guidelines
+2. Roles - coordinator and subagent
+3. Tools - Native Subagents, Claude-Mem, NixOS MCP, Context7, Skills, Commands, Ralph Loop
+4. Triggers - when to use each tool
+5. NixOS Development - available packages, missing tools
+6. Examples - concrete usage patterns
+7. Links - documentation references
+
+## Principles
+
+- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
+- Fix all failing tests. They run continuously, so failures are almost always from recent changes, not pre-existing issues.
 
 ## Roles
 
