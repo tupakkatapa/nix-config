@@ -53,9 +53,8 @@
     store-remount.url = "github:ponkila/nixos-store-remount";
 
     # Other
-    anytui.url = "path:/home/kari/Workspace/local/anytui";
-    anytui.inputs.nixpkgs.follows = "nixpkgs";
-    coditon-md.url = "github:tupakkatapa/coditon-md";
+    anytui.url = "github:tupakkatapa/anytui";
+    molesk.url = "github:tupakkatapa/molesk";
     levari.url = "github:tupakkatapa/levari";
     mozid.url = "github:tupakkatapa/mozid";
     ping-sweep.url = "github:tupakkatapa/ping-sweep";
@@ -303,7 +302,7 @@
               ./home-manager/users/kari/minimal-gui.nix
               ./nixosConfigurations/vladof
               ./system/kexec-tree.nix
-              inputs.coditon-md.nixosModules.default
+              inputs.molesk.nixosModules.default
               inputs.nixie.nixosModules.nixie
               inputs.sftp-mount.nixosModules.sftpServer
             ];

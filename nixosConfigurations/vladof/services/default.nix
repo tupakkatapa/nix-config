@@ -50,7 +50,7 @@ let
         lastOctet = 14;
         uid = 10005;
       };
-      coditon-md = {
+      molesk = {
         addr = "blog.${domain}";
         port = 54783;
         private = false;
