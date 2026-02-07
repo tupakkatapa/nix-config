@@ -84,7 +84,6 @@ in
 
     home.packages = (with pkgs; [
       monitor-adjust
-      tui-suite
 
       # Trezor
       trezorctl

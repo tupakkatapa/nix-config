@@ -53,7 +53,12 @@ let
   };
 
   hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
-  tui = "${pkgs.tui-suite}/bin";
+  voltui = "${pkgs.voltui}/bin/voltui";
+  blutui = "${pkgs.blutui}/bin/blutui";
+  caltui = "${pkgs.caltui}/bin/caltui";
+  kaltui = "${pkgs.kaltui}/bin/kaltui";
+  mustui = "${pkgs.mustui}/bin/mustui";
+  nettui = "${pkgs.nettui}/bin/nettui";
 in
 {
   # hyprland.nix
@@ -74,17 +79,17 @@ in
       ''
         bind = ${mod}, S, submap, scripts
         submap = scripts
-        bind = , a, exec, ${TERMINAL} -a tui-suite -e ${tui}/voltui
+        bind = , a, exec, ${TERMINAL} -a tui-suite -e ${voltui}
         bind = , a, submap, reset
-        bind = , b, exec, ${TERMINAL} -a tui-suite -e ${tui}/blutui
+        bind = , b, exec, ${TERMINAL} -a tui-suite -e ${blutui}
         bind = , b, submap, reset
-        bind = , c, exec, ${TERMINAL} -a tui-suite -e ${tui}/caltui
+        bind = , c, exec, ${TERMINAL} -a tui-suite -e ${caltui}
         bind = , c, submap, reset
-        bind = , k, exec, ${TERMINAL} -a tui-suite -e ${tui}/kaltui
+        bind = , k, exec, ${TERMINAL} -a tui-suite -e ${kaltui}
         bind = , k, submap, reset
-        bind = , m, exec, ${TERMINAL} -a tui-suite -e ${tui}/mustui ~/Media/music/Artists
+        bind = , m, exec, ${TERMINAL} -a tui-suite -e ${mustui} ~/Media/music/Artists
         bind = , m, submap, reset
-        bind = , n, exec, ${TERMINAL} -a tui-suite -e ${tui}/nettui
+        bind = , n, exec, ${TERMINAL} -a tui-suite -e ${nettui}
         bind = , n, submap, reset
         bind = , p, exec, ${hyprpicker} -a -n
         bind = , p, submap, reset

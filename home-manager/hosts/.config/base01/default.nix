@@ -10,6 +10,14 @@
     wf-recorder
     wl-clipboard
     wlsunset
+
+    # TUI managers
+    voltui
+    blutui
+    nettui
+    mustui
+    kaltui
+    caltui
   ];
 
   home.sessionVariables = {

@@ -9,10 +9,10 @@ let
   rice = import ./config.nix { inherit customLib config; };
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
-  voltui = "${pkgs.tui-suite}/bin/voltui";
-  blutui = "${pkgs.tui-suite}/bin/blutui";
-  nettui = "${pkgs.tui-suite}/bin/nettui";
-  caltui = "${pkgs.tui-suite}/bin/caltui";
+  voltui = "${pkgs.voltui}/bin/voltui";
+  blutui = "${pkgs.blutui}/bin/blutui";
+  nettui = "${pkgs.nettui}/bin/nettui";
+  caltui = "${pkgs.caltui}/bin/caltui";
 in
 {
   programs.waybar = {

@@ -53,6 +53,8 @@
     store-remount.url = "github:ponkila/nixos-store-remount";
 
     # Other
+    anytui.url = "path:/home/kari/Workspace/local/anytui";
+    anytui.inputs.nixpkgs.follows = "nixpkgs";
     coditon-md.url = "github:tupakkatapa/coditon-md";
     levari.url = "github:tupakkatapa/levari";
     mozid.url = "github:tupakkatapa/mozid";
@@ -98,6 +100,7 @@
             inherit system;
             overlays = [
               self.overlays.default
+              inputs.anytui.overlays.default
             ];
             config.permittedInsecurePackages = [ "python3.13-ecdsa-0.19.1" ];
           };
@@ -107,7 +110,6 @@
               chroma-mcp
               kb-shortcuts
               monitor-adjust
-              tui-suite
               # Inputs
               codex
               claude-code
@@ -156,12 +158,6 @@
                 enable = true;
                 package = config.treefmt.build.wrapper;
               };
-              pedantic-clippy = {
-                enable = true;
-                entry = "bash -c 'cd packages/tui-suite && cargo clippy -- -D clippy::pedantic'";
-                files = "\\.rs$";
-                pass_filenames = false;
-              };
               shellcheck = {
                 enable = true;
                 files = "\\.sh$";
@@ -179,7 +175,6 @@
             "kb-shortcuts" = pkgs.callPackage ./packages/kb-shortcuts { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
             "pinit" = pkgs.callPackage ./packages/pinit { };
-            "tui-suite" = pkgs.callPackage ./packages/tui-suite { };
             # Inputs
             inherit (inputs'.levari.packages) levari;
             inherit (inputs'.nixie.packages) lkddb-filter;
@@ -237,6 +232,7 @@
               {
                 nixpkgs.overlays = [
                   self.overlays.default
+                  inputs.anytui.overlays.default
                 ];
                 system.stateVersion = "25.11";
               }
