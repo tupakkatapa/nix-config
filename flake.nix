@@ -23,6 +23,7 @@
 
   inputs = {
     devenv.url = "github:cachix/devenv";
+    devenv.inputs.nixpkgs.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
@@ -37,6 +38,7 @@
 
     # Secret management
     agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix-rekey.url = "github:oddlama/agenix-rekey";
     agenix-rekey.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -48,18 +50,29 @@
 
     # Netboot stuff
     nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie?ref=jesse/dev31";
+    nixie.inputs.nixpkgs.follows = "nixpkgs";
     runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
+    runtime-modules.inputs.nixpkgs.follows = "nixpkgs";
     sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount";
+    sftp-mount.inputs.nixpkgs.follows = "nixpkgs";
     store-remount.url = "github:ponkila/nixos-store-remount";
+    store-remount.inputs.nixpkgs.follows = "nixpkgs";
 
     # Other
     anytui.url = "github:tupakkatapa/anytui";
+    anytui.inputs.nixpkgs.follows = "nixpkgs";
     molesk.url = "github:tupakkatapa/molesk";
+    molesk.inputs.nixpkgs.follows = "nixpkgs";
     levari.url = "github:tupakkatapa/levari";
+    levari.inputs.nixpkgs.follows = "nixpkgs";
     mozid.url = "github:tupakkatapa/mozid";
+    mozid.inputs.nixpkgs.follows = "nixpkgs";
     ping-sweep.url = "github:tupakkatapa/ping-sweep";
+    ping-sweep.inputs.nixpkgs.follows = "nixpkgs";
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
+    nix-extras.inputs.nixpkgs.follows = "nixpkgs";
     llm-agents.url = "github:numtide/llm-agents.nix";
+    llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs = { self, ... }@inputs:
@@ -138,20 +151,7 @@
           devenv.shells.default = {
             packages = [
               config.agenix-rekey.package
-              pkgs.alsa-lib.dev
-              pkgs.pkg-config
             ];
-            languages.rust = {
-              enable = true;
-              components = [ "cargo" "clippy" ];
-            };
-            env = {
-              NIX_CONFIG = ''
-                accept-flake-config = true
-                extra-experimental-features = flakes nix-command
-                warn-dirty = false
-              '';
-            };
             git-hooks.hooks = {
               treefmt = {
                 enable = true;
