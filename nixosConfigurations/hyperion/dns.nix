@@ -123,7 +123,7 @@ in
         include = "${unboundBlocklist}";
 
         # Local zone
-        local-zone = [ ''"coditon.com." transparent'' ];
+        local-zone = [ ''"coditon.com." typetransparent'' ];
         local-data = [
           ''"coditon.com. IN A 10.42.0.1"''
           ''"cert.coditon.com. IN A 10.42.0.8"''

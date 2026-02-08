@@ -3,6 +3,7 @@ _:
   # fail2ban configuration for SSH brute force protection
   services.fail2ban = {
     enable = true;
+    ignoreIP = [ "10.42.0.7" ];
     maxretry = 5;
     bantime = "24h";
     bantime-increment = {

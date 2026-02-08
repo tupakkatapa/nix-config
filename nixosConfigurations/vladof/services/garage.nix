@@ -74,5 +74,6 @@ in
     "d ${garageDir}          0750 garage garage -"
     "d ${garageDir}/metadata 0750 garage garage -"
     "d ${garageDir}/data     0750 garage garage -"
+    "Z ${garageDir}          0750 garage garage -"
   ];
 }

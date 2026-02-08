@@ -52,7 +52,10 @@ in
       owner = user;
       group = "users";
     };
-    "nix-access-tokens".rekeyFile = ./secrets/nix-access-tokens.age;
+    "nix-access-tokens" = {
+      rekeyFile = ./secrets/nix-access-tokens.age;
+      owner = user;
+    };
   };
 
   # Append access tokens to nix.conf to avoid rate limits

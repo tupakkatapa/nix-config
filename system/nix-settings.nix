@@ -24,6 +24,8 @@
       accept-flake-config = true;
       # Allow impure evaluation by default
       pure-eval = false;
+      # Don't warn about dirty Git trees
+      warn-dirty = false;
       # Allows this server to be used as a remote builder
       trusted-users = [ "root" "@wheel" ];
 
