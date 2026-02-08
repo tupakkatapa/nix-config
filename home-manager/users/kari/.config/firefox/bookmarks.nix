@@ -9,6 +9,8 @@
           name = "Self-Hosted";
           bookmarks = [
             { name = "Hyperion"; url = "https://10.42.0.1"; }
+            { name = "Netboot"; url = "http://10.42.0.1:52080/"; }
+            { name = "Grafana"; url = "https://grafana.coditon.com"; }
             { name = "Home Assistant"; url = "https://home.coditon.com"; }
             { name = "Radicale"; url = "https://dav.coditon.com/"; }
             { name = "Plex"; url = "https://plex.coditon.com"; }

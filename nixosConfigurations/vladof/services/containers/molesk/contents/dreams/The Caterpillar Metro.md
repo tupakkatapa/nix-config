@@ -6,7 +6,7 @@ date: "2024-11-28"
 
 ![](../assets/the_caterpillar_metro.jpg)
 
-*Imagined 2024-22-11, transcribed by AI*
+*Imagined 2024-11-22, transcribed by AI*
 
 ## Chapter 1: Arrival in a Foreign Land
 

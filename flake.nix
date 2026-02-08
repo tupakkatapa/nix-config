@@ -249,6 +249,7 @@
               inputs.runtime-modules.nixosModules.runtimeModules
               inputs.store-remount.nixosModules.storeRemount
               inputs.sftp-mount.nixosModules.sftpClient
+              self.nixosModules.monitoring
               self.nixosModules.stateSaver
               ({ config, ... }: {
                 home-manager = {
@@ -345,6 +346,7 @@
           # NixOS modules
           nixosModules = {
             autoScrcpy.imports = [ ./nixosModules/auto-scrcpy.nix ];
+            monitoring.imports = [ ./nixosModules/monitoring ];
             stateSaver.imports = [ ./nixosModules/state-saver.nix ];
           };
 

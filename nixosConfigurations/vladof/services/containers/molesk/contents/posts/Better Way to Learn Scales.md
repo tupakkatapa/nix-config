@@ -83,7 +83,7 @@ E  ———|———|———|———|———|———|———|——�
 
 ### Any Direction
 
-Now, we know how to move to upper strings and move down the neck using the one string method, and that's not all. We can use those in reverse and be able to navigate the whole fretboard with any scale in any of the four cardinal direction (up, down, left, right) in sequences of three notes. If you understand how the stuff above works, I am sure you can figure out how to reverse those, and this is where the money is at. It is an unbelievably powerful addition to the MILLPAD method, even if I do say so myself.
+Now, we know how to move to upper strings and move down the neck using the one string method, and that's not all. We can use those in reverse and be able to navigate the whole fretboard with any scale in any of the four cardinal directions (up, down, left, right) in sequences of three notes. If you understand how the stuff above works, I am sure you can figure out how to reverse those, and this is where the money is at. It is an unbelievably powerful addition to the MILLPAD method, even if I do say so myself.
 
 ## How About Guitar?
 

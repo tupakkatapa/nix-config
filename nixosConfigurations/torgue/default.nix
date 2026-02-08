@@ -93,6 +93,13 @@
       };
     };
   };
+
+  # Monitoring
+  services.monitoring = {
+    enable = true;
+    openFirewall = true;
+  };
+
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = false;
 }

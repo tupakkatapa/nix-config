@@ -87,6 +87,11 @@ let
       port = 8123;
       private = true;
     };
+    grafana = {
+      addr = "grafana.${domain}";
+      port = 3000;
+      private = true;
+    };
   };
 
   # Filter for public and private services
@@ -117,6 +122,7 @@ in
     (import ./containers { inherit pkgs lib config domain dataDir containerConfig containerSubnet inputs; })
     (import ./home-assistant { inherit dataDir; haConfig = serviceConfig.home-assistant; })
     (import ./garage.nix { inherit pkgs config; })
+    (import ./grafana.nix { inherit domain; })
   ];
 
   # Reverse proxy

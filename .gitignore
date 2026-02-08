@@ -1,4 +1,7 @@
 .claude
+**/CLAUDE.md
+!/CLAUDE.md
+!/home-manager/users/kari/.config/claude/CLAUDE.md
 .devenv
 .direnv
 .pre-commit-config.yaml

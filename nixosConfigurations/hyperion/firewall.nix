@@ -83,6 +83,9 @@ _:
       # Allow DHCPv6 client on WAN
       iifname "enp1s0" udp sport 547 udp dport 546 accept
 
+      # Allow vladof to scrape node exporter (Prometheus)
+      iifname "br-lan" ip saddr 10.42.0.8 tcp dport 9100 accept
+
       # Rate limiting
       iifname { "br-lan", "wg0", "wg1", "wg2" } tcp dport 22 limit rate over 10/minute drop
       iifname { "br-lan", "wg0", "wg1", "wg2", "br-wifi" } udp dport 53 limit rate over 50/second drop
@@ -103,6 +106,11 @@ _:
       # iifname "enp1s0" tcp dport 30303 ct state new limit rate over 100/second drop  # Besu
       # iifname "enp1s0" udp dport 30303 limit rate over 100/second drop
       # iifname "enp1s0" tcp dport 9001 ct state new limit rate over 50/second drop    # Lighthouse
+
+      # Allow Vladof to reach Cloudflare NS for ACME DNS propagation check
+      # ricardo.ns.cloudflare.com + haley.ns.cloudflare.com
+      iifname "br-lan" ip saddr 10.42.0.8 ip daddr { 172.64.35.211, 108.162.195.211, 162.159.44.211, 172.64.34.15, 108.162.194.15, 162.159.38.15 } tcp dport 53 accept
+      iifname "br-lan" ip saddr 10.42.0.8 ip daddr { 172.64.35.211, 108.162.195.211, 162.159.44.211, 172.64.34.15, 108.162.194.15, 162.159.38.15 } udp dport 53 accept
 
       # Block external DNS (force clients through local resolver)
       iifname { "br-lan", "br-wifi", "wg0", "wg1", "wg2" } oifname "enp1s0" tcp dport 53 reject with tcp reset

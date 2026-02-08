@@ -6,7 +6,7 @@ date: "2024-11-28"
 
 ![](../assets/paint_a_thing.jpg)
 
-*Imagined 2024-19-10, transcribed by AI, cared by me*
+*Imagined 2024-10-19, transcribed by AI, cared by me*
 
 ## Chapter 1: Arrival at Darian
 

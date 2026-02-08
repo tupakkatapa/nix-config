@@ -2,7 +2,7 @@
 
 Hello there! I'm Jesse, and I have booked this little corner of the world wide web as a place where I share my thoughts on computers, life, and everything in between. Whether you're here for insights, inspiration, or just to kill some time, I'm glad you stopped by.
 
-### You can discover my..
+### You can discover my...
 
   - **Documents:** Miscellaneous documents I might like to share frequently.
   - **Dreams:** I'll dump my dreams into text and ask AI to make short novels out of them.

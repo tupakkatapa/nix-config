@@ -22,7 +22,7 @@ Before trying to understand the netbooting from a NixOS point of view, we need t
 
 ### Stage N° 1
 
-The process starts with Stage 1, initiated directly by the bootloader. We are interested in what happens at the end of Stage 1; here is a quick rundown what happens until then.
+The process starts with Stage 1, initiated directly by the bootloader. We are interested in what happens at the end of Stage 1; here is a quick rundown of what happens until then.
 
 The Linux kernel prepares the system for booting by:
 
@@ -153,7 +153,7 @@ If you decide to get your hands dirty regarding booting process, here are some t
 
     ```nix
     boot.kernelParams = [
-      # Initiates a an interactive shell at Stage 1
+      # Initiates an interactive shell at Stage 1
       "boot.debug1"
 
       # Same as debug1, but waits until kernel modules are loaded

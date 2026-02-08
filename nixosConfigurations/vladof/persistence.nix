@@ -19,6 +19,22 @@
           ];
         }
       ];
+      prometheus = [
+        {
+          name = "appdata";
+          dirs = [
+            { name = "prometheus"; mode = "755"; what = "/var/lib/prometheus"; }
+          ];
+        }
+      ];
+      grafana = [
+        {
+          name = "appdata";
+          dirs = [
+            { name = "grafana"; mode = "755"; what = "/var/lib/grafana"; }
+          ];
+        }
+      ];
       kari = [
         {
           name = "appdata";
@@ -64,5 +80,14 @@
     "d ${dataDir}/backups  700 root root -"
     "d ${dataDir}/sftp     755 root root -"
     "d ${dataDir}/store    755 root root -"
+
+    # Enforce SFTP subdirectory permissions
+    "Z ${dataDir}/sftp/appdata - sftp sftp -"
+    "Z ${dataDir}/sftp/code    - sftp sftp -"
+    "Z ${dataDir}/sftp/docs    - sftp sftp -"
+    "Z ${dataDir}/sftp/games   - sftp sftp -"
+    "Z ${dataDir}/sftp/media   - sftp sftp -"
+    "Z ${dataDir}/sftp/sys     - sftp sftp -"
+    "Z ${dataDir}/sftp/tmp     - sftp sftp -"
   ];
 }

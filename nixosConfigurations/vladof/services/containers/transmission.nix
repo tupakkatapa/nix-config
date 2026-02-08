@@ -78,9 +78,9 @@ in
 
   # Ensure host directories for the bind mount exist with correct ownership
   systemd.tmpfiles.rules = [
-    "d ${dataDir}/sftp/dnld                              755 ${uid} ${uid} -"
+    "d ${dataDir}/sftp/dnld                              775 ${uid} sftp -"
     "d ${dataDir}/home/transmission/appdata/transmission 755 ${uid} ${uid} -"
-    "Z ${dataDir}/sftp/dnld                              - ${uid} ${uid} -"
+    "Z ${dataDir}/sftp/dnld                              - ${uid} sftp -"
     "Z ${dataDir}/home/transmission/appdata/transmission - ${uid} ${uid} -"
   ];
 }

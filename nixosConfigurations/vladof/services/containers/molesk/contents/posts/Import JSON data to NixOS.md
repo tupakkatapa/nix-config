@@ -37,7 +37,7 @@ nix_expr=$(nix-instantiate --eval --expr "builtins.fromJSON \"$esc_json_data\"")
 echo "$nix_expr"
 ```
 
-## 2. Insert to a Broilerplate
+## 2. Insert to a Boilerplate
 
 To import this data into your NixOS configuration, we should also encapsulate it within the basic syntax. This is also a great opportunity to restrict the scope of the configuration to prevent some nasty things. Append this to the bash script from earlier:
 

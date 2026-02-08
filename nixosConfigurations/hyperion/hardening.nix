@@ -51,12 +51,9 @@
     { domain = "*"; type = "hard"; item = "core"; value = "0"; }
   ];
 
+  # SSH: don't auto-open port 22 globally; managed per-interface in firewall.nix
+  services.openssh.openFirewall = false;
+
   # Blacklist uncommon network protocols (attack surface reduction)
   boot.blacklistedKernelModules = [ "dccp" "sctp" "rds" "tipc" ];
-
-  # Limit journal retention
-  services.journald.extraConfig = ''
-    MaxRetentionSec=7day
-    SystemMaxUse=100M
-  '';
 }

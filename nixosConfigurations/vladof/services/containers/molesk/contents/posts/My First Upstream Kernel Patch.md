@@ -78,7 +78,7 @@ Contributing to the Linux kernel isn't as daunting as it seems, once you underst
     };
    ```
 
-3. **Create a commit**
+4. **Create a commit**
 
    ```bash
    git commit -s -m 'leds: pca995x: fix typo
@@ -91,7 +91,7 @@ Contributing to the Linux kernel isn't as daunting as it seems, once you underst
 
    The `-s` flag appends a *Developer Certificate of Origin* line to certify I wrote the patch. Ideally, you should also run style-check and test your changes. I skipped those because this one‑line fix is safe.
 
-4. **Generate a mail‑ready patch**
+5. **Generate a mail‑ready patch**
 
    ```bash
    git format-patch -1 --base=auto
@@ -99,7 +99,7 @@ Contributing to the Linux kernel isn't as daunting as it seems, once you underst
 
    This produces **0001-leds-pca995x-fix-spacing-typo.patch**.
 
-5. **Find the maintainers**
+6. **Find the maintainers**
 
    ```bash
    perl scripts/get_maintainer.pl 0001-*.patch
@@ -113,7 +113,7 @@ Contributing to the Linux kernel isn't as daunting as it seems, once you underst
    linux-kernel@vger.kernel.org (open list)
    ```
 
-6. **Configure email**
+7. **Configure email**
 
    I initially struggled with Outlook. Its mandatory OAuth authentication wouldn't cooperate with `git send-email`, so I switched to my company account hosted on Hetzner instead, which worked like a charm.
 
@@ -156,7 +156,7 @@ Contributing to the Linux kernel isn't as daunting as it seems, once you underst
 
    The guide at [https://git-send-email.io/](https://git-send-email.io/) was invaluable for testing the setup.
 
-7. **Send the patch**
+8. **Send the patch**
 
    ```bash
    git send-email \

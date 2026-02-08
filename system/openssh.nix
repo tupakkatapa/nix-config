@@ -4,6 +4,7 @@
   # Enable strict OpenSSH
   services.openssh = {
     enable = true;
+    openFirewall = lib.mkDefault true;
     allowSFTP = lib.mkDefault false;
     extraConfig = ''
       AllowAgentForwarding no

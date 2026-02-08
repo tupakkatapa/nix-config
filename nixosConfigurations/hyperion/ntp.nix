@@ -26,6 +26,11 @@ _:
       # Serve time even if not synced (for initial PXE boot)
       local stratum 10
 
+      # Only listen on internal interfaces (not WAN)
+      bindaddress 10.42.0.1
+      bindaddress 10.42.1.1
+      bindaddress 127.0.0.1
+
       noclientlog
       makestep 1.0 3
     '';

@@ -35,7 +35,7 @@ This is my go-to pizza (and bread) dough recipe. It should be prepared when you 
 
 2. Stir in the olive oil, salt, and most of the flour. Mix until you have a shaggy dough. Turn the dough out onto a well-floured surface and knead, adding more flour as necessary to prevent sticking. Continue kneading until the dough is smooth and elastic. Take your time — this makes the biggest difference in my opinion.
 
-3. Divide the dough into 4 equal balls. Place each ball in a small food-grade plastic bag with a bit of olive oil. Refrigerate for atleast 3–4 days.
+3. Divide the dough into 4 equal balls. Place each ball in a small food-grade plastic bag with a bit of olive oil. Refrigerate for at least 3–4 days.
 
 4. Place a pizza stone or steel on a rack in your oven. I’ve found the middle rack works best. If you don’t have a stone or steel, just use a baking tin (like I do). Preheat the oven to its highest setting, and wait a bit extra to ensure the surface is thoroughly heated.
 

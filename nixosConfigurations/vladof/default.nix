@@ -23,7 +23,6 @@ in
   imports = [
     (import ./services extendedArgs)
     (import ./persistence.nix extendedArgs)
-    ../.config/fail2ban.nix
     ../.config/motd.nix
     ../.config/pipewire.nix
     ../.config/yubikey.nix
