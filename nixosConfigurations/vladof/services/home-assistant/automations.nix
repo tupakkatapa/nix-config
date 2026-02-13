@@ -1,15 +1,22 @@
 [
+  # Sunrise: 30 min before alarm, gradually brighten lights
   {
-    alias = "Sunrise Wake Start";
+    alias = "Sunrise";
     trigger = [{
-      platform = "template";
-      value_template = "{{ now().strftime('%H:%M') == ((state_attr('input_datetime.morning_alarm_time', 'timestamp') | int - 1800) | timestamp_custom('%H:%M', false)) }}";
+      platform = "time_pattern";
+      minutes = "/1";
     }];
-    condition = [{
-      condition = "state";
-      entity_id = "input_boolean.morning_alarm";
-      state = "on";
-    }];
+    condition = [
+      {
+        condition = "state";
+        entity_id = "input_boolean.morning_alarm";
+        state = "on";
+      }
+      {
+        condition = "template";
+        value_template = "{{ now().strftime('%H:%M') == ((state_attr('input_datetime.morning_alarm_time', 'timestamp') | int - 1800) | timestamp_custom('%H:%M', false)) }}";
+      }
+    ];
     action = [
       {
         service = "light.turn_on";
@@ -30,8 +37,9 @@
       }
     ];
   }
+  # Wake Up: at alarm time, WOL + disable
   {
-    alias = "Sunrise Wake Complete";
+    alias = "Wake Up";
     trigger = [{
       platform = "time";
       at = "input_datetime.morning_alarm_time";
