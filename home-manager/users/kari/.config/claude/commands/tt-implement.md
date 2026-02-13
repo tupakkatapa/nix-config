@@ -1,6 +1,8 @@
+
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
+- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
 - **Do not push or commit anything unless explicitly told to do so.**
 
 ---
@@ -53,6 +55,14 @@ Once approved, implement step-by-step:
 - Complete each step fully before moving to the next
 - Flag any deviations from the plan and confirm with user
 
-## 5. Handoff
+## 5. Testing
+
+Implement comprehensive tests covering:
+- **Positive cases** — verify correct behavior with valid inputs and expected usage
+- **Negative cases** — verify proper handling of invalid inputs, edge cases, and error conditions (what should fail, should fail gracefully)
+
+Adapt to the project's testing tools and conventions. If no test infrastructure exists, propose one.
+
+## 6. Handoff
 
 When implementation is complete, suggest running the `/tt-review` command to validate the work.

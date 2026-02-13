@@ -2,6 +2,7 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
+- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
 - **Do not push or commit anything unless explicitly told to do so.**
 
 ---
@@ -16,11 +17,13 @@ pre-commit run --all-files
 Fix all errors and warnings. Repeat until clean. Avoid NOQA/noqa comments.
 
 ## 2. Tests & Linters
-Detect project type and run the appropriate commands:
+Detect project type from config files (`flake.nix`, `Cargo.toml`, `pyproject.toml`, `package.json`, `go.mod`, etc.) and run the appropriate commands:
 - **Universal**: `make test` or `just test` if available (prefer these)
-- **Python**: `pytest`
-- **Rust**: `cargo test --all-features`
 - **Nix**: `nix flake check`
+- **Rust**: `cargo test --all-features`
+- **Python**: `pytest`
+- **Go**: `go test ./...`
+- **JS/TS**: `npm test` or `pnpm test`
 
 Fix all failures. Be skeptical of skipped tests—verify they should be skipped.
 

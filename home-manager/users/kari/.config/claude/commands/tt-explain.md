@@ -1,6 +1,7 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
+- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
 - **Do not push or commit anything unless explicitly told to do so.**
 
 ---
@@ -45,11 +46,3 @@ If a diagram would help understanding, call `/tt-mermaid` to create one:
 - Flowcharts for complex logic
 - ER diagrams for data relationships
 
-Ask the user if they'd like a diagram if it's not obvious.
-
-## 5. Follow-up
-
-Offer to:
-- Dive deeper into specific aspects
-- Create additional diagrams
-- Explain related topics

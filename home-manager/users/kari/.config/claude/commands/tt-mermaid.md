@@ -1,6 +1,7 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
+- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
 
 ---
 
@@ -30,12 +31,7 @@ Choose the appropriate Mermaid diagram type:
 
 ## 3. Save and Display
 
-Save the diagram to a temporary file:
-```bash
-cat > /tmp/diagram.mmd << 'EOF'
-<mermaid code here>
-EOF
-```
+Save the diagram to `/tmp/diagram.mmd` using the Write tool.
 
 Generate and open the diagram:
 ```bash

@@ -30,9 +30,11 @@ let
     };
 
   callPlugin = path: pkgs.callPackage path { inherit mkClaudePlugin; };
+  anthropicSkills = pkgs.callPackage ./anthropic-skills.nix { inherit mkClaudePlugin; };
 in
 {
   ralph-wiggum = callPlugin ./ralph-wiggum.nix;
   claude-mem = callPlugin ./claude-mem.nix;
   superpowers = callPlugin ./superpowers.nix;
+  inherit (anthropicSkills) document-skills example-skills;
 }

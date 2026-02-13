@@ -2,6 +2,7 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
+- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
 - **Do not push or commit anything unless explicitly told to do so.**
 
 ---

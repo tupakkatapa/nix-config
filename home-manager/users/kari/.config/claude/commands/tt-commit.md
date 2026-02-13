@@ -1,11 +1,15 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
+- Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
+- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
 - **Do not push anything unless explicitly told to do so.**
 
 ---
 
 You are preparing a commit for the current changes.
+
+If `/tt-check` has not been run recently, run it first to catch issues before committing.
 
 ## 1. Review Diff
 - Read the diff to understand what was changed

@@ -119,6 +119,8 @@ in
       ralph-wiggum
       claude-mem
       superpowers
+      document-skills
+      example-skills
     ];
   };
 
