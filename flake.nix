@@ -1,38 +1,16 @@
 # https://github.com/Misterio77/nix-config
 # https://github.com/jhvst/nix-config
 {
-  description = "Tupakkatapa's flake";
-
-  nixConfig = {
-    extra-substituters = [
-      "https://cache.nixos.org"
-      "https://nix-community.cachix.org"
-      "https://nixpkgs-wayland.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
-    ];
-    extraOptions = ''
-      download-attempts = 3
-      connect-timeout = 5
-      fallback = true
-    '';
-  };
-
   inputs = {
-    devenv.url = "github:cachix/devenv";
-    devenv.inputs.nixpkgs.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    git-hooks.inputs.nixpkgs.follows = "nixpkgs";
+    git-hooks.url = "github:cachix/git-hooks.nix";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
-    nixvim.url = "github:nix-community/nixvim/nixos-25.11";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
@@ -49,30 +27,30 @@
     hyprwm-contrib.url = "github:hyprwm/contrib";
 
     # Netboot stuff
-    nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie?ref=jesse/dev31";
     nixie.inputs.nixpkgs.follows = "nixpkgs";
-    runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
+    nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie?ref=jesse/dev31";
     runtime-modules.inputs.nixpkgs.follows = "nixpkgs";
-    sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount";
+    runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
     sftp-mount.inputs.nixpkgs.follows = "nixpkgs";
-    store-remount.url = "github:ponkila/nixos-store-remount";
+    sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount";
     store-remount.inputs.nixpkgs.follows = "nixpkgs";
+    store-remount.url = "github:ponkila/nixos-store-remount";
 
     # Other
-    anytui.url = "github:tupakkatapa/anytui";
     anytui.inputs.nixpkgs.follows = "nixpkgs";
-    molesk.url = "github:tupakkatapa/molesk";
-    molesk.inputs.nixpkgs.follows = "nixpkgs";
-    levari.url = "github:tupakkatapa/levari";
-    levari.inputs.nixpkgs.follows = "nixpkgs";
-    mozid.url = "github:tupakkatapa/mozid";
-    mozid.inputs.nixpkgs.follows = "nixpkgs";
-    ping-sweep.url = "github:tupakkatapa/ping-sweep";
-    ping-sweep.inputs.nixpkgs.follows = "nixpkgs";
-    nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
-    nix-extras.inputs.nixpkgs.follows = "nixpkgs";
-    llm-agents.url = "github:numtide/llm-agents.nix";
+    anytui.url = "github:tupakkatapa/anytui";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    llm-agents.url = "github:numtide/llm-agents.nix";
+    molesk.inputs.nixpkgs.follows = "nixpkgs";
+    molesk.url = "github:tupakkatapa/molesk";
+    mozid.inputs.nixpkgs.follows = "nixpkgs";
+    mozid.url = "github:tupakkatapa/mozid";
+    nix-extras.inputs.nixpkgs.follows = "nixpkgs";
+    nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    nixvim.url = "github:nix-community/nixvim/nixos-25.11";
+    ping-sweep.inputs.nixpkgs.follows = "nixpkgs";
+    ping-sweep.url = "github:tupakkatapa/ping-sweep";
   };
 
   outputs = { self, ... }@inputs:
@@ -80,7 +58,7 @@
       systems = [ "x86_64-linux" ];
       imports = [
         inputs.agenix-rekey.flakeModule
-        inputs.devenv.flakeModule
+        inputs.git-hooks.flakeModule
         inputs.flake-parts.flakeModules.easyOverlay
         inputs.treefmt-nix.flakeModule
       ];
@@ -92,20 +70,6 @@
         , inputs'
         , ...
         }:
-        let
-          # Patched nixpkgs with trezor fix for click 8.2 compatibility
-          # See: https://github.com/jhvst/nix-config/blob/949d9dea5d01292e9eac358535dca247f3a9229b/flake.nix#L41-L107
-          nixpkgs-patched = import
-            ((import inputs.nixpkgs { inherit system; }).applyPatches {
-              name = "nixpkgs-pr-455630";
-              src = inputs.nixpkgs;
-              patches = [ ./packages/trezor/455630.patch ];
-            })
-            {
-              inherit system;
-              config.permittedInsecurePackages = [ "python3.13-ecdsa-0.19.1" ];
-            };
-        in
         {
           # Overlays
           _module.args.pkgs = import inputs.nixpkgs {
@@ -114,7 +78,6 @@
               self.overlays.default
               inputs.anytui.overlays.default
             ];
-            config.permittedInsecurePackages = [ "python3.13-ecdsa-0.19.1" ];
           };
           overlayAttrs = {
             inherit (config.packages)
@@ -126,8 +89,6 @@
               codex
               claude-code
               ping-sweep
-              # Patches
-              python313
               ;
             # Not a single derivation
             claude-plugins = pkgs.callPackage ./packages/claude-plugins { };
@@ -141,29 +102,26 @@
             programs = {
               deadnix.enable = true;
               nixpkgs-fmt.enable = true;
-              rustfmt.enable = true;
+              shellcheck.enable = true;
               shfmt.enable = true;
               statix.enable = true;
             };
           };
 
+          # Pre-commit hooks
+          pre-commit.check.enable = false;
+          pre-commit.settings.hooks.treefmt = {
+            enable = true;
+            package = config.treefmt.build.wrapper;
+          };
+
           # Development shell -> 'nix develop' or 'direnv allow'
-          devenv.shells.default = {
+          devShells.default = pkgs.mkShell {
             packages = [
               config.agenix-rekey.package
+              pkgs.pre-commit
             ];
-            git-hooks.hooks = {
-              treefmt = {
-                enable = true;
-                package = config.treefmt.build.wrapper;
-              };
-              shellcheck = {
-                enable = true;
-                files = "\\.sh$";
-              };
-            };
-            # Workaround for https://github.com/cachix/devenv/issues/760
-            containers = pkgs.lib.mkForce { };
+            shellHook = config.pre-commit.installationScript;
           };
 
           # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
@@ -175,18 +133,11 @@
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
             "pinit" = pkgs.callPackage ./packages/pinit { };
             # Inputs
-            inherit (inputs'.levari.packages) levari;
             inherit (inputs'.nixie.packages) lkddb-filter;
             inherit (inputs'.nixie.packages) pxe-generate;
             inherit (inputs'.nixie.packages) refind-generate;
             inherit (inputs'.ping-sweep.packages) ping-sweep;
             inherit (inputs'.llm-agents.packages) claude-code;
-            # Patches - trezor needs patched nixpkgs for click 8.2 compat
-            "python313" = pkgs.python313.override {
-              packageOverrides = _: _: {
-                inherit (nixpkgs-patched.python313Packages) trezor;
-              };
-            };
           }
           // (with flake.nixosConfigurations; {
             "bandit" = bandit.config.system.build.kexecTree;
