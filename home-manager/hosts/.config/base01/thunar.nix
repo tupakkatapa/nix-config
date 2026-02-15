@@ -16,6 +16,7 @@ in
     tumblerWithoutEpub
     xfce.xfconf
     p7zip
+    unrar
     xarchiver
   ];
 
