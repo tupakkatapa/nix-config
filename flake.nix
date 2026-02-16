@@ -28,7 +28,7 @@
 
     # Netboot stuff
     nixie.inputs.nixpkgs.follows = "nixpkgs";
-    nixie.url = "git+ssh://git@github.com/majbacka-labs/nixie?ref=jesse/dev31";
+    nixie.url = "github:majbacka-labs/nixie/jesse/dev31"; # https, private
     runtime-modules.inputs.nixpkgs.follows = "nixpkgs";
     runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
     sftp-mount.inputs.nixpkgs.follows = "nixpkgs";

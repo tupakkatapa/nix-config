@@ -15,11 +15,7 @@
         {
           name = "secrets";
           dirs = [
-            # For compiling hosts that contain or are sourced from private inputs
-            # Potentially required by the 'nixie' or 'refindGenerate' modules
-            # You can remove this when Nixie is someday open-sourced
-            { name = "ssh"; mode = "700"; what = "/root/.ssh"; }
-            # GitHub access token for nix to avoid API rate limiting
+            # GitHub access token for nix to avoid API rate limiting and to access private inputs (nixie)
             { name = "nix"; mode = "700"; what = "/root/.config/nix"; }
           ];
         }

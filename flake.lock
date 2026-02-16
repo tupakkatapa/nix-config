@@ -1650,18 +1650,18 @@
         "treefmt-nix": "treefmt-nix_5"
       },
       "locked": {
-        "lastModified": 1771093056,
-        "narHash": "sha256-QNOMzoWSO7ldgq1O2DQ7sqdcYjGntmwozH0oFqnzDKk=",
-        "ref": "jesse/dev31",
-        "rev": "ba1e843d50fd1819f86a5bac788c8fea299f69d1",
-        "revCount": 74,
-        "type": "git",
-        "url": "ssh://git@github.com/majbacka-labs/nixie"
+        "lastModified": 1771102055,
+        "narHash": "sha256-fHHH41mSaAOgYB1MKZCJgBhVLTT2bDJZtt9DTdZYZSM=",
+        "owner": "majbacka-labs",
+        "repo": "nixie",
+        "rev": "e74a084dd184d7e1f1ccb125c9899917c1ff67b9",
+        "type": "github"
       },
       "original": {
+        "owner": "majbacka-labs",
         "ref": "jesse/dev31",
-        "type": "git",
-        "url": "ssh://git@github.com/majbacka-labs/nixie"
+        "repo": "nixie",
+        "type": "github"
       }
     },
     "nixpkgs": {
