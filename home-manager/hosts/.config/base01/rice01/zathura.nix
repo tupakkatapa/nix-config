@@ -8,12 +8,6 @@ let
 in
 {
   programs.zathura.options = {
-    # Recolor (theme the PDF content)
-    recolor = true;
-    recolor-lightcolor = "#${colors.base00}"; # Background
-    recolor-darkcolor = "#${colors.base05}"; # Foreground text
-    recolor-keephue = true;
-
     # UI colors
     default-bg = "#${colors.base00}";
     default-fg = "#${colors.base05}";
