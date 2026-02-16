@@ -113,8 +113,17 @@ in
                   cat.dirs
               )
               categories;
+
+            # Ensure ownership on target (mount point) paths
+            targetRules = lib.lists.concatMap
+              (cat:
+                lib.lists.map
+                  (dir: "d ${dir.what} ${dir.mode} ${user} ${user} -")
+                  cat.dirs
+              )
+              categories;
           in
-          categoryRules ++ subdirRules;
+          categoryRules ++ subdirRules ++ targetRules;
 
         # Get all user tmpfiles rules
         allUserTmpfiles = lib.lists.concatLists
