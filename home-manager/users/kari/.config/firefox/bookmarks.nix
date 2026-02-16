@@ -303,6 +303,7 @@
             { name = "APKCombo"; url = "https://apkcombo.com/downloader/"; }
             { name = "DocHub"; url = "https://dochub.com/"; }
             { name = "DeepL"; url = "https://www.deepl.com/translator"; }
+            { name = "Google Translate"; url = "https://translate.google.com/"; }
             { name = "CroxyProxy"; url = "https://www.croxyproxy.com/"; }
             { name = "MD to PDF Converter"; url = "https://cloudconvert.com/md-to-pdf"; }
             { name = "Downdetector"; url = "https://downdetector.com/"; }
