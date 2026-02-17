@@ -95,8 +95,6 @@
     "mcp__plugin_claude-mem_mcp-search__*"
     "mcp__nixos__*"
     "mcp__context7__*"
-    "mcp__filesystem__*"
-    "mcp__sequential-thinking__*"
 
     # Development
     "Bash(pre-commit run:*)"
@@ -121,5 +119,9 @@
     "Read(**/.gnupg/*)"
     "Read(**/*secret*)"
     "Read(**/*credential*)"
+
+    # Destructive operations
+    "Bash(sudo rm:*)"
+    "Bash(rm -rf:*)"
   ];
 }

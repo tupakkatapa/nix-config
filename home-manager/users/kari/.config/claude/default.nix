@@ -1,5 +1,6 @@
 { pkgs, ... }:
 let
+  git = "${pkgs.git}/bin/git";
   permissions = import ./permissions.nix;
 
   # ntfy notification helper
@@ -12,7 +13,7 @@ let
   # Claude-mem settings
   # https://github.com/thedotmack/claude-mem/blob/main/src/shared/SettingsDefaultsManager.ts
   claudeMemSettings = {
-    CLAUDE_MEM_CONTEXT_FULL_COUNT = "5"; # default: 0
+    CLAUDE_MEM_CONTEXT_FULL_COUNT = "3"; # default: 0
     CLAUDE_MEM_CONTEXT_SHOW_SAVINGS_PERCENT = "false"; # default: true
   };
 in
@@ -58,8 +59,7 @@ in
           hooks = [{
             type = "command";
             command = ''
-              echo "Read ~/.claude/CLAUDE.md (global) and ./CLAUDE.md (project) if not already.
-              echo "Use configured skills and MCP tools extensively. Check memory, use subagents for parallel work."
+              ${git} status --short 2>/dev/null && echo "---" && ${git} log --oneline -3 2>/dev/null || true
             '';
           }];
         }];
@@ -89,14 +89,6 @@ in
         command = "npx";
         args = [ "-y" "@upstash/context7-mcp" ];
       };
-      sequential-thinking = {
-        command = "npx";
-        args = [ "-y" "@modelcontextprotocol/server-sequential-thinking" ];
-      };
-      filesystem = {
-        command = "npx";
-        args = [ "-y" "@modelcontextprotocol/server-filesystem" "/home/kari/Workspace" "/home/kari/nix-config" ];
-      };
     };
 
     # Global CLAUDE.md - applies to all projects
@@ -108,7 +100,6 @@ in
       claude-mem
       superpowers
       document-skills
-      example-skills
     ];
   };
 

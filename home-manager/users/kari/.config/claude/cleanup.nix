@@ -5,7 +5,7 @@ let
   awk = "${pkgs.gawk}/bin/awk";
   xargs = "${pkgs.findutils}/bin/xargs";
   kill = "${pkgs.util-linux}/bin/kill";
-  mcp-pattern = "node.*(mcp-server-filesystem|mcp-server-sequential|context7-mcp|claude-mem.*mcp-server)";
+  mcp-pattern = "node.*(context7-mcp|claude-mem.*mcp-server)";
   max-age = "7200"; # 2 hours
 
   script = pkgs.writeShellScript "claude-cleanup" ''
