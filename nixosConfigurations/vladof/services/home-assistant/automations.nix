@@ -74,4 +74,39 @@
       }
     ];
   }
+  # Wind Down: at configured time, gradually dim lights over 30 min
+  {
+    alias = "Wind Down";
+    trigger = [{
+      platform = "time";
+      at = "input_datetime.wind_down_time";
+    }];
+    condition = [{
+      condition = "state";
+      entity_id = "input_boolean.wind_down";
+      state = "on";
+    }];
+    action = [
+      {
+        service = "light.turn_on";
+        target.entity_id = "{{ expand('light.all_lights') | selectattr('state', 'eq', 'on') | selectattr('attributes.brightness', 'gt', 51) | map(attribute='entity_id') | list }}";
+        data = {
+          brightness_pct = 20;
+          color_temp_kelvin = 2700;
+          transition = 1800;
+        };
+      }
+      {
+        "if" = [{
+          condition = "state";
+          entity_id = "input_boolean.wind_down_repeat";
+          state = "off";
+        }];
+        "then" = [{
+          service = "input_boolean.turn_off";
+          target.entity_id = "input_boolean.wind_down";
+        }];
+      }
+    ];
+  }
 ]

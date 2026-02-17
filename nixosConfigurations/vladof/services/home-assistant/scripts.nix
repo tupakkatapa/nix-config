@@ -1,3 +1,7 @@
+let
+  transition = 1;
+  onLights = "{{ expand('light.all_lights') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list }}";
+in
 {
   # Basic controls
   all_on = {
@@ -5,7 +9,10 @@
     sequence = [{
       service = "light.turn_on";
       target.entity_id = "light.all_lights";
-      data.brightness_pct = 100;
+      data = {
+        inherit transition;
+        brightness_pct = 100;
+      };
     }];
   };
   all_off = {
@@ -13,6 +20,7 @@
     sequence = [{
       service = "light.turn_off";
       target.entity_id = "light.all_lights";
+      data = { inherit transition; };
     }];
   };
 
@@ -21,32 +29,44 @@
     alias = "10%";
     sequence = [{
       service = "light.turn_on";
-      target.entity_id = "{{ expand('light.all_lights') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list }}";
-      data.brightness_pct = 10;
+      target.entity_id = onLights;
+      data = {
+        inherit transition;
+        brightness_pct = 10;
+      };
     }];
   };
   brightness_25 = {
     alias = "25%";
     sequence = [{
       service = "light.turn_on";
-      target.entity_id = "{{ expand('light.all_lights') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list }}";
-      data.brightness_pct = 25;
+      target.entity_id = onLights;
+      data = {
+        inherit transition;
+        brightness_pct = 25;
+      };
     }];
   };
   brightness_50 = {
     alias = "50%";
     sequence = [{
       service = "light.turn_on";
-      target.entity_id = "{{ expand('light.all_lights') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list }}";
-      data.brightness_pct = 50;
+      target.entity_id = onLights;
+      data = {
+        inherit transition;
+        brightness_pct = 50;
+      };
     }];
   };
   brightness_75 = {
     alias = "75%";
     sequence = [{
       service = "light.turn_on";
-      target.entity_id = "{{ expand('light.all_lights') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list }}";
-      data.brightness_pct = 75;
+      target.entity_id = onLights;
+      data = {
+        inherit transition;
+        brightness_pct = 75;
+      };
     }];
   };
 
@@ -55,48 +75,66 @@
     alias = "Candle";
     sequence = [{
       service = "light.turn_on";
-      target.entity_id = "{{ expand('light.all_lights') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list }}";
-      data.color_temp_kelvin = 2200;
+      target.entity_id = onLights;
+      data = {
+        inherit transition;
+        color_temp_kelvin = 2200;
+      };
     }];
   };
   temp_cozy = {
     alias = "Cozy";
     sequence = [{
       service = "light.turn_on";
-      target.entity_id = "{{ expand('light.all_lights') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list }}";
-      data.color_temp_kelvin = 2700;
+      target.entity_id = onLights;
+      data = {
+        inherit transition;
+        color_temp_kelvin = 2700;
+      };
     }];
   };
   temp_warm = {
     alias = "Warm";
     sequence = [{
       service = "light.turn_on";
-      target.entity_id = "{{ expand('light.all_lights') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list }}";
-      data.color_temp_kelvin = 3000;
+      target.entity_id = onLights;
+      data = {
+        inherit transition;
+        color_temp_kelvin = 3000;
+      };
     }];
   };
   temp_neutral = {
     alias = "Neutral";
     sequence = [{
       service = "light.turn_on";
-      target.entity_id = "{{ expand('light.all_lights') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list }}";
-      data.color_temp_kelvin = 4000;
+      target.entity_id = onLights;
+      data = {
+        inherit transition;
+        color_temp_kelvin = 4000;
+      };
     }];
   };
   temp_cool = {
     alias = "Cool";
     sequence = [{
       service = "light.turn_on";
-      target.entity_id = "{{ expand('light.all_lights') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list }}";
-      data.color_temp_kelvin = 6500;
+      target.entity_id = onLights;
+      data = {
+        inherit transition;
+        color_temp_kelvin = 6500;
+      };
     }];
   };
   temp_daylight = {
     alias = "Daylight";
     sequence = [{
       service = "light.turn_on";
-      target.entity_id = "{{ expand('light.all_lights') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list }}";
-      data.color_temp_kelvin = 5000;
+      target.entity_id = onLights;
+      data = {
+        inherit transition;
+        color_temp_kelvin = 5000;
+      };
     }];
   };
 
@@ -108,6 +146,7 @@
         service = "light.turn_on";
         target.entity_id = [ "light.innr_rb_282_c" "light.innr_rb_282_c_4" ];
         data = {
+          inherit transition;
           rgb_color = [ 133 2 85 ];
           brightness_pct = 20;
         };
@@ -116,6 +155,7 @@
         service = "light.turn_on";
         target.entity_id = [ "light.innr_rb_282_c_2" "light.innr_rb_282_c_3" ];
         data = {
+          inherit transition;
           rgb_color = [ 51 0 102 ];
           brightness_pct = 20;
         };
@@ -129,6 +169,7 @@
         service = "light.turn_on";
         target.entity_id = [ "light.innr_rb_282_c" "light.innr_rb_282_c_4" ];
         data = {
+          inherit transition;
           rgb_color = [ 0 102 255 ];
           brightness_pct = 20;
         };
@@ -137,6 +178,7 @@
         service = "light.turn_on";
         target.entity_id = [ "light.innr_rb_282_c_2" "light.innr_rb_282_c_3" ];
         data = {
+          inherit transition;
           rgb_color = [ 0 204 204 ];
           brightness_pct = 20;
         };
@@ -150,6 +192,7 @@
         service = "light.turn_on";
         target.entity_id = [ "light.innr_rb_282_c" "light.innr_rb_282_c_4" ];
         data = {
+          inherit transition;
           rgb_color = [ 255 102 0 ];
           brightness_pct = 20;
         };
@@ -158,6 +201,7 @@
         service = "light.turn_on";
         target.entity_id = [ "light.innr_rb_282_c_2" "light.innr_rb_282_c_3" ];
         data = {
+          inherit transition;
           rgb_color = [ 255 51 102 ];
           brightness_pct = 20;
         };
@@ -174,6 +218,7 @@
         service = "light.turn_on";
         target.entity_id = "light.all_lights";
         data = {
+          inherit transition;
           brightness_pct = 100;
           color_temp_kelvin = 4000;
         };
@@ -191,6 +236,7 @@
       service = "light.turn_on";
       target.entity_id = "light.all_lights";
       data = {
+        inherit transition;
         brightness_pct = 20;
         color_temp_kelvin = 2700;
       };
@@ -198,19 +244,34 @@
   };
   good_night = {
     alias = "Good Night";
-    description = "Bedroom 10% warm, all other lights off";
+    description = "All lights 5% candle";
+    sequence = [{
+      service = "light.turn_on";
+      target.entity_id = "light.all_lights";
+      data = {
+        inherit transition;
+        brightness_pct = 5;
+        color_temp_kelvin = 2200;
+      };
+    }];
+  };
+  good_sleep = {
+    alias = "Good Sleep";
+    description = "Bedroom 5% candle, all other lights off";
     sequence = [
       {
         service = "light.turn_on";
         target.entity_id = "light.innr_rb_282_c";
         data = {
-          brightness_pct = 10;
-          color_temp_kelvin = 2700;
+          inherit transition;
+          brightness_pct = 5;
+          color_temp_kelvin = 2200;
         };
       }
       {
         service = "light.turn_off";
         target.entity_id = "light.all_except_bedroom";
+        data = { inherit transition; };
       }
     ];
   };

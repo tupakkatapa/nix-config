@@ -63,6 +63,14 @@ in
           name = "Wake PC";
           icon = "mdi:desktop-tower";
         };
+        wind_down = {
+          name = "Enabled";
+          icon = "mdi:weather-sunset-down";
+        };
+        wind_down_repeat = {
+          name = "Repeat";
+          icon = "mdi:repeat";
+        };
       };
 
       input_datetime = {
@@ -72,6 +80,13 @@ in
           has_time = true;
           icon = "mdi:clock-outline";
           initial = "09:00";
+        };
+        wind_down_time = {
+          name = "Time";
+          has_date = false;
+          has_time = true;
+          icon = "mdi:clock-outline";
+          initial = "21:00";
         };
       };
 

@@ -32,6 +32,12 @@
               tap_action = { action = "call-service"; service = "script.good_night"; };
               icon = "mdi:weather-night";
             }
+            {
+              type = "button";
+              name = "Sleep";
+              tap_action = { action = "call-service"; service = "script.good_sleep"; };
+              icon = "mdi:sleep";
+            }
           ];
         }
         # Individual light controls
@@ -59,6 +65,17 @@
             "input_datetime.morning_alarm_time"
             "input_boolean.morning_alarm_repeat"
             "input_boolean.morning_alarm_wol"
+          ];
+        }
+        # Wind down schedule
+        {
+          type = "entities";
+          title = "Wind Down";
+          show_header_toggle = false;
+          entities = [
+            "input_boolean.wind_down"
+            "input_datetime.wind_down_time"
+            "input_boolean.wind_down_repeat"
           ];
         }
         # Wake on LAN
