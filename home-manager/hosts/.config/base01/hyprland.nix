@@ -142,7 +142,7 @@ in
         "dunst"
         "swayidle -w"
         "wl-clipboard-history -t"
-        "wlsunset -l 65.0 -L 25.5"
+        "wlsunset -l 65.0 -L 25.5 -t 3000"
         "waybar"
       ];
 
