@@ -28,27 +28,8 @@ in
     };
   };
 
-  # Cleanup orphaned Claude subagents which clogs RAM
-  systemd.user.services.claude-cleanup = {
-    Unit.Description = "Kill orphaned Claude Code subagents";
-    Service = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.writeShellScript "claude-cleanup" ''
-        ${pkgs.procps}/bin/ps -eo pid,ppid,args | \
-          ${pkgs.gnugrep}/bin/grep 'claude-wrapped_.*stream-json' | \
-          ${pkgs.gawk}/bin/awk '$2 == 1 {print $1}' | \
-          ${pkgs.findutils}/bin/xargs -r ${pkgs.util-linux}/bin/kill -9 || true
-      ''}";
-    };
-  };
-  systemd.user.timers.claude-cleanup = {
-    Unit.Description = "Periodic cleanup of orphaned Claude subagents";
-    Timer = {
-      OnBootSec = "15m";
-      OnUnitActiveSec = "15m";
-    };
-    Install.WantedBy = [ "timers.target" ];
-  };
+  # Cleanup orphaned Claude subagents and MCP servers which clog RAM
+  imports = [ (import ./cleanup.nix { inherit pkgs; }) ];
 
   programs.claude-code = {
     enable = true;
