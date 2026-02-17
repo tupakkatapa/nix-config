@@ -13,6 +13,17 @@ let
   blutui = "${pkgs.blutui}/bin/blutui";
   nettui = "${pkgs.nettui}/bin/nettui";
   caltui = "${pkgs.caltui}/bin/caltui";
+
+  hasTmux = config.programs.tmux.enable;
+  tmux = "${pkgs.tmux}/bin/tmux";
+
+  tmux-status = pkgs.writeShellScript "tmux-status" ''
+    export TMUX_TMPDIR="''${TMUX_TMPDIR:-$XDG_RUNTIME_DIR}"
+    count=$(${tmux} list-sessions 2>/dev/null | wc -l)
+    sessions=$(${tmux} list-sessions 2>/dev/null || echo "no sessions")
+    tooltip=$(echo "$sessions" | sed 's/"/\\"/g' | tr '\n' '\t' | sed 's/\t/\\n/g')
+    echo "{\"text\": \"$count\", \"tooltip\": \"$tooltip\"}"
+  '';
 in
 {
   programs.waybar = {
@@ -38,6 +49,8 @@ in
 
       modules-right = [
         "custom/claude-afk"
+      ] ++ (if hasTmux then [ "custom/tmux" ] else [ ]) ++ [
+        "memory"
         "custom/ping-sweep"
         "tray"
         "pulseaudio"
@@ -50,7 +63,6 @@ in
       "custom/player" = {
         exec-if = "${playerctl} status";
         exec = ''${playerctl} metadata --format '{"text": "{{artist}} - {{title}}", "alt": "{{status}}", "tooltip": "{{title}} ({{artist}} - {{album}})"}' '';
-        return-type = "json";
         interval = 2;
         max-length = 100;
         format = "{icon} {}";
@@ -102,21 +114,21 @@ in
 
       pulseaudio = {
         format = "{icon} {volume}%";
-        format-muted = "  0%";
+        format-muted = "  0%";
         format-icons = {
           "bluez_output.80_7B_1E_02_53_95.1" = ""; # CORSAIR VIRTUOSO XT Bluetooth
           "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo" = "";
-          "alsa_output.pci-0000_0a_00.1.hdmi-stereo" = "󰍹";
+          "alsa_output.pci-0000_0a_00.1.hdmi-stereo" = "";
           headphone = "";
-          headset = "";
+          headset = "";
           default = [ "" "" "" ];
         };
         on-click = "${TERMINAL} -a tui-suite -e ${voltui}";
       };
 
       bluetooth = {
-        format = "󰂯 {status}";
-        format-connected = "󰂯 {num_connections} connected";
+        format = " {status}";
+        format-connected = " {num_connections} connected";
         tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
         tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
         tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
@@ -155,42 +167,40 @@ in
       battery = {
         bat = "BAT0";
         interval = 10;
-        format-icons = [ "󰂎" "󱊡" "󱊢" "󱊣" ];
+        format-icons = [ "" "" "" "" ];
         format = "{icon} {capacity}%";
-        format-charging = "󰂄 {capacity}%";
+        format-charging = " {capacity}%";
         onclick = "";
       };
 
       tray = { spacing = 10; };
 
       "custom/claude-afk" = {
-        exec = "systemctl --user is-active --quiet claude-afk && echo '󰂞 afk' || echo '󰂛 afk'";
+        exec = "systemctl --user is-active --quiet claude-afk && echo ' afk' || echo ' afk'";
         interval = 5;
         on-click = "systemctl --user is-active --quiet claude-afk && systemctl --user stop claude-afk || systemctl --user start claude-afk";
         tooltip = false;
       };
 
-      "custom/ping-sweep" = {
-        exec = ''
-          interface_name="enp3s0"
-          local_ip=$(${pkgs.iproute2}/bin/ip -4 addr show $interface_name | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
-          ips=$(${pkgs.ping-sweep}/bin/ping-sweep -s 10.42.0.0/24)
-
-          # Filters
-          ips=$(echo "$ips" | grep -v "$local_ip")
-
-          # Format
-          ip_suffixes=$(echo "$ips" | sed 's/10\.42\.0\././' | sort -n)
-          echo '{"text": "'$ip_suffixes'"}'
-        '';
-        interval = 30;
+      "custom/tmux" = {
+        exec = "${tmux-status}";
         return-type = "json";
-        format = " {}";
+        interval = 5;
+        format = " {}";
+        on-click = "TMUX_TMPDIR=$XDG_RUNTIME_DIR ${TERMINAL} -e ${tmux} new-session -A";
       };
 
+      memory = {
+        format = " {used:0.0f}/{total:0.0f} GiB";
+        tooltip-format = "{used:0.1f}/{total:0.1f} GiB used\nSwap: {swapUsed:0.1f}/{swapTotal:0.1f} GiB";
+        interval = 5;
+      };
 
-
-
+      "custom/ping-sweep" = {
+        exec = "${pkgs.ping-sweep}/bin/ping-sweep | while IFS=. read -r _ _ _ n; do printf '.%s ' \"$n\"; done";
+        interval = 30;
+        format = " {}";
+      };
     };
     style = ''
       * {
@@ -233,8 +243,10 @@ in
       #tray,
       #custom-player,
       #custom-hostname,
+      #memory,
       #custom-ping-sweep,
       #custom-claude-afk,
+      #custom-tmux,
       #window,
       #bluetooth {
         padding: 0 15px;
