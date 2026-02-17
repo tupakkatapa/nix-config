@@ -19,6 +19,7 @@
     opts = {
       cursorline = true;
       swapfile = false;
+      number = true;
       relativenumber = true;
       laststatus = 0;
       ruler = false;
@@ -106,7 +107,10 @@
       comment.enable = true;
       hardtime = {
         enable = true;
-        settings.max_count = 0;
+        settings = {
+          max_count = 0;
+          disabled_filetypes.__raw = ''{ ["neo%-tree.*"] = false }'';
+        };
       };
       bufdelete.enable = true;
       markview = {
@@ -161,14 +165,17 @@
           enable_diagnostics = true;
           enable_git_status = true;
           close_if_last_window = true;
-          event_handlers = {
-            neo_tree_buffer_enter = ''
-              function()
-                vim.opt_local.number = true;
-                vim.opt_local.relativenumber = true;
-              end
-            '';
-          };
+          event_handlers = [
+            {
+              event = "neo_tree_buffer_enter";
+              handler.__raw = ''
+                function()
+                  vim.opt_local.number = true
+                  vim.opt_local.relativenumber = true
+                end
+              '';
+            }
+          ];
           window = {
             auto_expand_width = false;
             mappings = {
@@ -198,9 +205,10 @@
             };
           };
           filesystem = {
+            find_by_full_path_words = true;
             use_libuv_file_watcher = true;
             filtered_items = {
-              visible = true;
+              visible = false;
               hide_gitignored = true;
               hide_dotfiles = false;
               never_show_by_pattern = [ ".git" ".direnv" ".devenv" ];
