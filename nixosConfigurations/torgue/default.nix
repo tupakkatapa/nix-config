@@ -52,7 +52,7 @@
     hostName = "torgue";
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 8080 ]; # magic port
+      allowedTCPPorts = [ 8080 6742 ];
     };
     useDHCP = false;
     wireless.iwd = {
@@ -100,6 +100,35 @@
     openFirewall = true;
   };
 
+  # OpenRGB startup profile (openrgb-default.orp):
+  #   Device 0 (motherboard): 330066 (dark purple) at full color value (100%)
+  #   Device 1 zone 0 (Corsair ch1): 43012B (half of 850255 — 50%)
+  #   Device 1 zone 1 (Corsair ch2): 1A0033 (half of 330066 — 50%)
+  services.hardware.openrgb = {
+    enable = true;
+    motherboard = "amd";
+    server.port = 6742;
+    startupProfile = "${./openrgb-default.orp}";
+  };
+
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = false;
+
+  # Service account for remote management
+  users.users.service = {
+    isSystemUser = true;
+    group = "service";
+    shell = "/run/current-system/sw/bin/nologin";
+    openssh.authorizedKeys.keys = [
+      ''command="sudo systemctl poweroff",no-port-forwarding,no-X11-forwarding,no-agent-forwarding ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICne6AlhwNtQ6/whwnSdPUGQge3lRzebrk+ahd7qqn7W hass@vladof''
+    ];
+  };
+  users.groups.service = { };
+  security.sudo.extraRules = [{
+    users = [ "service" ];
+    commands = [{
+      command = "/run/current-system/sw/bin/systemctl poweroff";
+      options = [ "NOPASSWD" ];
+    }];
+  }];
 }

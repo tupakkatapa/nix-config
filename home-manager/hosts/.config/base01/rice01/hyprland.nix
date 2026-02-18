@@ -9,7 +9,6 @@ let
   colors = customLib.colors.${THEME};
   rice = import ./config.nix { inherit customLib config; };
   swaybg = "${pkgs.swaybg}/bin/swaybg";
-  liquidctl = "${pkgs.liquidctl}/bin/liquidctl";
 in
 {
   home.file = {
@@ -72,8 +71,6 @@ in
     # Startup
     exec-once = [
       "${swaybg} -i ~/wallpaper --mode fill"
-      "${liquidctl} set led1 color fixed 850255"
-      "${liquidctl} set led2 color fixed 330066"
     ];
 
     # Window behiavior

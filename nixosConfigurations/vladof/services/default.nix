@@ -120,7 +120,7 @@ in
 {
   imports = [
     (import ./containers { inherit pkgs lib config domain dataDir containerConfig containerSubnet inputs; })
-    (import ./home-assistant { inherit dataDir; haConfig = serviceConfig.home-assistant; })
+    (import ./home-assistant { inherit dataDir config; haConfig = serviceConfig.home-assistant; })
     (import ./garage.nix { inherit pkgs config; })
     (import ./grafana.nix { inherit domain; })
   ];
@@ -238,6 +238,11 @@ in
     "server-key" = {
       rekeyFile = ../secrets/server-key.age;
       owner = "caddy";
+      mode = "400";
+    };
+    "hass-ssh-key" = {
+      rekeyFile = ../secrets/hass-ssh-key.age;
+      owner = "hass";
       mode = "400";
     };
   };
