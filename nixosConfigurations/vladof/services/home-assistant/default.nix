@@ -1,4 +1,5 @@
-{ dataDir
+{ pkgs
+, dataDir
 , haConfig
 , config
 }:
@@ -173,7 +174,7 @@ in
             let m = cfg.machines.${name}; in
             if m.canShutdown then [{
               inherit name;
-              value = "ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 -i ${hassSshKey} service@${m.ip}";
+              value = "${pkgs.openssh}/bin/ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 -i ${hassSshKey} service@${m.ip}";
             }]
             else [ ])
           cfg.machineOrder
@@ -234,7 +235,7 @@ in
             inherit (m) mac;
             broadcast_address = "10.42.0.255";
           } // (if m.canShutdown then {
-            turn_off.service = "shell_command.${name}";
+            turn_off = [{ service = "shell_command.${name}"; }];
           } else { }))
         cfg.machineOrder;
 

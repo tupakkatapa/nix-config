@@ -118,7 +118,7 @@
   users.users.service = {
     isSystemUser = true;
     group = "service";
-    shell = "/run/current-system/sw/bin/nologin";
+    shell = "/bin/sh";
     openssh.authorizedKeys.keys = [
       ''command="sudo systemctl poweroff",no-port-forwarding,no-X11-forwarding,no-agent-forwarding ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICne6AlhwNtQ6/whwnSdPUGQge3lRzebrk+ahd7qqn7W hass@vladof''
     ];
