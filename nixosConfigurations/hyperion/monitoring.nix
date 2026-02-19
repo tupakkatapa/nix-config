@@ -1,10 +1,6 @@
 _: {
   services.monitoring = {
     enable = true;
-    watchedUnits = [
-      "refind-generate.service"
-      "pxe-generate-.*"
-    ];
   };
 
   # vnStat - monitors bandwidth usage

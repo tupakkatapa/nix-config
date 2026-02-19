@@ -42,17 +42,8 @@ let
     monitoredHosts
   );
 
-  # Collect watched systemd units from all monitored hosts
-  watchedUnits = lib.unique (lib.concatMap
-    (name:
-      lib.attrByPath [ "services" "monitoring" "watchedUnits" ] [ ]
-        outputs.nixosConfigurations.${name}.config
-    )
-    monitoredHosts
-  );
-
   # Dashboard as Nix
-  dashboard = import ./dashboard.nix { inherit mountpoints watchedUnits; };
+  dashboard = import ./dashboard.nix { inherit mountpoints; };
   dashboardDir = pkgs.writeTextDir "nodes.json" (builtins.toJSON dashboard);
 in
 {
@@ -71,12 +62,6 @@ in
       description = "Prometheus data retention time";
     };
 
-    watchedUnits = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ ];
-      description = "Systemd unit patterns to track on the dashboard (supports regex)";
-    };
-
     grafana = {
       enable = lib.mkEnableOption "Grafana dashboards (also enables Prometheus server)";
 
@@ -84,6 +69,12 @@ in
         type = lib.types.str;
         default = "";
         description = "Domain for Grafana reverse proxy";
+      };
+
+      extraDatasources = lib.mkOption {
+        type = lib.types.listOf lib.types.attrs;
+        default = [ ];
+        description = "Additional Grafana datasources to provision alongside the local Prometheus";
       };
     };
   };
@@ -153,7 +144,7 @@ in
             type = "prometheus";
             url = "http://127.0.0.1:9090";
             isDefault = true;
-          }];
+          }] ++ cfg.grafana.extraDatasources;
           dashboards.settings.providers = [{
             name = "Node Exporter";
             options.path = dashboardDir;

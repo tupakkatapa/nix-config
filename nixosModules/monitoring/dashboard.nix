@@ -1,11 +1,7 @@
-{ mountpoints, watchedUnits }:
+{ mountpoints, ... }:
 let
   # PromQL regex matching all real mountpoints from monitored hosts
   mountpointRegex = builtins.concatStringsSep "|" mountpoints;
-
-  # PromQL regex matching watched systemd units
-  hasWatchedUnits = watchedUnits != [ ];
-  watchedUnitsRegex = builtins.concatStringsSep "|" watchedUnits;
 
   # Panel helpers
   timeseries = title: gridPos: fieldConfig: targets: {
@@ -39,31 +35,67 @@ in
   uid = "nodes-overview";
 
   panels = [
-    # Row 1: CPU + Memory
-    (timeseries "CPU Usage" { h = 8; w = 12; x = 0; y = 0; } percent [
+    # Row 1: Health at a glance
+    {
+      title = "Uptime";
+      type = "stat";
+      gridPos = { h = 4; w = 12; x = 0; y = 0; };
+      fieldConfig = {
+        defaults.unit = "s";
+        overrides = [ ];
+      };
+      options = {
+        reduceOptions.calcs = [ "lastNotNull" ];
+        colorMode = "none";
+        textMode = "auto";
+      };
+      targets = [ (query "time() - node_boot_time_seconds" "{{host}}") ];
+    }
+
+    {
+      title = "Systemd Failed Units";
+      type = "stat";
+      gridPos = { h = 4; w = 12; x = 12; y = 0; };
+      fieldConfig = {
+        defaults.thresholds.steps = [
+          { color = "green"; value = null; }
+          { color = "red"; value = 1; }
+        ];
+        overrides = [ ];
+      };
+      options = {
+        reduceOptions.calcs = [ "lastNotNull" ];
+        colorMode = "value";
+        textMode = "auto";
+      };
+      targets = [ (query ''node_systemd_units{state="failed"}'' "{{host}}") ];
+    }
+
+    # Row 2: CPU + Memory
+    (timeseries "CPU Usage" { h = 8; w = 12; x = 0; y = 4; } percent [
       (query ''1 - avg by (host) (rate(node_cpu_seconds_total{mode="idle"}[5m]))'' "{{host}}")
     ])
 
-    (timeseries "Memory Usage" { h = 8; w = 12; x = 12; y = 0; } percent [
+    (timeseries "Memory Usage" { h = 8; w = 12; x = 12; y = 4; } percent [
       (query ''1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)'' "{{host}}")
     ])
 
-    # Row 2: Network + Disk I/O
-    (timeseries "Network Traffic" { h = 8; w = 12; x = 0; y = 8; } { unit = "Bps"; } [
+    # Row 3: Network + Disk I/O
+    (timeseries "Network Traffic" { h = 8; w = 12; x = 0; y = 12; } { unit = "Bps"; } [
       (query ''sum by (host) (rate(node_network_receive_bytes_total{device!~"lo|veth.*|br-.*|wg.*"}[5m]))'' "{{host}} rx")
       (query ''-sum by (host) (rate(node_network_transmit_bytes_total{device!~"lo|veth.*|br-.*|wg.*"}[5m]))'' "{{host}} tx")
     ])
 
-    (timeseries "Disk I/O" { h = 8; w = 12; x = 12; y = 8; } { unit = "Bps"; } [
+    (timeseries "Disk I/O" { h = 8; w = 12; x = 12; y = 12; } { unit = "Bps"; } [
       (query ''sum by (host) (rate(node_disk_read_bytes_total[5m]))'' "{{host}} read")
       (query ''-sum by (host) (rate(node_disk_written_bytes_total[5m]))'' "{{host}} write")
     ])
 
-    # Row 3: Disk Usage + Load Average
+    # Row 4: Disk Usage + Load Average
     {
       title = "Disk Usage";
       type = "bargauge";
-      gridPos = { h = 8; w = 12; x = 0; y = 16; };
+      gridPos = { h = 8; w = 12; x = 0; y = 20; };
       fieldConfig = {
         defaults = {
           inherit (percent) unit min max;
@@ -85,76 +117,30 @@ in
       ];
     }
 
-    (timeseries "Load Average (1m)" { h = 8; w = 12; x = 12; y = 16; } { } [
+    (timeseries "Load Average (1m)" { h = 8; w = 12; x = 12; y = 20; } { } [
       (query "node_load1" "{{host}}")
     ])
 
-    # Row 4: Uptime + Failed Units
-    {
-      title = "Uptime";
-      type = "stat";
-      gridPos = { h = 4; w = 12; x = 0; y = 24; };
-      fieldConfig = {
-        defaults.unit = "s";
-        overrides = [ ];
-      };
-      options = {
-        reduceOptions.calcs = [ "lastNotNull" ];
-        colorMode = "none";
-        textMode = "auto";
-      };
-      targets = [ (query "time() - node_boot_time_seconds" "{{host}}") ];
-    }
+    # Row 5: Temperatures
+    (timeseries "Temperatures" { h = 8; w = 24; x = 0; y = 28; } { unit = "celsius"; } [
+      (query "node_hwmon_temp_celsius" "{{host}} {{chip}} {{sensor}}")
+    ])
 
+    # Row 6: Failed unit details
     {
-      title = "Systemd Failed Units";
-      type = "stat";
-      gridPos = { h = 4; w = 12; x = 12; y = 24; };
-      fieldConfig = {
-        defaults.thresholds.steps = [
-          { color = "green"; value = null; }
-          { color = "red"; value = 1; }
-        ];
-        overrides = [ ];
-      };
-      options = {
-        reduceOptions.calcs = [ "lastNotNull" ];
-        colorMode = "value";
-        textMode = "auto";
-      };
-      targets = [ (query ''node_systemd_units{state="failed"}'' "{{host}}") ];
-    }
-  ] ++ (if hasWatchedUnits then [
-    # Row 5: Watched service status
-    {
-      title = "Service Status";
+      title = "Failed Units";
       type = "table";
-      gridPos = { h = 10; w = 12; x = 0; y = 28; };
+      gridPos = { h = 6; w = 24; x = 0; y = 36; };
       fieldConfig = {
         defaults = { };
-        overrides = [
-          {
-            matcher = { id = "byName"; options = "Value"; };
-            properties = [
-              {
-                id = "mappings";
-                value = [
-                  { type = "value"; options."0" = { text = "OK"; color = "green"; index = 0; }; }
-                  { type = "value"; options."1" = { text = "Failed"; color = "red"; index = 1; }; }
-                ];
-              }
-              { id = "custom.cellOptions"; value = { type = "color-background"; }; }
-              { id = "custom.width"; value = 70; }
-            ];
-          }
-        ];
+        overrides = [ ];
       };
       options = {
         showHeader = true;
-        footer.enablePagination = true;
+        footer.enablePagination = false;
       };
       targets = [{
-        expr = ''max by (host, name) (node_systemd_unit_state{name=~"(${watchedUnitsRegex})",name=~".+\\.service",state="failed"})'';
+        expr = ''node_systemd_unit_state{state="failed"} == 1'';
         legendFormat = "";
         instant = true;
         format = "table";
@@ -163,12 +149,12 @@ in
         {
           id = "organize";
           options = {
-            excludeByName = { Time = true; };
-            renameByName = { host = "Host"; name = "Service"; Value = "Status"; };
-            indexByName = { host = 0; name = 1; Value = 2; };
+            excludeByName = { Time = true; Value = true; state = true; "__name__" = true; instance = true; job = true; };
+            renameByName = { host = "Host"; name = "Unit"; };
+            indexByName = { host = 0; name = 1; };
           };
         }
       ];
     }
-  ] else [ ]);
+  ];
 }
