@@ -201,6 +201,7 @@
               inputs.store-remount.nixosModules.storeRemount
               inputs.sftp-mount.nixosModules.sftpClient
               self.nixosModules.monitoring
+              self.nixosModules.openrgb
               self.nixosModules.stateSaver
               ({ config, ... }: {
                 home-manager = {
@@ -298,6 +299,7 @@
           nixosModules = {
             autoScrcpy.imports = [ ./nixosModules/auto-scrcpy.nix ];
             monitoring.imports = [ ./nixosModules/monitoring ];
+            openrgb.imports = [ ./nixosModules/openrgb ];
             stateSaver.imports = [ ./nixosModules/state-saver.nix ];
           };
 

@@ -100,15 +100,38 @@
     openFirewall = true;
   };
 
-  # OpenRGB startup profile (openrgb-default.orp):
-  #   Device 0 (motherboard): 330066 (dark purple) at full color value (100%)
-  #   Device 1 zone 0 (Corsair ch1): 43012B (half of 850255 — 50%)
-  #   Device 1 zone 1 (Corsair ch2): 1A0033 (half of 330066 — 50%)
   services.hardware.openrgb = {
     enable = true;
     motherboard = "amd";
     server.port = 6742;
-    startupProfile = "${./openrgb-default.orp}";
+  };
+
+  # Apply colors after server is ready (client mode)
+  systemd.services.openrgb-colors = {
+    description = "Apply OpenRGB colors";
+    after = [ "openrgb.service" ];
+    requires = [ "openrgb.service" ];
+    wantedBy = [ "multi-user.target" ];
+    unitConfig = {
+      StartLimitIntervalSec = 90;
+      StartLimitBurst = 10;
+    };
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    path = [ pkgs.openrgb ];
+    script = ''
+      # Set Corsair zone sizes (resets on power cycle)
+      openrgb --client -d 1 -z 0 --mode static --size 30 --color 000000
+      openrgb --client -d 1 -z 1 --mode static --size 30 --color 000000
+      # Apply colors (Corsair at 50% brightness: 850255->43012B, 330066->1A0033)
+      openrgb --client -d 0 --mode static --color 330066
+      openrgb --client -d 1 -z 0 --mode direct --color 43012B
+      openrgb --client -d 1 -z 1 --mode direct --color 1A0033
+    '';
   };
 
   hardware.bluetooth.enable = true;
