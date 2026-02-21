@@ -70,6 +70,7 @@
             { name = "Cloud Console"; url = "https://console.cloud.google.com/"; }
             { name = "Admin"; url = "https://admin.google.com/"; }
             { name = "Gemini"; url = "https://gemini.google.com/"; }
+            { name = "Maps"; url = "https://www.google.com/maps"; }
           ];
         }
       ];
@@ -170,7 +171,7 @@
             { name = "TorrentDay"; url = "https://www.torrentday.com/t"; }
             { name = "Nyaa"; url = "https://nyaa.si/"; }
             { name = "rutracker"; url = "https://rutracker.org/forum/index.php"; }
-            { name = "YIFY"; url = "https://yts.mx/"; }
+            { name = "YIFY"; url = "https://yts.bz/"; }
             { name = "FitGirl Repacks"; url = "https://fitgirl-repacks.site"; }
             { name = "1337x"; url = "https://1337x.to/"; }
             { name = "NAPALM FTP Indexer"; url = "https://www.searchftps.net/"; }
@@ -236,6 +237,7 @@
         {
           name = "Privacy";
           bookmarks = [
+            { name = "Mullvad"; url = "https://mullvad.net/"; }
             { name = "Temp-num"; url = "https://quackr.io/temporary-numbers"; }
             { name = "Temp-mail"; url = "https://temp-mail.org/en/"; }
           ];
