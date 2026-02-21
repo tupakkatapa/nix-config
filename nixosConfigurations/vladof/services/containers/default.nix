@@ -93,16 +93,29 @@ in
     };
     firewall = {
       extraCommands =
-        lib.concatStringsSep "\n" (
-          lib.mapAttrsToList
-            (name: service: ''
-              # ${name}
-              iptables -t nat -A PREROUTING -p tcp -d 10.42.0.8 --dport ${toString service.port} -j DNAT --to-destination ${service.localAddress}:${toString service.port}
-              iptables -t nat -A PREROUTING -p tcp -d 172.16.16.1 --dport ${toString service.port} -j DNAT --to-destination ${service.localAddress}:${toString service.port}
-              iptables -A FORWARD -p tcp -d ${service.localAddress} --dport ${toString service.port} -j ACCEPT
-            '')
-            containerConfig
-        );
+        # Route traffic to containers (privateNetwork isolates them from the host)
+        lib.concatStringsSep "\n"
+          (
+            lib.mapAttrsToList
+              (name: service: ''
+                # ${name}
+                iptables -t nat -A PREROUTING -p tcp -d 10.42.0.8 --dport ${toString service.port} -j DNAT --to-destination ${service.localAddress}:${toString service.port}
+                iptables -t nat -A PREROUTING -p tcp -d 172.16.16.1 --dport ${toString service.port} -j DNAT --to-destination ${service.localAddress}:${toString service.port}
+                iptables -A FORWARD -p tcp -d ${service.localAddress} --dport ${toString service.port} -j ACCEPT
+              '')
+              containerConfig
+          )
+        # Block containers from initiating new connections to private subnets (except DNS)
+        + ''
+          iptables -A FORWARD -i ve-+ -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+          iptables -A FORWARD -i ve-+ -d 10.42.0.1 -p udp --dport 53 -j ACCEPT
+          iptables -A FORWARD -i ve-+ -d 10.42.0.1 -p tcp --dport 53 -j ACCEPT
+          iptables -A FORWARD -i ve-+ -d 10.42.0.0/24 -j DROP
+          iptables -A FORWARD -i ve-+ -d 10.42.1.0/24 -j DROP
+          iptables -A FORWARD -i ve-+ -d 172.16.16.0/24 -j DROP
+          iptables -A FORWARD -i ve-+ -d 172.16.17.0/24 -j DROP
+          iptables -A FORWARD -i ve-+ -d 172.16.18.0/24 -j DROP
+        '';
     };
   };
 }
