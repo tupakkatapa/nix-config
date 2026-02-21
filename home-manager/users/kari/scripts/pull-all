@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+root="${1:-.}"
+
+# SSH connection multiplexing — one YubiKey tap per host
+ssh_sock="/tmp/pull-all-ssh-%C"
+export GIT_SSH_COMMAND="ssh -o ControlMaster=auto -o ControlPath=$ssh_sock -o ControlPersist=60"
+
+find "$root" -name .git -type d | while read -r gitdir; do
+  repo="${gitdir%/.git}"
+  echo "==> $repo"
+  git -C "$repo" fetch --all --force || continue
+  git -C "$repo" pull || true
+done
