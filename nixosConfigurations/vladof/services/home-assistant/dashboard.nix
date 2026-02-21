@@ -26,13 +26,6 @@ let
     inherit icon;
   };
 
-  mkVanityButton = { key, alias, icon, ... }: {
-    type = "button";
-    name = alias;
-    tap_action = { action = "call-service"; service = "script.vanity_${key}"; };
-    inherit icon;
-  };
-
   mkSceneButton = slot: {
     type = "button";
     name = slot.alias;
@@ -176,15 +169,15 @@ in
           type = "horizontal-stack";
           cards = map mkTempButton (drop halfTemps cfg.temperatures);
         }
-        # Color row
+        # Color row 1
         {
           type = "horizontal-stack";
-          cards = map mkColorButton cfg.colors;
+          cards = map mkColorButton (take 4 cfg.colors);
         }
-        # Vanity row
+        # Color row 2
         {
           type = "horizontal-stack";
-          cards = map mkVanityButton cfg.vanityPresets;
+          cards = map mkColorButton (drop 4 cfg.colors);
         }
       ];
     }

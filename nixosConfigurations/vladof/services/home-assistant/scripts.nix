@@ -64,35 +64,6 @@ let
     };
   };
 
-  # Vanity button scripts (Page 2, two-tone, all at 20%)
-  mkVanity = { key, alias, groupA, groupB, ... }: {
-    name = "vanity_${key}";
-    value = {
-      inherit alias;
-      sequence = [
-        {
-          service = "light.turn_on";
-          target.entity_id = cfg.vanityGroupA;
-          data = {
-            transition = btnTransition;
-            rgb_color = groupA;
-            brightness_pct = 20;
-          };
-        }
-        {
-          service = "light.turn_on";
-          target.entity_id = cfg.vanityGroupB;
-          data = {
-            transition = btnTransition;
-            rgb_color = groupB;
-            brightness_pct = 20;
-          };
-        }
-        setOverride
-      ];
-    };
-  };
-
   # Scene scripts per slot (read from helpers, optionally set override)
   mkScene = slot: {
     name = "scene_${slot.key}";
@@ -308,6 +279,5 @@ in
 // builtins.listToAttrs (map mkBrightness cfg.brightnessLevels)
 // builtins.listToAttrs (map mkTemperature cfg.temperatures)
 // builtins.listToAttrs (map mkColor cfg.colors)
-// builtins.listToAttrs (map mkVanity cfg.vanityPresets)
 // builtins.listToAttrs (map mkScene cfg.scheduleSlots)
   // builtins.listToAttrs (map mkSchedulePreset cfg.schedulePresets)

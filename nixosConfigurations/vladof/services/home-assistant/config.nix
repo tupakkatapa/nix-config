@@ -71,21 +71,14 @@ rec {
     { key = "sunrise"; alias = "Sunrise"; hs = [ 32 22 ]; icon = "mdi:weather-sunset"; }
     { key = "sunset"; alias = "Sunset"; hs = [ 25 40 ]; icon = "mdi:weather-sunset-down"; }
     { key = "aurora"; alias = "Aurora"; hs = [ 145 35 ]; icon = "mdi:aurora"; }
+    { key = "purple"; alias = "Purple"; hs = [ 270 100 ]; icon = "mdi:palette"; }
+    { key = "firelight"; alias = "Firelight"; hs = [ 18 65 ]; icon = "mdi:fireplace"; }
+    { key = "overcast"; alias = "Overcast"; hs = [ 210 10 ]; icon = "mdi:weather-cloudy"; }
   ];
 
   # Combined preset enum for schedule input_select
   allPresets = temperatures ++ colors;
   presetOptions = map (p: p.alias) allPresets;
-  # Vanity presets (Page 2 two-tone buttons)
-  vanityPresets = [
-    { key = "purple"; alias = "Purple"; icon = "mdi:palette"; groupA = [ 133 2 85 ]; groupB = [ 51 0 102 ]; }
-    { key = "ocean"; alias = "Ocean"; icon = "mdi:waves"; groupA = [ 0 102 255 ]; groupB = [ 0 204 204 ]; }
-    { key = "nature"; alias = "Nature"; icon = "mdi:tree"; groupA = [ 0 153 51 ]; groupB = [ 51 204 0 ]; }
-    { key = "lava"; alias = "Lava"; icon = "mdi:fire"; groupA = [ 255 30 0 ]; groupB = [ 255 100 0 ]; }
-    { key = "circus"; alias = "Circus"; icon = "mdi:ferris-wheel"; groupA = [ 255 0 128 ]; groupB = [ 0 255 128 ]; }
-  ];
-  vanityGroupA = with lights; [ bedside hallway ];
-  vanityGroupB = with lights; [ livingRoom dining ];
 
   # Schedule presets (apply all slot settings at once)
   defaultSchedulePreset = "circadian";
@@ -119,6 +112,20 @@ rec {
       };
     }
     {
+      key = "late-riser";
+      alias = "Late Riser";
+      icon = "mdi:sleep";
+      slots = {
+        morning = { time = "09:00"; brightness = 100; preset = "Daylight"; transition = -30; };
+        midday = { time = "11:00"; brightness = 100; preset = "Cool"; transition = -30; };
+        evening = { time = "20:00"; brightness = 60; preset = "Neutral"; transition = -60; };
+        dusk = { time = "22:00"; brightness = 30; preset = "Warm"; transition = -30; };
+        night = { time = "23:30"; brightness = 10; preset = "Candle"; transition = -30; };
+        bedtime = { time = "00:30"; brightness = 5; preset = "Candle"; transition = -30; };
+        off = { time = "01:00"; transition = 0; };
+      };
+    }
+    {
       key = "cozy";
       alias = "Cozy";
       icon = "mdi:sofa";
@@ -130,6 +137,20 @@ rec {
         night = { time = "20:30"; brightness = 20; preset = "Candle"; transition = -30; };
         bedtime = { time = "21:30"; brightness = 10; preset = "Candle"; transition = -30; };
         off = { time = "23:00"; transition = 0; };
+      };
+    }
+    {
+      key = "night-owl";
+      alias = "Night Owl";
+      icon = "mdi:owl";
+      slots = {
+        morning = { time = "11:00"; brightness = 45; preset = "Warm"; transition = -30; };
+        midday = { time = "13:00"; brightness = 55; preset = "Warm"; transition = -30; };
+        evening = { time = "18:00"; brightness = 40; preset = "Cozy"; transition = -60; };
+        dusk = { time = "20:30"; brightness = 30; preset = "Cozy"; transition = -30; };
+        night = { time = "22:30"; brightness = 20; preset = "Candle"; transition = -30; };
+        bedtime = { time = "23:30"; brightness = 10; preset = "Candle"; transition = -30; };
+        off = { time = "01:00"; transition = 0; };
       };
     }
   ];
