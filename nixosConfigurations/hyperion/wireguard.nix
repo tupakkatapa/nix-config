@@ -16,6 +16,11 @@
       owner = "systemd-network";
       mode = "400";
     };
+    "mullvad-private" = {
+      rekeyFile = ./secrets/mullvad-private.age;
+      owner = "systemd-network";
+      mode = "400";
+    };
   };
 
   # WireGuard server configuration
@@ -74,6 +79,23 @@
         ];
       };
 
+      # Mullvad VPN tunnel — client subnet traffic routed via policy rules
+      "53-mullvad" = {
+        netdevConfig = {
+          Kind = "wireguard";
+          Name = "mullvad";
+          MTUBytes = "1300";
+        };
+        wireguardConfig = {
+          PrivateKeyFile = config.age.secrets.mullvad-private.path;
+        };
+        wireguardPeers = [{
+          PublicKey = "/iivwlyqWqxQ0BVWmJRhcXIFdJeo0WbHQ/hZwuXaN3g=";
+          Endpoint = "193.32.127.66:51820";
+          AllowedIPs = [ "0.0.0.0/0" ];
+        }];
+      };
+
       # Site-to-site VPN interface 2
       "52-wg2" = {
         netdevConfig = {
@@ -112,6 +134,60 @@
           IPMasquerade = "ipv4";
           IPv4Forwarding = true;
         };
+      };
+      "mullvad" = {
+        matchConfig.Name = "mullvad";
+        address = [ "10.72.145.215/32" ];
+        routes = [{
+          Destination = "0.0.0.0/0";
+          Table = 51820;
+        }];
+        routingPolicyRules = [
+          # Use main table for everything except the default route
+          {
+            Table = "main";
+            SuppressPrefixLength = 0;
+            Priority = 80;
+          }
+          # Port-forwarded responses go direct
+          {
+            FirewallMark = 1;
+            Table = "main";
+            Priority = 85;
+          }
+          # Kaakkuri bypasses Mullvad
+          {
+            From = "10.42.0.25";
+            Table = "main";
+            Priority = 85;
+          }
+          # Client subnets → Mullvad
+          {
+            From = "10.42.0.0/24";
+            Table = 51820;
+            Priority = 90;
+          }
+          {
+            From = "10.42.1.0/24";
+            Table = 51820;
+            Priority = 90;
+          }
+          {
+            From = "172.16.16.0/24";
+            Table = 51820;
+            Priority = 90;
+          }
+          {
+            From = "172.16.17.0/24";
+            Table = 51820;
+            Priority = 90;
+          }
+          {
+            From = "172.16.18.0/24";
+            Table = 51820;
+            Priority = 90;
+          }
+        ];
       };
     };
   };

@@ -6,11 +6,25 @@ _:
   networking.nftables = {
     enable = true;
     checkRuleset = false; # interfaces don't exist at build time
+
+    tables."mangle" = {
+      family = "ip";
+      content = ''
+        chain prerouting {
+          type filter hook prerouting priority mangle; policy accept;
+          ct mark 0x1 meta mark set ct mark
+        }
+      '';
+    };
+
     tables."nat" = {
       family = "ip";
       content = ''
         chain prerouting {
           type nat hook prerouting priority dstnat; policy accept;
+
+          # Mark inbound WAN connections so responses bypass Mullvad
+          iifname "enp1s0" ct state new ct mark set 0x1
 
           # Port forwarding to Vladof
           iifname "enp1s0" tcp dport 80 dnat to 10.42.0.8:80
@@ -28,8 +42,11 @@ _:
         chain postrouting {
           type nat hook postrouting priority 100; policy accept;
 
-          # Masquerade all traffic going to WAN
-          oifname "enp1s0" masquerade
+          # Masquerade DNAT'd traffic so LAN hosts reply via hyperion, not via Mullvad
+          oifname "br-lan" ct status dnat masquerade
+
+          # Masquerade traffic going to WAN or Mullvad
+          oifname { "enp1s0", "mullvad" } masquerade
         }
       '';
     };
@@ -39,6 +56,7 @@ _:
   # SECURITY: Do NOT use trustedInterfaces
   networking.firewall = {
     trustedInterfaces = [ ];
+    checkReversePath = false; # Breaks with SuppressPrefixLength = 0; anti-spoofing in extraInputRules
     filterForward = true; # Enable forward chain for extraForwardRules
 
     interfaces = {
@@ -59,7 +77,7 @@ _:
 
       "enp1s0" = {
         allowedTCPPorts = [ ];
-        allowedUDPPorts = [ 51820 51822 51823 ]; # WireGuard (wg0, wg1, wg2)
+        allowedUDPPorts = [ 51820 51822 ]; # WireGuard (wg0, wg1)
       };
 
       "wg1" = {
@@ -99,13 +117,10 @@ _:
       # Allow established/related (stateful)
       ct state established,related accept
 
-      # TODO: Rate limit forwarded services (WAN → LAN, per-service)
-      # iifname "enp1s0" tcp dport { 80, 443 } ct state new limit rate over 30/second drop
-      # iifname "enp1s0" tcp dport 32400 ct state new limit rate over 30/second drop   # Plex
-      # iifname "enp1s0" tcp dport 54783 ct state new limit rate over 10/second drop    # Blog
-      # iifname "enp1s0" tcp dport 30303 ct state new limit rate over 100/second drop  # Besu
-      # iifname "enp1s0" udp dport 30303 limit rate over 100/second drop
-      # iifname "enp1s0" tcp dport 9001 ct state new limit rate over 50/second drop    # Lighthouse
+      # Rate limit forwarded services to vladof (WAN → LAN)
+      iifname "enp1s0" tcp dport { 80, 443 } ct state new limit rate over 30/second drop
+      iifname "enp1s0" tcp dport 32400 ct state new limit rate over 30/second drop
+      iifname "enp1s0" tcp dport 54783 ct state new limit rate over 10/second drop
 
       # Allow Vladof to reach Cloudflare NS for ACME DNS propagation check
       # ricardo.ns.cloudflare.com + haley.ns.cloudflare.com
@@ -113,30 +128,30 @@ _:
       iifname "br-lan" ip saddr 10.42.0.8 ip daddr { 172.64.35.211, 108.162.195.211, 162.159.44.211, 172.64.34.15, 108.162.194.15, 162.159.38.15 } udp dport 53 accept
 
       # Block external DNS (force clients through local resolver)
-      iifname { "br-lan", "br-wifi", "wg0", "wg1", "wg2" } oifname "enp1s0" tcp dport 53 reject with tcp reset
-      iifname { "br-lan", "br-wifi", "wg0", "wg1", "wg2" } oifname "enp1s0" udp dport 53 reject
+      iifname { "br-lan", "br-wifi", "wg0", "wg1", "wg2" } oifname { "enp1s0", "mullvad" } tcp dport 53 reject with tcp reset
+      iifname { "br-lan", "br-wifi", "wg0", "wg1", "wg2" } oifname { "enp1s0", "mullvad" } udp dport 53 reject
 
       # Egress blocks (defense in depth)
-      oifname "enp1s0" tcp dport { 23, 25, 135, 137, 138, 139, 445 } drop  # Telnet, SMTP, RPC, SMB
-      oifname "enp1s0" udp dport { 137, 138, 139, 445 } drop               # NetBIOS/SMB
+      oifname { "enp1s0", "mullvad" } tcp dport { 21, 23, 25, 135, 137, 138, 139, 445 } drop  # FTP, Telnet, SMTP, RPC, SMB
+      oifname { "enp1s0", "mullvad" } udp dport { 137, 138, 139, 445 } drop                   # NetBIOS/SMB
 
-      # Allow LAN → WAN (IPv4 + IPv6)
-      iifname "br-lan" oifname "enp1s0" accept
+      # Allow LAN → WAN and Mullvad
+      iifname "br-lan" oifname { "enp1s0", "mullvad" } accept
 
-      # Allow WireGuard → WAN and LAN
-      iifname "wg0" oifname { "enp1s0", "br-lan" } accept
+      # Allow WireGuard → WAN, Mullvad, and LAN
+      iifname "wg0" oifname { "enp1s0", "mullvad", "br-lan" } accept
 
       # wg1: only garage on vladof (10.42.0.8), no other LAN access
       iifname "wg1" oifname "br-lan" ip daddr 10.42.0.8 tcp dport { 3900, 3901, 3902, 3903 } accept
       iifname "wg1" oifname "br-lan" drop
-      iifname "wg1" oifname "enp1s0" accept
+      iifname "wg1" oifname { "enp1s0", "mullvad" } accept
 
       # wg2: WAN only, no LAN access
       iifname "wg2" oifname "br-lan" drop
-      iifname "wg2" oifname "enp1s0" accept
+      iifname "wg2" oifname { "enp1s0", "mullvad" } accept
 
       # Allow WiFi → WAN only (no LAN access - guest network)
-      iifname "br-wifi" oifname "enp1s0" accept
+      iifname "br-wifi" oifname { "enp1s0", "mullvad" } accept
 
       # Allow ICMPv6 forwarding (required for path MTU discovery, etc.)
       ip6 nexthdr icmpv6 accept
@@ -144,7 +159,12 @@ _:
       # Rate limit new connections (anti-DoS)
       ct state new limit rate over 100/second drop
 
-      # Block unsolicited WAN → LAN (defense in depth for IPv6)
+      # Allow port-forwarded services from WAN to LAN
+      iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.8 tcp dport { 80, 443, 32400, 54783 } accept
+      iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.25 tcp dport { 9001, 30303 } accept
+      iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.25 udp dport { 30303, 51821 } accept
+
+      # Block unsolicited WAN → LAN
       iifname "enp1s0" oifname { "br-lan", "br-wifi" } drop
 
       # Logging (sampled)

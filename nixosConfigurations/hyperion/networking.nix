@@ -53,7 +53,7 @@
     domains = [ "coditon.com" ];
     proxied = false;
     ipv4 = true;
-    ipv6 = true;
+    ipv6 = false;
     deleteMissing = true;
     apiTokenFile = config.age.secrets.cloudflare-dns-token.path;
   };

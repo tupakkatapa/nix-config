@@ -12,8 +12,11 @@
     "kernel.unprivileged_bpf_disabled" = 1;
     "net.core.bpf_jit_harden" = 2;
 
+    # Strict rp_filter breaks DNAT when SuppressPrefixLength = 0
+    "net.ipv4.conf.all.rp_filter" = 0;
+    "net.ipv4.conf.enp1s0.rp_filter" = 0;
+
     # Network hardening
-    "net.ipv4.conf.all.rp_filter" = 1;
     "net.ipv4.conf.default.rp_filter" = 1;
     "net.ipv4.conf.all.accept_redirects" = 0;
     "net.ipv4.conf.default.accept_redirects" = 0;
