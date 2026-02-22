@@ -197,7 +197,8 @@ in
       credentialFiles = {
         CF_DNS_API_TOKEN_FILE = config.age.secrets.acme-cf-dns-token.path;
       };
-      dnsPropagationCheck = true;
+      dnsPropagationCheck = false;
+      extraLegoFlags = [ "--dns.propagation-rns" ];
       reloadServices = [ "caddy.service" ];
     };
     certs =

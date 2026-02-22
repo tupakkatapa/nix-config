@@ -122,11 +122,6 @@ _:
       iifname "enp1s0" tcp dport 32400 ct state new limit rate over 30/second drop
       iifname "enp1s0" tcp dport 54783 ct state new limit rate over 10/second drop
 
-      # Allow Vladof to reach Cloudflare NS for ACME DNS propagation check
-      # ricardo.ns.cloudflare.com + haley.ns.cloudflare.com
-      iifname "br-lan" ip saddr 10.42.0.8 ip daddr { 172.64.35.211, 108.162.195.211, 162.159.44.211, 172.64.34.15, 108.162.194.15, 162.159.38.15 } tcp dport 53 accept
-      iifname "br-lan" ip saddr 10.42.0.8 ip daddr { 172.64.35.211, 108.162.195.211, 162.159.44.211, 172.64.34.15, 108.162.194.15, 162.159.38.15 } udp dport 53 accept
-
       # Block external DNS (force clients through local resolver)
       iifname { "br-lan", "br-wifi", "wg0", "wg1", "wg2" } oifname { "enp1s0", "mullvad" } tcp dport 53 reject with tcp reset
       iifname { "br-lan", "br-wifi", "wg0", "wg1", "wg2" } oifname { "enp1s0", "mullvad" } udp dport 53 reject
