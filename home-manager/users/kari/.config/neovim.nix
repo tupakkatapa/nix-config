@@ -34,12 +34,19 @@
         action = "P";
       }
       {
+        mode = [ "n" "o" ];
         key = "d";
         action = "\"_d";
       }
       {
+        mode = "n";
         key = "dd";
         action = "\"_dd";
+      }
+      {
+        mode = "v";
+        key = "d";
+        action = "\"_d";
       }
       # Easier buffer switching
       {
