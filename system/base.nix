@@ -25,16 +25,6 @@
     type = "ed25519";
   }];
 
-  # Only swap to avoid OOM
-  boot.kernel.sysctl."vm.swappiness" = 0;
-
-  # Compressed RAM swap
-  zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-    memoryPercent = 50;
-  };
-
   # Early OOM killer
   services.earlyoom = {
     enable = true;
