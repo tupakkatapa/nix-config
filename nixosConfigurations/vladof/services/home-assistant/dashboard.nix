@@ -51,8 +51,7 @@ let
       ] else [ ])
       ++ (if slot.key != "off" then
         [ "input_number.sched_${slot.key}_transition" ]
-      else [ ])
-      ++ map (b: "input_boolean.${b.key}") slot.extraBooleans;
+      else [ ]);
   };
 in
 {
@@ -194,7 +193,7 @@ in
           entities = [
             "input_boolean.schedule_enabled"
             "input_boolean.continuous_transitions"
-            "input_select.schedule_preset"
+            "input_number.schedule_time_offset"
             "input_number.button_transition"
           ];
         }

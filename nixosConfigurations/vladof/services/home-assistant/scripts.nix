@@ -160,72 +160,19 @@ let
     };
   };
 
-  # Schedule preset scripts (apply all slot settings at once)
-  mkSchedulePreset = profile: {
-    name = "schedule_preset_${profile.key}";
-    value = {
-      alias = "Preset: ${profile.alias}";
-      sequence =
-        # Guard: prevent Custom detection while applying
-        [{
-          service = "input_boolean.turn_on";
-          target.entity_id = "input_boolean.applying_preset";
-        }]
-        ++ builtins.concatMap
-          (slot:
-            let
-              slotCfg = profile.slots.${slot.key};
-              hasPreset = slot.defaultPreset != null;
-            in
-            [{
-              service = "input_datetime.set_datetime";
-              target.entity_id = "input_datetime.sched_${slot.key}_time";
-              data.time = "${slotCfg.time}:00";
-            }]
-            ++ (if hasPreset then [
-              {
-                service = "input_number.set_value";
-                target.entity_id = "input_number.sched_${slot.key}_brightness";
-                data.value = slotCfg.brightness;
-              }
-              {
-                service = "input_select.select_option";
-                target.entity_id = "input_select.sched_${slot.key}_preset";
-                data.option = slotCfg.preset;
-              }
-            ] else [ ])
-            ++ [{
-              service = "input_number.set_value";
-              target.entity_id = "input_number.sched_${slot.key}_transition";
-              data.value = slotCfg.transition;
-            }])
-          cfg.scheduleSlots
-        # Set dropdown to this preset
-        ++ [{
-          service = "input_select.select_option";
-          target.entity_id = "input_select.schedule_preset";
-          data.option = profile.alias;
-        }]
-        # Release guard
-        ++ [{
-          service = "input_boolean.turn_off";
-          target.entity_id = "input_boolean.applying_preset";
-        }];
-    };
-  };
-
   # Resume schedule script
   resumeSchedule =
     let
       slotTimeChecks = builtins.concatStringsSep ", " (
-        map (s: "('${s.key}', states('input_datetime.sched_${s.key}_time'))") cfg.scheduleSlots
+        map (s: "('${s.key}', (state_attr('input_datetime.sched_${s.key}_time', 'timestamp') | int + time_offset) % 86400)") cfg.scheduleSlots
       );
       resolveSlot = ''
+        {%- set time_offset = states('input_number.schedule_time_offset') | float * 3600 | int -%}
         {%- set ns = namespace(active='off') -%}
-        {%- set now_t = now().strftime('%H:%M:%S') -%}
+        {%- set now_s = now().hour * 3600 + now().minute * 60 + now().second -%}
         {%- set slots = [${slotTimeChecks}] | sort(attribute='1') -%}
-        {%- for key, time in slots | reverse -%}
-          {%- if now_t >= time and ns.active == 'off' -%}
+        {%- for key, ts in slots | reverse -%}
+          {%- if now_s >= ts and ns.active == 'off' -%}
             {%- set ns.active = key -%}
           {%- endif -%}
         {%- endfor -%}
@@ -279,5 +226,4 @@ in
 // builtins.listToAttrs (map mkBrightness cfg.brightnessLevels)
 // builtins.listToAttrs (map mkTemperature cfg.temperatures)
 // builtins.listToAttrs (map mkColor cfg.colors)
-// builtins.listToAttrs (map mkScene cfg.scheduleSlots)
-  // builtins.listToAttrs (map mkSchedulePreset cfg.schedulePresets)
+  // builtins.listToAttrs (map mkScene cfg.scheduleSlots)

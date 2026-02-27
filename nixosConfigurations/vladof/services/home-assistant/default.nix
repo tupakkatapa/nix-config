@@ -101,27 +101,26 @@ let
       cfg.scheduleSlots
   );
 
-  slotExtraBooleans = builtins.listToAttrs (
-    builtins.concatMap
-      (s: map (b: { name = b.key; value = { inherit (b) name icon; }; }) s.extraBooleans)
-      cfg.scheduleSlots
-  );
 
-  # Template sensor: active slot name
+  # Template sensor: active slot name (offset-aware)
   slotList = builtins.concatStringsSep ", " (
-    map (s: "('${s.alias}', states('input_datetime.sched_${s.key}_time'))") cfg.scheduleSlots
+    map (s: "('${s.alias}', (state_attr('input_datetime.sched_${s.key}_time', 'timestamp') | int + time_offset) % 86400)") cfg.scheduleSlots
   );
   activeSlotTemplate = ''
+    {%- set time_offset = states('input_number.schedule_time_offset') | float * 3600 | int -%}
     {%- set ns = namespace(active='Off') -%}
-    {%- set now_t = now().strftime('%H:%M:%S') -%}
+    {%- set now_s = now().hour * 3600 + now().minute * 60 + now().second -%}
     {%- set slots = [${slotList}] | sort(attribute='1') -%}
-    {%- for name, time in slots | reverse -%}
-      {%- if now_t >= time and ns.active == 'Off' -%}
+    {%- for name, ts in slots | reverse -%}
+      {%- if now_s >= ts and ns.active == 'Off' -%}
         {%- set ns.active = name -%}
       {%- endif -%}
     {%- endfor -%}
+    {%- set offset_h = states('input_number.schedule_time_offset') | float -%}
     {%- if states('input_boolean.schedule_override') == 'on' -%}
       Override
+    {%- elif offset_h != 0 -%}
+      {{ ns.active }} ({{ '%+g' | format(offset_h) }}h)
     {%- else -%}
       {{ ns.active }}
     {%- endif -%}'';
@@ -188,9 +187,8 @@ in
         }];
       }];
 
-      input_boolean = globalInputBooleans // slotEnabledBooleans // slotExtraBooleans // {
+      input_boolean = globalInputBooleans // slotEnabledBooleans // {
         wake_pc = { inherit (cfg.wakePC.enabled) name icon; };
-        applying_preset = { name = "Applying Preset"; initial = false; };
       };
       input_datetime = slotInputDatetimes // {
         wake_pc_time = {
@@ -199,19 +197,12 @@ in
           has_time = true;
         };
       };
-      input_number = globalInputNumbers // slotInputNumbers;
-      input_select = slotInputSelects // {
-        schedule_preset = {
-          name = "Preset";
-          icon = "mdi:palette-swatch";
-          options = (map (p: p.alias) cfg.schedulePresets) ++ [ "Custom" ];
-          initial =
-            let
-              match = builtins.head (builtins.filter (p: p.key == cfg.defaultSchedulePreset) cfg.schedulePresets);
-            in
-            match.alias;
+      input_number = globalInputNumbers // slotInputNumbers // {
+        schedule_time_offset = {
+          inherit (cfg.timeOffset) name icon min max step initial unit_of_measurement;
         };
       };
+      input_select = slotInputSelects;
 
       light = [
         {

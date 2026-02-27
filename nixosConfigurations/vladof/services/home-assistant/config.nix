@@ -80,145 +80,97 @@ rec {
   allPresets = temperatures ++ colors;
   presetOptions = map (p: p.alias) allPresets;
 
-  # Schedule presets (apply all slot settings at once)
-  defaultSchedulePreset = "circadian";
-  schedulePresets = [
+  # Schedule slots with circadian defaults
+  scheduleSlots = [
     {
-      key = "realistic";
-      alias = "Realistic";
-      icon = "mdi:sun-clock";
-      slots = {
-        morning = { time = "06:30"; brightness = 40; preset = "Sunrise"; transition = -30; };
-        midday = { time = "08:30"; brightness = 100; preset = "Daylight"; transition = -30; };
-        evening = { time = "17:00"; brightness = 80; preset = "Neutral"; transition = -60; };
-        dusk = { time = "19:30"; brightness = 50; preset = "Warm"; transition = -30; };
-        night = { time = "21:00"; brightness = 25; preset = "Moonlight"; transition = -30; };
-        bedtime = { time = "22:00"; brightness = 10; preset = "Candle"; transition = -30; };
-        off = { time = "23:00"; transition = 0; };
-      };
+      key = "morning";
+      alias = "Morning";
+      icon = "mdi:weather-sunset-up";
+      lights = with lights; [ bedside livingRoom dining hallway ];
+
+      defaultTime = "07:00";
+      defaultBrightness = 100;
+      defaultPreset = "Daylight";
+      defaultTransition = -30;
     }
     {
-      key = "circadian";
-      alias = "Circadian";
-      icon = "mdi:heart-pulse";
-      slots = {
-        morning = { time = "07:00"; brightness = 100; preset = "Daylight"; transition = -30; };
-        midday = { time = "09:00"; brightness = 100; preset = "Cool"; transition = -30; };
-        evening = { time = "18:00"; brightness = 60; preset = "Neutral"; transition = -60; };
-        dusk = { time = "20:00"; brightness = 30; preset = "Warm"; transition = -30; };
-        night = { time = "21:30"; brightness = 10; preset = "Candle"; transition = -30; };
-        bedtime = { time = "22:30"; brightness = 5; preset = "Candle"; transition = -30; };
-        off = { time = "23:00"; transition = 0; };
-      };
+      key = "midday";
+      alias = "Midday";
+      icon = "mdi:white-balance-sunny";
+      lights = with lights; [ livingRoom dining hallway ];
+
+      defaultTime = "09:00";
+      defaultBrightness = 100;
+      defaultPreset = "Cool";
+      defaultTransition = -30;
     }
     {
-      key = "late-riser";
-      alias = "Late Riser";
-      icon = "mdi:sleep";
-      slots = {
-        morning = { time = "09:00"; brightness = 100; preset = "Daylight"; transition = -30; };
-        midday = { time = "11:00"; brightness = 100; preset = "Cool"; transition = -30; };
-        evening = { time = "20:00"; brightness = 60; preset = "Neutral"; transition = -60; };
-        dusk = { time = "22:00"; brightness = 30; preset = "Warm"; transition = -30; };
-        night = { time = "23:30"; brightness = 10; preset = "Candle"; transition = -30; };
-        bedtime = { time = "00:30"; brightness = 5; preset = "Candle"; transition = -30; };
-        off = { time = "01:00"; transition = 0; };
-      };
+      key = "evening";
+      alias = "Evening";
+      icon = "mdi:weather-sunset-down";
+      lights = with lights; [ livingRoom dining hallway ];
+
+      defaultTime = "18:00";
+      defaultBrightness = 60;
+      defaultPreset = "Neutral";
+      defaultTransition = -60;
     }
     {
-      key = "cozy";
-      alias = "Cozy";
-      icon = "mdi:sofa";
-      slots = {
-        morning = { time = "09:00"; brightness = 45; preset = "Warm"; transition = -30; };
-        midday = { time = "11:00"; brightness = 55; preset = "Warm"; transition = -30; };
-        evening = { time = "16:00"; brightness = 40; preset = "Cozy"; transition = -60; };
-        dusk = { time = "18:30"; brightness = 30; preset = "Cozy"; transition = -30; };
-        night = { time = "20:30"; brightness = 20; preset = "Candle"; transition = -30; };
-        bedtime = { time = "21:30"; brightness = 10; preset = "Candle"; transition = -30; };
-        off = { time = "23:00"; transition = 0; };
-      };
+      key = "dusk";
+      alias = "Dusk";
+      icon = "mdi:weather-night-partly-cloudy";
+      lights = with lights; [ livingRoom dining hallway ];
+
+      defaultTime = "20:00";
+      defaultBrightness = 30;
+      defaultPreset = "Warm";
+      defaultTransition = -30;
     }
     {
-      key = "night-owl";
-      alias = "Night Owl";
-      icon = "mdi:owl";
-      slots = {
-        morning = { time = "11:00"; brightness = 45; preset = "Warm"; transition = -30; };
-        midday = { time = "13:00"; brightness = 55; preset = "Warm"; transition = -30; };
-        evening = { time = "18:00"; brightness = 40; preset = "Cozy"; transition = -60; };
-        dusk = { time = "20:30"; brightness = 30; preset = "Cozy"; transition = -30; };
-        night = { time = "22:30"; brightness = 20; preset = "Candle"; transition = -30; };
-        bedtime = { time = "23:30"; brightness = 10; preset = "Candle"; transition = -30; };
-        off = { time = "01:00"; transition = 0; };
-      };
+      key = "night";
+      alias = "Night";
+      icon = "mdi:weather-night";
+      lights = with lights; [ bedside livingRoom dining hallway ];
+
+      defaultTime = "21:30";
+      defaultBrightness = 10;
+      defaultPreset = "Candle";
+      defaultTransition = -30;
+    }
+    {
+      key = "bedtime";
+      alias = "Bedtime";
+      icon = "mdi:bed";
+      lights = with lights; [ bedside ];
+
+      defaultTime = "22:30";
+      defaultBrightness = 5;
+      defaultPreset = "Candle";
+      defaultTransition = -30;
+    }
+    {
+      key = "off";
+      alias = "Off";
+      icon = "mdi:lightbulb-off";
+      lights = [ ];
+
+      defaultTime = "23:00";
+      defaultBrightness = 0;
+      defaultPreset = null;
+      defaultTransition = 0;
     }
   ];
 
-  # Schedule slots (defaults derived from defaultSchedulePreset)
-  scheduleSlots =
-    let
-      preset = builtins.head (builtins.filter (p: p.key == defaultSchedulePreset) schedulePresets);
-      withDefaults = slot:
-        let s = preset.slots.${slot.key};
-        in slot // {
-          defaultTime = s.time;
-          defaultTransition = s.transition;
-          defaultPreset = s.preset or null;
-          defaultBrightness = s.brightness or 0;
-        };
-    in
-    map withDefaults [
-      {
-        key = "morning";
-        alias = "Morning";
-        icon = "mdi:weather-sunset-up";
-        lights = with lights; [ bedside livingRoom dining hallway ];
-        extraBooleans = [ ];
-      }
-      {
-        key = "midday";
-        alias = "Midday";
-        icon = "mdi:white-balance-sunny";
-        lights = with lights; [ livingRoom dining hallway ];
-        extraBooleans = [ ];
-      }
-      {
-        key = "evening";
-        alias = "Evening";
-        icon = "mdi:weather-sunset-down";
-        lights = with lights; [ livingRoom dining hallway ];
-        extraBooleans = [ ];
-      }
-      {
-        key = "dusk";
-        alias = "Dusk";
-        icon = "mdi:weather-night-partly-cloudy";
-        lights = with lights; [ livingRoom dining hallway ];
-        extraBooleans = [ ];
-      }
-      {
-        key = "night";
-        alias = "Night";
-        icon = "mdi:weather-night";
-        lights = with lights; [ bedside livingRoom dining hallway ];
-        extraBooleans = [ ];
-      }
-      {
-        key = "bedtime";
-        alias = "Bedtime";
-        icon = "mdi:bed";
-        lights = with lights; [ bedside ];
-        extraBooleans = [ ];
-      }
-      {
-        key = "off";
-        alias = "Off";
-        icon = "mdi:lightbulb-off";
-        lights = [ ];
-        extraBooleans = [ ];
-      }
-    ];
+  # Time offset (shifts all schedule times, replaces preset switching)
+  timeOffset = {
+    name = "Time Offset";
+    icon = "mdi:clock-fast";
+    min = -1;
+    max = 4;
+    step = 0.5;
+    initial = 0;
+    unit_of_measurement = "h";
+  };
 
   # Wake PC
   wakePC = {
