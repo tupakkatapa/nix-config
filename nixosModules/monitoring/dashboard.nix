@@ -121,9 +121,9 @@ in
       (query "node_load1" "{{host}}")
     ])
 
-    # Row 5: Temperatures
+    # Row 5: Temperatures (exclude i2c/OpenRGB noise and thermal zones)
     (timeseries "Temperatures" { h = 8; w = 24; x = 0; y = 28; } { unit = "celsius"; } [
-      (query "node_hwmon_temp_celsius" "{{host}} {{chip}} {{sensor}}")
+      (query ''node_hwmon_temp_celsius{chip!~".*wm_bus.*|.*thermal.*"} > 0 < 150'' "{{host}} {{chip}} {{sensor}}")
     ])
 
     # Row 6: Failed unit details

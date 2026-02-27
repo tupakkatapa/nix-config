@@ -11,7 +11,7 @@ let
 
   # Build scrape targets using DNS: ${hostname}.${domain}
   inherit (config.networking) domain;
-  scrapeConfigs = map
+  scrapeConfigs = (map
     (name:
       let
         isSelf = name == config.networking.hostName;
@@ -24,7 +24,16 @@ let
         }];
       }
     )
-    monitoredHosts;
+    monitoredHosts)
+  ++ (lib.mapAttrsToList
+    (name: target: {
+      job_name = name;
+      static_configs = [{
+        targets = [ target ];
+        labels.host = name;
+      }];
+    })
+    cfg.grafana.extraExporters);
 
   # Extract real mountpoints from monitored hosts' fileSystems
   realFsTypes = [ "btrfs" "ext4" "xfs" "vfat" "ntfs" "f2fs" "zfs" "bcachefs" ];
@@ -71,10 +80,11 @@ in
         description = "Domain for Grafana reverse proxy";
       };
 
-      extraDatasources = lib.mkOption {
-        type = lib.types.listOf lib.types.attrs;
-        default = [ ];
-        description = "Additional Grafana datasources to provision alongside the local Prometheus";
+      extraExporters = lib.mkOption {
+        type = lib.types.attrsOf lib.types.str;
+        default = { };
+        description = "Additional node exporters to scrape: { host = \"address:port\"; }";
+        example = { kaakkuri = "10.42.0.25:9100"; };
       };
     };
   };
@@ -144,7 +154,7 @@ in
             type = "prometheus";
             url = "http://127.0.0.1:9090";
             isDefault = true;
-          }] ++ cfg.grafana.extraDatasources;
+          }];
           dashboards.settings.providers = [{
             name = "Node Exporter";
             options.path = dashboardDir;
