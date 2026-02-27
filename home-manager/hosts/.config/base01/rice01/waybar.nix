@@ -28,7 +28,7 @@ in
 {
   programs.waybar = {
     settings.primary = {
-      height = 20;
+      height = 18;
       margin-top = rice.spacing;
       margin-left = rice.spacing;
       margin-right = rice.spacing;

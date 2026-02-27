@@ -5,7 +5,7 @@ let
 in
 {
   rounding = 12;
-  spacing = 10;
+  spacing = 8;
   border = {
     size = 2;
     active = colors.base06;
