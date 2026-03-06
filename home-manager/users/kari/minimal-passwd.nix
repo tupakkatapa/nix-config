@@ -219,7 +219,7 @@ in
         wireguardConfig.PrivateKeyFile = config.age.secrets.wg-home.path;
         wireguardPeers = [{
           PublicKey = "jRlrkYOWatx3pvJPt22uuWDiWJ8K9d+teJ2IEiMJ3SA=";
-          AllowedIPs = [ "10.42.0.0/24" "172.16.16.0/24" ];
+          AllowedIPs = [ "10.42.0.0/24" "172.16.16.0/24" "fd42:42:42:1::/64" "fd42:42:42:3::/64" ];
           Endpoint = [ "coditon.com:51820" ];
           PersistentKeepalive = 25;
         }];
@@ -241,7 +241,7 @@ in
     networks = {
       "99-home" = {
         matchConfig.Name = "home";
-        address = [ "172.16.16.3/32" ];
+        address = [ "172.16.16.3/32" "fd42:42:42:3::3/128" ];
         linkConfig.ActivationPolicy = if config.networking.hostName == "maliwan" then "up" else "manual";
         routes = [
           {
@@ -253,6 +253,16 @@ in
             Gateway = "172.16.16.1";
             GatewayOnLink = true;
             Destination = "10.42.0.0/24";
+          }
+          {
+            Gateway = "fd42:42:42:3::1";
+            GatewayOnLink = true;
+            Destination = "fd42:42:42:1::/64";
+          }
+          {
+            Gateway = "fd42:42:42:3::1";
+            GatewayOnLink = true;
+            Destination = "fd42:42:42:3::/64";
           }
         ];
         dns = [ "10.42.0.1" ];

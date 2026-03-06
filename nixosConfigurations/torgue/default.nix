@@ -79,17 +79,19 @@
         linkConfig.RequiredForOnline = "routable";
         matchConfig.Name = [ "enp3s0" ];
         networkConfig = {
-          DHCP = "ipv4";
+          DHCP = "yes";
           IPv6AcceptRA = true;
         };
+        dhcpV6Config.DUIDType = "link-layer";
       };
       "20-wan" = {
         linkConfig.RequiredForOnline = "routable";
         matchConfig.Name = [ "wlp7s0" ];
         networkConfig = {
-          DHCP = "ipv4";
+          DHCP = "yes";
           IPv6AcceptRA = true;
         };
+        dhcpV6Config.DUIDType = "link-layer";
       };
     };
   };

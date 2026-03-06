@@ -81,9 +81,10 @@ in
         linkConfig.RequiredForOnline = "routable";
         matchConfig.Name = [ "enp0s31f6" ];
         networkConfig = {
-          DHCP = "ipv4";
+          DHCP = "yes";
           IPv6AcceptRA = true;
         };
+        dhcpV6Config.DUIDType = "link-layer";
       };
     };
   };

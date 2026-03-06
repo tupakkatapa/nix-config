@@ -111,7 +111,7 @@ let
           id = client.menu;
           type = "host";
           label = client.menu;
-          ip = client.address;
+          ip = client.ipv4.address;
           inherit (client) mac;
           images = menuInfo.${client.menu} or [ ];
           bridge =

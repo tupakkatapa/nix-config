@@ -8,7 +8,7 @@ _:
     checkRuleset = false; # interfaces don't exist at build time
 
     tables."mangle" = {
-      family = "ip";
+      family = "inet";
       content = ''
         chain prerouting {
           type filter hook prerouting priority mangle; policy accept;
@@ -18,7 +18,7 @@ _:
     };
 
     tables."nat" = {
-      family = "ip";
+      family = "inet";
       content = ''
         chain prerouting {
           type nat hook prerouting priority dstnat; policy accept;
@@ -27,16 +27,24 @@ _:
           iifname "enp1s0" ct state new ct mark set 0x1
 
           # Port forwarding to Vladof
-          iifname "enp1s0" tcp dport 80 dnat to 10.42.0.8:80
-          iifname "enp1s0" tcp dport 443 dnat to 10.42.0.8:443
-          iifname "enp1s0" tcp dport 32400 dnat to 10.42.0.8:32400   # Plex
-          iifname "enp1s0" tcp dport 54783 dnat to 10.42.0.8:54783   # Blog
+          iifname "enp1s0" tcp dport 80 dnat ip to 10.42.0.8:80
+          iifname "enp1s0" tcp dport 80 dnat ip6 to [fd42:42:42:1::8]:80
+          iifname "enp1s0" tcp dport 443 dnat ip to 10.42.0.8:443
+          iifname "enp1s0" tcp dport 443 dnat ip6 to [fd42:42:42:1::8]:443
+          iifname "enp1s0" tcp dport 32400 dnat ip to 10.42.0.8:32400   # Plex
+          iifname "enp1s0" tcp dport 32400 dnat ip6 to [fd42:42:42:1::8]:32400
+          iifname "enp1s0" tcp dport 54783 dnat ip to 10.42.0.8:54783   # Blog
+          iifname "enp1s0" tcp dport 54783 dnat ip6 to [fd42:42:42:1::8]:54783
 
           # Port forwarding to Kaakkuri
-          iifname "enp1s0" tcp dport 9001 dnat to 10.42.0.25:9001
-          iifname "enp1s0" tcp dport 30303 dnat to 10.42.0.25:30303
-          iifname "enp1s0" udp dport 30303 dnat to 10.42.0.25:30303
-          iifname "enp1s0" udp dport 51821 dnat to 10.42.0.25:51821
+          iifname "enp1s0" tcp dport 9001 dnat ip to 10.42.0.25:9001
+          iifname "enp1s0" tcp dport 9001 dnat ip6 to [fd42:42:42:1::25]:9001
+          iifname "enp1s0" tcp dport 30303 dnat ip to 10.42.0.25:30303
+          iifname "enp1s0" tcp dport 30303 dnat ip6 to [fd42:42:42:1::25]:30303
+          iifname "enp1s0" udp dport 30303 dnat ip to 10.42.0.25:30303
+          iifname "enp1s0" udp dport 30303 dnat ip6 to [fd42:42:42:1::25]:30303
+          iifname "enp1s0" udp dport 51821 dnat ip to 10.42.0.25:51821
+          iifname "enp1s0" udp dport 51821 dnat ip6 to [fd42:42:42:1::25]:51821
         }
 
         chain postrouting {
@@ -62,7 +70,7 @@ _:
     interfaces = {
       "br-lan" = {
         allowedTCPPorts = [ 22 53 80 443 52080 ]; # SSH, DNS, HTTP, HTTPS, Nixie HTTP
-        allowedUDPPorts = [ 53 67 69 123 ]; # DNS, DHCP, TFTP, NTP
+        allowedUDPPorts = [ 53 67 69 123 547 ]; # DNS, DHCP, TFTP, NTP, DHCPv6
       };
 
       "wg0" = {
@@ -72,7 +80,7 @@ _:
 
       "br-wifi" = {
         allowedTCPPorts = [ 53 ]; # DNS
-        allowedUDPPorts = [ 53 67 123 51820 ]; # DNS, DHCP, NTP, WireGuard
+        allowedUDPPorts = [ 53 67 123 547 51820 ]; # DNS, DHCP, NTP, DHCPv6, WireGuard
       };
 
       "enp1s0" = {
@@ -92,8 +100,9 @@ _:
     };
 
     extraInputRules = ''
-      # Anti-spoofing: drop RFC1918 from WAN (except our own ranges for hairpin NAT)
+      # Anti-spoofing: drop private/non-routable addresses from WAN
       iifname "enp1s0" ip saddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } drop
+      iifname "enp1s0" ip6 saddr { fc00::/7 } drop
 
       # Allow ICMPv6 for IPv6 to work (neighbor discovery, router advertisements, etc.)
       ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, echo-request, echo-reply, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } accept
@@ -136,8 +145,9 @@ _:
       # Allow WireGuard → WAN, Mullvad, and LAN
       iifname "wg0" oifname { "enp1s0", "mullvad", "br-lan" } accept
 
-      # wg1: only garage on vladof (10.42.0.8), no other LAN access
+      # wg1: only garage on vladof, no other LAN access
       iifname "wg1" oifname "br-lan" ip daddr 10.42.0.8 tcp dport { 3900, 3901, 3902, 3903 } accept
+      iifname "wg1" oifname "br-lan" ip6 daddr fd42:42:42:1::8 tcp dport { 3900, 3901, 3902, 3903 } accept
       iifname "wg1" oifname "br-lan" drop
       iifname "wg1" oifname { "enp1s0", "mullvad" } accept
 
@@ -154,10 +164,15 @@ _:
       # Rate limit new connections (anti-DoS)
       ct state new limit rate over 100/second drop
 
-      # Allow port-forwarded services from WAN to LAN
+      # Allow port-forwarded services from WAN to LAN (IPv4)
       iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.8 tcp dport { 80, 443, 32400, 54783 } accept
       iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.25 tcp dport { 9001, 30303 } accept
       iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.25 udp dport { 30303, 51821 } accept
+
+      # Allow port-forwarded services from WAN to LAN (IPv6)
+      iifname "enp1s0" oifname "br-lan" ip6 daddr fd42:42:42:1::8 tcp dport { 80, 443, 32400, 54783 } accept
+      iifname "enp1s0" oifname "br-lan" ip6 daddr fd42:42:42:1::25 tcp dport { 9001, 30303 } accept
+      iifname "enp1s0" oifname "br-lan" ip6 daddr fd42:42:42:1::25 udp dport { 30303, 51821 } accept
 
       # Block unsolicited WAN → LAN
       iifname "enp1s0" oifname { "br-lan", "br-wifi" } drop

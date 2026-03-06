@@ -44,9 +44,10 @@
         linkConfig.RequiredForOnline = "routable";
         matchConfig.Name = [ "enp195s0f0" "wlp194s0" ];
         networkConfig = {
-          DHCP = "ipv4";
+          DHCP = "yes";
           IPv6AcceptRA = true;
         };
+        dhcpV6Config.DUIDType = "link-layer";
       };
     };
   };

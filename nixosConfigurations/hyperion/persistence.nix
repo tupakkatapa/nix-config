@@ -61,7 +61,7 @@
         {
           name = "appdata";
           dirs = [
-            { name = "kea"; mode = "755"; what = "/var/lib/kea"; }
+            { name = "kea"; mode = "700"; what = "/var/lib/private/kea"; }
           ];
         }
         {

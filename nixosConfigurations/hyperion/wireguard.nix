@@ -42,18 +42,18 @@
           # OnePlus 9
           {
             PublicKey = "PH/wZiXlLiCiWqB2AAxB7TRhPVbUh0Dyy6bB8zEthBM=";
-            AllowedIPs = [ "172.16.16.2/32" ];
+            AllowedIPs = [ "172.16.16.2/32" "fd42:42:42:3::2/128" ];
             PersistentKeepalive = 25;
           }
           # Kari
           {
             PublicKey = "vdCiN71d/Qn2I1GF5wJnXNWcqBSVyWvjtpLSUykbLkA=";
-            AllowedIPs = [ "172.16.16.3/32" ];
+            AllowedIPs = [ "172.16.16.3/32" "fd42:42:42:3::3/128" ];
           }
           # Boox
           {
             PublicKey = "IZHDryL8A0tM70q/8yU4Cjmd6oZm294C2XQ0RQVWMWY=";
-            AllowedIPs = [ "172.16.16.4/32" ];
+            AllowedIPs = [ "172.16.16.4/32" "fd42:42:42:3::4/128" ];
             PersistentKeepalive = 25;
           }
         ];
@@ -73,7 +73,7 @@
         wireguardPeers = [
           {
             PublicKey = "elemyZtQ50TbqqaMp27M2iIW7KoTHxcmn2d0CCK22xM=";
-            AllowedIPs = [ "172.16.17.2/32" ];
+            AllowedIPs = [ "172.16.17.2/32" "fd42:42:42:4::2/128" ];
             PersistentKeepalive = 25;
           }
         ];
@@ -92,7 +92,7 @@
         wireguardPeers = [{
           PublicKey = "/iivwlyqWqxQ0BVWmJRhcXIFdJeo0WbHQ/hZwuXaN3g=";
           Endpoint = "193.32.127.66:51820";
-          AllowedIPs = [ "0.0.0.0/0" ];
+          AllowedIPs = [ "0.0.0.0/0" "::/0" ];
         }];
       };
 
@@ -113,51 +113,67 @@
     networks = {
       "wg0" = {
         matchConfig.Name = "wg0";
-        address = [ "172.16.16.1/24" ];
+        address = [ "172.16.16.1/24" "fd42:42:42:3::1/64" ];
         networkConfig = {
-          IPMasquerade = "ipv4";
+          IPMasquerade = "both";
           IPv4Forwarding = true;
+          IPv6Forwarding = true;
         };
       };
       "wg1" = {
         matchConfig.Name = "wg1";
-        address = [ "172.16.17.1/24" ];
+        address = [ "172.16.17.1/24" "fd42:42:42:4::1/64" ];
         networkConfig = {
-          IPMasquerade = "ipv4";
+          IPMasquerade = "both";
           IPv4Forwarding = true;
+          IPv6Forwarding = true;
         };
       };
       "wg2" = {
         matchConfig.Name = "wg2";
-        address = [ "172.16.18.1/24" ];
+        address = [ "172.16.18.1/24" "fd42:42:42:5::1/64" ];
         networkConfig = {
-          IPMasquerade = "ipv4";
+          IPMasquerade = "both";
           IPv4Forwarding = true;
+          IPv6Forwarding = true;
         };
       };
       "mullvad" = {
         matchConfig.Name = "mullvad";
-        address = [ "10.72.145.215/32" ];
-        routes = [{
-          Destination = "0.0.0.0/0";
-          Table = 51820;
-        }];
+        address = [ "10.72.145.215/32" "fc00:bbbb:bbbb:bb01::9:91d6/128" ];
+        routes = [
+          {
+            Destination = "0.0.0.0/0";
+            Table = 51820;
+          }
+          {
+            Destination = "::/0";
+            Table = 51820;
+          }
+        ];
         routingPolicyRules = [
           # Use main table for everything except the default route
           {
             Table = "main";
             SuppressPrefixLength = 0;
             Priority = 80;
+            Family = "both";
           }
           # Port-forwarded responses go direct
           {
             FirewallMark = 1;
             Table = "main";
             Priority = 85;
+            Family = "both";
           }
           # Kaakkuri bypasses Mullvad
           {
             From = "10.42.0.25";
+            Table = "main";
+            Priority = 85;
+          }
+          {
+            From = "fd42:42:42:1::25";
             Table = "main";
             Priority = 85;
           }
@@ -173,6 +189,16 @@
             Priority = 90;
           }
           {
+            From = "fd42:42:42:1::/64";
+            Table = 51820;
+            Priority = 90;
+          }
+          {
+            From = "fd42:42:42:2::/64";
+            Table = 51820;
+            Priority = 90;
+          }
+          {
             From = "172.16.16.0/24";
             Table = 51820;
             Priority = 90;
@@ -184,6 +210,21 @@
           }
           {
             From = "172.16.18.0/24";
+            Table = 51820;
+            Priority = 90;
+          }
+          {
+            From = "fd42:42:42:3::/64";
+            Table = 51820;
+            Priority = 90;
+          }
+          {
+            From = "fd42:42:42:4::/64";
+            Table = 51820;
+            Priority = 90;
+          }
+          {
+            From = "fd42:42:42:5::/64";
             Table = 51820;
             Priority = 90;
           }

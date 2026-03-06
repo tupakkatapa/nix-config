@@ -28,7 +28,7 @@
 
     # Netboot stuff
     nixie.inputs.nixpkgs.follows = "nixpkgs";
-    nixie.url = "github:majbacka-labs/nixie/jesse/dev31"; # https, private
+    nixie.url = "github:majbacka-labs/nixie/jesse/dev050"; # https, private
     runtime-modules.inputs.nixpkgs.follows = "nixpkgs";
     runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
     sftp-mount.inputs.nixpkgs.follows = "nixpkgs";
@@ -39,6 +39,7 @@
     # Other
     anytui.inputs.nixpkgs.follows = "nixpkgs";
     anytui.url = "github:tupakkatapa/anytui";
+    claude-desktop.url = "github:aaddrick/claude-desktop-debian";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
     llm-agents.url = "github:numtide/llm-agents.nix";
     molesk.inputs.nixpkgs.follows = "nixpkgs";
@@ -83,12 +84,14 @@
             inherit (config.packages)
               # Custom packages used in configurations
               chroma-mcp
+              kate
               kb-shortcuts
               monitor-adjust
               # Inputs
               codex
               claude-code
               ping-sweep
+              claude-desktop
               ;
             # Not a single derivation
             claude-plugins = pkgs.callPackage ./packages/claude-plugins { };
@@ -128,6 +131,7 @@
           packages = {
             "2mp3" = pkgs.callPackage ./packages/2mp3 { };
             "chroma-mcp" = pkgs.callPackage ./packages/chroma-mcp { };
+            "kate" = pkgs.callPackage ./packages/kate { };
             "fat-nix-deps" = pkgs.callPackage ./packages/fat-nix-deps { };
             "kb-shortcuts" = pkgs.callPackage ./packages/kb-shortcuts { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
@@ -138,6 +142,7 @@
             inherit (inputs'.nixie.packages) refind-generate;
             inherit (inputs'.ping-sweep.packages) ping-sweep;
             inherit (inputs'.llm-agents.packages) claude-code;
+            inherit (inputs'.claude-desktop.packages) claude-desktop;
           }
           // (with flake.nixosConfigurations; {
             "bandit" = bandit.config.system.build.kexecTree;
