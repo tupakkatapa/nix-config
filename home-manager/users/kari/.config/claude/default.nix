@@ -89,6 +89,14 @@ in
         command = "npx";
         args = [ "-y" "@upstash/context7-mcp" ];
       };
+      searxng = {
+        command = "npx";
+        args = [ "-y" "mcp-searxng" ];
+        env = {
+          SEARXNG_URL = "https://search.coditon.com";
+          NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-bundle.crt";
+        };
+      };
     };
 
     # Global CLAUDE.md - applies to all projects
