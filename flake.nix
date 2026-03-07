@@ -84,7 +84,6 @@
             inherit (config.packages)
               # Custom packages used in configurations
               chroma-mcp
-              kate
               kb-shortcuts
               monitor-adjust
               # Inputs
@@ -131,7 +130,6 @@
           packages = {
             "2mp3" = pkgs.callPackage ./packages/2mp3 { };
             "chroma-mcp" = pkgs.callPackage ./packages/chroma-mcp { };
-            "kate" = pkgs.callPackage ./packages/kate { };
             "fat-nix-deps" = pkgs.callPackage ./packages/fat-nix-deps { };
             "kb-shortcuts" = pkgs.callPackage ./packages/kb-shortcuts { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
