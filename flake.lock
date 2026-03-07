@@ -1669,11 +1669,11 @@
         "treefmt-nix": "treefmt-nix_5"
       },
       "locked": {
-        "lastModified": 1772839361,
-        "narHash": "sha256-ekBiNp1hwqoGNjPXYD89uj9W8294he27C2ExPwvOYVY=",
+        "lastModified": 1772882938,
+        "narHash": "sha256-ExkK04ekIGiOXEuWHvVn/t/A+XvSkDv5S+wuYn2Avig=",
         "owner": "majbacka-labs",
         "repo": "nixie",
-        "rev": "03a16cdc8b86c7116b22777cdbbd52076023f620",
+        "rev": "953e88082b5e458ff2b8f880861543df3f409432",
         "type": "github"
       },
       "original": {
