@@ -23,12 +23,12 @@ in
     };
     "iwd-hyperion" = {
       rekeyFile = ./secrets/iwd-hyperion.age;
-      path = "/etc/iwd/hyperion.psk";
+      path = "/etc/iwd/hyperion-2g.psk";
       mode = "0600";
     };
     "iwd-pixel" = {
       rekeyFile = ./secrets/iwd-pixel.age;
-      path = "/etc/iwd/pixel.psk";
+      path = "/etc/iwd/Pixel_1253.psk";
       mode = "0600";
     };
     "ed25519-sk-yubikey" = {
