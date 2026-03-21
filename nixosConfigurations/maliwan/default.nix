@@ -42,7 +42,7 @@
     networks = {
       "10-wan" = {
         linkConfig.RequiredForOnline = "routable";
-        matchConfig.Name = [ "enp195s0f0" "wlp194s0" ];
+        matchConfig.Name = [ "enp195s0f0" "wlan0" ];
         networkConfig = {
           DHCP = "yes";
           IPv6AcceptRA = true;
