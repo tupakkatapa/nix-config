@@ -8,11 +8,10 @@ let
   inherit (config.home.sessionVariables) THEME;
   colors = customLib.colors.${THEME};
   rice = import ./config.nix { inherit customLib config; };
-  swaybg = "${pkgs.swaybg}/bin/swaybg";
+  harmonograph = "${pkgs.wl-harmonograph}/bin/wl-harmonograph";
 in
 {
   home.file = {
-    "wallpaper".source = ./wallpaper.png;
     "hypr_binds.txt".text = lib.concatStringsSep "\n" config.wayland.windowManager.hyprland.settings.bind;
   };
 
@@ -70,7 +69,7 @@ in
 
     # Startup
     exec-once = [
-      "${swaybg} -i ~/wallpaper --mode fill"
+      "HARMONOGRAPH_BG=1d2021 HARMONOGRAPH_FG=${colors.base05} ${harmonograph}"
     ];
 
     # Window behiavior
