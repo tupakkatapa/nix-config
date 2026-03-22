@@ -8,7 +8,7 @@ let
 in
 {
   programs.foot.settings = {
-    main.font = "${FONT}:size=8:weight=bold";
+    main.font = "${FONT}:size=8";
 
     # Color settings
     colors = {

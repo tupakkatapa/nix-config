@@ -207,7 +207,7 @@ in
         border-radius: ${toString rice.rounding}px;
         font-family: ${FONT};
         font-size: 11px;
-        font-weight: 900;
+        font-weight: 400;
       }
 
       window#waybar {

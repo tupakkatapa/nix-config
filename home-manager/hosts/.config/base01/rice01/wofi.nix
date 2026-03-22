@@ -5,6 +5,7 @@
 let
   inherit (config.home.sessionVariables) FONT TERMINAL THEME;
   colors = customLib.colors.${THEME};
+  rice = import ./config.nix { inherit customLib config; };
 in
 {
   programs.wofi = {
@@ -46,7 +47,7 @@ in
       #wofi-window {
         background-color: #${colors.base00};
         color: #${colors.base05};
-        border: 2px solid #${colors.base01};
+        border: ${toString rice.border.size}px solid #${colors.base01};
         border-radius: 0px;
       }
 
