@@ -6,6 +6,17 @@ date: "2024-01-01"
 
 In this blog post, I will briefly demonstrate how to import JSON data into a NixOS configuration. This concept originated when I was trying to incorporate user input data from a web frontend into a NixOS configuration dynamically.
 
+> Update 2026-03-22: This is an unnecessarily complicated method — I was just getting into Nix and didn't know better. Just use `builtins.fromJSON` with the conditional import approach shown in step 3:
+>
+> ```nix
+> modules = [
+>   ./configuration.nix
+> ] ++ lib.optional (builtins.pathExists /tmp/data.json)
+>   { <module_name> = builtins.fromJSON (builtins.readFile /tmp/data.json); };
+> ```
+>
+> By scoping under a specific module, we prevent the JSON from setting arbitrary NixOS options.
+
 For a comprehensive understanding how this could be used, refer to [this documentation](https://github.com/ponkila/HomestakerOS/blob/d7a349f391749664bcb32aa586666f8bae47aa11/docs/workflow.md) from a related project, HomestakerOS. It describes the entire workflow, including a data schema for the user input.
 
 **Important note:** Adding configurations dynamically somewhat contradicts the principles of the Nix philosophy and may potentially be exploited for malicious intentions. Therefore, it's advised to manually check the contents of the imported configuration and limit the configuration's scope to enhance security, especially if the data is sent over the internet.

@@ -142,4 +142,4 @@ And some:
 
 ## License
 
-This repository is licensed under the GNU General Public License v3.0, **except for the blog content hosted under `nixosConfigurations/vladof/services/blog-contents`, which is all rights reserved.**
+This repository is licensed under the GNU General Public License v3.0, **except for the blog content hosted under `nixosConfigurations/vladof/services/containers/molesk/contents`, which is all rights reserved.**
