@@ -69,7 +69,7 @@ in
 
     # Startup
     exec-once = [
-      "HARMONOGRAPH_BG=1d2021 HARMONOGRAPH_FG=${colors.base05} ${harmonograph}"
+      "HARMONOGRAPH_BG=1d2021 HARMONOGRAPH_FG=${colors.base08},${colors.base0A},${colors.base0B} ${harmonograph}"
     ];
 
     # Window behiavior
