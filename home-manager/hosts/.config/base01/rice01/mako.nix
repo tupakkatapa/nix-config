@@ -13,7 +13,7 @@ in
     border-color = "#${colors.base06}";
     border-radius = rice.rounding;
     border-size = rice.border.size;
-    font = "${FONT} 8";
+    font = "${FONT} 10";
     text-color = "#${colors.base05}";
     progress-color = "#${colors.base08}";
   };
