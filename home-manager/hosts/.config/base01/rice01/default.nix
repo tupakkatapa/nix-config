@@ -5,6 +5,7 @@ _:
 
     ./gtk.nix
     ./hyprland.nix
+    ./hyprlock.nix
     ./mako.nix
     ./waybar.nix
     ./wofi.nix

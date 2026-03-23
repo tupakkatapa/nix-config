@@ -21,7 +21,7 @@ in
 
       # Powerstate
       bios = "systemctl reboot --firmware-setup";
-      lock = "swaylock --daemonize";
+      lock = "loginctl lock-session";
       logout = "hyprctl dispatch exit";
       rbt = "systemctl reboot";
       reboot = "systemctl reboot";

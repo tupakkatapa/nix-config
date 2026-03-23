@@ -11,6 +11,9 @@ in
   # This configuration extends the minimal-passwd and minimal-gui versions
   imports = [ ./minimal-passwd.nix ./minimal-gui.nix ];
 
+  # Required for hyprlock via home-manager
+  security.pam.services.hyprlock = { };
+
   # Android development
   programs.adb.enable = true;
 
@@ -22,6 +25,23 @@ in
     imports = [
       ./.config/claude
     ];
+
+    # Screen locker + idle daemon
+    programs.hyprlock.enable = true;
+    services.hypridle = {
+      enable = true;
+      settings = {
+        general = {
+          lock_cmd = "if ! pgrep hyprlock; then hyprlock; fi";
+          before_sleep_cmd = "loginctl lock-session";
+          after_sleep_cmd = "hyprctl dispatch dpms on";
+        };
+        listener = [
+          { timeout = 300; on-timeout = "loginctl lock-session"; }
+          { timeout = 360; on-timeout = "hyprctl dispatch dpms off"; on-resume = "hyprctl dispatch dpms on"; }
+        ];
+      };
+    };
 
     # Default apps
     xdg.mimeApps.enable = true;
