@@ -28,12 +28,12 @@ in
 {
   programs.waybar = {
     settings.primary = {
-      height = 18;
+      height = 21;
       margin-top = rice.spacing;
       margin-left = rice.spacing;
       margin-right = rice.spacing;
       layer = "top";
-      spacing = rice.spacing / 2;
+      inherit (rice) spacing;
 
       modules-left = [
         "custom/hostname"
@@ -48,15 +48,12 @@ in
       ];
 
       modules-right = [
+        "tray"
         "custom/claude-afk"
       ] ++ (if hasTmux then [ "custom/tmux" ] else [ ]) ++ [
-        "memory"
         "custom/ping-sweep"
-        "tray"
-        "pulseaudio"
-        "bluetooth"
-        "network"
-        "battery"
+        "group/hardware"
+        "group/connectivity"
         "clock#datetime"
       ];
 
@@ -67,9 +64,9 @@ in
         max-length = 100;
         format = "{icon} {}";
         format-icons = {
-          "Playing" = "";
-          "Paused" = "";
-          "Stopped" = "";
+          "Playing" = "󰐊";
+          "Paused" = "󰏤";
+          "Stopped" = "󰓛";
         };
         on-click = "${playerctl} play-pause";
       };
@@ -98,37 +95,72 @@ in
       };
 
       "custom/red-dot" = {
-        format = "";
+        format = "󰝥";
         tooltip = false;
       };
 
       "custom/yellow-dot" = {
-        format = "";
+        format = "󰝥";
         tooltip = false;
       };
 
       "custom/green-dot" = {
-        format = "";
+        format = "󰝥";
         tooltip = false;
       };
 
       pulseaudio = {
-        format = "{icon} {volume}%";
-        format-muted = "  0%";
+        format = "󰕾 {volume}%";
+        format-muted = "󰖁 0%";
         format-icons = {
-          "bluez_output.80_7B_1E_02_53_95.1" = ""; # CORSAIR VIRTUOSO XT Bluetooth
-          "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo" = "";
-          "alsa_output.pci-0000_0a_00.1.hdmi-stereo" = "";
-          headphone = "";
-          headset = "";
-          default = [ "" "" "" ];
+          "bluez_output.80_7B_1E_02_53_95.1" = "󰋋"; # CORSAIR VIRTUOSO XT Bluetooth
+          "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo" = "󰋋";
+          "alsa_output.pci-0000_0a_00.1.hdmi-stereo" = "󰍹";
+          headphone = "󰋋";
+          headset = "󰋎";
+          default = [ "󰕿" "󰖀" "󰕾" ];
         };
         on-click = "${TERMINAL} -a tui-suite -e ${voltui}";
       };
 
+      "group/hardware" = {
+        orientation = "inherit";
+        modules = [
+          "memory"
+          "custom/separator-hw1"
+          "pulseaudio"
+          "custom/separator-hw2"
+          "battery"
+        ];
+      };
+
+      "custom/separator-hw1" = {
+        format = "|";
+        tooltip = false;
+      };
+
+      "custom/separator-hw2" = {
+        format = "|";
+        tooltip = false;
+      };
+
+      "group/connectivity" = {
+        orientation = "inherit";
+        modules = [
+          "bluetooth"
+          "custom/separator"
+          "network"
+        ];
+      };
+
+      "custom/separator" = {
+        format = "|";
+        tooltip = false;
+      };
+
       bluetooth = {
-        format = " {status}";
-        format-connected = " {num_connections} connected";
+        format = "󰂯 {status}";
+        format-connected = "󰂱 {num_connections} connected";
         tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
         tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
         tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
@@ -137,15 +169,15 @@ in
       };
 
       network = {
-        format-wifi = " {signalStrength}%";
-        format-ethernet = " wired";
-        format-disconnected = "";
+        format-wifi = "󰖩 {signalStrength}%";
+        format-ethernet = "󰈀 wired";
+        format-disconnected = "󰖪";
         tooltip = false;
         on-click = "${TERMINAL} -a tui-suite -e ${nettui}";
       };
 
       "clock#datetime" = {
-        format = "{:%d.%m.%Y | %H:%M}";
+        format = "{:%d.%m.%Y <span color='#${colors.base02}'>|</span> %H:%M}";
         tooltip-format = "<tt><small>{calendar}</small></tt>";
         on-click = "${TERMINAL} -a tui-suite -e ${caltui}";
         calendar = {
@@ -167,16 +199,16 @@ in
       battery = {
         bat = "BAT0";
         interval = 10;
-        format-icons = [ "" "" "" "" ];
+        format-icons = [ "󰂎" "󰁺" "󰁾" "󰁹" ];
         format = "{icon} {capacity}%";
-        format-charging = " {capacity}%";
+        format-charging = "󰂄 {capacity}%";
         onclick = "";
       };
 
-      tray = { spacing = 10; };
+      tray = { spacing = 8; };
 
       "custom/claude-afk" = {
-        exec = "systemctl --user is-active --quiet claude-afk && echo ' afk' || echo ' afk'";
+        exec = "systemctl --user is-active --quiet claude-afk && echo '󰂞 afk' || echo '󰂛 afk'";
         interval = 5;
         on-click = "systemctl --user is-active --quiet claude-afk && systemctl --user stop claude-afk || systemctl --user start claude-afk";
         tooltip = false;
@@ -186,20 +218,20 @@ in
         exec = "${tmux-status}";
         return-type = "json";
         interval = 5;
-        format = " {}";
+        format = "󰆍 {}";
         on-click = "TMUX_TMPDIR=$XDG_RUNTIME_DIR ${TERMINAL} -e ${tmux} new-session -A";
       };
 
       memory = {
-        format = " {used:0.0f}/{total:0.0f} GiB";
+        format = "󰍛 {used:0.0f}/{total:0.0f} GiB";
         tooltip-format = "{used:0.1f}/{total:0.1f} GiB used\nSwap: {swapUsed:0.1f}/{swapTotal:0.1f} GiB";
         interval = 5;
       };
 
       "custom/ping-sweep" = {
-        exec = "${pkgs.ping-sweep}/bin/ping-sweep | while IFS=. read -r _ _ _ n; do printf '.%s ' \"$n\"; done";
+        exec = "${pkgs.ping-sweep}/bin/ping-sweep | while IFS=. read -r _ _ _ n; do printf '.%s ' \"$n\"; done | sed 's/ $//'";
         interval = 30;
-        format = " {}";
+        format = "󱘖 {}";
       };
     };
     style = ''
@@ -218,7 +250,7 @@ in
       }
 
       #workspaces {
-        padding: 0 10px;
+        padding: 0 8px;
         background-color: #${colors.base00};
         border: ${toString rice.border.size}px solid #${rice.border.inactive};
       }
@@ -228,7 +260,7 @@ in
         background-color: transparent;
         box-shadow: inset 0 -3px transparent;
         border: none;
-        min-width: 20px;
+        min-width: 13px;
       }
 
       #workspaces button.active {
@@ -237,22 +269,40 @@ in
 
       /* Main module styles */
       #clock,
-      #battery,
-      #network,
-      #pulseaudio,
       #tray,
       #custom-player,
       #custom-hostname,
-      #memory,
       #custom-ping-sweep,
       #custom-claude-afk,
       #custom-tmux,
       #window,
-      #bluetooth {
-        padding: 0 15px;
+      #hardware,
+      #connectivity {
+        padding: 0 13px;
         color: #${colors.base05};
         background-color: #${colors.base00};
         border: ${toString rice.border.size}px solid #${rice.border.inactive};
+      }
+
+      /* Grouped modules inherit parent styling */
+      #connectivity #network,
+      #connectivity #bluetooth,
+      #connectivity #custom-separator,
+      #hardware #memory,
+      #hardware #pulseaudio,
+      #hardware #battery,
+      #hardware #custom-separator-hw1,
+      #hardware #custom-separator-hw2 {
+        padding: 0;
+        border: none;
+        background-color: transparent;
+      }
+
+      #connectivity #custom-separator,
+      #hardware #custom-separator-hw1,
+      #hardware #custom-separator-hw2 {
+        color: #${colors.base02};
+        padding: 0 5px;
       }
 
       /* All dot modules */
@@ -281,11 +331,11 @@ in
       }
 
       #custom-hostname {
-        margin-left: ${toString (rice.spacing / 2)}px;
+        margin-left: 0;
       }
 
       #clock.datetime {
-        margin-right: ${toString (rice.spacing / 2)}px;
+        margin-right: 0;
       }
     '';
   };

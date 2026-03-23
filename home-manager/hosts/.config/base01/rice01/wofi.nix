@@ -41,7 +41,7 @@ in
     style = ''
       * {
         font-family: "${FONT}";
-        font-size: 14px;
+        font-size: 13px;
       }
 
       #wofi-window {
@@ -52,23 +52,23 @@ in
       }
 
       #outer-box {
-        padding: 20px;
+        padding: 13px;
       }
 
       #input {
         background-color: #${colors.base01};
         border: 0px solid #${colors.base0A};
-        padding: 8px 12px;
-        border-radius: 4px;
+        padding: 5px 8px;
+        border-radius: ${toString rice.rounding}px;
       }
 
       #scroll {
-        margin-top: 20px;
-        margin-bottom: 20px;
+        margin-top: 13px;
+        margin-bottom: 13px;
       }
 
       #img {
-        padding-right: 8px;
+        padding-right: 5px;
       }
 
       #img:selected {
@@ -85,12 +85,12 @@ in
       }
 
       #entry {
-        padding: 6px;
+        padding: 5px;
       }
 
       #entry:selected {
         background-color: #${colors.base0A};
-        border-radius: 4px;
+        border-radius: ${toString rice.rounding}px;
         color: #${colors.base00};
       }
     '';

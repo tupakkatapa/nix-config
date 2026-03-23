@@ -64,7 +64,7 @@ in
     group = {
       "col.border_active" = "rgb(${colors.base06})";
       "col.border_inactive" = "rgb(${colors.base02})";
-      groupbar.font_size = 11;
+      groupbar.font_size = 13;
     };
 
     # Startup
