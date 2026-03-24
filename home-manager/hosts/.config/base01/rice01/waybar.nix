@@ -119,7 +119,7 @@ in
           "bluez_output.80_7B_1E_02_53_95.1" = "󰋋"; # Corsair Virtuoso XT (Bluetooth)
           "alsa_output.pci-0000_0a_00.1.hdmi-stereo-extra2" = "󰍹"; # HDMI
           "alsa_output.usb-Focusrite_Scarlett_Solo_USB_Y75Q5PW255149F-00.HiFi__Line1__sink" = "󰋋"; # Scarlett Solo
-          "bluez_output.78_C1_1D_EA_46_EF.1" = "󰟅"; # Galaxy Buds4 Pro
+          "bluez_output.78_C1_1D_EA_46_EF.1" = "󱡏"; # Galaxy Buds4 Pro
           headphone = "󰋋";
           headset = "󰋎";
           default = [ "󰕿" "󰖀" "󰕾" ];
@@ -198,8 +198,8 @@ in
         bat = "BAT0";
         interval = 10;
         format-icons = [ "󰂎" "󰁺" "󰁾" "󰁹" ];
-        format = "<span color='#${colors.base02}'>|</span>  {icon} {capacity}%";
-        format-charging = "<span color='#${colors.base02}'>|</span>  󰂄 {capacity}%";
+        format = " <span color='#${colors.base02}'>|</span> {icon} {capacity}%";
+        format-charging = " <span color='#${colors.base02}'>|</span> 󰂄 {capacity}%";
         onclick = "";
       };
 
