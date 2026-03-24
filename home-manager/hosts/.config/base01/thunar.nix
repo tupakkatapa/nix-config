@@ -31,7 +31,7 @@ in
   xfconf.settings.thunar = {
     default-view = "ThunarDetailsView";
     last-menubar-visible = true;
-    last-show-hidden = false;
+    last-show-hidden = true;
     last-statusbar-visible = true;
     misc-expandable-folders = true;
   };
