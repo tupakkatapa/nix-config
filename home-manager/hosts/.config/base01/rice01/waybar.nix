@@ -110,12 +110,16 @@ in
       };
 
       pulseaudio = {
-        format = "󰕾 {volume}%";
+        format = "{icon} {volume}%";
         format-muted = "󰖁 0%";
         format-icons = {
-          "bluez_output.80_7B_1E_02_53_95.1" = "󰋋"; # CORSAIR VIRTUOSO XT Bluetooth
-          "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo" = "󰋋";
-          "alsa_output.pci-0000_0a_00.1.hdmi-stereo" = "󰍹";
+          "alsa_output.pci-0000_0c_00.4.analog-stereo" = "󰓃"; # Speakers (torgue)
+          "alsa_output.pci-0000_c4_00.6.HiFi__Speaker__sink" = "󰓃"; # Speakers (maliwan)
+          "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo" = "󰋋"; # Corsair Virtuoso XT
+          "bluez_output.80_7B_1E_02_53_95.1" = "󰋋"; # Corsair Virtuoso XT (Bluetooth)
+          "alsa_output.pci-0000_0a_00.1.hdmi-stereo-extra2" = "󰍹"; # HDMI
+          "alsa_output.usb-Focusrite_Scarlett_Solo_USB_Y75Q5PW255149F-00.HiFi__Line1__sink" = "󰋋"; # Scarlett Solo
+          "bluez_output.78_C1_1D_EA_46_EF.1" = "󰟅"; # Galaxy Buds4 Pro
           headphone = "󰋋";
           headset = "󰋎";
           default = [ "󰕿" "󰖀" "󰕾" ];
@@ -127,19 +131,13 @@ in
         orientation = "inherit";
         modules = [
           "memory"
-          "custom/separator-hw1"
+          "custom/separator-hw"
           "pulseaudio"
-          "custom/separator-hw2"
           "battery"
         ];
       };
 
-      "custom/separator-hw1" = {
-        format = "|";
-        tooltip = false;
-      };
-
-      "custom/separator-hw2" = {
+      "custom/separator-hw" = {
         format = "|";
         tooltip = false;
       };
@@ -200,8 +198,8 @@ in
         bat = "BAT0";
         interval = 10;
         format-icons = [ "󰂎" "󰁺" "󰁾" "󰁹" ];
-        format = "{icon} {capacity}%";
-        format-charging = "󰂄 {capacity}%";
+        format = "<span color='#${colors.base02}'>|</span>  {icon} {capacity}%";
+        format-charging = "<span color='#${colors.base02}'>|</span>  󰂄 {capacity}%";
         onclick = "";
       };
 
@@ -291,16 +289,14 @@ in
       #hardware #memory,
       #hardware #pulseaudio,
       #hardware #battery,
-      #hardware #custom-separator-hw1,
-      #hardware #custom-separator-hw2 {
+      #hardware #custom-separator-hw {
         padding: 0;
         border: none;
         background-color: transparent;
       }
 
       #connectivity #custom-separator,
-      #hardware #custom-separator-hw1,
-      #hardware #custom-separator-hw2 {
+      #hardware #custom-separator-hw {
         color: #${colors.base02};
         padding: 0 5px;
       }

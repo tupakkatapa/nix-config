@@ -50,6 +50,14 @@ in
           ];
         }
       ];
+      root = [
+        {
+          name = "system";
+          dirs = [
+            { name = "bluetooth"; mode = "700"; what = "/var/lib/bluetooth"; }
+          ];
+        }
+      ];
     };
   };
 

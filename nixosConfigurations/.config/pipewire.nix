@@ -7,6 +7,13 @@
     };
     jack.enable = true;
     pulse.enable = true;
+    wireplumber.extraConfig."10-bluez" = {
+      "monitor.bluez.properties" = {
+        # Disable LE Audio (BAP) to force A2DP — BAP transport is buggy
+        # with some devices (e.g., Galaxy Buds4 Pro)
+        "bluez5.roles" = [ "a2dp_sink" "a2dp_source" "hfp_hf" "hfp_ag" ];
+      };
+    };
   };
 
   # Utilities
