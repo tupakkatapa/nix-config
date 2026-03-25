@@ -34,7 +34,7 @@
     sftp-mount.inputs.nixpkgs.follows = "nixpkgs";
     sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount";
     store-remount.inputs.nixpkgs.follows = "nixpkgs";
-    store-remount.url = "github:ponkila/nixos-store-remount/fix/boot-ordering";
+    store-remount.url = "github:ponkila/nixos-store-remount";
 
     # Other
     anytui.inputs.nixpkgs.follows = "nixpkgs";
