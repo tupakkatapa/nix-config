@@ -126,7 +126,9 @@
             packages = [
               config.agenix-rekey.package
               pkgs.pre-commit
+              inputs'.nixie.packages.nixie-meta
             ];
+            NIXIE_URL = "http://10.42.0.1:52080";
             shellHook = config.pre-commit.installationScript;
           };
 
