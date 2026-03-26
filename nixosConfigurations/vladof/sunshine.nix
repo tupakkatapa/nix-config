@@ -45,10 +45,12 @@ in
   '';
 
   # Force HDMI 1080p output without connected display (virtual display)
-  boot.kernelParams = [
-    "video=HDMI-A-1:1920x1080@60e"
-    "drm.edid_firmware=HDMI-A-1:edid/1920x1080.bin"
-  ];
+  hardware.display.edid.modelines."1920x1080" =
+    "148.50 1920 2008 2052 2200 1080 1084 1089 1125 +hsync +vsync";
+  hardware.display.outputs."HDMI-A-1" = {
+    edid = "1920x1080.bin";
+    mode = "1920x1080@60e";
+  };
 
   # Intel VA-API hardware encoding for Sunshine
   hardware.graphics = {
