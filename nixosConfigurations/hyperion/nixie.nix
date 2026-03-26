@@ -119,6 +119,12 @@
               ipv4.address = "10.42.0.25";
               ipv6.address = "fd42:42:42:1::25";
             }
+            {
+              serve = false;
+              mac = "70:af:24:ad:4e:f1";
+              ipv4.address = "10.42.0.6";
+              ipv6.address = "fd42:42:42:1::6";
+            }
           ];
         }
         {

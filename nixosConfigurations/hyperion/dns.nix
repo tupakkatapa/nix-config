@@ -143,11 +143,13 @@ in
           ''"torgue.coditon.com. IN A 10.42.0.7"''
           ''"vladof.coditon.com. IN A 10.42.0.8"''
           ''"maliwan.coditon.com. IN A 10.42.0.9"''
+          ''"tv.coditon.com. IN A 10.42.0.6"''
           ''"1.0.42.10.in-addr.arpa. IN PTR hyperion.coditon.com."''
           ''"7.0.42.10.in-addr.arpa. IN PTR torgue.coditon.com."''
           ''"8.0.42.10.in-addr.arpa. IN PTR vladof.coditon.com."''
           ''"9.0.42.10.in-addr.arpa. IN PTR maliwan.coditon.com."''
           ''"25.0.42.10.in-addr.arpa. IN PTR kaakkuri.coditon.com."''
+          ''"6.0.42.10.in-addr.arpa. IN PTR tv.coditon.com."''
         ];
       };
 

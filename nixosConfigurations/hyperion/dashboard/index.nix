@@ -107,22 +107,24 @@ let
   hostNodes = lib.flatten (map
     (subnet:
       map
-        (client: {
-          id = client.menu;
-          type = "host";
-          label = client.menu;
-          ip = client.ipv4.address;
-          inherit (client) mac;
-          images = menuInfo.${client.menu} or [ ];
-          bridge =
-            let
-              iface = lib.head (subnet.interfaces or [ ]);
-              net = getNet iface;
-            in
-            if net != null then net.bridge else null;
-          declarative = true;
-        })
-        (subnet.clients or [ ])
+        (client:
+          let menuName = if client.menu != null then client.menu else subnet.defaultMenu or "unknown";
+          in {
+            id = menuName;
+            type = "host";
+            label = menuName;
+            ip = client.ipv4.address;
+            inherit (client) mac;
+            images = menuInfo.${menuName} or [ ];
+            bridge =
+              let
+                iface = lib.head (subnet.interfaces or [ ]);
+                net = getNet iface;
+              in
+              if net != null then net.bridge else null;
+            declarative = true;
+          })
+        (lib.filter (c: c.serve) (subnet.clients or [ ]))
     )
     nixie.dhcp.subnets);
 

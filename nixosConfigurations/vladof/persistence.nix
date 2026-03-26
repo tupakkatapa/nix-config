@@ -40,6 +40,7 @@
           name = "appdata";
           dirs = [
             { name = "firefox"; mode = "755"; what = "/home/kari/.mozilla"; }
+            { name = "sunshine"; mode = "755"; what = "/home/kari/.config/sunshine"; }
           ];
         }
       ];
@@ -89,5 +90,8 @@
     "Z ${dataDir}/sftp/media   - sftp sftp -"
     "Z ${dataDir}/sftp/sys     - sftp sftp -"
     "Z ${dataDir}/sftp/tmp     - sftp sftp -"
+
+    # Ephemeral directories for users
+    "d /home/kari/.config 755 kari kari -"
   ];
 }

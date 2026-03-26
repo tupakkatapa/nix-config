@@ -138,6 +138,7 @@ in
       "wake_on_lan"
       "openrgb"
       "zha"
+      "philips_js"
     ];
 
     lovelaceConfig = dashboard;

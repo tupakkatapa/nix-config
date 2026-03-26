@@ -26,6 +26,7 @@ in
     ../.config/motd.nix
     ../.config/pipewire.nix
     ../.config/yubikey.nix
+    ./sunshine.nix
   ];
 
   # Disk-aware garbage collection
@@ -51,6 +52,8 @@ in
   systemd.services.cage-tty1 = {
     serviceConfig = {
       Restart = "always";
+      RestartSec = 3;
+      StartLimitBurst = 0; # unlimited restarts
     };
     wants = [ "network-online.target" ];
     after = [ "network-online.target" ];
