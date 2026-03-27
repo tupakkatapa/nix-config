@@ -7,12 +7,14 @@
   };
 
   imports = [
-    ../.config/gaming-amd.nix
+    ../.config/hw/bluetooth.nix
+    ../.config/hw/cpu-amd.nix
+    ../.config/hw/gpu-amd.nix
     ../.config/keyd.nix
-    ../.config/pipewire.nix
+    ../.config/hw/pipewire.nix
     ../.config/podman.nix
     ../.config/tuigreet-hypr.nix
-    ../.config/yubikey.nix
+    ../.config/hw/yubikey.nix
     ./persistence.nix
   ];
 
@@ -51,6 +53,4 @@
       };
     };
   };
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
 }

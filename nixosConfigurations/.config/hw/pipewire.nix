@@ -19,7 +19,6 @@
   # Utilities
   environment.systemPackages = with pkgs; [
     alsa-utils
-    qpwgraph
   ];
 
   # Make pipewire realtime-capable

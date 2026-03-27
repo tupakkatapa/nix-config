@@ -22,8 +22,9 @@ in
     (import ./nixie.nix extendedArgs)
     (import ./persistence.nix extendedArgs)
     (import ./dashboard extendedArgs)
+    ../.config/hw/cpu-intel.nix
     ../.config/motd.nix
-    ../.config/yubikey.nix
+    ../.config/hw/yubikey.nix
     ./dns.nix
     ./firewall.nix
     ./hardening.nix
@@ -41,9 +42,5 @@ in
     hostName = "hyperion";
     domain = "${domain}";
   };
-
-  # Enable blobs
-  hardware.enableRedistributableFirmware = true;
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
 

@@ -9,20 +9,43 @@ in
     autoStart = false; # graphical-session.target not available under Cage
     capSysAdmin = true;
     openFirewall = true;
+    # Wrap with NVIDIA libs — setcap wrapper strips LD_LIBRARY_PATH
+    package = pkgs.sunshine.overrideAttrs (old: {
+      postFixup = (old.postFixup or "") + ''
+        wrapProgram $out/bin/sunshine \
+          --prefix LD_LIBRARY_PATH : /run/opengl-driver/lib
+      '';
+    });
     settings = {
       keyboard = "enabled";
       always_send_scancodes = "enabled";
       key_repeat_delay = 500;
       key_repeat_frequency = 24;
       stream_audio = "enabled";
+      ping_timeout = 20000;
+
+      # NVENC tuning for LAN streaming
+      nvenc_preset = 1; # lowest latency
+      nvenc_twopass = "quarter_res";
+      nvenc_vbv_increase = 100; # allow 2x frame size for scene changes
     };
   };
+
+  # Sunshine module only opens TCP 47984,47989,47990 and UDP 47998,47999
+  networking.firewall.allowedUDPPorts = [ 48000 48002 48010 ];
+  networking.firewall.allowedTCPPorts = [ 48010 ];
+
   systemd.user.services.sunshine = {
     wantedBy = [ "default.target" ];
     wants = lib.mkForce [ ];
     after = lib.mkForce [ ];
     partOf = lib.mkForce [ ];
     serviceConfig.RestartSec = lib.mkForce "5s";
+    environment = {
+      LD_LIBRARY_PATH = "/run/opengl-driver/lib";
+      WAYLAND_DISPLAY = "wayland-0";
+      XDG_RUNTIME_DIR = "/run/user/1000";
+    };
   };
 
   # Restart Sunshine when Cage starts (separate service to avoid PAM conflicts)
@@ -52,12 +75,9 @@ in
     mode = "1920x1080@60e";
   };
 
-  # Intel VA-API hardware encoding for Sunshine
-  hardware.graphics = {
-    enable = true;
-    extraPackages = with pkgs; [
-      intel-media-driver # iHD (Broadwell+)
-      intel-vaapi-driver # i965 (older Intel)
-    ];
-  };
+  # Keep Intel VA-API as fallback
+  hardware.graphics.extraPackages = with pkgs; [
+    intel-media-driver
+    intel-vaapi-driver
+  ];
 }

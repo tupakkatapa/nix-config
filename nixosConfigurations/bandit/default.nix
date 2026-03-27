@@ -5,6 +5,6 @@ _: {
   networking.firewall.enable = false;
 
   imports = [
-    ../.config/yubikey.nix
+    ../.config/hw/yubikey.nix
   ];
 }

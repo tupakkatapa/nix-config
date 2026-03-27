@@ -23,9 +23,11 @@ in
   imports = [
     (import ./services extendedArgs)
     (import ./persistence.nix extendedArgs)
+    ../.config/hw/cpu-intel.nix
+    ../.config/hw/gpu-nvidia.nix
     ../.config/motd.nix
-    ../.config/pipewire.nix
-    ../.config/yubikey.nix
+    ../.config/hw/pipewire.nix
+    ../.config/hw/yubikey.nix
     ./sunshine.nix
   ];
 
@@ -59,9 +61,6 @@ in
     after = [ "network-online.target" ];
   };
 
-  # Enable blobs
-  hardware.enableRedistributableFirmware = true;
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # Connectivity
   networking = {

@@ -1,7 +1,6 @@
 { pkgs
 , config
 , inputs
-, lib
 , ...
 }:
 let
@@ -72,7 +71,6 @@ in
         ./.config/git.nix
         ./.config/neovim.nix
         ./.config/tmux.nix
-        ./.config/yazi.nix
       ]
       # Importing host-spesific home-manager config if it exists
       ++ optionalPaths
@@ -96,7 +94,6 @@ in
     home.sessionVariables = {
       EDITOR = "nvim";
       MANPAGER = "nvim +Man!";
-      FILEMANAGER = lib.mkDefault "yazi";
     };
 
     home.packages = with pkgs; [

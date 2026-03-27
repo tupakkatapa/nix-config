@@ -24,6 +24,8 @@ in
   home-manager.users."${user}" = {
     imports = [
       ./.config/claude
+      ./.config/mpv.nix
+      ./.config/imv.nix
     ];
 
     # Screen locker + idle daemon

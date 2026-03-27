@@ -12,8 +12,22 @@ in
     privateNetwork = true;
     inherit (containerConfig.plex) hostAddress localAddress;
 
-    # Bind mount the persistent data directory
+    # GPU access for NVENC hardware transcoding
+    allowedDevices = [
+      { modifier = "rw"; node = "/dev/nvidia0"; }
+      { modifier = "rw"; node = "/dev/nvidiactl"; }
+      { modifier = "rw"; node = "/dev/nvidia-uvm"; }
+    ];
+
+    # Bind mount the persistent data directory and GPU devices
     bindMounts = {
+      "/dev/nvidia0".hostPath = "/dev/nvidia0";
+      "/dev/nvidiactl".hostPath = "/dev/nvidiactl";
+      "/dev/nvidia-uvm".hostPath = "/dev/nvidia-uvm";
+      "/run/opengl-driver" = {
+        hostPath = "/run/opengl-driver";
+        isReadOnly = true;
+      };
       "/var/lib/plex" = {
         hostPath = "${dataDir}/home/plex/appdata/plex";
         isReadOnly = false;
@@ -47,6 +61,9 @@ in
         user = "plex";
         group = "plex";
       };
+
+      # NVIDIA for hardware transcoding
+      hardware.graphics.enable = true;
 
       # Ensure plex data directory exists with correct permissions
       systemd.tmpfiles.rules = [
