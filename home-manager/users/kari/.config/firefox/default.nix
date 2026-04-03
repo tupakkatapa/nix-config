@@ -80,7 +80,7 @@ in
           "browser.compactmode.show" = true;
           "browser.in-content.dark-mode" = true;
           "browser.uidensity" = 1;
-          "extensions.activeThemeID" = "{eb8c4a94-e603-49ef-8e81-73d3c4cc04ff}"; # https://addons.mozilla.org/en-US/firefox/addon/gruvbox-dark-theme/
+          "extensions.activeThemeID" = "{89b34f2d-5c35-440c-a8d6-558df7e4f8dc}"; # https://addons.mozilla.org/en-US/firefox/addon/dark-gruvbox-theme/
           "font.name.monospace.x-western" = "${FONT}";
           "font.name.sans-serif.x-western" = "${FONT}";
           "font.name.serif.x-western" = "${FONT}";

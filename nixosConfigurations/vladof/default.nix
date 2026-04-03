@@ -49,6 +49,8 @@ in
     environment = {
       XKB_DEFAULT_LAYOUT = "fi";
       HOME = "/home/${user}";
+      XCURSOR_THEME = "Capitaine Cursors (Gruvbox)";
+      XCURSOR_SIZE = "32";
     };
   };
   systemd.services.cage-tty1 = {

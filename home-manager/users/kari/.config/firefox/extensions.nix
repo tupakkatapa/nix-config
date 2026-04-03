@@ -21,6 +21,7 @@
 
   # Appearance
   "darkreader"
+  "dark-gruvbox-theme"
 
   # Other
   "greasemonkey"
