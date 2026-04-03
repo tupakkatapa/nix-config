@@ -3,8 +3,6 @@
     enable = true;
     defaultProfiles = [ "gpu-hq" ];
     config = {
-      # gpu-api = "vulkan";
-      # gpu-context = "waylandvk";
       gpu-api = "opengl";
       gpu-context = "wayland";
       vo = "gpu-next";
