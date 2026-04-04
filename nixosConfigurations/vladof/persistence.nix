@@ -39,7 +39,7 @@
         {
           name = "appdata";
           dirs = [
-            { name = "firefox"; mode = "755"; what = "/home/kari/.mozilla"; }
+            { name = "firefox"; mode = "755"; what = "/home/kari/.config/mozilla"; }
             { name = "sunshine"; mode = "755"; what = "/home/kari/.config/sunshine"; }
           ];
         }
