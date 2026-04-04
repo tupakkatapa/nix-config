@@ -38,7 +38,7 @@
 
     # Other
     anytui.inputs.nixpkgs.follows = "nixpkgs";
-    anytui.url = "github:tupakkatapa/anytui";
+    anytui.url = "path:/home/kari/Workspace/local/tupakkatapa/anytui";
     claude-desktop.url = "github:aaddrick/claude-desktop-debian";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
     llm-agents.url = "github:numtide/llm-agents.nix";
@@ -52,6 +52,8 @@
     nixvim.url = "github:nix-community/nixvim/nixos-25.11";
     ping-sweep.inputs.nixpkgs.follows = "nixpkgs";
     ping-sweep.url = "github:tupakkatapa/ping-sweep";
+    tix.inputs.nixpkgs.follows = "nixpkgs";
+    tix.url = "github:JRMurr/tix";
     wl-harmonograph.inputs.nixpkgs.follows = "nixpkgs";
     wl-harmonograph.url = "github:pinpox/wl-harmonograph";
   };
@@ -95,6 +97,7 @@
               claude-desktop
               ;
             # Inputs
+            tix = inputs'.tix.packages.default;
             wl-harmonograph = inputs'.wl-harmonograph.packages.default;
             # Not a single derivation
             claude-plugins = pkgs.callPackage ./packages/claude-plugins { };

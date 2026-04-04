@@ -49,8 +49,35 @@ in
       builtins.listToAttrs (map mkCommand commandFiles);
 
     settings = {
+      # Model & reasoning
+      model = "opus";
       alwaysThinkingEnabled = true;
+      showThinkingSummaries = true;
+
+      # Automation & efficiency
+      autoCompactEnabled = true;
+      autoMemoryEnabled = true;
+      autoDreamEnabled = true;
+      voiceEnabled = true;
+      fileCheckpointingEnabled = true;
+      todoFeatureEnabled = true;
+      promptSuggestionEnabled = false;
+      respectGitignore = true;
+      includeGitInstructions = false; # already in CLAUDE.md
+
+      # UI
+      showTurnDuration = true;
+      terminalTitleFromRename = true;
+      spinnerTipsEnabled = false;
+
+      # Privacy
+      feedbackSurveyRate = 0;
+      env = {
+        CLAUDE_CODE_EFFORT_LEVEL = "max";
+        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1";
+      };
       permissions = {
+        defaultMode = "auto";
         inherit (permissions) allow deny;
         additionalDirectories = [ "/home/kari/Workspace" "/home/kari/nix-config" "/tmp" ];
       };
