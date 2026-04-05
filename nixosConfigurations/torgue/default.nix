@@ -37,6 +37,7 @@
       {
         name = "daw";
         imports = [ /mnt/860/home/kari/other/daw.nix ];
+        postEnable = "bitwig-studio";
         skipValidation = true;
       }
     ];

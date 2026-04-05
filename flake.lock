@@ -2192,11 +2192,11 @@
         "treefmt-nix": "treefmt-nix_7"
       },
       "locked": {
-        "lastModified": 1771091409,
-        "narHash": "sha256-axK+weRzNzEwA8zisRCLGTuRXUP0PaQAJqeyW8wovLk=",
+        "lastModified": 1775329105,
+        "narHash": "sha256-ZStGnICEgRSYumrKeEZObVPh3SWQZR48AAcrhobAVb0=",
         "owner": "tupakkatapa",
         "repo": "nixos-runtime-modules",
-        "rev": "b8d3d66277b463ffdaaa784ae4a24861971a1cea",
+        "rev": "08c60f81c82c77a685e19fb47949c76f2df9f7d2",
         "type": "github"
       },
       "original": {
