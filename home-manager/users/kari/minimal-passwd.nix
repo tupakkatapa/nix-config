@@ -12,7 +12,7 @@ in
 
   # Secrets
   age.secrets = {
-    # "password".rekeyFile = ./secrets/password.age;
+    "password".rekeyFile = ./secrets/password.age;
     "wg-dinar" = {
       rekeyFile = ./secrets/wg-dinar.age;
       owner = "systemd-network";
@@ -64,10 +64,8 @@ in
   '';
 
   # Set password
-  users.users.${user} = {
-    # echo "password" | mkpasswd -s
-    # hashedPasswordFile = config.age.secrets.password.path;
-  };
+  # echo "password" | mkpasswd -s
+  users.users.${user}.hashedPasswordFile = config.age.secrets.password.path;
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [

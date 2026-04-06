@@ -18,7 +18,6 @@ in
   users.users.${user} = {
     isNormalUser = true;
     group = "${user}";
-    initialPassword = "irak";
     extraGroups = optionalGroups [
       "acme"
       "adbusers"
