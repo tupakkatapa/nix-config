@@ -35,6 +35,10 @@
         imports = [ ../.config/ai-tools.nix ];
       }
       {
+        name = "auto-scrcpy";
+        imports = [ ../.config/auto-scrcpy.nix ];
+      }
+      {
         name = "daw";
         imports = [ /mnt/860/home/kari/other/daw.nix ];
         postEnable = "bitwig-studio";
