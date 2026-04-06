@@ -8,6 +8,7 @@ pkgs.stdenv.mkDerivation rec {
   buildInputs = with pkgs; [
     ddcutil
     gawk
+    procps # pkill
   ];
 
   nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -16,7 +17,12 @@ pkgs.stdenv.mkDerivation rec {
     cp $src/${name}.sh $out/bin/${name}
     chmod +x $out/bin/${name}
 
-    wrapProgram $out/bin/${name} \
-      --prefix PATH : ${lib.makeBinPath buildInputs}
+    cp $src/ddc-brightness.sh $out/bin/ddc-brightness
+    chmod +x $out/bin/ddc-brightness
+
+    for bin in $out/bin/*; do
+      wrapProgram "$bin" \
+        --prefix PATH : ${lib.makeBinPath buildInputs}
+    done
   '';
 }

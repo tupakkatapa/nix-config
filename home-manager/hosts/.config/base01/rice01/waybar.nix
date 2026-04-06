@@ -13,6 +13,8 @@ let
   blutui = "${pkgs.blutui}/bin/blutui";
   nettui = "${pkgs.nettui}/bin/nettui";
   caltui = "${pkgs.caltui}/bin/caltui";
+  ddc-brightness = "${pkgs.monitor-adjust}/bin/ddc-brightness";
+  brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
 
   hasTmux = config.programs.tmux.enable;
   tmux = "${pkgs.tmux}/bin/tmux";
@@ -128,14 +130,39 @@ in
         on-click = "${TERMINAL} -a tui-suite -e ${voltui}";
       };
 
+      # DDC-CI brightness (desktop only)
+      "custom/brightness" = {
+        exec = "${ddc-brightness} show";
+        return-type = "json";
+        interval = "once";
+        signal = 8;
+        on-scroll-up = "${ddc-brightness} up";
+        on-scroll-down = "${ddc-brightness} down";
+      };
+
+      # Backlight brightness (laptop only)
+      backlight = {
+        format = "󰃟 {percent}%";
+        on-scroll-up = "${brightnessctl} set +5%";
+        on-scroll-down = "${brightnessctl} set 5%-";
+      };
+
       "group/hardware" = {
         orientation = "inherit";
         modules = [
           "memory"
           "custom/separator-hw"
           "pulseaudio"
+          "custom/separator-hw2"
+          "backlight"
+          "custom/brightness"
           "battery"
         ];
+      };
+
+      "custom/separator-hw2" = {
+        format = "|";
+        tooltip = false;
       };
 
       "custom/separator-hw" = {
@@ -289,15 +316,19 @@ in
       #connectivity #custom-separator,
       #hardware #memory,
       #hardware #pulseaudio,
+      #hardware #custom-brightness,
+      #hardware #backlight,
       #hardware #battery,
-      #hardware #custom-separator-hw {
+      #hardware #custom-separator-hw,
+      #hardware #custom-separator-hw2 {
         padding: 0;
         border: none;
         background-color: transparent;
       }
 
       #connectivity #custom-separator,
-      #hardware #custom-separator-hw {
+      #hardware #custom-separator-hw,
+      #hardware #custom-separator-hw2 {
         color: #${colors.base02};
         padding: 0 5px;
       }

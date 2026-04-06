@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
-# Adjust brightness and notify (auto-detects laptop vs desktop)
+# Adjust laptop brightness and notify (laptop only, desktop uses waybar + monitor-adjust)
 
 if [ -d /sys/class/backlight ] && [ -n "$(ls -A /sys/class/backlight 2>/dev/null)" ]; then
   brightnessctl "$@"
   current_value=$(brightnessctl -m | awk -F, '{print substr($4, 0, length($4)-1)}')
-else
-  monitor-adjust -b "$@"
-  current_value=$(monitor-adjust --show | awk '/Brightness:/{print $2}')
+  notify-send -i @ICON_PATH@ "Brightness" "$current_value%" \
+    -h string:x-canonical-private-synchronous:brightness
 fi
-
-notify-send -i @ICON_PATH@ "Brightness" "$current_value%" \
-  -h string:x-canonical-private-synchronous:brightness

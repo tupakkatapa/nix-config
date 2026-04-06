@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-# Initialize verbose and show flags
+# Initialize flags
 verbose=false
 show=false
+json=false
 
 # Display usage information
 display_usage() {
@@ -25,6 +26,9 @@ Options:
   --show
     Display the current values of brightness and contrast.
 
+  --json
+    Output --show values as JSON (for waybar integration).
+
 USAGE
 }
 
@@ -37,9 +41,17 @@ verbose_msg() {
 
 # Function to show current values
 show_values() {
-  echo "Current Monitor Settings:"
-  ddcutil getvcp 10 | awk -F'current value = |, max value = ' '/Brightness/{print "Brightness: " $2}'
-  ddcutil getvcp 12 | awk -F'current value = |, max value = ' '/Contrast /{print "Contrast: " $2}'
+  if $json; then
+    local brightness contrast
+    brightness=$(ddcutil getvcp 10 | awk -F'current value = |, max value = ' '/Brightness/{gsub(/ /,"",$2); print $2}')
+    contrast=$(ddcutil getvcp 12 | awk -F'current value = |, max value = ' '/Contrast /{gsub(/ /,"",$2); print $2}')
+    printf '{"text": "󰃟 %s%%", "tooltip": "Brightness: %s%%\\nContrast: %s%%", "percentage": %s}\n' \
+      "$brightness" "$brightness" "$contrast" "$brightness"
+  else
+    echo "Current Monitor Settings:"
+    ddcutil getvcp 10 | awk -F'current value = |, max value = ' '/Brightness/{print "Brightness: " $2}'
+    ddcutil getvcp 12 | awk -F'current value = |, max value = ' '/Contrast /{print "Contrast: " $2}'
+  fi
 }
 
 # Function to adjust brightness or contrast
@@ -97,6 +109,10 @@ while [[ $# -gt 0 ]]; do
     ;;
   --show)
     show=true
+    shift
+    ;;
+  --json)
+    json=true
     shift
     ;;
   -h | --help)

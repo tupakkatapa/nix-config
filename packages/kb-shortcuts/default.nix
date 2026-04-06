@@ -8,11 +8,10 @@ pkgs.stdenv.mkDerivation rec {
 
   buildInputs = with pkgs; [
     brightnessctl # brightness (laptop)
-    gawk # pipewire-out-switcher, brightness
+    gawk # pipewire-out-switcher
     grim # screenshot
     jq # not-hyprprop, pipewire-out-switcher
     libnotify # all
-    monitor-adjust # brightness (desktop)
     pamixer # volume
     pipewire # pipewire-out-switcher (pw-dump)
     wireplumber # pipewire-out-switcher (wpctl)
