@@ -73,7 +73,7 @@ in
       # Privacy
       feedbackSurveyRate = 0;
       env = {
-        CLAUDE_CODE_EFFORT_LEVEL = "max";
+        # CLAUDE_CODE_EFFORT_LEVEL = "auto";
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1";
       };
       permissions = {
