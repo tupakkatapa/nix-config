@@ -25,6 +25,7 @@ in
             { name = "bitwig-projects"; mode = "755"; what = "/home/kari/Bitwig Studio"; }
             { name = "gh"; mode = "755"; what = "/home/kari/.config/gh"; }
             { name = "gcloud"; mode = "755"; what = "/home/kari/.config/gcloud"; }
+            { name = "oterm"; mode = "755"; what = "/home/kari/.local/share/oterm"; }
             { name = "pulumi"; mode = "755"; what = "/home/kari/.pulumi"; }
           ];
         }
@@ -47,6 +48,14 @@ in
           dirs = [
             { name = "nix-config"; mode = "755"; what = "/home/kari/nix-config"; }
             { name = "local-workspace"; mode = "755"; what = "/home/kari/Workspace/local"; }
+          ];
+        }
+      ];
+      ollama = [
+        {
+          name = "appdata";
+          dirs = [
+            { name = "ollama"; mode = "755"; what = "/var/lib/ollama"; }
           ];
         }
       ];

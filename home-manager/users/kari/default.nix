@@ -5,6 +5,8 @@
 }:
 let
   user = "kari";
+  hasOllama = config.services.ollama.enable;
+  ollamaUrl = if hasOllama then "http://localhost:11434" else "https://chat.coditon.com/";
 in
 {
   # This configuration extends the minimal-passwd and minimal-gui versions
@@ -25,13 +27,36 @@ in
       ./.config/claude
     ];
 
-    # oterm
     home.sessionVariables = {
-      OLLAMA_URL = "https://chat.coditon.com/";
+      OLLAMA_URL = ollamaUrl;
+      SEARXNG_URL = "https://search.coditon.com";
       SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
       REQUESTS_CA_BUNDLE = "/etc/ssl/certs/ca-bundle.crt";
     };
+    # oterm
     xdg.dataFile."oterm/config.json".text = builtins.toJSON {
+      mcpServers = {
+        searxng = {
+          command = "npx";
+          args = [ "-y" "mcp-searxng" ];
+          env = {
+            SEARXNG_URL = "https://search.coditon.com";
+            NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-bundle.crt";
+          };
+        };
+        filesystem = {
+          command = "npx";
+          args = [ "-y" "@modelcontextprotocol/server-filesystem" "/home/${user}" ];
+        };
+        fetch = {
+          command = "npx";
+          args = [ "-y" "@modelcontextprotocol/server-fetch" ];
+        };
+        git = {
+          command = "npx";
+          args = [ "-y" "@modelcontextprotocol/server-git" ];
+        };
+      };
       theme = "gruvbox";
       splash-screen = false;
     };
@@ -61,9 +86,9 @@ in
         pythonRelaxDeps = (old.pythonRelaxDeps or [ ]) ++ [ "keyring" ];
       }))
 
-      oterm
     ]) ++
     (with unstable; [
+      oterm
     ]);
   };
 }

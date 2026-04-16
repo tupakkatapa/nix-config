@@ -31,8 +31,7 @@ in
         acceleration = false;
         loadModels = [
           # https://ollama.com/library
-          "dolphin-mixtral:8x7b"
-          "llama3.2:3b"
+          "qwen3:4b"
         ];
       };
 

@@ -35,6 +35,10 @@
         imports = [ ../.config/ai-tools.nix ];
       }
       {
+        name = "ollama";
+        imports = [ ../.config/ollama-amd.nix ];
+      }
+      {
         name = "auto-scrcpy";
         imports = [ ../.config/auto-scrcpy.nix ];
       }

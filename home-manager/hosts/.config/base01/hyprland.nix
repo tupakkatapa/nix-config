@@ -143,6 +143,8 @@ in
         "wl-clipboard-history -t"
         "wlsunset -l 65.0 -L 25.5 -t 3000"
         "waybar"
+        "${TERMINAL} -a oterm -e oterm"
+        "${TERMINAL} -a notepad -e ${EDITOR} ~/Documents/notepad.md"
       ];
 
       bind = [
@@ -161,6 +163,8 @@ in
         "${mod}, Return, exec, [tile]${TERMINAL}"
 
         # Programs
+        "SUPER, O, togglespecialworkspace, oterm"
+        "SUPER, N, togglespecialworkspace, notepad"
         "SUPER, B, exec, ${BROWSER}"
         "SUPER, F, exec, ${FILEMANAGER} ~"
         "SUPER, V, exec, ${TERMINAL} -e $SHELL -c '${EDITOR} ~'"
@@ -253,6 +257,16 @@ in
         "center, class:tui-suite"
         "float, class:tui-suite"
         "size 1400 800, class:tui-suite"
+
+        "workspace special:oterm silent, class:oterm"
+        "float, class:oterm"
+        "size 1400 800, class:oterm"
+        "center, class:oterm"
+
+        "workspace special:notepad silent, class:notepad"
+        "float, class:notepad"
+        "size 1400 800, class:notepad"
+        "center, class:notepad"
 
         "center, class:org.gnome.Nautilus"
         "float, class:org.gnome.Nautilus"
