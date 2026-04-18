@@ -145,7 +145,7 @@
             inherit (inputs'.nixie.packages) pxe-generate;
             inherit (inputs'.nixie.packages) refind-generate;
             inherit (inputs'.ping-sweep.packages) ping-sweep;
-            inherit (inputs'.llm-agents.packages) claude-code;
+            inherit (inputs'.llm-agents.packages) claude-code codex;
             inherit (inputs'.claude-desktop.packages) claude-desktop;
           }
           // (with flake.nixosConfigurations; {
