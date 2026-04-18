@@ -131,6 +131,7 @@ in
 
     # Claude plugins as Nix packages
     plugins = with pkgs.claude-plugins; [
+      caveman
       ralph-wiggum
       claude-mem
       superpowers
