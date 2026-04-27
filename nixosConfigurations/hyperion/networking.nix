@@ -70,6 +70,11 @@
     wants = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
     serviceConfig.DynamicUser = lib.mkForce false;
   };
+  systemd.services.kea-dhcp6-server = {
+    after = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
+    wants = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
+    serviceConfig.DynamicUser = lib.mkForce false;
+  };
   systemd.services.nginx = {
     after = [ "network-online.target" "sys-subsystem-net-devices-br\\x2dwifi.device" ];
     wants = [ "network-online.target" "sys-subsystem-net-devices-br\\x2dwifi.device" ];
