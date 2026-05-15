@@ -54,6 +54,10 @@
   # Disk-aware garbage collection
   sys2x.gc.useDiskAware = true;
 
+  # NTFS support
+  boot.supportedFilesystems = [ "ntfs" ];
+  environment.systemPackages = [ pkgs.ntfs3g ];
+
   # Support for cross compilation
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
