@@ -1,4 +1,5 @@
 { pkgs
+, lib
 , config
 , inputs
 , ...
@@ -18,6 +19,7 @@ in
   users.users.${user} = {
     isNormalUser = true;
     group = "${user}";
+    password = lib.mkIf (config.users.users.${user}.hashedPasswordFile == null) "irak";
     extraGroups = optionalGroups [
       "acme"
       "adbusers"
