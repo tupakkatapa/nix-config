@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, ... }:
 {
   # NOTE: WAN and LAN networking is managed by Nixie
 
@@ -60,7 +60,6 @@
   systemd.services.cloudflare-dyndns = {
     after = [ "unbound.service" ];
     wants = [ "unbound.service" ];
-    serviceConfig.DynamicUser = lib.mkForce false;
   };
 
   # Wait for WiFi bridge before starting network services
@@ -68,12 +67,10 @@
   systemd.services.kea-dhcp4-server = {
     after = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
     wants = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
-    serviceConfig.DynamicUser = lib.mkForce false;
   };
   systemd.services.kea-dhcp6-server = {
     after = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
     wants = [ "sys-subsystem-net-devices-br\\x2dwifi.device" ];
-    serviceConfig.DynamicUser = lib.mkForce false;
   };
   systemd.services.nginx = {
     after = [ "network-online.target" "sys-subsystem-net-devices-br\\x2dwifi.device" ];

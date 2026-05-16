@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, dataDir, ... }:
 let
   # DNSCrypt resolver lists - verify signatures at build time
   # Update: nix shell nixpkgs#nix-prefetch-github -c nix-prefetch-github DNSCrypt dnscrypt-resolvers
@@ -40,6 +40,8 @@ in
   services.unbound = {
     enable = true;
     enableRootTrustAnchor = true;
+    # Root trust anchor + cache on disk
+    stateDir = "${dataDir}/home/unbound/appdata/unbound";
 
     settings = {
       server = {

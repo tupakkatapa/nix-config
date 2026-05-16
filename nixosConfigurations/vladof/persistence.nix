@@ -1,60 +1,38 @@
-{ dataDir, ... }:
+{ dataDir, lib, ... }:
+let
+  device = "/dev/disk/by-uuid/a11f36c2-e601-4e6c-b8c2-136c4b07203e";
+  # Auxiliary subvols: nofail (boot continues if missing). degraded allows missing RAID1 disk.
+  aux = lib.mapAttrs (_: subvol: {
+    inherit device;
+    fsType = "btrfs";
+    options = [ "compress=zstd:2" "noatime" "nofail" "degraded" "subvol=${subvol}" ];
+  });
+  # Boot-critical subvols: mounted in initrd, override kexec-tree defaults
+  boot = lib.mapAttrs (_: subvol: lib.mkForce {
+    inherit device;
+    fsType = "btrfs";
+    neededForBoot = true;
+    options = [ "compress=zstd:2" "noatime" "degraded" "subvol=${subvol}" ];
+  });
+in
 {
-  services.stateSaver = {
-    enable = true;
-    inherit dataDir;
+  fileSystems = aux
+    {
+      # User data
+      "/home/kari/.config/mozilla" = "@kari-mozilla";
+      "/home/kari/.config/sunshine" = "@kari-sunshine";
 
-    # Path to SSH host key, relative to data directory
-    # Will be stored at: <dataDir>/<hostKeyPath>
-    hostKeyPath = "ssh/ssh_host_ed25519_key";
-
-    # Persistent directories for each user
-    # Will be stored at: <dataDir>/home/<user>/<category>/<dir>
-    persistentDirs = {
-      acme = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "acme"; mode = "700"; what = "/var/lib/acme"; }
-          ];
-        }
-      ];
-      prometheus = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "prometheus"; mode = "755"; what = "/var/lib/prometheus"; }
-          ];
-        }
-      ];
-      grafana = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "grafana"; mode = "755"; what = "/var/lib/grafana"; }
-          ];
-        }
-      ];
-      kari = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "firefox"; mode = "755"; what = "/home/kari/.config/mozilla"; }
-            { name = "sunshine"; mode = "755"; what = "/home/kari/.config/sunshine"; }
-          ];
-        }
-      ];
-    };
-  };
-
-  # Mount persistent drives
-  fileSystems = {
-    "${dataDir}" = {
-      device = "/dev/disk/by-uuid/a11f36c2-e601-4e6c-b8c2-136c4b07203e";
-      fsType = "btrfs";
-      neededForBoot = true;
-      options = [ "degraded" ]; # Allow mounting with missing RAID1 device
-    };
+      # System state
+      "/var/log/journal" = "@var-log-journal";
+      "/var/lib/acme" = "@acme";
+      "/var/lib/prometheus" = "@prometheus";
+    } // boot {
+    # dataDir: agenix reads SSH host key from here in stage-2
+    "${dataDir}" = "@main";
+    # Persistent nix rw-store (overrides kexec-tree.nix tmpfs).
+    # Subvol must contain `store/` and `work/` subdirs (create on disk).
+    "/nix/.rw-store" = "@nix-rw-store";
+  } // {
     "/mnt/jhvst" = {
       device = "/dev/disk/by-label/jhvst";
       fsType = "btrfs";
@@ -68,28 +46,42 @@
   #   crypttabExtraOpts = [ "fido2-device=auto" "fido2-with-client-pin=yes" ];
   # };
 
-  # Mount '/nix/.rw-store' and '/tmp' to disk
-  services.storeRemount = {
-    enable = true;
-    where = "${dataDir}/store";
-    type = "none";
-    options = [ "bind" ];
-  };
+  # SSH host key on disk
+  services.openssh.hostKeys = [{
+    path = "${dataDir}/ssh/ssh_host_ed25519_key";
+    type = "ed25519";
+  }];
 
-  # Create host-specific directories
+  # Audit log on disk
+  security.auditd.settings.log_file = "${dataDir}/home/root/logs/audit/audit.log";
+
+  # Pin UIDs (acme not in nixpkgs static ids)
+  users.users.acme.uid = 991;
+  users.groups.acme.gid = 991;
+
+  # Persistent dir tree
   systemd.tmpfiles.rules = [
-    "d ${dataDir}/backups  700 root root -"
-    "d ${dataDir}/sftp     755 root root -"
-    "d ${dataDir}/store    755 root root -"
+    "d ${dataDir}/ssh                            700 root root                                     -"
+    "d ${dataDir}/sftp                           755 root root                                     -"
+    "d ${dataDir}/home                           755 root root                                     -"
+    "d ${dataDir}/home/root                      755 root root                                     -"
+    "d ${dataDir}/home/root/logs                 755 root root                                     -"
+    "d ${dataDir}/home/root/logs/audit           750 root root                                     -"
+    "d ${dataDir}/home/grafana                   755 grafana grafana                               -"
+    "d ${dataDir}/home/grafana/appdata           755 grafana grafana                               -"
+    "Z ${dataDir}/home/grafana/appdata/grafana   755 grafana grafana                               -"
 
-    # Enforce SFTP subdirectory permissions
-    "Z ${dataDir}/sftp/appdata - sftp sftp -"
-    "Z ${dataDir}/sftp/code    - sftp sftp -"
-    "Z ${dataDir}/sftp/docs    - sftp sftp -"
-    "Z ${dataDir}/sftp/games   - sftp sftp -"
-    "Z ${dataDir}/sftp/media   - sftp sftp -"
-    "Z ${dataDir}/sftp/sys     - sftp sftp -"
-    "Z ${dataDir}/sftp/tmp     - sftp sftp -"
+    # Backups dir
+    "d ${dataDir}/backups                        700 root root                                     -"
+
+    # SFTP subdir ownership enforcement (container writes target these paths)
+    "Z ${dataDir}/sftp/appdata                   -   sftp sftp                                     -"
+    "Z ${dataDir}/sftp/code                      -   sftp sftp                                     -"
+    "Z ${dataDir}/sftp/docs                      -   sftp sftp                                     -"
+    "Z ${dataDir}/sftp/games                     -   sftp sftp                                     -"
+    "Z ${dataDir}/sftp/media                     -   sftp sftp                                     -"
+    "Z ${dataDir}/sftp/sys                       -   sftp sftp                                     -"
+    "Z ${dataDir}/sftp/tmp                       -   sftp sftp                                     -"
 
     # Ephemeral directories for users
     "d /home/kari/.config 755 kari kari -"

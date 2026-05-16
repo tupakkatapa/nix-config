@@ -28,9 +28,6 @@
     after = [ "modprobe@amdgpu.service" ];
   };
 
-  # Disable DynamicUser to work with bind-mounted state directory
-  systemd.services.ollama.serviceConfig.DynamicUser = lib.mkForce false;
-
   # ROCm needs JIT compilation of GPU kernels (writable+executable memory)
   # Without this, runner subprocesses timeout during GPU discovery after model unload
   systemd.services.ollama.serviceConfig.MemoryDenyWriteExecute = lib.mkForce false;

@@ -31,10 +31,6 @@
     nixie.url = "github:majbacka-labs/nixie/jesse/dev050"; # https, private
     runtime-modules.inputs.nixpkgs.follows = "nixpkgs";
     runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
-    sftp-mount.inputs.nixpkgs.follows = "nixpkgs";
-    sftp-mount.url = "github:tupakkatapa/nixos-sftp-mount";
-    store-remount.inputs.nixpkgs.follows = "nixpkgs";
-    store-remount.url = "github:ponkila/nixos-store-remount";
 
     # Other
     anytui.inputs.nixpkgs.follows = "nixpkgs";
@@ -207,11 +203,8 @@
               inputs.nix-extras.nixosModules.common
               inputs.nixie.nixosModules.refindGenerate
               inputs.runtime-modules.nixosModules.runtimeModules
-              inputs.store-remount.nixosModules.storeRemount
-              inputs.sftp-mount.nixosModules.sftpClient
               self.nixosModules.monitoring
               self.nixosModules.openrgb
-              self.nixosModules.stateSaver
               ({ config, ... }: {
                 home-manager = {
                   sharedModules = [
@@ -266,7 +259,6 @@
               ./system/kexec-tree.nix
               inputs.molesk.nixosModules.default
               inputs.nixie.nixosModules.nixie
-              inputs.sftp-mount.nixosModules.sftpServer
             ];
           };
 
@@ -309,7 +301,6 @@
             autoScrcpy.imports = [ ./nixosModules/auto-scrcpy.nix ];
             monitoring.imports = [ ./nixosModules/monitoring ];
             openrgb.imports = [ ./nixosModules/openrgb ];
-            stateSaver.imports = [ ./nixosModules/state-saver.nix ];
           };
 
           # Home-manager modules

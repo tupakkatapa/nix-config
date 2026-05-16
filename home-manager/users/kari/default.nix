@@ -75,7 +75,7 @@ in
       ]
       ++ (if config.networking.hostName != "maliwan" then [
         # Open terminal with SFTP mount on login
-        "foot -e $SHELL -c 'echo \"\\$ sudo sftp-mount\" && sudo sftp-mount && sleep 1 || read -p \"Press enter to continue..\"'"
+        "foot -e $SHELL -c 'echo \"\\$ sudo mount /mnt/sftp\" && sudo mount /mnt/sftp && sleep 1 || read -p \"Press enter to continue..\"'"
       ] else [ ]);
 
     home.packages = (with pkgs; [

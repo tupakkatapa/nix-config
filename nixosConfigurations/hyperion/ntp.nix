@@ -1,9 +1,15 @@
-_:
+{ dataDir, ... }:
+let
+  chronyDir = "${dataDir}/home/chrony/appdata/chrony";
+in
 {
   # Chrony NTP server - serves time to LAN clients, critical for PXE boot
   services.chrony = {
     enable = true;
     servers = [ ]; # Using NTS servers in extraConfig
+
+    # NTS keys + drift on disk
+    directory = chronyDir;
 
     extraConfig = ''
       # NTS servers (encrypted + authenticated)
@@ -15,7 +21,7 @@ _:
       # Fallback pool (unencrypted)
       pool nixos.pool.ntp.org iburst maxsources 2
 
-      ntsdumpdir /var/lib/chrony
+      ntsdumpdir ${chronyDir}
       minsources 2
 
       # Allow LAN/WiFi/WireGuard clients
@@ -35,6 +41,4 @@ _:
       makestep 1.0 3
     '';
   };
-
-  systemd.services.chronyd.serviceConfig.StateDirectory = "chrony";
 }

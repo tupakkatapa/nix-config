@@ -1,5 +1,4 @@
 { config
-, lib
 , pkgs
 , ...
 }:
@@ -72,50 +71,7 @@ in
     "d /home/${user}/.ssh 755 ${user} ${user} -"
   ];
 
-  # Mount SFTP and bind home directories
-  services.sftpClient = lib.mkIf (config.networking.hostName != "vladof") {
-    enable = true;
-
-    # Define the YubiKey resident key as the identifier and disable automount
-    defaults = {
-      identityFile = [
-        config.age.secrets.ed25519-sk-yubikey.path
-        config.age.secrets.ed25519-sk-yubikey-2.path
-        config.age.secrets.ed25519-sk-trezor.path
-      ];
-      autoMount = false;
-    };
-
-    mounts = [{
-      what = "sftp@10.42.0.8:/";
-      where = "/mnt/sftp";
-    }];
-
-    # Bind mounts are always done after the SFTP mounts
-    binds = [
-      {
-        what = "/mnt/sftp/docs";
-        where = "/home/${user}/Documents";
-      }
-      {
-        what = "/mnt/sftp/media";
-        where = "/home/${user}/Media";
-      }
-      {
-        what = "/mnt/sftp/dnld";
-        where = "/home/${user}/Downloads/remote";
-      }
-      {
-        what = "/mnt/sftp/code/workspace";
-        where = "/home/${user}/Workspace/remote";
-      }
-      {
-        what = "/mnt/sftp/appdata/retroarch";
-        where = "/home/${user}/.config/retroarch";
-      }
-    ];
-  };
-  # Add SFTP host to root's known hosts for non-interactive authentication
+  # Trust vladof's host key for non-interactive SSH/SFTP
   services.openssh.knownHosts.vladof = {
     publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEJktZ00i+OxH4Azi1tLkwoYrJ0qo2RIZ5huzzK+g2w";
     extraHostNames = [ "10.42.0.8" ];

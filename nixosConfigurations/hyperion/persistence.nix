@@ -1,101 +1,54 @@
-{ dataDir, ... }:
+{ dataDir, lib, ... }:
+let
+  device = "/dev/disk/by-uuid/2422225e-29a0-480f-9be0-ebabe7ea7e5e";
+  # Auxiliary subvols: nofail (boot continues if missing)
+  aux = lib.mapAttrs (_: subvol: {
+    inherit device;
+    fsType = "btrfs";
+    options = [ "compress=zstd:2" "noatime" "nofail" "subvol=${subvol}" ];
+  });
+  # Boot-critical subvols: mounted in initrd, override kexec-tree defaults
+  boot = lib.mapAttrs (_: subvol: lib.mkForce {
+    inherit device;
+    fsType = "btrfs";
+    neededForBoot = true;
+    options = [ "compress=zstd:2" "noatime" "subvol=${subvol}" ];
+  });
+in
 {
-  services.stateSaver = {
-    enable = true;
-    inherit dataDir;
+  fileSystems = aux
+    {
+      "/var/log/journal" = "@var-log-journal";
 
-    # Path to SSH host key, relative to data directory
-    # Will be stored at: <dataDir>/<hostKeyPath>
-    hostKeyPath = "ssh/ssh_host_ed25519_key";
-
-    # Persistent directories for each user
-    # Will be stored at: <dataDir>/home/<user>/<category>/<dir>
-    persistentDirs = {
-      root = [
-        {
-          name = "secrets";
-          dirs = [
-            # GitHub access token for nix to avoid API rate limiting and to access private inputs (nixie)
-            { name = "nix"; mode = "700"; what = "/root/.config/nix"; }
-          ];
-        }
-        {
-          name = "appdata";
-          dirs = [
-            { name = "cloudflare-dyndns"; mode = "755"; what = "/var/lib/cloudflare-dyndns"; }
-          ];
-        }
-        {
-          name = "logs";
-          dirs = [
-            { name = "journal"; mode = "755"; what = "/var/log/journal"; }
-            { name = "rsyslog"; mode = "755"; what = "/var/log/rsyslog"; }
-          ];
-        }
-      ];
-      unbound = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "unbound"; mode = "755"; what = "/var/lib/unbound"; }
-          ];
-        }
-      ];
-      chrony = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "chrony"; mode = "755"; what = "/var/lib/chrony"; }
-          ];
-        }
-      ];
-      vnstatd = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "vnstat"; mode = "755"; what = "/var/lib/vnstat"; }
-          ];
-        }
-      ];
-      kea = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "kea"; mode = "700"; what = "/var/lib/private/kea"; }
-          ];
-        }
-        {
-          name = "logs";
-          dirs = [
-            { name = "kea"; mode = "755"; what = "/var/log/kea"; }
-          ];
-        }
-      ];
-    };
-  };
-
-  # Mount persistent drives
-  fileSystems = {
-    "${dataDir}" = {
-      device = "/dev/disk/by-uuid/2422225e-29a0-480f-9be0-ebabe7ea7e5e";
-      fsType = "btrfs";
-      neededForBoot = true;
-    };
+      # Service state — modules without stateDir option get own subvol at default path
+      "/var/lib/kea" = "@kea";
+      "/var/lib/vnstat" = "@vnstat";
+      "/var/lib/cloudflare-dyndns" = "@cloudflare-dyndns";
+      "/var/log/kea" = "@kea-logs";
+      "/var/log/rsyslog" = "@rsyslog";
+    } // boot {
+    # dataDir: agenix reads SSH host key from here in stage-2
+    "${dataDir}" = "@main";
+    # Persistent nix rw-store (overrides kexec-tree.nix tmpfs).
+    # Subvol must contain `store/` and `work/` subdirs (create on disk).
+    "/nix/.rw-store" = "@nix-rw-store";
+  } // {
     "/mnt/boot" = {
       device = "/dev/disk/by-uuid/2A10-2D31";
       fsType = "vfat";
     };
   };
 
-  # Mount '/nix/.rw-store' and '/tmp' to disk
-  services.storeRemount = {
-    enable = true;
-    where = "${dataDir}/store";
-    type = "none";
-    options = [ "bind" ];
-  };
+  # SSH host key on disk
+  services.openssh.hostKeys = [{
+    path = "${dataDir}/ssh/ssh_host_ed25519_key";
+    type = "ed25519";
+  }];
 
-  # Update the rEFInd boot manager
+  # Audit log on disk
+  security.auditd.settings.log_file = "${dataDir}/home/root/logs/audit/audit.log";
+
+  # rEFInd boot manager
   services.refindGenerate = {
     enable = true;
     dataDir = "${dataDir}/home/root/appdata/refind";
@@ -111,9 +64,21 @@
     timeout = 1;
   };
 
-  # Create host-specific directories
+  # Persistent dir tree
   systemd.tmpfiles.rules = [
-    "d /mnt/boot           755 root root -"
-    "d ${dataDir}/store    755 root root -"
+    "d /mnt/boot                                 755 root root                                     -"
+    "d ${dataDir}/ssh                            700 root root                                     -"
+    "d ${dataDir}/home                           755 root root                                     -"
+    "d ${dataDir}/home/root                      755 root root                                     -"
+    "d ${dataDir}/home/root/appdata              755 root root                                     -"
+    "d ${dataDir}/home/root/appdata/refind       755 root root                                     -"
+    "d ${dataDir}/home/root/logs                 755 root root                                     -"
+    "d ${dataDir}/home/root/logs/audit           750 root root                                     -"
+    "d ${dataDir}/home/unbound                   755 unbound unbound                               -"
+    "d ${dataDir}/home/unbound/appdata           755 unbound unbound                               -"
+    "Z ${dataDir}/home/unbound/appdata/unbound   755 unbound unbound                               -"
+    "d ${dataDir}/home/chrony                    755 chrony chrony                                 -"
+    "d ${dataDir}/home/chrony/appdata            755 chrony chrony                                 -"
+    "Z ${dataDir}/home/chrony/appdata/chrony     755 chrony chrony                                 -"
   ];
 }

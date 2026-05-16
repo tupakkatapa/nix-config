@@ -1,103 +1,90 @@
-_:
+{ pkgs, lib, ... }:
 let
   dataDir = "/mnt/860";
+  device = "/dev/disk/by-uuid/d69f5624-937a-453d-937c-eae63dd94b06";
+  # Auxiliary subvols: nofail (boot continues if missing)
+  aux = lib.mapAttrs (_: subvol: {
+    inherit device;
+    fsType = "btrfs";
+    options = [ "compress=zstd:2" "noatime" "nofail" "subvol=${subvol}" ];
+  });
+  # Boot-critical subvols: mounted in initrd, override kexec-tree defaults
+  boot = lib.mapAttrs (_: subvol: lib.mkForce {
+    inherit device;
+    fsType = "btrfs";
+    neededForBoot = true;
+    options = [ "compress=zstd:2" "noatime" "subvol=${subvol}" ];
+  });
 in
 {
-  services.stateSaver = {
-    enable = true;
-    inherit dataDir;
+  fileSystems = aux
+    {
+      # User data
+      "/home/kari/.claude-mem" = "@kari-claude-mem";
+      "/home/kari/.claude/projects" = "@kari-claude-projects";
+      "/home/kari/.config/mozilla" = "@kari-mozilla";
+      "/home/kari/.BitwigStudio" = "@kari-bitwig-config";
+      "/home/kari/Bitwig Studio" = "@kari-bitwig-projects";
+      "/home/kari/.config/Yubico" = "@kari-yubico";
+      "/home/kari/.steam" = "@kari-steam-cfg";
+      "/home/kari/.local/share/Steam" = "@kari-steam-install";
+      "/home/kari/.gnupg" = "@kari-gnupg";
+      "/home/kari/nix-config" = "@kari-nix-config";
+      "/home/kari/Workspace" = "@kari-workspace";
+      "/home/kari/Downloads" = "@kari-downloads";
 
-    # Path to SSH host key, relative to dataDir
-    # Will be stored at: dataDir/ssh/ssh_host_ed25519_key
-    hostKeyPath = "ssh/ssh_host_ed25519_key";
-
-    # Persistent directories for each user
-    # Will be stored at: dataDir/home/<user>/<category>/<dir>
-    persistentDirs = {
-      kari = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "claude-mem"; mode = "755"; what = "/home/kari/.claude-mem"; }
-            { name = "claude-projects"; mode = "755"; what = "/home/kari/.claude/projects"; }
-            { name = "firefox"; mode = "755"; what = "/home/kari/.config/mozilla"; }
-            { name = "bitwig-config"; mode = "755"; what = "/home/kari/.BitwigStudio"; }
-            { name = "bitwig-projects"; mode = "755"; what = "/home/kari/Bitwig Studio"; }
-            { name = "gh"; mode = "755"; what = "/home/kari/.config/gh"; }
-            { name = "gcloud"; mode = "755"; what = "/home/kari/.config/gcloud"; }
-            { name = "oterm"; mode = "755"; what = "/home/kari/.local/share/oterm"; }
-            { name = "pulumi"; mode = "755"; what = "/home/kari/.pulumi"; }
-          ];
-        }
-        {
-          name = "games";
-          dirs = [
-            { name = "steam"; mode = "755"; what = "/home/kari/.steam"; }
-            { name = "steam/install"; mode = "755"; what = "/home/kari/.local/share/Steam"; }
-          ];
-        }
-        {
-          name = "secrets";
-          dirs = [
-            { name = "gnupg"; mode = "700"; what = "/home/kari/.gnupg"; }
-            { name = "yubico"; mode = "755"; what = "/home/kari/.config/Yubico"; }
-          ];
-        }
-        {
-          name = "other";
-          dirs = [
-            { name = "nix-config"; mode = "755"; what = "/home/kari/nix-config"; }
-            { name = "local-workspace"; mode = "755"; what = "/home/kari/Workspace/local"; }
-          ];
-        }
-      ];
-      ollama = [
-        {
-          name = "appdata";
-          dirs = [
-            { name = "ollama"; mode = "755"; what = "/var/lib/ollama"; }
-          ];
-        }
-      ];
-      root = [
-        {
-          name = "system";
-          dirs = [
-            { name = "bluetooth"; mode = "700"; what = "/var/lib/bluetooth"; }
-          ];
-        }
+      # System state
+      "/var/lib/ollama" = "@ollama";
+      "/var/lib/bluetooth" = "@var-lib-bluetooth";
+      "/var/log/journal" = "@var-log-journal";
+    } // boot {
+    # dataDir: agenix reads SSH host key from here in stage-2
+    "${dataDir}" = "@main";
+    # Persistent nix rw-store (overrides kexec-tree.nix tmpfs).
+    # Subvol must contain `store/` and `work/` subdirs (create on disk).
+    "/nix/.rw-store" = "@nix-rw-store";
+  } // {
+    # On-demand SFTP mount from vladof (YubiKey-resident key, requires touch)
+    "/mnt/sftp" = {
+      device = "kari@10.42.0.8:/";
+      fsType = "sshfs";
+      options = [
+        "noauto"
+        "_netdev"
+        "allow_other"
+        "reconnect"
+        "ServerAliveInterval=15"
+        "IdentityFile=/home/kari/.ssh/id_ed25519_sk_yubikey"
       ];
     };
   };
 
-  # Mount persistent drives
-  fileSystems = {
-    "${dataDir}" = {
-      device = "/dev/disk/by-uuid/20cfc618-e1e9-476e-984e-55326b3b5ca7";
-      fsType = "ext4";
-      neededForBoot = true;
-    };
-  };
+  # SSHFS support for /mnt/sftp
+  system.fsPackages = [ pkgs.sshfs ];
+  programs.fuse.userAllowOther = true;
 
-  # Mount '/nix/.rw-store' and '/tmp' to disk
-  services.storeRemount = {
-    enable = true;
-    where = "${dataDir}/store";
-    type = "none";
-    options = [ "bind" ];
-  };
+  # Service path redirects into @main
+  services.openssh.hostKeys = [{
+    path = "${dataDir}/ssh/ssh_host_ed25519_key";
+    type = "ed25519";
+  }];
 
-  # Create host-specific directories
+  # Audit log on disk
+  security.auditd.settings.log_file = "${dataDir}/home/root/logs/audit/audit.log";
+
+  # Pin ollama UID (not in nixpkgs static ids)
+  users.users.ollama = {
+    uid = 987;
+    group = "ollama";
+  };
+  users.groups.ollama.gid = 987;
+
+  # Parent dirs for nested subvol mountpoints
   systemd.tmpfiles.rules = [
-    "d /mnt/sftp          755 root root -"
-    "d ${dataDir}/store   755 root root -"
-
-    # Ephemeral directories for users
-    "d /home/kari/.config 755 kari kari -"
-    "d /home/kari/.local 755 kari kari -"
-    "d /home/kari/.local/share 755 kari kari -"
-    "d /home/kari/.claude 755 kari kari -"
-    "d /home/kari/Workspace 755 kari kari -"
-    "d /home/kari/Downloads 755 kari kari -"
+    "d /mnt/sftp                755 root root -"
+    "d /home/kari/.config       755 kari kari -"
+    "d /home/kari/.local        755 kari kari -"
+    "d /home/kari/.local/share  755 kari kari -"
+    "d /home/kari/.claude       755 kari kari -"
   ];
 }

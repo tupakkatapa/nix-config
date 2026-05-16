@@ -122,7 +122,8 @@ in
     (import ./containers { inherit pkgs lib config domain dataDir containerConfig containerSubnet inputs; })
     (import ./home-assistant { inherit pkgs dataDir config; haConfig = serviceConfig.home-assistant; })
     (import ./garage.nix { inherit pkgs config; })
-    (import ./grafana.nix { inherit domain; })
+    (import ./grafana.nix { inherit domain dataDir; })
+    (import ./harmonia.nix { inherit config; })
   ];
 
   # Reverse proxy
