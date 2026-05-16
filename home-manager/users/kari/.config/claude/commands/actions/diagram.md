@@ -5,17 +5,17 @@
 
 ---
 
-Create a Mermaid diagram and display it for the user.
+Create a diagram and display it for the user. Mermaid is the current backend; the action is intent-named so swapping backends later (Graphviz, PlantUML, etc.) does not require renaming.
 
 ## 1. Determine Subject
 
-If not specified, ask what to diagram, with multiple-choice feature:
-- [ ] Project architecture
-- [ ] Specific component or flow
-- [ ] Data relationships
-- [ ] Sequence of operations
-- [ ] State machine
-- [ ] Any concept that benefits from visualization
+If not specified, use `AskUserQuestion` to clarify between:
+- Project architecture
+- Specific component or flow
+- Data relationships
+- Sequence of operations
+- State machine
+- Any concept that benefits from visualization
 
 ## 2. Create Diagram
 
@@ -40,7 +40,7 @@ mmdc -i /tmp/diagram.mmd -o /tmp/diagram.svg && xdg-open /tmp/diagram.svg
 
 If `mmdc` (mermaid-cli) is not available:
 ```bash
-nix-shell -p nodePackages.mermaid-cli --run "mmdc -i /tmp/diagram.mmd -o /tmp/diagram.svg" && xdg-open /tmp/diagram.svg
+nix-shell -p mermaid-cli --run "mmdc -i /tmp/diagram.mmd -o /tmp/diagram.svg" && xdg-open /tmp/diagram.svg
 ```
 
 ## 4. Iterate

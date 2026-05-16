@@ -16,11 +16,17 @@ Check current version in codebase (e.g., `pyproject.toml`, `Cargo.toml`, `packag
 
 ## 2. Identify Changes Since Last Release
 
+Determine the integration branch dynamically (don't hardcode `main`):
+
 ```bash
-git log main..HEAD --oneline --no-merges
+integration=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||')
+integration=${integration:-$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name 2>/dev/null)}
+integration=${integration:-main}
+
+git log "$integration..HEAD" --oneline --no-merges
 ```
 
-Or diff against the last version bump commit if on a feature branch.
+Or diff against the last version-bump commit if on a feature branch (`git log $(git log --grep '^chore: bump' -1 --format=%H)..HEAD --oneline --no-merges`).
 
 ## 3. Update Changelog
 
@@ -45,7 +51,7 @@ Or diff against the last version bump commit if on a feature branch.
 - Test infrastructure
 - Internal refactoring
 - Migration details
-- Dev tooling (Doppler, env configs)
+- Dev tooling and environment configuration
 - Code quality improvements
 
 ### Section Order
@@ -60,9 +66,9 @@ Or diff against the last version bump commit if on a feature branch.
 
 ## 4. Handle Deprecations
 
-- Check `docs/deprecations.md` for items sunset in this version
-- Remove sunset items from deprecations doc (or mark as completed)
-- Ensure "Removed" section documents what was removed
+- Check the project's deprecations document (e.g. `docs/deprecations.md`) if present, for items sunset in this version
+- Remove sunset items from that document (or mark as completed)
+- Ensure the "Removed" section of the changelog documents what was removed
 
 ## 5. Version Bump (if needed)
 
@@ -74,19 +80,26 @@ Only if releasing new version:
 ## Example Entry
 
 ```markdown
-## [0.2.7] - 2026-02-05
+## [0.4.0] - 2026-02-05
 
 ### Added
 
-- API key support for annotations endpoint with `annotations:read` scope
-- Global email uniqueness constraint for active users
+- New endpoint or capability — one line per change, written for the consumer
+- New configuration option (with default and migration note if it changes behaviour)
+
+### Changed
+
+- Behaviour change a caller would notice (e.g. response shape, default value)
 
 ### Fixed
 
-- Annotators cannot QC their own work
-- Email delivery reliability with retry logic
+- Bug that affected a real user-visible behaviour (not internal refactors)
 
 ### Deprecated
 
-- QC manual reviewer assignment (sunset in next release)
+- Capability scheduled for removal — name the replacement and the timeline
+
+### Removed
+
+- Capability that no longer exists (and which release deprecated it, if applicable)
 ```

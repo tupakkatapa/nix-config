@@ -9,16 +9,17 @@
 
 You are preparing a commit for the current changes.
 
-If `/tt-check` has not been run recently, run it first to catch issues before committing.
+If automated checks (pre-commit hooks, linters, project tests) have not been run recently, run them first to catch issues before committing.
 
 ## 1. Review Diff
 - Read the diff to understand what was changed
 - Identify the feature, fix, or refactor being committed
 
 ## 2. Determine Commit Strategy
-- Check if the most recent commit is unpushed
-- If unpushed AND current diff is cumulative to that commit → use `git commit --amend`
-- Otherwise → create a new commit
+- Check whether the most recent commit is unpushed (`git log @{upstream}..HEAD` returns it).
+- **Authorship check before amending** — `git log -1 --format='%ae'` must equal `git config user.email`. Amending someone else's commit silently rewrites authorship and can break signing. If they differ → create a new commit instead.
+- If unpushed AND authored by current user AND current diff is cumulative to that commit → `git commit --amend`.
+- Otherwise → create a new commit.
 
 ## 3. Craft Commit Message
 - Review past commit messages: `git log --oneline -10`

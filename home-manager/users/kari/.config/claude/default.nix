@@ -13,8 +13,8 @@ let
   # Claude-mem settings
   # https://github.com/thedotmack/claude-mem/blob/main/src/shared/SettingsDefaultsManager.ts
   claudeMemSettings = {
-    CLAUDE_MEM_CONTEXT_FULL_COUNT = "3"; # default: 0
-    CLAUDE_MEM_CONTEXT_SHOW_SAVINGS_PERCENT = "false"; # default: true
+    CLAUDE_MEM_CONTEXT_FULL_COUNT = "0";
+    CLAUDE_MEM_CONTEXT_SHOW_SAVINGS_PERCENT = "false";
   };
 in
 {
@@ -36,17 +36,8 @@ in
     enable = true;
     skillsDir = ./skills;
 
-    # Custom slash commands (auto-discovered from ./commands/)
-    commands =
-      let
-        commandDir = ./commands;
-        commandFiles = builtins.attrNames (builtins.readDir commandDir);
-        mkCommand = filename: {
-          name = builtins.replaceStrings [ ".md" ] [ "" ] filename;
-          value = builtins.readFile "${commandDir}/${filename}";
-        };
-      in
-      builtins.listToAttrs (map mkCommand commandFiles);
+    # Mounted under `/tt:*` below.
+    commands = { };
 
     settings = {
       # Model & reasoning
@@ -144,4 +135,7 @@ in
 
   # Declarative claude-mem settings
   home.file.".claude-mem/settings.json".text = builtins.toJSON claudeMemSettings;
+
+  # Slash commands
+  home.file.".claude/commands/tt".source = ./commands;
 }

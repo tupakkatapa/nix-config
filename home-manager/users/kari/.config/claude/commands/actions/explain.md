@@ -10,10 +10,10 @@ Explain a topic, concept, or aspect of the codebase clearly and thoroughly.
 
 ## 1. Clarify Subject
 
-If the subject is ambiguous, ask the user to clarify, with multiple-choice feature:
-- [ ] General concept (e.g., "API endpoints" in general)
-- [ ] Project-specific (e.g., this project's API endpoints)
-- [ ] External reference (e.g., documentation link, library)
+If the subject is ambiguous, use `AskUserQuestion` to clarify between:
+- General concept (e.g., "API endpoints" in general)
+- Project-specific (e.g., this project's API endpoints)
+- External reference (e.g., documentation link, library)
 
 Examples of ambiguous requests:
 - "Explain authentication" → General auth concepts or this project's auth?
@@ -40,9 +40,11 @@ Provide a clear, structured explanation:
 
 ## 4. Visualize
 
-If a diagram would help understanding, call `/tt-mermaid` to create one:
-- Architecture diagrams for system design
-- Sequence diagrams for request flows
-- Flowcharts for complex logic
-- ER diagrams for data relationships
+If a diagram would help understanding, suggest `/tt:actions:diagram` at the end of the explanation. That action owns the rendering pipeline (Mermaid backend, `/tmp/diagram.{mmd,svg}`, `xdg-open`); duplicating it here would let the two drift.
+
+Examples of where a diagram earns its keep:
+- Architecture diagrams for system design.
+- Sequence diagrams for request flows.
+- Flowcharts for complex logic.
+- ER diagrams for data relationships.
 

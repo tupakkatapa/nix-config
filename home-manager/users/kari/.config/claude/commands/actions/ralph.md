@@ -35,7 +35,7 @@ Write `RALPH.md` in the project root with:
 - **Phases** — incremental steps, each building on the previous
 - **Testing** — what to test (positive and negative cases)
 
-Follow the design principles from `/tt-implement`.
+Frame the plan against the relevant `/tt:lens:*` dimensions in planning mode (see `/tt:plan`).
 
 ## 3. Craft the Command
 ```
@@ -53,7 +53,7 @@ Since the prompt is re-fed verbatim each iteration:
 - Include escape hatch: what to document if stuck after N iterations
 - End with: `Output: <promise>TEXT</promise>` matching `--completion-promise`
 
-To cancel a running loop: `/cancel-ralph`
+To cancel a running loop: `/ralph-wiggum:cancel-ralph`
 
 ## 4. Present
 Present the `RALPH.md` plan and the ready-to-run command for user approval.
