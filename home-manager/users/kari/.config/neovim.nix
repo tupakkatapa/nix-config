@@ -14,7 +14,44 @@
       providers.wl-copy.enable = true;
     };
 
-    globals = { mapleader = " "; };
+    globals = {
+      mapleader = " ";
+      loaded_netrw = 1;
+      loaded_netrwPlugin = 1;
+    };
+
+    extraConfigLua = ''
+      -- Replace netrw-hijack with explicit sidebar layout to avoid nui async
+      -- render race on `nvim DIR` and orphan directory buffer requiring 2x :q.
+      vim.api.nvim_create_autocmd("VimEnter", {
+        callback = function()
+          if vim.fn.argc() == 1 then
+            local arg = vim.fn.argv(0)
+            if vim.fn.isdirectory(arg) == 1 then
+              vim.cmd("cd " .. vim.fn.fnameescape(arg))
+              local dir_buf = vim.api.nvim_get_current_buf()
+              vim.cmd("enew")
+              pcall(vim.api.nvim_buf_delete, dir_buf, { force = true })
+              vim.cmd("Neotree focus")
+            end
+          end
+        end,
+      })
+
+      -- Treat sidebar + main as one unit: `:q` from neo-tree quits everything.
+      vim.api.nvim_create_autocmd("QuitPre", {
+        callback = function()
+          if vim.bo.filetype == "neo-tree" then
+            vim.schedule(function()
+              local ok, err = pcall(vim.cmd, "qa")
+              if not ok then
+                vim.notify(tostring(err), vim.log.levels.ERROR)
+              end
+            end)
+          end
+        end,
+      })
+    '';
 
     opts = {
       cursorline = true;
@@ -214,6 +251,7 @@
           filesystem = {
             find_by_full_path_words = true;
             use_libuv_file_watcher = true;
+            hijack_netrw_behavior = "disabled";
             filtered_items = {
               visible = false;
               hide_gitignored = true;
