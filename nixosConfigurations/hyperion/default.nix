@@ -18,6 +18,12 @@ in
     storageMode = "local";
   };
 
+  # Append access tokens to nix.conf for private flake inputs
+  age.secrets.nix-access-tokens.rekeyFile = ../../home-manager/users/kari/secrets/nix-access-tokens.age;
+  nix.extraOptions = ''
+    !include ${config.age.secrets.nix-access-tokens.path}
+  '';
+
   imports = [
     (import ./nixie.nix extendedArgs)
     (import ./persistence.nix extendedArgs)
