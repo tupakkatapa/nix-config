@@ -31,6 +31,8 @@ in
       "/home/kari/.gnupg" = "@kari-gnupg";
       "/home/kari/Workspace" = "@kari-workspace";
       "/home/kari/Downloads" = "@kari-downloads";
+      "/home/kari/.local/share/atuin" = "@kari-atuin";
+      "/home/kari/.local/share/zoxide" = "@kari-zoxide";
 
       # System state
       "/var/lib/ollama" = "@ollama";

@@ -21,6 +21,8 @@ in
       # User data
       "/home/kari/.config/mozilla" = "@kari-mozilla";
       "/home/kari/.config/sunshine" = "@kari-sunshine";
+      "/home/kari/.local/share/atuin" = "@kari-atuin";
+      "/home/kari/.local/share/zoxide" = "@kari-zoxide";
 
       # System state
       "/var/log/journal" = "@var-log-journal";
@@ -84,6 +86,8 @@ in
     "Z ${dataDir}/sftp/tmp                       -   sftp sftp                                     -"
 
     # Ephemeral directories for users
-    "d /home/kari/.config 755 kari kari -"
+    "d /home/kari/.config       755 kari kari -"
+    "d /home/kari/.local        755 kari kari -"
+    "d /home/kari/.local/share  755 kari kari -"
   ];
 }
