@@ -1,7 +1,6 @@
 _: {
-  services.monitoring = {
-    enable = true;
-  };
+  # Monitoring + central log shipping
+  services.monitoring.enable = true;
 
   # vnStat - monitors bandwidth usage
   services.vnstat.enable = true;

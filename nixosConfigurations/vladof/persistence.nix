@@ -28,6 +28,7 @@ in
       "/var/log/journal" = "@var-log-journal";
       "/var/lib/acme" = "@acme";
       "/var/lib/prometheus" = "@prometheus";
+      "/var/lib/loki" = "@loki";
     } // boot {
     # dataDir: agenix reads SSH host key from here in stage-2
     "${dataDir}" = "@main";

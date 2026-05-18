@@ -21,6 +21,9 @@
   # Disk-aware garbage collection
   sys2x.gc.useDiskAware = true;
 
+  # Monitoring + central log shipping
+  services.monitoring.enable = true;
+
   # Connectivity
   networking = {
     hostName = "maliwan";

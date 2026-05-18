@@ -112,7 +112,7 @@
     };
   };
 
-  # Monitoring
+  # Monitoring + central log shipping
   services.monitoring = {
     enable = true;
     openFirewall = true;

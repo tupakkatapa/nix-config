@@ -12,7 +12,7 @@
 
 ## NixOS Development
 
-`~/nix-config` (github.com/tupakkatapa/nix-config) is the source of truth.
+`~/Workspace/tupakkatapa/nix-config` (github.com/tupakkatapa/nix-config) is the source of truth.
 
 - NEVER suggest `apt install`, `brew install`, `pip install`, or similar.
 - Temporary: `nix-shell -p <package>` or `, <command>` (comma runs from nixpkgs).

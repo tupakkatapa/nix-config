@@ -1,10 +1,11 @@
 { domain, dataDir, ... }:
 {
+  # Monitoring
   services.monitoring = {
     enable = true;
-    grafana = {
+    server = {
       enable = true;
-      domain = "grafana.${domain}";
+      grafana.domain = "grafana.${domain}";
       extraExporters.kaakkuri = "10.42.0.25:9100";
     };
   };
