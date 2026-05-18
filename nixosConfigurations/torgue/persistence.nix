@@ -93,5 +93,7 @@ in
     "d /home/kari/.local        755 kari kari -"
     "d /home/kari/.local/share  755 kari kari -"
     "d /home/kari/.claude       755 kari kari -"
+    "d /var/lib/ollama          755 ollama ollama -"
+    "d /var/lib/ollama/models   755 ollama ollama -"
   ];
 }
