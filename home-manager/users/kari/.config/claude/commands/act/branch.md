@@ -97,6 +97,6 @@ Report:
 - Commits/changes now on the new branch.
 
 Suggest next steps based on scenario:
-- **Upcoming work** — `/tt:actions:commit` (for the plan file), then `/tt:actions:push` + `/tt:actions:pr`.
-- **Work in progress** — `/tt:actions:commit` (for the staged changes), then `/tt:actions:push` + `/tt:actions:pr`.
-- **Work already committed** — `/tt:actions:push` + `/tt:actions:pr`; the commits are now on the feature branch.
+- **Upcoming work** — `/tt:act:commit` (for the plan file), then `/tt:act:push` + `/tt:act:pr`.
+- **Work in progress** — `/tt:act:commit` (for the staged changes), then `/tt:act:push` + `/tt:act:pr`.
+- **Work already committed** — `/tt:act:push` + `/tt:act:pr`; the commits are now on the feature branch.

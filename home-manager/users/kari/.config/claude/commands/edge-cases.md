@@ -7,7 +7,7 @@
 
 ---
 
-You are probing the artefact for edge cases, implicit assumptions, and architectural gaps that normal review misses. The substantive lenses are the `/tt:lens:*` specialists applied in **risk-discovery** mode — "what could go wrong here that the happy path hides?" — rather than review or planning.
+You are probing the artefact for edge cases, implicit assumptions, and architectural gaps that normal review misses. The substantive lenses are the `/tt:pov:*` specialists applied in **risk-discovery** mode — "what could go wrong here that the happy path hides?" — rather than review or planning.
 
 ## 1. Clarify Scope
 If the subject is unclear, ask the user to choose:
@@ -26,12 +26,12 @@ Read lens files lazily — only the Symptoms / Dimensions sections for lenses wi
 
 Typically relevant for edge-case work:
 
-- **`/tt:lens:reliability`** — failure modes, partial failures, recoverability, observability gaps. State lifecycle: transitional states, post-failure residue, cascading effects (constraints, hooks, events). Data consistency: orphaning, broken cleanup, circular dependencies, batch atomicity. External system interactions: secondary call failures, idempotency under retry, internal-vs-external state divergence.
-- **`/tt:lens:security`** — authorisation boundaries: every role/privilege level, indirect access paths, consistency of checks across cleanup and error paths, least-privilege scope, policies evaluated against stale vs current state.
-- **`/tt:lens:performance`** — concurrency and timing: simultaneous conflicting operations, check-then-act races, async arrivals (webhooks, queues, event handlers) after the entity is mutated/deleted, transaction scope (too broad or too narrow).
-- **`/tt:lens:testing`** — implicit assumptions about non-null fields, required relationships, "impossible" states; schema/API evolution; error messages leaking internals; gaps where no test would catch a regression.
-- **`/tt:lens:scope`** — undocumented assumptions about the data model or environment; complexity hiding edge cases by making the reachable state space too large to reason about.
-- **`/tt:lens:architecture`** — only when an edge case is a structural defect (cross-module invariant broken, dependency-direction inversion enabling the bug).
+- **`/tt:pov:reliability`** — failure modes, partial failures, recoverability, observability gaps. State lifecycle: transitional states, post-failure residue, cascading effects (constraints, hooks, events). Data consistency: orphaning, broken cleanup, circular dependencies, batch atomicity. External system interactions: secondary call failures, idempotency under retry, internal-vs-external state divergence.
+- **`/tt:pov:sec`** — authorisation boundaries: every role/privilege level, indirect access paths, consistency of checks across cleanup and error paths, least-privilege scope, policies evaluated against stale vs current state.
+- **`/tt:pov:perf`** — concurrency and timing: simultaneous conflicting operations, check-then-act races, async arrivals (webhooks, queues, event handlers) after the entity is mutated/deleted, transaction scope (too broad or too narrow).
+- **`/tt:pov:testing`** — implicit assumptions about non-null fields, required relationships, "impossible" states; schema/API evolution; error messages leaking internals; gaps where no test would catch a regression.
+- **`/tt:pov:scope`** — undocumented assumptions about the data model or environment; complexity hiding edge cases by making the reachable state space too large to reason about.
+- **`/tt:pov:arch`** — only when an edge case is a structural defect (cross-module invariant broken, dependency-direction inversion enabling the bug).
 
 Skip lenses that have no risk surface for this artefact.
 
@@ -62,6 +62,6 @@ Branch by where the findings hit:
 
 - **Findings invalidate the plan's assumptions** → suggest `/tt:plan` to revise. Do not patch around in implementation; the plan was wrong, fix the plan.
 - **Findings reveal bugs in already-shipped code** → suggest `/tt:debug` for each, in severity order.
-- **Findings reveal missing behaviour** → suggest `/tt:implement` (with a plan revision first if the missing behaviour is non-trivial).
+- **Findings reveal missing behaviour** → suggest `/tt:impl` (with a plan revision first if the missing behaviour is non-trivial).
 - **Findings reveal structural defects** → suggest `/tt:refactor`.
 - **Findings are accepted limitations** → suggest documenting them via `/tt:docs` (explanation mode: ADR or design-note) so the trade-off is captured for future readers.

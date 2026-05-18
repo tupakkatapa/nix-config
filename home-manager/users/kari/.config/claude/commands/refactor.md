@@ -7,7 +7,7 @@
 
 ---
 
-You are performing a **structural change that preserves behaviour**. This agenda is bound by Kent Beck's *two hats* rule: while wearing the structural hat, you do not change what the code does — only how it is arranged. Distinct from `/tt:implement` (adds capability) and `/tt:debug` (changes behaviour to fix a defect). The substantive judgement comes from the `/tt:lens:*` panel applied in **restructure** mode — "what is the smallest behaviour-preserving change that reduces complexity here?"
+You are performing a **structural change that preserves behaviour**. This agenda is bound by Kent Beck's *two hats* rule: while wearing the structural hat, you do not change what the code does — only how it is arranged. Distinct from `/tt:impl` (adds capability) and `/tt:debug` (changes behaviour to fix a defect). The substantive judgement comes from the `/tt:pov:*` panel applied in **restructure** mode — "what is the smallest behaviour-preserving change that reduces complexity here?"
 
 ## 1. Clarify Scope
 If the refactor target is unclear, ask the user to choose:
@@ -27,7 +27,7 @@ Before restructuring, ensure current behaviour is locked down:
 - If coverage is thin, add **characterisation tests** first (Feathers): tests that pin down what the code currently does, regardless of whether that is correct. The structural commit is then provably behaviour-preserving.
 - Characterisation tests are a separate commit from the refactor itself.
 
-If pinning behaviour is impossible (no seams, no test infrastructure), break dependencies first using Feathers' techniques (see `/tt:lens:testing`). Treat that as its own structural step.
+If pinning behaviour is impossible (no seams, no test infrastructure), break dependencies first using Feathers' techniques (see `/tt:pov:testing`). Treat that as its own structural step.
 
 ## 3. Apply the Lens Panel (mode = restructure)
 
@@ -35,11 +35,11 @@ Read lens files lazily — pull the dimensions you need, skip lenses with no str
 
 Typically relevant for refactor:
 
-- **`/tt:lens:quality`** — Fowler's catalogue. Identify smells: duplicated code, long function, large class, long parameter list, feature envy, primitive obsession, switch statements, divergent change, shotgun surgery. For each, name the canonical refactoring (Extract Function, Replace Magic Literal, Replace Conditional with Polymorphism, Move Function, etc.).
-- **`/tt:lens:scope`** — accidental complexity to remove outright: dead code, unused abstractions, single-call helpers, configuration knobs no caller overrides, premature generics with one instantiation. Deletion is the cheapest refactoring.
-- **`/tt:lens:architecture`** — module boundaries to redraw: a function reaching past its layer, a circular import, a class with two reasons to change. Apply Parnas info-hiding and Ousterhout deep modules: the change makes the interface smaller relative to the implementation.
-- **`/tt:lens:testing`** — testability as a structural concern: break dependencies (Feathers seams), inject collaborators, expose pure cores from impure shells.
-- **`/tt:lens:aesthetics`** — formatting, naming, ordering, comment discipline. Often the cheapest first pass; runs last so it doesn't conflict with bigger structural moves.
+- **`/tt:pov:quality`** — Fowler's catalogue. Identify smells: duplicated code, long function, large class, long parameter list, feature envy, primitive obsession, switch statements, divergent change, shotgun surgery. For each, name the canonical refactoring (Extract Function, Replace Magic Literal, Replace Conditional with Polymorphism, Move Function, etc.).
+- **`/tt:pov:scope`** — accidental complexity to remove outright: dead code, unused abstractions, single-call helpers, configuration knobs no caller overrides, premature generics with one instantiation. Deletion is the cheapest refactoring.
+- **`/tt:pov:arch`** — module boundaries to redraw: a function reaching past its layer, a circular import, a class with two reasons to change. Apply Parnas info-hiding and Ousterhout deep modules: the change makes the interface smaller relative to the implementation.
+- **`/tt:pov:testing`** — testability as a structural concern: break dependencies (Feathers seams), inject collaborators, expose pure cores from impure shells.
+- **`/tt:pov:style`** — formatting, naming, ordering, comment discipline. Often the cheapest first pass; runs last so it doesn't conflict with bigger structural moves.
 
 ## 4. Plan the Sequence
 Order refactorings smallest-first, each independently verifiable:
@@ -57,7 +57,7 @@ Order refactorings smallest-first, each independently verifiable:
 ## 6. Two-Hats Discipline
 - A single commit is structural OR behavioural — never both.
 - If during refactoring you spot a bug, **do not fix it inside the refactor commit**. Note it, finish the structural step, switch hats, fix it separately (`/tt:debug`).
-- If you discover a missing feature need, do not add it inside the refactor commit. Note it for `/tt:implement`.
+- If you discover a missing feature need, do not add it inside the refactor commit. Note it for `/tt:impl`.
 
 ## 7. Run Automated Checks
 Run pre-commit hooks (if configured), linters, and the project's tests. Fix failures before continuing — but failures in a refactor session almost always mean the last step changed behaviour, not that tests are wrong.
@@ -67,7 +67,7 @@ Run pre-commit hooks (if configured), linters, and the project's tests. Fix fail
 - Before/after structural shape (interface size, module count, duplication factor, complexity metric — whichever is relevant).
 - Behaviour preservation evidence: which tests covered the surface, whether characterisation tests were added.
 - Smells noted but not yet addressed (deferred to follow-up).
-- Bugs/features discovered along the way (handed off to `/tt:debug` / `/tt:implement`).
+- Bugs/features discovered along the way (handed off to `/tt:debug` / `/tt:impl`).
 
 ## 9. Handoff
-When refactoring is complete, suggest running `/tt:review` to validate the structural change, then `/tt:actions:commit`.
+When refactoring is complete, suggest running `/tt:review` to validate the structural change, then `/tt:act:commit`.

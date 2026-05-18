@@ -7,7 +7,7 @@
 
 ---
 
-You are diagnosing a failure: a failing test, a reported bug, an incident, or unexpected behaviour. This is **root-cause discovery**, distinct from `/tt:edge-cases` (hypothetical risk) and `/tt:review` (defect-finding pass). The substantive judgement comes from the `/tt:lens:*` panel applied in **diagnosis** mode — "what assumption broke, and where?" If a `systematic-debugging` skill is available, invoke it for the procedure.
+You are diagnosing a failure: a failing test, a reported bug, an incident, or unexpected behaviour. This is **root-cause discovery**, distinct from `/tt:edge-cases` (hypothetical risk) and `/tt:review` (defect-finding pass). The substantive judgement comes from the `/tt:pov:*` panel applied in **diagnosis** mode — "what assumption broke, and where?" If a `systematic-debugging` skill is available, invoke it for the procedure.
 
 ## 1. Reproduce
 A bug you cannot reliably trigger is a bug you cannot fix. Before anything else:
@@ -30,12 +30,12 @@ Read each relevant lens file lazily — only the section you need (Symptoms / Di
 
 Typically relevant for diagnosis:
 
-- **`/tt:lens:reliability`** — failure modes that match the symptom: partial failure, retry semantics, observability gaps that hid the root cause earlier, state left after error paths.
-- **`/tt:lens:testing`** — which test *should* have caught this and didn't? Implicit assumptions about non-null fields, "impossible" states, or relationship invariants that turned out to be false.
-- **`/tt:lens:scope`** — accidental complexity hiding the bug. State space too large to reason about, dead branches still reachable, premature abstractions obscuring control flow.
-- **`/tt:lens:architecture`** — boundary violations: function reaching past its layer, hidden coupling, dependency direction wrong, invariant that should live at a boundary leaking inside.
-- **`/tt:lens:performance`** — only when the symptom is latency, throughput, resource exhaustion, or a concurrency race. Apply USE method, identify saturation, measure before guessing.
-- **`/tt:lens:security`** — only when the symptom involves trust boundary crossing (auth bypass, injection, privilege escalation, data leak).
+- **`/tt:pov:reliability`** — failure modes that match the symptom: partial failure, retry semantics, observability gaps that hid the root cause earlier, state left after error paths.
+- **`/tt:pov:testing`** — which test *should* have caught this and didn't? Implicit assumptions about non-null fields, "impossible" states, or relationship invariants that turned out to be false.
+- **`/tt:pov:scope`** — accidental complexity hiding the bug. State space too large to reason about, dead branches still reachable, premature abstractions obscuring control flow.
+- **`/tt:pov:arch`** — boundary violations: function reaching past its layer, hidden coupling, dependency direction wrong, invariant that should live at a boundary leaking inside.
+- **`/tt:pov:perf`** — only when the symptom is latency, throughput, resource exhaustion, or a concurrency race. Apply USE method, identify saturation, measure before guessing.
+- **`/tt:pov:sec`** — only when the symptom involves trust boundary crossing (auth bypass, injection, privilege escalation, data leak).
 
 ## 4. Hypothesise
 State the root cause as a falsifiable claim:
@@ -60,7 +60,7 @@ Apply Beck's two-hats discipline rigorously. The order of commits in a debug ses
 Never bundle unrelated cleanup with the fix. Surface unrelated tidying as deferred items in the summary.
 
 ## 7. Regression Test
-- Add a test that would have caught this bug. If the bug was untestable, fix the testability first as a structural commit (see step 6.1; refer to `/tt:lens:testing` for seam techniques).
+- Add a test that would have caught this bug. If the bug was untestable, fix the testability first as a structural commit (see step 6.1; refer to `/tt:pov:testing` for seam techniques).
 - Verify the test fails against the unfixed code, then passes against the fix. If the test passes both before and after, the fix is at the wrong layer or the test asserts the wrong thing.
 - If the bug was a missing assumption check, ask: are there sibling assumptions equally undefended? Add tests for those too.
 
@@ -75,4 +75,4 @@ Run pre-commit hooks (if configured), linters, and the project's tests. Fix all 
 - Sibling risks discovered along the way (defer to `/tt:edge-cases` or a follow-up commit if substantial).
 
 ## 10. Handoff
-When the fix is verified, suggest running `/tt:review` to validate the patch, then `/tt:actions:commit`.
+When the fix is verified, suggest running `/tt:review` to validate the patch, then `/tt:act:commit`.

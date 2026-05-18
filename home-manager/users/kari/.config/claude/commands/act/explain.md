@@ -40,7 +40,7 @@ Provide a clear, structured explanation:
 
 ## 4. Visualize
 
-If a diagram would help understanding, suggest `/tt:actions:diagram` at the end of the explanation. That action owns the rendering pipeline (Mermaid backend, `/tmp/diagram.{mmd,svg}`, `xdg-open`); duplicating it here would let the two drift.
+If a diagram would help understanding, suggest `/tt:act:diagram` at the end of the explanation. That action owns the rendering pipeline (Mermaid backend, `/tmp/diagram.{mmd,svg}`, `xdg-open`); duplicating it here would let the two drift.
 
 Examples of where a diagram earns its keep:
 - Architecture diagrams for system design.

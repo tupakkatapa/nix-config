@@ -7,10 +7,10 @@
 
 ---
 
-You are writing a plan for a piece of work. **Planning ends with an approved plan, not with code.** Execution is `/tt:implement`'s job; this agenda stops at the handoff. If a `writing-plans` skill is available, invoke it for the procedure.
+You are writing a plan for a piece of work. **Planning ends with an approved plan, not with code.** Execution is `/tt:impl`'s job; this agenda stops at the handoff. If a `writing-plans` skill is available, invoke it for the procedure.
 
 Distinct from:
-- `/tt:implement` — executes an approved plan (or a small task that needs none).
+- `/tt:impl` — executes an approved plan (or a small task that needs none).
 - `/tt:debug` — diagnoses a failure (planning a fix is part of that flow, not this one).
 - `/tt:refactor` — restructures behaviour-preserving (planning is inline, scoped to the structural move).
 
@@ -34,28 +34,28 @@ Capture: success criteria, constraints, non-goals, deadlines, stakeholders. A pl
 
 Detect the project's primary language(s) and pull the matching context file(s) — these capture house-style preferences (linters, formatters, packaging idiom, idiom expectations) the plan must honour:
 
-- Nix-only or Nix as substrate → `/tt:context:nix`.
-- Rust → `/tt:context:rust` (assumes the Nix layer).
-- JavaScript / TypeScript → `/tt:context:javascript` (assumes the Nix layer).
-- Shell scripts → `/tt:context:shell`.
+- Nix-only or Nix as substrate → `/tt:mod:nix`.
+- Rust → `/tt:mod:rs` (assumes the Nix layer).
+- JavaScript / TypeScript → `/tt:mod:js` (assumes the Nix layer).
+- Shell scripts → `/tt:mod:sh`.
 
 Per-project `./CLAUDE.md` overrides anything in a context file; honour the override.
 
 ## 4. Apply the Lens Panel (mode = planning)
 
-For each relevant lens, frame its dimensions as **commitments the proposed design must honour**, not retrospective audit. **Read lens files lazily** — pull only the section (Identity / Symptoms / Dimensions) you need for each lens as you reach it; skip lenses with no planning surface for this work. Pull guidance from `commands/lens/<name>.md`.
+For each relevant lens, frame its dimensions as **commitments the proposed design must honour**, not retrospective audit. **Read lens files lazily** — pull only the section (Identity / Symptoms / Dimensions) you need for each lens as you reach it; skip lenses with no planning surface for this work. Pull guidance from `commands/pov/<name>.md`.
 
 Typically relevant:
 
-- **`/tt:lens:scope`** — what is essential vs accidental in this work. Reject premature abstraction, speculative configurability, dead-code-on-arrival. Smallest thing that delivers the value.
-- **`/tt:lens:architecture`** — module boundaries, dependency direction, data flow. Where does the work slot in, what does it depend on, what depends on it. Hidden coupling to break.
-- **`/tt:lens:security`** — trust boundaries the change crosses; authn/authz, secrets, input validation at those boundaries.
-- **`/tt:lens:reliability`** — failure modes the design must tolerate; idempotency, retries, observability hooks, deployability.
-- **`/tt:lens:performance`** — only if a measurable concern exists (data volume, hot path, contention). Otherwise defer.
-- **`/tt:lens:testing`** — how the work will be tested; seams, doubles, characterisation needs.
-- **`/tt:lens:quality`** — duplication, naming, separation within the module being touched.
-- **`/tt:lens:ux`** — only if the change has a surface (CLI flag, API field, config knob, GUI control).
-- **`/tt:lens:docs`** — what tutorials/how-tos/reference/explanation or changelog/ADR entries this implies.
+- **`/tt:pov:scope`** — what is essential vs accidental in this work. Reject premature abstraction, speculative configurability, dead-code-on-arrival. Smallest thing that delivers the value.
+- **`/tt:pov:arch`** — module boundaries, dependency direction, data flow. Where does the work slot in, what does it depend on, what depends on it. Hidden coupling to break.
+- **`/tt:pov:sec`** — trust boundaries the change crosses; authn/authz, secrets, input validation at those boundaries.
+- **`/tt:pov:reliability`** — failure modes the design must tolerate; idempotency, retries, observability hooks, deployability.
+- **`/tt:pov:perf`** — only if a measurable concern exists (data volume, hot path, contention). Otherwise defer.
+- **`/tt:pov:testing`** — how the work will be tested; seams, doubles, characterisation needs.
+- **`/tt:pov:quality`** — duplication, naming, separation within the module being touched.
+- **`/tt:pov:ux`** — only if the change has a surface (CLI flag, API field, config knob, GUI control).
+- **`/tt:pov:docs`** — what tutorials/how-tos/reference/explanation or changelog/ADR entries this implies.
 
 ## 5. Write the Plan
 Always produce the plan as a markdown file. Default path: `docs/plans/YYYY-MM-DD-<short-kebab-title>.md` (use today's date; create the directory if it does not exist). If the project has an existing convention for design docs (a different directory, a ticket system, an ADR layout), use that — the per-project `./CLAUDE.md` is the source of truth. Never plan in-conversation only — a file gives the plan a stable identity for review, edge-case analysis, and later execution. Structure:
@@ -82,11 +82,11 @@ When the plan is approved, **suggest** these next steps for the user to run (thi
 - **`/tt:edge-cases`** — surface hypothetical risks before they harden into bugs.
 
 **Git workflow (optional; PR-first style):**
-- **`/tt:actions:branch`** — create a branch named after the plan.
-- **`/tt:actions:commit`** — commit the plan file as the initial commit on the branch.
-- **`/tt:actions:push`** + **`/tt:actions:pr`** — open a draft PR so CI runs alongside development.
+- **`/tt:act:branch`** — create a branch named after the plan.
+- **`/tt:act:commit`** — commit the plan file as the initial commit on the branch.
+- **`/tt:act:push`** + **`/tt:act:pr`** — open a draft PR so CI runs alongside development.
 
 **Execution:**
-- **`/tt:implement`** — with the plan file as the input artefact.
+- **`/tt:impl`** — with the plan file as the input artefact.
 
 If validation steps surface revisions, return to step 5 and update the plan file before continuing.

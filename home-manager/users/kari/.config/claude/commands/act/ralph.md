@@ -35,7 +35,7 @@ Write `RALPH.md` in the project root with:
 - **Phases** — incremental steps, each building on the previous
 - **Testing** — what to test (positive and negative cases)
 
-Frame the plan against the relevant `/tt:lens:*` dimensions in planning mode (see `/tt:plan`).
+Frame the plan against the relevant `/tt:pov:*` dimensions in planning mode (see `/tt:plan`).
 
 ## 3. Craft the Command
 ```

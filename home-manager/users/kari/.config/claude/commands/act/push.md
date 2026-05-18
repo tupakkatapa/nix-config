@@ -37,5 +37,5 @@ If the working tree has uncommitted changes that should be part of this push, as
 
 Report: branch, commits pushed, upstream URL.
 
-If no PR exists for this branch, suggest `/tt:actions:pr` to open one.
+If no PR exists for this branch, suggest `/tt:act:pr` to open one.
 If CI is configured, name the next sensible check (`gh run watch`, dashboard URL).

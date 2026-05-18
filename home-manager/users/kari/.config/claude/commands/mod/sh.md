@@ -10,7 +10,7 @@
 
 Conventions for bash scripts across any project. The canonical `say()` pattern comes from `~/Workspace/local/majbacka-labs/nixie/packages/refind-generate/refind-generate.sh:29`. This file is the **target idiom** — `mozid.sh` and `gh-envsync.sh` are pre-idiom scripts and will be aligned as they're touched; new scripts follow this file from the start.
 
-Linked from `/tt:context:nix`, `/tt:context:rust`, and `/tt:context:javascript` — any project's shell scripts follow this file.
+Linked from `/tt:mod:nix`, `/tt:mod:rs`, and `/tt:mod:js` — any project's shell scripts follow this file.
 
 ## Shebang & strict mode
 
@@ -198,7 +198,7 @@ Shell-script linting/formatting is opt-in per project — not part of the defaul
 
 ```nix
 programs = {
-  # ... base stack from /tt:context:nix ...
+  # ... base stack from /tt:mod:nix ...
   shellcheck.enable = true;
   shfmt.enable = true;
 };

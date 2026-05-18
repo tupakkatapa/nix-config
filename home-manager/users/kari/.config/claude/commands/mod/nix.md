@@ -17,9 +17,9 @@ Concrete conventions distilled from `~/Workspace/local/tupakkatapa/{nixos-runtim
 - **CI is optional, `nix flake check` is the gate.** No GitHub Actions in any current project. `nix flake check` validates module evaluation, formatter, and (when wired) pre-commit hooks. If CI is added later, it should run that single command.
 
 Cross-language conventions linked from this file:
-- Shell scripts: `/tt:context:shell`.
-- Rust projects layered on this Nix substrate: `/tt:context:rust`.
-- JS projects layered on this Nix substrate: `/tt:context:javascript`.
+- Shell scripts: `/tt:mod:sh`.
+- Rust projects layered on this Nix substrate: `/tt:mod:rs`.
+- JS projects layered on this Nix substrate: `/tt:mod:js`.
 
 **No `# statix:ignore` / `# deadnix: skip` without a justifying comment** on the line above naming the lint and the reason. Fix the warning first. Matches the global rule in `~/.claude/CLAUDE.md`.
 
@@ -87,7 +87,7 @@ treefmt.config = {
 };
 ```
 
-`nix fmt` runs treefmt. CI checks it via `flakeCheck = true`. Per-language formatters added in `/tt:context:{rust,javascript}`. Shell-script formatting (`shellcheck`, `shfmt`) is opt-in per project — see `/tt:context:shell` for the snippet — not part of the default Nix stack.
+`nix fmt` runs treefmt. CI checks it via `flakeCheck = true`. Per-language formatters added in `/tt:mod:{rust,javascript}`. Shell-script formatting (`shellcheck`, `shfmt`) is opt-in per project — see `/tt:mod:sh` for the snippet — not part of the default Nix stack.
 
 ## Pre-commit hooks
 
@@ -98,7 +98,7 @@ pre-commit.settings.hooks = {
     enable = true;
     package = config.treefmt.build.wrapper;
   };
-  # per-language hooks added in /tt:context:{rust,javascript}
+  # per-language hooks added in /tt:mod:{rust,javascript}
 };
 ```
 
@@ -234,7 +234,7 @@ Don't add by reflex; only when a documented consumer needs it (see `levari/shell
 
 ## CHANGELOG
 
-`Keep a Changelog` format (keepachangelog.com, current 1.1.0). Sections: `Added / Changed / Deprecated / Removed / Fixed / Security`. SemVer. Versions match the upstream manifest. See `/tt:actions:bump`.
+`Keep a Changelog` format (keepachangelog.com, current 1.1.0). Sections: `Added / Changed / Deprecated / Removed / Fixed / Security`. SemVer. Versions match the upstream manifest. See `/tt:act:bump`.
 
 ## Gotchas
 - `nixpkgs.config.allowUnfree = true` if the project pulls anything proprietary; document why per project.

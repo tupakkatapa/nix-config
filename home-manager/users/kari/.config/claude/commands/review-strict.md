@@ -7,7 +7,7 @@
 
 ---
 
-You are conducting a **strict, comprehensive** code review across the full `/tt:lens:*` panel via mandatory subagent dispatch. This agenda is the heavyweight counterpart to `/tt:review` — slower, more expensive in tokens, with no shortcuts.
+You are conducting a **strict, comprehensive** code review across the full `/tt:pov:*` panel via mandatory subagent dispatch. This agenda is the heavyweight counterpart to `/tt:review` — slower, more expensive in tokens, with no shortcuts.
 
 **When to use:**
 - Pre-release reviews (any version bump that ships to consumers).
@@ -42,31 +42,31 @@ Pass the chosen scope verbatim to every lens subagent below, along with `mode = 
 
 Each subagent prompt includes:
 - The artefact under review (paths, diff, plan file — whatever scope was chosen).
-- The full text of the corresponding `commands/lens/<name>.md` file.
+- The full text of the corresponding `commands/pov/<name>.md` file.
 - This contract: "Read your lens file in full. Apply every dimension. Report findings using the Output Schema verbatim. Cite the principle/symptom each finding derives from. If your lens has no surface in this artefact, return one explicit 'no findings: <one-line reason>' statement — the *reason* must reference what you inspected to reach that conclusion."
 
 ### Stage 1 — Sequential (each filters the next)
 
 These two run first, in order. The second receives the first's findings to avoid re-inspecting code that scope already culled.
 
-1. **`/tt:lens:scope`** — essential vs accidental complexity; cull gold-plating, premature abstraction, dead code, speculative configurability before deeper inspection.
-2. **`/tt:lens:architecture`** — module boundaries, dependency direction, data flow, layering, distributed shape.
+1. **`/tt:pov:scope`** — essential vs accidental complexity; cull gold-plating, premature abstraction, dead code, speculative configurability before deeper inspection.
+2. **`/tt:pov:arch`** — module boundaries, dependency direction, data flow, layering, distributed shape.
 
 ### Stage 2 — Parallel (independent dimensions)
 
 Dispatch all six in a single message via the Task tool — independent facets, no inter-blocking. Each subagent receives the artefact as shaped by Stage 1's findings:
 
-- **`/tt:lens:ux`** — surfaces (GUI / TUI / CLI / API / library / config schema).
-- **`/tt:lens:security`** — threat model, authn/authz, secrets, crypto, trust boundaries.
-- **`/tt:lens:performance`** — algorithmic complexity, IO patterns, contention, tail latency; with measurements where claims are made.
-- **`/tt:lens:reliability`** — failure modes, SLIs/SLOs, observability, deployability, recoverability.
-- **`/tt:lens:quality`** — duplication, naming, idiom, separation of concerns inside module boundaries.
-- **`/tt:lens:testing`** — coverage of critical paths, edge cases, testability, suite health.
+- **`/tt:pov:ux`** — surfaces (GUI / TUI / CLI / API / library / config schema).
+- **`/tt:pov:sec`** — threat model, authn/authz, secrets, crypto, trust boundaries.
+- **`/tt:pov:perf`** — algorithmic complexity, IO patterns, contention, tail latency; with measurements where claims are made.
+- **`/tt:pov:reliability`** — failure modes, SLIs/SLOs, observability, deployability, recoverability.
+- **`/tt:pov:quality`** — duplication, naming, idiom, separation of concerns inside module boundaries.
+- **`/tt:pov:testing`** — coverage of critical paths, edge cases, testability, suite health.
 
 ### Stage 3 — Final pass (form, after everything else has stabilised)
 
-- **`/tt:lens:docs`** — README, tutorials, how-tos, reference, changelog, runbooks, ADRs (Diátaxis-aware).
-- **`/tt:lens:aesthetics`** — formatting, naming consistency, comment discipline, ordering. **Runs last.**
+- **`/tt:pov:docs`** — README, tutorials, how-tos, reference, changelog, runbooks, ADRs (Diátaxis-aware).
+- **`/tt:pov:style`** — formatting, naming consistency, comment discipline, ordering. **Runs last.**
 
 ## 3. Consolidate
 
@@ -79,7 +79,7 @@ Merge specialist reports into a single findings list. For each finding, the cons
 - **Citation** — the lens principle or symptom the finding derives from, named.
 - **Recommended fix** — concrete action.
 - **Confidence** — High / Medium / Low.
-- **Disposition** — tidying (inline) / behavioural (`/tt:implement` or `/tt:debug`) / structural (`/tt:refactor`) / docs (inline) / deferred-with-rationale.
+- **Disposition** — tidying (inline) / behavioural (`/tt:impl` or `/tt:debug`) / structural (`/tt:refactor`) / docs (inline) / deferred-with-rationale.
 
 Resolve conflicting findings by the conflict-resolution order: scope → architecture → security → reliability → performance → quality → testing → ux → docs → aesthetics. Removing something supersedes restructuring it; restructuring supersedes polishing it.
 
@@ -114,6 +114,6 @@ Produce a structured summary:
 ## 8. Handoff
 
 Suggest the next slash command per dominant disposition:
-- Behavioural fixes pending → `/tt:implement` (or `/tt:debug` if findings are diagnoses).
+- Behavioural fixes pending → `/tt:impl` (or `/tt:debug` if findings are diagnoses).
 - Structural moves pending → `/tt:refactor`.
-- Otherwise → `/tt:actions:commit` for the tidying / docs commit applied in §5.
+- Otherwise → `/tt:act:commit` for the tidying / docs commit applied in §5.

@@ -34,7 +34,7 @@ Detect project type from config files (`flake.nix`, `Cargo.toml`, `pyproject.tom
 - **Go**: `go test ./...`.
 - **JS/TS**: `yarn test`, `npm test`, or `pnpm test` depending on the lock file.
 
-Fix all failures. Be skeptical of skipped tests — verify they should be skipped (skips need an owner, a reason, and an expiry per `/tt:lens:testing`).
+Fix all failures. Be skeptical of skipped tests — verify they should be skipped (skips need an owner, a reason, and an expiry per `/tt:pov:testing`).
 
 ## 3. Final Pre-commit
 Run `pre-commit run --all-files` once more to catch any regression from fixes.

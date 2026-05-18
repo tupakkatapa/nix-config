@@ -7,10 +7,10 @@
 
 ---
 
-You are writing documentation as the primary task — a new tutorial, how-to, reference page, explanation, runbook, ADR, or changelog entry — rather than auditing docs as a side-effect of review. Substantive guidance comes from the `/tt:lens:docs` lens applied in **authoring** mode, anchored by the Diátaxis framework (Procida).
+You are writing documentation as the primary task — a new tutorial, how-to, reference page, explanation, runbook, ADR, or changelog entry — rather than auditing docs as a side-effect of review. Substantive guidance comes from the `/tt:pov:docs` lens applied in **authoring** mode, anchored by the Diátaxis framework (Procida).
 
 Distinct from:
-- `/tt:lens:docs` — dimensional viewpoint, applied *during* review/planning/diagnosis. This agenda is what you reach for when docs are the deliverable.
+- `/tt:pov:docs` — dimensional viewpoint, applied *during* review/planning/diagnosis. This agenda is what you reach for when docs are the deliverable.
 - `/tt:explain` (action) — produces an in-conversation explanation for the user. This agenda produces durable files in the repo.
 
 ## 1. Clarify Subject and Audience
@@ -37,7 +37,7 @@ Diátaxis (Procida) separates documentation into four distinct modes. Picking th
 
 Special cases (canonical formats):
 - **Runbook** → How-to (task: respond to incident X). Test the procedure under a game day before declaring it ready.
-- **Changelog** → Reference (what changed in version X). Use *Keep a Changelog* format (keepachangelog.com, current 1.1.0): Added / Changed / Deprecated / Removed / Fixed / Security. See `/tt:actions:bump`.
+- **Changelog** → Reference (what changed in version X). Use *Keep a Changelog* format (keepachangelog.com, current 1.1.0): Added / Changed / Deprecated / Removed / Fixed / Security. See `/tt:act:bump`.
 - **ADR** → Explanation (why we chose X over Y, what we rejected). Use MADR format (adr.github.io/madr): context → decision drivers → considered options → decision → consequences. Immutable once accepted; supersede rather than rewrite.
 - **README** → usually mixed; if so, *separate the sections* into the four modes rather than blending.
 
@@ -53,12 +53,12 @@ A single document should serve **one** mode. If the subject needs more than one,
 
 ## 4. Apply the Lens Panel (mode = authoring)
 
-Read lens files lazily — `commands/lens/docs.md` Dimensions section for the primary lens; supporting lenses only when their surface applies. Consult:
+Read lens files lazily — `commands/pov/docs.md` Dimensions section for the primary lens; supporting lenses only when their surface applies. Consult:
 
-- **`/tt:lens:docs`** — Diátaxis discipline, fact-check against implementation, audience fit, completeness for the chosen mode.
-- **`/tt:lens:scope`** — does this doc say only what is essential to the reader? Cut paragraphs that gold-plate, repeat code comments, or document obvious behaviour.
-- **`/tt:lens:ux`** — the doc is a surface. Apply Nielsen heuristics to it: status visibility (TOC, breadcrumbs), error recovery (troubleshooting), consistency, minimalism.
-- **`/tt:lens:aesthetics`** — prose discipline. Short sentences. Active voice. One idea per paragraph. No filler. No throat-clearing introductions ("In this document we will discuss…").
+- **`/tt:pov:docs`** — Diátaxis discipline, fact-check against implementation, audience fit, completeness for the chosen mode.
+- **`/tt:pov:scope`** — does this doc say only what is essential to the reader? Cut paragraphs that gold-plate, repeat code comments, or document obvious behaviour.
+- **`/tt:pov:ux`** — the doc is a surface. Apply Nielsen heuristics to it: status visibility (TOC, breadcrumbs), error recovery (troubleshooting), consistency, minimalism.
+- **`/tt:pov:style`** — prose discipline. Short sentences. Active voice. One idea per paragraph. No filler. No throat-clearing introductions ("In this document we will discuss…").
 
 ## 5. Draft
 
@@ -80,7 +80,7 @@ For explanation:
 
 - Follow the project's existing docs layout. If none exists, propose one: typically `docs/tutorials/`, `docs/how-to/`, `docs/reference/`, `docs/explanation/`.
 - For ADRs: `docs/adr/NNNN-<slug>.md` numbered sequentially (MADR or similar conventions).
-- For changelogs: a single `CHANGELOG.md` at the repo root (Keep a Changelog format — see `/tt:actions:bump`).
+- For changelogs: a single `CHANGELOG.md` at the repo root (Keep a Changelog format — see `/tt:act:bump`).
 - Cross-link related docs; an unreachable doc is an absent doc.
 
 ## 7. Verify
@@ -94,4 +94,4 @@ For explanation:
 
 Suggest:
 - **`/tt:review`** against the new docs (scope = "the new/changed documentation files"). The lens panel — especially `docs`, `scope`, `ux`, `aesthetics` — applies cleanly to prose.
-- **`/tt:actions:commit`** when the review is clean.
+- **`/tt:act:commit`** when the review is clean.

@@ -8,7 +8,7 @@
 - **No lint suppressions** — `# noqa`, `#[allow(...)]`, `// eslint-disable`, `// shellcheck disable`, `# type: ignore`, equivalents — unless absolutely necessary. Fix the underlying issue. Unavoidable suppressions carry a comment on the line above naming the rule and the reason.
 - **Plan Mode is user-initiated.** With `defaultMode = "auto"`, autonomous execution is the default. Do not call `EnterPlanMode` unilaterally; if the user already activated Plan Mode, use `ExitPlanMode` to surface the plan; otherwise present plans inline alongside the file path.
 - **Search memory before planning non-trivial work.** `mcp__plugin_claude-mem_mcp-search__search` first, then `timeline` / `get_observations` on hits — never load full observations blind.
-- **Lazy-read reference files.** `/tt:lens:*` and `/tt:context:*` files are reference, not preludes. Read the section you need (Identity / Symptoms / Dimensions / Output Schema) — don't pull the whole file when one section answers the question. For multi-lens passes, prefer subagent dispatch (each lens gets isolated context, returns findings only) over reading 10 lens files into the main context.
+- **Lazy-read reference files.** `/tt:pov:*` and `/tt:mod:*` files are reference, not preludes. Read the section you need (Identity / Symptoms / Dimensions / Output Schema) — don't pull the whole file when one section answers the question. For multi-lens passes, prefer subagent dispatch (each lens gets isolated context, returns findings only) over reading 10 lens files into the main context.
 
 ## NixOS Development
 
@@ -54,7 +54,7 @@ Slash commands under `/tt:*`. Auto-invoke when user intent clearly matches.
 
 **Agendas** (workflows over an artefact):
 - `/tt:plan` — write an approved plan
-- `/tt:implement` — execute an approved plan
+- `/tt:impl` — execute an approved plan
 - `/tt:review` — review across the lens panel (single-agent, fast, daily use)
 - `/tt:review-strict` — strict review: full subagent panel, mandatory schema, block-on-blocker (pre-release, security, architecture)
 - `/tt:debug` — root-cause diagnosis
@@ -63,15 +63,15 @@ Slash commands under `/tt:*`. Auto-invoke when user intent clearly matches.
 - `/tt:docs` — write documentation (Diátaxis)
 
 **Actions** (single operations):
-- `/tt:actions:check` — pre-commit, linters, tests
-- `/tt:actions:commit` — prepare/create commit (amend if unpushed, authorship checked)
-- `/tt:actions:branch` — create branch (upcoming or move existing work)
-- `/tt:actions:push` — push current branch (explicit auth)
-- `/tt:actions:pr` — open a draft PR (PR-first)
-- `/tt:actions:bump` — bump version + changelog
-- `/tt:actions:explain` — explain topic/code
-- `/tt:actions:diagram` — Mermaid diagram
-- `/tt:actions:ralph` — initialise a Ralph Wiggum refinement loop
+- `/tt:act:check` — pre-commit, linters, tests
+- `/tt:act:commit` — prepare/create commit (amend if unpushed, authorship checked)
+- `/tt:act:branch` — create branch (upcoming or move existing work)
+- `/tt:act:push` — push current branch (explicit auth)
+- `/tt:act:pr` — open a draft PR (PR-first)
+- `/tt:act:bump` — bump version + changelog
+- `/tt:act:explain` — explain topic/code
+- `/tt:act:diagram` — Mermaid diagram
+- `/tt:act:ralph` — initialise a Ralph Wiggum refinement loop
 
 **Lens** (mode-agnostic dimensional specialists):
 - `scope` — essential vs accidental complexity
@@ -86,16 +86,16 @@ Slash commands under `/tt:*`. Auto-invoke when user intent clearly matches.
 - `aesthetics` — formatting, naming, comments (runs last)
 
 **Context** (per-language house style, distilled from real projects):
-- `/tt:context:nix` — declarative, flake-parts, treefmt, module style
-- `/tt:context:rust` — pedantic clippy via pre-commit, idiom expectations
-- `/tt:context:javascript` — Yarn + mkYarnPackage, oxlint pedantic, Playwright
-- `/tt:context:shell` — bash strict mode, `say()` helper, packaging via `makeWrapper`
+- `/tt:mod:nix` — declarative, flake-parts, treefmt, module style
+- `/tt:mod:rs` — pedantic clippy via pre-commit, idiom expectations
+- `/tt:mod:js` — Yarn + mkYarnPackage, oxlint pedantic, Playwright
+- `/tt:mod:sh` — bash strict mode, `say()` helper, packaging via `makeWrapper`
 
 Agenda mode taxonomy (consumed by lens specialists):
 
 | Agenda | Mode | Lens dimensions framed as… |
 |---|---|---|
-| `/tt:plan`, `/tt:implement` | planning | commitments before code exists |
+| `/tt:plan`, `/tt:impl` | planning | commitments before code exists |
 | `/tt:review` | review | defects in existing code |
 | `/tt:debug` | diagnosis | which assumption broke? |
 | `/tt:refactor` | restructure | behaviour-preserving moves |
@@ -117,3 +117,12 @@ User-initiated (`/ralph-loop`). Inside: check files/git for prior iteration's wo
 | Parallel work (3+ tasks) | Task tool subagents |
 | Deep codebase search | Explore subagent |
 | Iterative refinement | Ralph Loop (user starts) |
+
+
+<claude-mem-context>
+# Recent Activity
+
+<!-- This section is auto-generated by claude-mem. Edit content outside the tags. -->
+
+*No recent activity*
+</claude-mem-context>

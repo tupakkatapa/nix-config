@@ -22,10 +22,10 @@ Distinct from:
 ## 2. Consult Language Context
 Detect the project's primary language(s) and pull the matching context file(s) so house-style preferences (linters, formatters, packaging idiom, idiom expectations) are honoured throughout execution:
 
-- Nix-only or Nix as substrate → `/tt:context:nix`.
-- Rust → `/tt:context:rust`.
-- JavaScript / TypeScript → `/tt:context:javascript`.
-- Shell scripts → `/tt:context:shell`.
+- Nix-only or Nix as substrate → `/tt:mod:nix`.
+- Rust → `/tt:mod:rs`.
+- JavaScript / TypeScript → `/tt:mod:js`.
+- Shell scripts → `/tt:mod:sh`.
 
 Per-project `./CLAUDE.md` overrides anything in a context file; honour the override.
 
@@ -56,4 +56,4 @@ Run pre-commit hooks (if configured), linters, and the project's tests. Fix all 
 - Follow-ups deferred (link to plan or open issues).
 
 ## 7. Handoff
-When implementation is complete, suggest running `/tt:review` to validate the work, then `/tt:actions:commit`.
+When implementation is complete, suggest running `/tt:review` to validate the work, then `/tt:act:commit`.

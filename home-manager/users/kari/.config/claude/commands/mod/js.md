@@ -8,7 +8,7 @@
 
 # JavaScript project context (tupakkatapa house style)
 
-Distilled from `~/Workspace/local/tupakkatapa/molesk` (the canonical JS+Nix project). Assumes the Nix layer described in `/tt:context:nix`. Shell scripts in the project follow `/tt:context:shell`. Per-project `./CLAUDE.md` may override anything here.
+Distilled from `~/Workspace/local/tupakkatapa/molesk` (the canonical JS+Nix project). Assumes the Nix layer described in `/tt:mod:nix`. Shell scripts in the project follow `/tt:mod:sh`. Per-project `./CLAUDE.md` may override anything here.
 
 ## Philosophy
 - **Yarn, not npm or pnpm.** `yarn.lock` is the source of truth; pairs cleanly with `pkgs.mkYarnPackage` for Nix packaging. Lock file commits with every dependency change.
@@ -60,11 +60,11 @@ Notes:
 
 ## Pre-commit hooks for JS
 
-Added to the `pre-commit.settings.hooks` block from `/tt:context:nix`. **Verified verbatim** against `molesk/flake.nix`:
+Added to the `pre-commit.settings.hooks` block from `/tt:mod:nix`. **Verified verbatim** against `molesk/flake.nix`:
 
 ```nix
 pre-commit.settings.hooks = {
-  treefmt = { /* from /tt:context:nix */ };
+  treefmt = { /* from /tt:mod:nix */ };
   pedantic-oxlint = {
     enable = true;
     entry = "oxlint --deny pedantic --deny complexity";
@@ -230,17 +230,17 @@ Notes:
 ## NixOS module (when shipping a service)
 
 `module.nix` provides a NixOS systemd service with:
-- Options DSL — see `/tt:context:nix` (`mkEnableOption`, typed `mkOption`).
+- Options DSL — see `/tt:mod:nix` (`mkEnableOption`, typed `mkOption`).
 - Hardening defaults: `NoNewPrivileges`, `ProtectSystem = "strict"`, `ProtectHome = true`, dedicated user/group.
 - Config injection via `escapeShellArg` into the wrapped binary.
 - Firewall rule opening only when the user opts in.
 
 ## CHANGELOG
 
-`Keep a Changelog` + SemVer. Versions match `package.json`. See `/tt:actions:bump`.
+`Keep a Changelog` + SemVer. Versions match `package.json`. See `/tt:act:bump`.
 
 ## Gotchas
-- `node_modules` is large and slow; never check it in. `.gitignore` covers it (see `/tt:context:nix` baseline).
+- `node_modules` is large and slow; never check it in. `.gitignore` covers it (see `/tt:mod:nix` baseline).
 - `yarn install --frozen-lockfile` in CI / Nix; `yarn install` (writes lock) only locally.
 - Playwright browser env vars are essential; without them, `yarn test` reaches out to download.
 - ESM/CJS interop subtleties at the dependency boundary — pin awkward dependencies, or wrap them in a CJS shim, rather than migrate the whole file.

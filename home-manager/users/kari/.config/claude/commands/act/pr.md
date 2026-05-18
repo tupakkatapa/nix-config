@@ -10,7 +10,7 @@ Open a pull request for the current branch, **draft by default** (PR-first workf
 ## 1. Detect Branch State
 
 - `git branch --show-current` — current branch; abort if on the integration branch.
-- `git rev-parse --abbrev-ref @{upstream} 2>/dev/null` — must be set and have at least one commit ahead. If not pushed, suggest `/tt:actions:push` first.
+- `git rev-parse --abbrev-ref @{upstream} 2>/dev/null` — must be set and have at least one commit ahead. If not pushed, suggest `/tt:act:push` first.
 - `gh pr view --json url,state 2>/dev/null` — does a PR already exist? If yes, report its URL and stop.
 
 ## 2. Generate PR Body
@@ -61,5 +61,5 @@ If `gh` is unavailable, print the title, body, and the URL that would open the w
 ## 5. Handoff
 
 Report the PR URL. Suggest (do not invoke):
-- `/tt:implement` — when the user is ready to begin executing the plan.
+- `/tt:impl` — when the user is ready to begin executing the plan.
 - `gh pr ready` (user runs it themselves) — when the work is ready for review.

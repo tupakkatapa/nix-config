@@ -8,7 +8,7 @@
 
 # Rust project context (tupakkatapa house style)
 
-Distilled from `~/Workspace/local/tupakkatapa/{nixos-runtime-modules,ftpilot,levari,ping-sweep,nvimkata,anytui}`. Assumes the Nix layer described in `/tt:context:nix`. Shell scripts in the project follow `/tt:context:shell`. Per-project `./CLAUDE.md` may override anything here.
+Distilled from `~/Workspace/local/tupakkatapa/{nixos-runtime-modules,ftpilot,levari,ping-sweep,nvimkata,anytui}`. Assumes the Nix layer described in `/tt:mod:nix`. Shell scripts in the project follow `/tt:mod:sh`. Per-project `./CLAUDE.md` may override anything here.
 
 ## Philosophy
 - **Pedantic clippy is non-negotiable.** Code merges only with `clippy::pedantic` and `clippy::cognitive_complexity` denied. Fix the lint; don't silence it.
@@ -61,11 +61,11 @@ crossterm.workspace = true
 
 ## Pre-commit hooks for Rust
 
-Added to the `pre-commit.settings.hooks` block from `/tt:context:nix`. **Verified verbatim** against `nixos-runtime-modules/flake.nix`, `ftpilot/flake.nix`, `anytui/flake.nix`, `nvimkata/flake.nix`:
+Added to the `pre-commit.settings.hooks` block from `/tt:mod:nix`. **Verified verbatim** against `nixos-runtime-modules/flake.nix`, `ftpilot/flake.nix`, `anytui/flake.nix`, `nvimkata/flake.nix`:
 
 ```nix
 pre-commit.settings.hooks = {
-  treefmt = { /* from /tt:context:nix */ };
+  treefmt = { /* from /tt:mod:nix */ };
   pedantic-clippy = {
     enable = true;
     entry = "cargo clippy -- -D clippy::pedantic -D clippy::cognitive_complexity";
@@ -88,11 +88,11 @@ Notes:
 
 ## treefmt additions for Rust
 
-Already covered by `/tt:context:nix`. Add to its `programs` block:
+Already covered by `/tt:mod:nix`. Add to its `programs` block:
 
 ```nix
 programs = {
-  # ... from /tt:context:nix ...
+  # ... from /tt:mod:nix ...
   rustfmt.enable = true;
   taplo.enable = true;     # TOML formatter, useful for non-trivial Cargo.toml
 };
@@ -120,7 +120,7 @@ devShells.default = pkgs.mkShell {
 
 ## Packaging — real idiom
 
-See the canonical shape in `/tt:context:nix` ("Packaging — the real idiom"). Rust-specific addition for runtime tool dependencies:
+See the canonical shape in `/tt:mod:nix` ("Packaging — the real idiom"). Rust-specific addition for runtime tool dependencies:
 
 ```nix
 { rustPlatform, lib, pkgs, makeWrapper, nix, ... }:
@@ -191,7 +191,7 @@ in rustPlatform.buildRustPackage {
 
 ## CHANGELOG
 
-`Keep a Changelog` + SemVer. Versions match `Cargo.toml`. See `/tt:actions:bump`.
+`Keep a Changelog` + SemVer. Versions match `Cargo.toml`. See `/tt:act:bump`.
 
 ## Gotchas
 - `rust-toolchain.toml` and the Nix toolchain can disagree. Don't ship a `rust-toolchain.toml` unless you also pin its content from the flake.
