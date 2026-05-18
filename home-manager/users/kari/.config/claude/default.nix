@@ -70,7 +70,7 @@ in
       permissions = {
         defaultMode = "auto";
         inherit (permissions) allow deny;
-        additionalDirectories = [ "/home/kari/Workspace" "/home/kari/nix-config" "/tmp" ];
+        additionalDirectories = [ "/home/kari/Workspace" "/tmp" ];
       };
       hooks = {
         SessionStart = [{

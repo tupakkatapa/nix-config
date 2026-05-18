@@ -64,12 +64,40 @@ in
   };
 
 
-  # SFTP user/group retained for container file ownership on ${dataDir}/sftp/*
+  # SFTP server: chrooted sftp user under ${dataDir}/sftp
+  services.openssh = {
+    allowSFTP = true;
+    extraConfig = ''
+      Match User sftp
+        AllowTcpForwarding no
+        ChrootDirectory %h
+        ForceCommand internal-sftp
+        PermitTunnel no
+        X11Forwarding no
+      Match all
+    '';
+  };
+
   users.users.sftp = {
     isSystemUser = true;
     useDefaultShell = false;
     group = "sftp";
+    extraGroups = [ "sshd" "transmission" ];
     home = "${dataDir}/sftp";
+    openssh.authorizedKeys.keys = [
+      # kari@phone (preferably removed, keep until YubiKey NFC for SFTP is possible)
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPFKfmSYqFE+hXp/P1X8oqcpnUG9cx9ILzk4dqQzlEOC kari@phone"
+
+      # kari@boox
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOliW+jvO3gMcZdwGvaSNlqcA3BWDWL+PM3omgXyWSHZ kari@boox"
+
+      # kari@trezor
+      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPSvwAIfx+2EYVbr9eC2imb5NJgpn36v6XAeofQjg5BEAAAABHNzaDo= kari@trezor"
+
+      # kari@yubikey
+      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOdsfK46X5IhxxEy81am6A8YnHo2rcF2qZ75cHOKG7ToAAAACHNzaDprYXJp ssh:kari"
+      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOcS3prYIi5uC9LxscaKSYzyuF2Sh7f3I5V9s1sCWSc1AAAACXNzaDprYXJpMg== ssh:kari2"
+    ];
   };
   users.groups.sftp = { };
 

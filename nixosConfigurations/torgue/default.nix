@@ -23,7 +23,7 @@
 
   services.runtimeModules = {
     enable = true;
-    flakeUrl = "path:/home/kari/nix-config";
+    flakeUrl = "path:/home/kari/Workspace/tupakkatapa/nix-config";
     builtinModules.enable = true;
     modules = [
       {

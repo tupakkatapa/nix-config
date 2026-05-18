@@ -29,7 +29,6 @@ in
       "/home/kari/.steam" = "@kari-steam-cfg";
       "/home/kari/.local/share/Steam" = "@kari-steam-install";
       "/home/kari/.gnupg" = "@kari-gnupg";
-      "/home/kari/nix-config" = "@kari-nix-config";
       "/home/kari/Workspace" = "@kari-workspace";
       "/home/kari/Downloads" = "@kari-downloads";
 
@@ -46,15 +45,21 @@ in
   } // {
     # On-demand SFTP mount from vladof (YubiKey-resident key, requires touch)
     "/mnt/sftp" = {
-      device = "kari@10.42.0.8:/";
+      device = "sftp@10.42.0.8:/";
       fsType = "sshfs";
       options = [
-        "noauto"
+        "nodev"
+        "noatime"
+        "idmap=user"
+        "ServerAliveInterval=15"
         "_netdev"
         "allow_other"
         "reconnect"
-        "ServerAliveInterval=15"
+        "noauto"
+        "port=22"
         "IdentityFile=/home/kari/.ssh/id_ed25519_sk_yubikey"
+        "IdentityFile=/home/kari/.ssh/id_ed25519_sk_yubikey_2"
+        "IdentityFile=/home/kari/.ssh/id_ed25519_sk_trezor"
       ];
     };
   };
