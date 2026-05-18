@@ -42,13 +42,6 @@ in
     };
   };
 
-  # FIDO2 LUKS configuration
-  # boot.initrd.luks.fido2Support = true;
-  # boot.initrd.luks.devices.backup = {
-  #   device = "/dev/disk/by-id/ata-WDC_WD120EFBX-68B0EN0_D7JZR2HN-part1";
-  #   crypttabExtraOpts = [ "fido2-device=auto" "fido2-with-client-pin=yes" ];
-  # };
-
   # SSH host key on disk
   services.openssh.hostKeys = [{
     path = "${dataDir}/ssh/ssh_host_ed25519_key";
@@ -62,6 +55,22 @@ in
   users.users.acme.uid = 991;
   users.groups.acme.gid = 991;
 
+  # Hourly snapshots of @main for recovery
+  services.snapper = {
+    snapshotInterval = "hourly";
+    cleanupInterval = "1d";
+    configs.wd-red = {
+      SUBVOLUME = dataDir;
+      TIMELINE_CREATE = true;
+      TIMELINE_CLEANUP = true;
+      TIMELINE_LIMIT_HOURLY = 12;
+      TIMELINE_LIMIT_DAILY = 14;
+      TIMELINE_LIMIT_WEEKLY = 8;
+      TIMELINE_LIMIT_MONTHLY = 12;
+      TIMELINE_LIMIT_YEARLY = 2;
+    };
+  };
+
   # Persistent dir tree
   systemd.tmpfiles.rules = [
     "d ${dataDir}/ssh                            700 root root                                     -"
@@ -74,8 +83,7 @@ in
     "d ${dataDir}/home/grafana/appdata           755 grafana grafana                               -"
     "Z ${dataDir}/home/grafana/appdata/grafana   755 grafana grafana                               -"
 
-    # Backups dir
-    "d ${dataDir}/backups                        700 root root                                     -"
+    "v ${dataDir}/.snapshots                     750 root root                                     -"
 
     # SFTP subdir ownership enforcement (container writes target these paths)
     "Z ${dataDir}/sftp/appdata                   -   sftp sftp                                     -"
