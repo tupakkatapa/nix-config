@@ -124,6 +124,8 @@ let
   };
 in
 {
+  inherit mimes;
+
   # Function to create MIME associations
   createMimes = optionRaw:
     let

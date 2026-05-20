@@ -31,7 +31,7 @@
   # Default app associations
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = customLib.xdg.createMimes {
-    archive = [ "file-roller.desktop" ];
+    archive = [ "thunar-archive-open.desktop" ];
     audio = [ "mpv.desktop" ];
     browser = [ "firefox.desktop" ];
     image = [ "imv-dir.desktop" ];
