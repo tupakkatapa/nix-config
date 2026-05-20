@@ -98,5 +98,11 @@ in
     "d /home/kari/.config       755 kari kari -"
     "d /home/kari/.local        755 kari kari -"
     "d /home/kari/.local/share  755 kari kari -"
+
+    # Enforce ownership on subvol mountpoints
+    "Z /home/kari/.config/mozilla       - kari kari -"
+    "Z /home/kari/.config/sunshine      - kari kari -"
+    "Z /home/kari/.local/share/atuin    - kari kari -"
+    "Z /home/kari/.local/share/zoxide   - kari kari -"
   ];
 }

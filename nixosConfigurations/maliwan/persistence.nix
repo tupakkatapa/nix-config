@@ -81,5 +81,16 @@ in
     "d /home/kari/.local        755 kari kari -"
     "d /home/kari/.local/share  755 kari kari -"
     "d /home/kari/.claude       755 kari kari -"
+
+    # Enforce ownership on subvol mountpoints
+    "Z /home/kari/.claude-mem              - kari kari -"
+    "Z /home/kari/.claude/projects         - kari kari -"
+    "Z /home/kari/.config/mozilla          - kari kari -"
+    "Z /home/kari/.config/Yubico           - kari kari -"
+    "Z /home/kari/.gnupg                   0700 kari kari -"
+    "Z /home/kari/Workspace                - kari kari -"
+    "Z /home/kari/Downloads                - kari kari -"
+    "Z /home/kari/.local/share/atuin       - kari kari -"
+    "Z /home/kari/.local/share/zoxide      - kari kari -"
   ];
 }

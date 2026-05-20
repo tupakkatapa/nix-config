@@ -95,5 +95,20 @@ in
     "d /home/kari/.claude       755 kari kari -"
     "d /var/lib/ollama          755 ollama ollama -"
     "d /var/lib/ollama/models   755 ollama ollama -"
+
+    # Enforce ownership on subvol mountpoints
+    "Z /home/kari/.claude-mem              - kari kari -"
+    "Z /home/kari/.claude/projects         - kari kari -"
+    "Z /home/kari/.config/mozilla          - kari kari -"
+    "Z /home/kari/.BitwigStudio            - kari kari -"
+    "Z /home/kari/Bitwig\\x20Studio         - kari kari -"
+    "Z /home/kari/.config/Yubico           - kari kari -"
+    "Z /home/kari/.steam                   - kari kari -"
+    "Z /home/kari/.local/share/Steam       - kari kari -"
+    "Z /home/kari/.gnupg                   0700 kari kari -"
+    "Z /home/kari/Workspace                - kari kari -"
+    "Z /home/kari/Downloads                - kari kari -"
+    "Z /home/kari/.local/share/atuin       - kari kari -"
+    "Z /home/kari/.local/share/zoxide      - kari kari -"
   ];
 }
