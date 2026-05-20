@@ -40,6 +40,11 @@ in
       device = "/dev/disk/by-label/jhvst";
       fsType = "btrfs";
     };
+    "/mnt/archive" = {
+      device = "/dev/disk/by-uuid/7716e9fc-2f0e-4398-b1ff-df6723a01d2c";
+      fsType = "btrfs";
+      options = [ "compress=zstd:9" "noatime" "nofail" ];
+    };
   };
 
   # SSH host key on disk
