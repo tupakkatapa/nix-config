@@ -121,6 +121,8 @@
     { name = "NAPALM FTP Indexer"; url = "https://www.searchftps.net/"; }
     { name = "Mobilism"; url = "https://forum.mobilism.org/"; }
     { name = "Myrient"; url = "https://myrient.erista.me/files/"; }
+    { name = "Minerva Archive"; url = "https://minerva-archive.org/"; }
+    { name = "3DS Hacks Guide"; url = "https://3ds.hacks.guide/get-started.html"; }
 
     # Videos & Streaming
     { name = "YouTube"; url = "https://www.youtube.com/feed/subscriptions"; }
