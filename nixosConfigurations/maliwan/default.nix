@@ -24,6 +24,26 @@
   # Monitoring + central log shipping
   services.monitoring.enable = true;
 
+  # Battery-aware power management
+  services.power-profiles-daemon.enable = false;
+  services.tlp = {
+    enable = true;
+    settings = {
+      CPU_SCALING_GOVERNOR_ON_AC = "schedutil";
+      CPU_SCALING_GOVERNOR_ON_BAT = "schedutil";
+      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
+      CPU_BOOST_ON_BAT = 1;
+      SATA_LINKPWR_ON_BAT = "med_power_with_dipm";
+      PCIE_ASPM_ON_BAT = "powersave";
+      WIFI_PWR_ON_AC = "off";
+      WIFI_PWR_ON_BAT = "on";
+    };
+  };
+
+  # Firmware updates (BIOS, EC, dock) via LVFS
+  services.fwupd.enable = true;
+
   # Connectivity
   networking = {
     hostName = "maliwan";
