@@ -92,6 +92,11 @@ in
           "font.name.monospace.x-western" = "${FONT}";
           "font.name.sans-serif.x-western" = "${FONT}";
           "font.name.serif.x-western" = "${FONT}";
+
+          # Downloads
+          "browser.download.dir" = "${config.home.homeDirectory}/Downloads";
+          "browser.download.lastDir" = "${config.home.homeDirectory}/Downloads";
+          "browser.download.folderList" = 2;
         }
         // (import ./hardened.nix));
       };
