@@ -272,7 +272,7 @@
 
           hyperion = withExtra {
             modules = [
-              ./home-manager/users/core/minimal.nix
+              ./home-manager/users/core/minimal-passwd.nix
               ./nixosConfigurations/hyperion
               ./system/kexec-tree.nix
               inputs.nixie.nixosModules.nixie
