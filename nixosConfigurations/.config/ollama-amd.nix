@@ -15,10 +15,8 @@
     };
     loadModels = [
       # https://ollama.com/library
-      "huihui_ai/qwen3-abliterated:14b-v2"
-      "qwen3:14b"
-      "qwen3-vl:8b"
-      "dolphin3"
+      "huihui_ai/qwen3.5-abliterated:9b"
+      "qwen3.5:9b"
     ];
   };
 
