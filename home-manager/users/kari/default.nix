@@ -80,6 +80,7 @@ in
 
     home.packages = (with pkgs; [
       monitor-adjust
+      guitarix
 
       # Trezor (override: keyring 25.7.0 not yet in nixpkgs)
       (trezorctl.overridePythonAttrs (old: {

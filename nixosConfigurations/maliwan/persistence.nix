@@ -24,6 +24,7 @@ in
       "/home/kari/.claude/projects" = "@kari-claude-projects";
       "/home/kari/.config/mozilla" = "@kari-mozilla";
       "/home/kari/.config/Yubico" = "@kari-yubico";
+      "/home/kari/.config/gh" = "@kari-gh";
       "/home/kari/.gnupg" = "@kari-gnupg";
       "/home/kari/Workspace" = "@kari-workspace";
       "/home/kari/Downloads" = "@kari-downloads";
@@ -87,6 +88,7 @@ in
     "Z /home/kari/.claude/projects         - kari kari -"
     "Z /home/kari/.config/mozilla          - kari kari -"
     "Z /home/kari/.config/Yubico           - kari kari -"
+    "Z /home/kari/.config/gh               0700 kari kari -"
     "Z /home/kari/.gnupg                   0700 kari kari -"
     "Z /home/kari/Workspace                - kari kari -"
     "Z /home/kari/Downloads                - kari kari -"

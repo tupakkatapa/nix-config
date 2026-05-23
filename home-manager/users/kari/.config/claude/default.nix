@@ -108,6 +108,18 @@ in
           NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-bundle.crt";
         };
       };
+      playwright = {
+        command = "npx";
+        args = [ "-y" "@playwright/mcp@latest" ];
+      };
+      houtini-lm = {
+        command = "npx";
+        args = [ "-y" "@houtini/lm" ];
+        env = {
+          HOUTINI_LM_ENDPOINT_URL = "http://localhost:11434";
+          HOUTINI_LM_MODEL = "qwen3.5:9b";
+        };
+      };
     };
 
     # Global CLAUDE.md - applies to all projects

@@ -26,6 +26,7 @@ in
       "/home/kari/.BitwigStudio" = "@kari-bitwig-config";
       "/home/kari/Bitwig Studio" = "@kari-bitwig-projects";
       "/home/kari/.config/Yubico" = "@kari-yubico";
+      "/home/kari/.config/gh" = "@kari-gh";
       "/home/kari/.steam" = "@kari-steam-cfg";
       "/home/kari/.local/share/Steam" = "@kari-steam-install";
       "/home/kari/.gnupg" = "@kari-gnupg";
@@ -103,6 +104,7 @@ in
     "Z /home/kari/.BitwigStudio            - kari kari -"
     "Z /home/kari/Bitwig\\x20Studio         - kari kari -"
     "Z /home/kari/.config/Yubico           - kari kari -"
+    "Z /home/kari/.config/gh               0700 kari kari -"
     "Z /home/kari/.steam                   - kari kari -"
     "Z /home/kari/.local/share/Steam       - kari kari -"
     "Z /home/kari/.gnupg                   0700 kari kari -"
