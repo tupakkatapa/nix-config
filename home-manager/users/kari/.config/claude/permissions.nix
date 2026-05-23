@@ -95,6 +95,11 @@
     "mcp__nixos__*"
     "mcp__context7__*"
     "mcp__searxng__*"
+    "mcp__playwright__*"
+
+    # Vision (Wayland screenshots)
+    "Bash(grim:*)"
+    "Bash(slurp:*)"
 
     # Development
     "Bash(pre-commit run:*)"

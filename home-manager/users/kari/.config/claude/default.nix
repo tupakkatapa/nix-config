@@ -137,6 +137,8 @@ in
   # MCP server dependencies + tools
   home.packages = with pkgs; [
     nodejs
+    grim
+    slurp
     gh
   ];
 

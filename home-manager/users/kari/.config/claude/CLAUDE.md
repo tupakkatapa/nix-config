@@ -46,6 +46,7 @@ Slash commands under `/tt:*`. Auto-invoke when user intent clearly matches.
 - `/tt:impl` — execute an approved plan
 - `/tt:review` — review across the lens panel (single-agent, fast, daily use)
 - `/tt:review-strict` — strict review: full subagent panel, mandatory schema, block-on-blocker (pre-release, security, architecture)
+- `/tt:review-plan-impl` — hands-free combo: strict review → plan → implement, auto-advances between phases
 - `/tt:debug` — root-cause diagnosis
 - `/tt:refactor` — structural change (Beck two-hats)
 - `/tt:edge-cases` — hypothetical risk discovery
