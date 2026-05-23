@@ -84,6 +84,7 @@
               chroma-mcp
               kb-shortcuts
               monitor-adjust
+              wm-helpers
               # Inputs
               codex
               claude-code
@@ -136,6 +137,7 @@
             "kb-shortcuts" = pkgs.callPackage ./packages/kb-shortcuts { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
             "pinit" = pkgs.callPackage ./packages/pinit { };
+            "wm-helpers" = pkgs.callPackage ./packages/wm-helpers { };
             # Inputs
             inherit (inputs'.nixie.packages) lkddb-filter;
             inherit (inputs'.nixie.packages) pxe-generate;

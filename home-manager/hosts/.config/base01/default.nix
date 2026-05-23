@@ -1,7 +1,12 @@
 { pkgs
+, config
 , customLib
 , ...
 }:
+let
+  inherit (config.home.sessionVariables) THEME;
+  colors = customLib.colors.${THEME};
+in
 {
   imports = [
     ./hyprland.nix
@@ -13,20 +18,31 @@
 
   # Screen locker + idle daemon
   programs.hyprlock.enable = true;
-  services.hypridle = {
-    enable = true;
-    settings = {
-      general = {
-        lock_cmd = "if ! pgrep hyprlock; then hyprlock; fi";
-        before_sleep_cmd = "loginctl lock-session";
-        after_sleep_cmd = "hyprctl dispatch dpms on";
+  services.hypridle =
+    let
+      lockCountdown = "${pkgs.wm-helpers}/bin/lock-countdown";
+      idleSec = 300;
+      warnSec = 10;
+    in
+    {
+      enable = true;
+      settings = {
+        general = {
+          lock_cmd = "if ! pgrep hyprlock; then hyprlock; fi";
+          before_sleep_cmd = "loginctl lock-session";
+          after_sleep_cmd = "hyprctl dispatch dpms on";
+        };
+        listener = [
+          {
+            timeout = idleSec - warnSec;
+            on-timeout = "${lockCountdown} ${toString warnSec} nolock";
+            on-resume = "${lockCountdown} cancel";
+          }
+          { timeout = idleSec; on-timeout = "loginctl lock-session"; }
+          { timeout = idleSec + 60; on-timeout = "hyprctl dispatch dpms off"; on-resume = "hyprctl dispatch dpms on"; }
+        ];
       };
-      listener = [
-        { timeout = 300; on-timeout = "loginctl lock-session"; }
-        { timeout = 360; on-timeout = "hyprctl dispatch dpms off"; on-resume = "hyprctl dispatch dpms on"; }
-      ];
     };
-  };
 
   # Default app associations
   xdg.mimeApps.enable = true;
@@ -98,7 +114,47 @@
       anchor = "top-right";
       sort = "+time";
       group-by = "app-name";
+
+      # Lock countdown
+      "app-name=lock-countdown" = {
+        anchor = "center";
+        width = 600;
+        height = 240;
+        padding = "32";
+        border-size = 4;
+        font = "monospace bold 30";
+        default-timeout = 1100;
+      };
+
+      # Critical warnings
+      "app-name=warning" = {
+        anchor = "center";
+        width = 600;
+        height = 200;
+        padding = "32";
+        border-size = 4;
+        background-color = "#${colors.base08}";
+        font = "monospace bold 28";
+        default-timeout = 5000;
+      };
     };
+  };
+
+  # Memory pressure: poll every 30s, warn on rising edge over 90%
+  systemd.user.services.mem-warn = {
+    Unit.Description = "Memory-pressure notification check";
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.wm-helpers}/bin/mem-warn 90";
+    };
+  };
+  systemd.user.timers.mem-warn = {
+    Unit.Description = "Run mem-warn every 30s";
+    Timer = {
+      OnBootSec = "1min";
+      OnUnitActiveSec = "30s";
+    };
+    Install.WantedBy = [ "timers.target" ];
   };
 
   programs.waybar.enable = true;

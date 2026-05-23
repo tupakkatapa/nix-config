@@ -63,6 +63,7 @@ pkgs.stdenv.mkDerivation rec {
           --replace "@ICON_PATH@" "$out/share/icons/audio-volume-high-panel.svg"
         wrapProgram $out/bin/pipewire-out-switcher \
           --prefix PATH : ${lib.makeBinPath buildInputs}
+
   '';
 
   meta = with lib; {
