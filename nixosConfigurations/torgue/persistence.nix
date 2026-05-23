@@ -22,6 +22,7 @@ in
       # User data
       "/home/kari/.claude-mem" = "@kari-claude-mem";
       "/home/kari/.claude/projects" = "@kari-claude-projects";
+      "/home/kari/.config/guitarix" = "@kari-guitarix";
       "/home/kari/.config/mozilla" = "@kari-mozilla";
       "/home/kari/.BitwigStudio" = "@kari-bitwig-config";
       "/home/kari/Bitwig Studio" = "@kari-bitwig-projects";
@@ -100,6 +101,7 @@ in
     # Enforce ownership on subvol mountpoints
     "Z /home/kari/.claude-mem              - kari kari -"
     "Z /home/kari/.claude/projects         - kari kari -"
+    "Z /home/kari/.config/guitarix         - kari kari -"
     "Z /home/kari/.config/mozilla          - kari kari -"
     "Z /home/kari/.BitwigStudio            - kari kari -"
     "Z /home/kari/Bitwig\\x20Studio         - kari kari -"

@@ -134,8 +134,11 @@ in
     ];
   };
 
-  # MCP server dependencies
-  home.packages = with pkgs; [ nodejs ];
+  # MCP server dependencies + tools
+  home.packages = with pkgs; [
+    nodejs
+    gh
+  ];
 
   # Slash commands
   home.file.".claude/commands/tt".source = ./commands;
