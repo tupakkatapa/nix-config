@@ -28,7 +28,7 @@ Heuristics for auto-detection (prefer over asking):
 - Matches a forge URL or `<owner>/<repo>` and resolves remotely → remote git.
 - Otherwise → topic.
 
-If a single brief spans multiple target types (e.g. "compare our impl against upstream"), treat each leg in turn during step 4 and merge findings in step 7.
+If a single brief spans multiple target types (e.g. "compare our impl against upstream"), treat each leg in turn during step 3 and merge findings in step 6.
 
 ## 2. Frame the Question
 
@@ -39,13 +39,7 @@ A research session without a question wanders. Capture explicitly:
 - **Out-of-scope** — adjacent questions deferred so the brief doesn't sprawl.
 - **Stop condition** — the level of confidence that ends the session. Research expands forever otherwise.
 
-## 3. Search Persistent Memory
-
-`mcp__plugin_claude-mem_mcp-search__search` with terms from the question. Past research is the cheapest source — never repeat it.
-
-For hits: `timeline` first, then `get_observations` on the filtered IDs. If a prior brief already answers the question, summarise it back to the user and stop; do not produce a duplicate file.
-
-## 4. Investigate by Target Type
+## 3. Investigate by Target Type
 
 Cite as you go — URL, `file:line`, commit SHA. A brief without citations is a hallucination risk.
 
@@ -68,7 +62,7 @@ Cite as you go — URL, `file:line`, commit SHA. A brief without citations is a 
 - Specs / standards → fetch the authoritative source (RFC, W3C, vendor docs). Note version/date — protocols evolve.
 - Compare multiple sources; record disagreements rather than silently collapse them. The disagreement is often the load-bearing finding.
 
-## 5. Consult Language Context
+## 4. Consult Language Context
 
 If the research feeds work in a known language, pull the matching context file so the brief surfaces relevant idiomatic constraints up front (linters, packaging idiom, house-style expectations a future implementer must honour):
 
@@ -79,7 +73,7 @@ If the research feeds work in a known language, pull the matching context file s
 
 Skip for pure topic research with no downstream codebase. The per-project `./CLAUDE.md` overrides anything in a context file.
 
-## 6. Apply the Lens Panel (mode = research)
+## 5. Apply the Lens Panel (mode = research)
 
 Frame each relevant lens's dimensions as **questions the brief must answer**, not defects. **Read lens files lazily** — pull only the Dimensions section per lens you actually need; skip lenses with no research surface. For broad surveys spanning many lenses, dispatch lens specialists as subagents (each gets isolated context; main context only sees consolidated findings).
 
@@ -94,7 +88,7 @@ Typically relevant:
 - **`/tt:pov:ux`** — for libraries/services: the API / CLI / config / TUI surface a future caller would touch, and how stable that surface is across versions.
 - **`/tt:pov:docs`** — which Diátaxis quadrants the project covers (tutorials / how-tos / reference / explanation). Gaps signal where downstream work will struggle.
 
-## 7. Write the Brief
+## 6. Write the Brief
 
 Always produce a markdown file. Default path: `docs/research/YYYY-MM-DD-<short-kebab-slug>.md` (today's date; create the directory if it does not exist). Follow project convention if one exists — the per-project `./CLAUDE.md` is the source of truth.
 
@@ -111,7 +105,7 @@ Structure:
 
 Write for a reader who has not done the research. They should be able to act on the brief without re-reading the sources.
 
-## 8. Handoff
+## 7. Handoff
 
 Present the brief inline (path + one-paragraph summary). Do not call `EnterPlanMode`.
 

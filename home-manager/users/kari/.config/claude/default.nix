@@ -9,13 +9,6 @@ let
     systemctl --user is-active --quiet claude-afk && \
     curl -s -H 'Title: Claude Code' -H 'Priority: default' -H 'Tags: robot' -H 'Icon: https://www.anthropic.com/favicon.ico' -d '${message}' https://ntfy.coditon.com/claude || true
   '';
-
-  # Claude-mem settings
-  # https://github.com/thedotmack/claude-mem/blob/main/src/shared/SettingsDefaultsManager.ts
-  claudeMemSettings = {
-    CLAUDE_MEM_CONTEXT_FULL_COUNT = "0";
-    CLAUDE_MEM_CONTEXT_SHOW_SAVINGS_PERCENT = "false";
-  };
 in
 {
   # Claude Code AFK notification service
@@ -124,7 +117,6 @@ in
     plugins = with pkgs.claude-plugins; [
       caveman
       ralph-wiggum
-      claude-mem
       superpowers
       document-skills
     ];
@@ -132,9 +124,6 @@ in
 
   # MCP server dependencies
   home.packages = with pkgs; [ nodejs ];
-
-  # Declarative claude-mem settings
-  home.file.".claude-mem/settings.json".text = builtins.toJSON claudeMemSettings;
 
   # Slash commands
   home.file.".claude/commands/tt".source = ./commands;

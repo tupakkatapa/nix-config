@@ -92,7 +92,6 @@
 
     # Skills & MCP
     "Skill(*)"
-    "mcp__plugin_claude-mem_mcp-search__*"
     "mcp__nixos__*"
     "mcp__context7__*"
     "mcp__searxng__*"

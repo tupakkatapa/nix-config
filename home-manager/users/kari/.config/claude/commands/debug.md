@@ -20,7 +20,6 @@ If reproduction is impossible (production-only, intermittent, environmental), ca
 ## 2. Characterise
 - Read the failing code and its callers. Trace the data flow that produced the symptom.
 - Identify what changed: recent commits, config, dependencies, data shape, traffic pattern.
-- **Search persistent memory** with `mcp__plugin_claude-mem_mcp-search__search` for prior incidents in the same area. Bugs frequently recur in shapes — past fixes encode constraints worth recalling.
 - Bisect when the suspect range is large (`git bisect`, feature flag, dependency version).
 - Distinguish: incorrect output, missing output, wrong timing, resource exhaustion, crash, silent corruption. Each implies different root-cause classes.
 

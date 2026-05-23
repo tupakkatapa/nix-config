@@ -35,7 +35,6 @@ in
 {
   caveman = callPlugin ./caveman.nix;
   ralph-wiggum = callPlugin ./ralph-wiggum.nix;
-  claude-mem = callPlugin ./claude-mem.nix;
   superpowers = callPlugin ./superpowers.nix;
   inherit (anthropicSkills) document-skills example-skills;
 }

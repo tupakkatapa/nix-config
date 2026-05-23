@@ -115,7 +115,7 @@ in
     }];
 
     # Copy plugin files to writable locations (not symlinks)
-    # This allows plugins like claude-mem to write to their directories
+    # Some plugins need to write to their own directories at runtime
     home.activation.claudePlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       # Remove old symlinks if they exist
       [ -L "${homeDir}/.claude/plugins/cache" ] && rm "${homeDir}/.claude/plugins/cache"

@@ -24,7 +24,6 @@ If the planning subject is unclear, ask the user to choose:
 Capture: success criteria, constraints, non-goals, deadlines, stakeholders. A plan without success criteria is wishful thinking.
 
 ## 2. Investigate
-- **Search persistent memory first.** Use `mcp__plugin_claude-mem_mcp-search__search` with terms from the task brief; pull `timeline` / `get_observations` on hits that look relevant. Past work in the same area often dictates the shape of the new plan and surfaces gotchas the codebase no longer remembers.
 - Analyse the existing codebase: architecture, patterns, conventions, dependencies.
 - Identify where and how the proposed work integrates.
 - Note existing utilities, base classes, or patterns to reuse — and anti-patterns to avoid.
