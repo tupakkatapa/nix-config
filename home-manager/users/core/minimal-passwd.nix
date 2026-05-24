@@ -1,7 +1,4 @@
-{ config
-, lib
-, ...
-}:
+{ config, ... }:
 let
   user = "core";
 in
@@ -14,5 +11,5 @@ in
   users.users.${user}.hashedPasswordFile = config.age.secrets.password.path;
 
   # Override minimal.nix's NOPASSWD rule; sudo now prompts for the user's password
-  security.sudo.extraRules = lib.mkForce [ ];
+  security.sudo.extraRules = [ ];
 }
