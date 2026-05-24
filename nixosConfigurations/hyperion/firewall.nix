@@ -35,6 +35,8 @@ _:
           iifname "enp1s0" tcp dport 32400 dnat ip6 to [fd42:42:42:1::8]:32400
           iifname "enp1s0" tcp dport 54783 dnat ip to 10.42.0.8:54783   # Blog
           iifname "enp1s0" tcp dport 54783 dnat ip6 to [fd42:42:42:1::8]:54783
+          iifname "enp1s0" tcp dport 8776 dnat ip to 10.42.0.8:8776     # Radicle seed
+          iifname "enp1s0" tcp dport 8776 dnat ip6 to [fd42:42:42:1::8]:8776
 
           # Port forwarding to Kaakkuri
           iifname "enp1s0" tcp dport 9001 dnat ip to 10.42.0.25:9001
@@ -130,6 +132,7 @@ _:
       iifname "enp1s0" tcp dport { 80, 443 } ct state new limit rate over 30/second drop
       iifname "enp1s0" tcp dport 32400 ct state new limit rate over 30/second drop
       iifname "enp1s0" tcp dport 54783 ct state new limit rate over 10/second drop
+      iifname "enp1s0" tcp dport 8776 ct state new limit rate over 30/second drop  # Radicle seed
 
       # Block external DNS (force clients through local resolver)
       iifname { "br-lan", "br-wifi", "wg0", "wg1", "wg2" } oifname { "enp1s0", "mullvad" } tcp dport 53 reject with tcp reset

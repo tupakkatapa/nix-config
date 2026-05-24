@@ -69,6 +69,8 @@ in
     (import ./plex.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
     (import ./radicale.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
     (import ./ntfy.nix { inherit lib domain dataDir containerConfig globalContainerConfig; })
+    (import ./conduit.nix { inherit lib domain dataDir containerConfig globalContainerConfig; })
+    (import ./radicle.nix { inherit config dataDir containerConfig globalContainerConfig; })
     (import ./molesk { inherit config lib pkgs domain dataDir containerConfig inputs globalContainerConfig; })
   ];
   boot.enableContainers = true;

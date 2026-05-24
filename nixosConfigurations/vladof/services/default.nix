@@ -78,6 +78,20 @@ let
         lastOctet = 19;
         uid = 10010;
       };
+      conduit = {
+        addr = "matrix.${domain}";
+        port = 6167;
+        private = false;
+        lastOctet = 20;
+        uid = 10011;
+      };
+      radicle = {
+        addr = "seed.${domain}";
+        port = 8788; # radicle-httpd; seed port 8776 forwarded separately
+        private = false;
+        lastOctet = 21;
+        uid = 10012;
+      };
     };
 
   # Service configuration
@@ -116,6 +130,25 @@ let
 
   # Generate index page
   indexPage = import ./index.nix { inherit pkgs lib domain containerConfig serviceConfig; };
+
+  # Matrix .well-known delegation payloads
+  wellKnownServer = builtins.toJSON { "m.server" = "matrix.${domain}:443"; };
+  wellKnownClient = builtins.toJSON {
+    "m.homeserver".base_url = "https://matrix.${domain}";
+  };
+
+  # Element web pre-configured for our homeserver
+  elementWeb = pkgs.element-web.override {
+    conf = {
+      default_server_config."m.homeserver" = {
+        base_url = "https://matrix.${domain}";
+        server_name = domain;
+      };
+      brand = "matrix-${domain}";
+      disable_custom_urls = true;
+      disable_guests = true;
+    };
+  };
 in
 {
   imports = [
@@ -184,6 +217,32 @@ in
             file_server
           '';
         };
+        # Element web client
+        "element.${domain}" = {
+          useACMEHost = "element.${domain}";
+          extraConfig = ''
+            root * ${elementWeb}
+            file_server
+          '';
+        };
+        # Bare-domain Matrix .well-known delegation
+        "${domain}" = {
+          useACMEHost = domain;
+          extraConfig = ''
+            handle /.well-known/matrix/server {
+              header Content-Type application/json
+              respond `${wellKnownServer}` 200
+            }
+            handle /.well-known/matrix/client {
+              header Content-Type application/json
+              header Access-Control-Allow-Origin *
+              respond `${wellKnownClient}` 200
+            }
+            handle {
+              redir https://index.${domain}{uri} permanent
+            }
+          '';
+        };
       };
   };
   users.users.caddy.extraGroups = [ "acme" ];
@@ -209,7 +268,12 @@ in
           name = service.addr;
           value = { };
         })
-        publicServices;
+        publicServices
+      // {
+        # Matrix web + bare-domain delegation
+        "element.${domain}" = { };
+        "${domain}" = { };
+      };
   };
 
   # Ensure proper ACME certificate permissions
