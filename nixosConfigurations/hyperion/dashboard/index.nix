@@ -211,7 +211,7 @@ let
   '';
 in
 {
-  services.nginx.virtualHosts."${domain}" = {
+  services.nginx.virtualHosts."hyperion.${domain}" = {
     default = true;
     root = indexPage;
     listen = [
@@ -221,13 +221,5 @@ in
     forceSSL = true;
     sslCertificate = "${selfSignedCert}/cert.pem";
     sslCertificateKey = "${selfSignedCert}/key.pem";
-    # Forward Matrix .well-known to vladof's caddy (delegation served there).
-    locations."/.well-known/matrix/" = {
-      proxyPass = "https://10.42.0.8";
-      extraConfig = ''
-        proxy_ssl_verify off;
-        proxy_set_header Host coditon.com;
-      '';
-    };
   };
 }

@@ -253,12 +253,9 @@ in
     defaults = {
       email = "jesse@ponkila.com";
       dnsProvider = "cloudflare";
-      dnsResolver = "10.42.0.1:53";
       credentialFiles = {
         CF_DNS_API_TOKEN_FILE = config.age.secrets.acme-cf-dns-token.path;
       };
-      dnsPropagationCheck = false;
-      extraLegoFlags = [ "--dns.propagation-rns" ];
       reloadServices = [ "caddy.service" ];
     };
     certs =

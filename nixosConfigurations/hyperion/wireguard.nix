@@ -177,6 +177,35 @@
             Table = "main";
             Priority = 85;
           }
+          # Vladof DNS bypasses Mullvad (ACME DNS-01; CF refuses VPN exits)
+          {
+            From = "10.42.0.8";
+            IPProtocol = "udp";
+            DestinationPort = "53";
+            Table = "main";
+            Priority = 86;
+          }
+          {
+            From = "10.42.0.8";
+            IPProtocol = "tcp";
+            DestinationPort = "53";
+            Table = "main";
+            Priority = 86;
+          }
+          {
+            From = "fd42:42:42:1::8";
+            IPProtocol = "udp";
+            DestinationPort = "53";
+            Table = "main";
+            Priority = 86;
+          }
+          {
+            From = "fd42:42:42:1::8";
+            IPProtocol = "tcp";
+            DestinationPort = "53";
+            Table = "main";
+            Priority = 86;
+          }
           # Client subnets → Mullvad
           {
             From = "10.42.0.0/24";

@@ -134,6 +134,10 @@ _:
       iifname "enp1s0" tcp dport 54783 ct state new limit rate over 10/second drop
       iifname "enp1s0" tcp dport 8776 ct state new limit rate over 30/second drop  # Radicle seed
 
+      # vladof DNS egress allowed (ACME DNS-01)
+      iifname "br-lan" ip saddr 10.42.0.8 oifname { "enp1s0", "mullvad" } udp dport 53 accept
+      iifname "br-lan" ip saddr 10.42.0.8 oifname { "enp1s0", "mullvad" } tcp dport 53 accept
+
       # Block external DNS (force clients through local resolver)
       iifname { "br-lan", "br-wifi", "wg0", "wg1", "wg2" } oifname { "enp1s0", "mullvad" } tcp dport 53 reject with tcp reset
       iifname { "br-lan", "br-wifi", "wg0", "wg1", "wg2" } oifname { "enp1s0", "mullvad" } udp dport 53 reject
