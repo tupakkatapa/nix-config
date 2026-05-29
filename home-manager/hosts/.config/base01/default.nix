@@ -38,7 +38,8 @@ in
             on-timeout = "${lockCountdown} ${toString warnSec} nolock";
             on-resume = "${lockCountdown} cancel";
           }
-          { timeout = idleSec; on-timeout = "loginctl lock-session"; }
+          # +1s buffer so countdown vanishes before lock screen appears
+          { timeout = idleSec + 1; on-timeout = "loginctl lock-session"; }
           { timeout = idleSec + 60; on-timeout = "hyprctl dispatch dpms off"; on-resume = "hyprctl dispatch dpms on"; }
         ];
       };
