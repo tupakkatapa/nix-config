@@ -2,9 +2,7 @@ cfg:
 let
   btnTransition = "{{ states('input_number.button_transition') | float }}";
 
-  # Resolve preset to light.turn_on data (Jinja2 template)
-
-  # Build the choose block for applying a preset
+  # Build the choose block for applying a preset (color via hs_color, else temperature)
   mkPresetAction = slotKey: lights: transitionExpr: {
     choose = [{
       conditions = [{
@@ -215,11 +213,14 @@ builtins.concatMap mkSlotAutomation cfg.scheduleSlots
         {% set slot_ts = (state_attr('input_datetime.wake_pc_time', 'timestamp') | int + time_offset) % 86400 %}
         {{ now().strftime('%H:%M') == (slot_ts | timestamp_custom('%H:%M', false)) }}'';
     }];
-    condition = [{
-      condition = "state";
-      entity_id = "input_boolean.wake_pc";
-      state = "on";
-    }];
+    condition = [
+      { condition = "state"; entity_id = "input_boolean.wake_pc"; state = "on"; }
+      # Skip weekends unless explicitly enabled (weekday(): 0=Mon .. 6=Sun)
+      {
+        condition = "template";
+        value_template = "{{ is_state('input_boolean.wake_pc_weekend', 'on') or now().weekday() < 5 }}";
+      }
+    ];
     action = [{
       service = "switch.turn_on";
       target.entity_id = "switch.torgue";

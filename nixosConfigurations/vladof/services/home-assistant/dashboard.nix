@@ -106,6 +106,12 @@ in
             { type = "light"; entity = cfg.lights.hallway; name = "Hallway"; }
           ];
         }
+        {
+          type = "horizontal-stack";
+          cards = [
+            { type = "light"; entity = cfg.lights.bedroom; name = "Bedroom"; }
+          ];
+        }
         # OpenRGB devices on torgue
         {
           type = "entities";
@@ -204,6 +210,7 @@ in
           show_header_toggle = false;
           entities = [
             "input_boolean.wake_pc"
+            "input_boolean.wake_pc_weekend"
             "input_datetime.wake_pc_time"
           ];
         }

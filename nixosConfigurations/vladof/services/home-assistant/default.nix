@@ -1,3 +1,20 @@
+# Declarative circadian lighting + machine WOL/shutdown for the homelab.
+#
+# Model (config.nix is the data, this file projects it into Home Assistant):
+#   - scheduleSlots: ordered times of day (morning..off). The "active slot" is the
+#     latest slot whose offset-adjusted time is <= now (see activeSlotTemplate).
+#   - schedule_time_offset (input_number, hours): shifts ALL slot times; positive = later.
+#   - schedule_override (input_boolean): any manual button/scene sets it, freezing the
+#     schedule; auto-cleared at the morning slot and by the Resume script.
+#   - Two mutually-exclusive transition modes, selected by the continuous_transitions
+#     toggle: discrete per-slot (mkSlotAutomation) vs interpolated (continuousAutomations).
+#   - defaultTransition (minutes): negative = fade begins |n| min BEFORE the slot time and
+#     completes at it; positive/zero = fade begins AT the slot time.
+#   - `% 86400` throughout wraps offset-shifted timestamps within a 24h day.
+#
+# Live state (user edits to times/brightness/presets) persists ONLY because configDir
+# sits under dataDir, which is the persisted @main subvolume (see persistence.nix).
+# The `initial` values seed first boot only.
 { pkgs
 , dataDir
 , haConfig
@@ -15,8 +32,7 @@ let
   # Global settings → input_boolean
   globalInputBooleans = builtins.mapAttrs
     (_: v: {
-      inherit (v) name icon;
-      inherit (v) initial;
+      inherit (v) name icon initial;
     })
     cfg.globalSettings;
 
@@ -101,7 +117,6 @@ let
       cfg.scheduleSlots
   );
 
-
   # Template sensor: active slot name (offset-aware)
   slotList = builtins.concatStringsSep ", " (
     map (s: "('${s.alias}', (state_attr('input_datetime.sched_${s.key}_time', 'timestamp') | int + time_offset) % 86400)") cfg.scheduleSlots
@@ -174,6 +189,10 @@ in
             let m = cfg.machines.${name}; in
             if m.canShutdown then [{
               inherit name;
+              # Empty remote command is intentional: torgue's authorized_keys forces
+              # `sudo systemctl poweroff` (see nixosConfigurations/torgue/default.nix).
+              # StrictHostKeyChecking=no because torgue is an ephemeral netboot host whose
+              # host key changes every boot; pinning is impractical (LAN-only, 10.42.0.0/24).
               value = "${pkgs.openssh}/bin/ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 -i ${hassSshKey} service@${m.ip}";
             }]
             else [ ])
@@ -190,6 +209,7 @@ in
 
       input_boolean = globalInputBooleans // slotEnabledBooleans // {
         wake_pc = { inherit (cfg.wakePC.enabled) name icon; };
+        wake_pc_weekend = { inherit (cfg.wakePC.weekend) name icon initial; };
       };
       input_datetime = slotInputDatetimes // {
         wake_pc_time = {

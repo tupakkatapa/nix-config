@@ -4,6 +4,7 @@ rec {
     livingRoom = "light.innr_rb_282_c_2";
     dining = "light.innr_rb_282_c_3";
     hallway = "light.innr_rb_282_c_4";
+    bedroom = "light.innr_rb_282_c_5";
   };
 
   allLights = builtins.attrValues lights;
@@ -87,7 +88,7 @@ rec {
       key = "morning";
       alias = "Morning";
       icon = "mdi:weather-sunset-up";
-      lights = with lights; [ bedside livingRoom dining hallway ];
+      lights = with lights; [ bedside livingRoom dining hallway bedroom ];
 
       defaultTime = "07:00";
       defaultBrightness = 100;
@@ -131,7 +132,7 @@ rec {
       key = "night";
       alias = "Night";
       icon = "mdi:weather-night";
-      lights = with lights; [ bedside livingRoom dining hallway ];
+      lights = with lights; [ bedside livingRoom dining hallway bedroom ];
 
       defaultTime = "21:30";
       defaultBrightness = 10;
@@ -142,7 +143,7 @@ rec {
       key = "bedtime";
       alias = "Bedtime";
       icon = "mdi:bed";
-      lights = with lights; [ bedside ];
+      lights = with lights; [ bedside bedroom ];
 
       defaultTime = "22:30";
       defaultBrightness = 5;
@@ -176,6 +177,8 @@ rec {
   # Wake PC
   wakePC = {
     enabled = { name = "Enabled"; icon = "mdi:power"; };
+    # When off, Wake PC is skipped on Sat/Sun (weekday() >= 5).
+    weekend = { name = "Weekends"; icon = "mdi:calendar-weekend"; initial = false; };
     time = { name = "Time"; icon = "mdi:clock-outline"; initial = "08:30"; };
   };
 
