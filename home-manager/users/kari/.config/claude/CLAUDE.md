@@ -59,6 +59,7 @@ Slash commands under `/tt:*`. Auto-invoke when user intent clearly matches.
 - `/tt:act:branch` — create branch (upcoming or move existing work)
 - `/tt:act:push` — push current branch (explicit auth)
 - `/tt:act:pr` — open a draft PR (PR-first)
+- `/tt:act:issue` — create a Linear issue (priority/estimate/hierarchy conventions, fact-checked desc)
 - `/tt:act:bump` — bump version + changelog
 - `/tt:act:explain` — explain topic/code
 - `/tt:act:diagram` — Mermaid diagram
