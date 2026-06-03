@@ -141,7 +141,7 @@ in
       exec-once = [
         "dunst"
         "wl-clipboard-history -t"
-        "wlsunset -S 07:00 -s 21:00 -t 3000 -T 6500"
+        "wlsunset -S 12:00 -s 12:00 -t 3000 -T 6500 -d 43200"
         "waybar"
         "${TERMINAL} -a oterm -e oterm"
         "${TERMINAL} -a notepad -e ${EDITOR} ~/Documents/notepad.md"
