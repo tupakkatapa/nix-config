@@ -6,100 +6,34 @@
 
 ---
 
-Update changelog using "Keep a Changelog" format with Semantic Versioning.
+You are bumping the version for a release and cutting its changelog heading. For changelog *content* (consolidating, wording, what to include), this delegates to `/tt:act:changelog` — do not restate those rules here. If the intent is only to tidy/update the changelog **without** a version bump, use `/tt:act:changelog` instead.
 
 ## 1. Determine Version Status
 
-Check current version in codebase (e.g., `pyproject.toml`, `Cargo.toml`, `package.json`, `flake.nix`, or `__version__`):
-- If version was already bumped for this release cycle, **do not bump again**
-- Only bump if releasing a new version
+Find the current version in the codebase (`pyproject.toml`, `Cargo.toml`, `package.json`, `flake.nix`, or `__version__`).
 
-## 2. Identify Changes Since Last Release
+- If the version was **already bumped** for this release cycle, **do not bump again** — just ensure the changelog heading + date are correct (§3).
+- Only bump when actually cutting a new release.
 
-Determine the integration branch dynamically (don't hardcode `main`):
+## 2. Choose the Increment
 
-```bash
-integration=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||')
-integration=${integration:-$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name 2>/dev/null)}
-integration=${integration:-main}
+Semantic Versioning, driven by the consolidated change set (run `/tt:act:changelog`'s "Identify Changes" step to see it):
 
-git log "$integration..HEAD" --oneline --no-merges
-```
+| Bump | When |
+|---|---|
+| Patch (z) | Bug fixes, minor improvements |
+| Minor (y) | New features, non-breaking changes |
+| Major (x) | Breaking changes |
 
-Or diff against the last version-bump commit if on a feature branch (`git log $(git log --grep '^chore: bump' -1 --format=%H)..HEAD --oneline --no-merges`).
+A single breaking change forces a major (or minor pre-1.0 by project policy). State the chosen increment and why.
 
-## 3. Update Changelog
+## 3. Cut the Release
 
-### Format Rules
+1. **Changelog content** — run `/tt:act:changelog` to consolidate `## [Unreleased]` into release-ready entries (its format + include/exclude rules apply).
+2. **Promote the heading** — rename `## [Unreleased]` to `## [x.y.z] - YYYY-MM-DD`, then add a fresh empty `## [Unreleased]` above it.
+   - **Date = the production-release day**, never the staging day (see `/tt:act:changelog` §4). If the release reaches prod on a later day, use that day; when unsure, ask.
+3. **Version string** — update it in the single source of truth (the file from §1). Update lockfiles/derived metadata only if the project regenerates them on bump.
 
-- **Client-focused**: Only include changes clients care about
-- **No commit hashes**: Keep it clean and readable
-- **Consolidate**: Group related commits into single entries
-- **Human readable**: Clear, brief descriptions
+## 4. Report
 
-### What to Include
-
-- New features and capabilities
-- API changes (endpoints, fields, scopes)
-- Bug fixes that affected users
-- Breaking changes and removals
-- Deprecation notices
-
-### What to Exclude
-
-- CI/CD changes
-- Test infrastructure
-- Internal refactoring
-- Migration details
-- Dev tooling and environment configuration
-- Code quality improvements
-
-### Section Order
-
-```markdown
-### Added
-### Changed
-### Fixed
-### Removed
-### Deprecated
-```
-
-## 4. Handle Deprecations
-
-- Check the project's deprecations document (e.g. `docs/deprecations.md`) if present, for items sunset in this version
-- Remove sunset items from that document (or mark as completed)
-- Ensure the "Removed" section of the changelog documents what was removed
-
-## 5. Version Bump (if needed)
-
-Only if releasing new version:
-- Patch (z): Bug fixes, minor improvements
-- Minor (y): New features, non-breaking changes
-- Major (x): Breaking changes
-
-## Example Entry
-
-```markdown
-## [0.4.0] - 2026-02-05
-
-### Added
-
-- New endpoint or capability — one line per change, written for the consumer
-- New configuration option (with default and migration note if it changes behaviour)
-
-### Changed
-
-- Behaviour change a caller would notice (e.g. response shape, default value)
-
-### Fixed
-
-- Bug that affected a real user-visible behaviour (not internal refactors)
-
-### Deprecated
-
-- Capability scheduled for removal — name the replacement and the timeline
-
-### Removed
-
-- Capability that no longer exists (and which release deprecated it, if applicable)
-```
+State: old → new version, the increment type and rationale, the release date used (and that it is the prod date), and a one-line summary of the consolidated changelog sections. Do not commit unless told.
