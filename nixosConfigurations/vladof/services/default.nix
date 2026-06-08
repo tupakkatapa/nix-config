@@ -85,13 +85,6 @@ let
         lastOctet = 20;
         uid = 10011;
       };
-      radicle = {
-        addr = "seed.${domain}";
-        port = 8788; # radicle-httpd; seed port 8776 forwarded separately
-        private = false;
-        lastOctet = 21;
-        uid = 10012;
-      };
     };
 
   # Service configuration
