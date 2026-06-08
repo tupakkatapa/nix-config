@@ -1,6 +1,4 @@
-{ pkgs
-, ...
-}:
+_:
 let
   user = "kari";
 in
@@ -28,10 +26,5 @@ in
       TERMINAL = "foot";
       THEME = "gruvbox-dark-medium";
     };
-
-    home.packages = with pkgs; [
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.symbols-only
-    ];
   };
 }

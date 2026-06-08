@@ -84,6 +84,10 @@ in
       gxplugins-lv2
       helvum
 
+      # Desktop fonts
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.symbols-only
+
       # Trezor (override: keyring 25.7.0 not yet in nixpkgs)
       (trezorctl.overridePythonAttrs (old: {
         pythonRelaxDeps = (old.pythonRelaxDeps or [ ]) ++ [ "keyring" ];
