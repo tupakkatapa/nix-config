@@ -26,6 +26,10 @@
   i18n.extraLocaleSettings = {
     LC_TIME = "fi_FI.UTF-8";
   };
+  i18n.supportedLocales = [
+    "en_US.UTF-8/UTF-8"
+    "fi_FI.UTF-8/UTF-8"
+  ];
 
   # Reset the user and group files on system activation
   users.mutableUsers = false;
