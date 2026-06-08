@@ -195,6 +195,11 @@ in
 
       services.loki = {
         enable = true;
+        # Server binary only; drops logcli/lokitool/loki-canary (~225 MB)
+        package = pkgs.runCommand "loki-server" { } ''
+          mkdir -p $out/bin
+          cp ${pkgs.grafana-loki}/bin/loki $out/bin/loki
+        '';
         dataDir = "/var/lib/loki";
         configuration = {
           auth_enabled = false;

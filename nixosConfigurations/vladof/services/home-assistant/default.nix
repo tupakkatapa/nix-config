@@ -147,8 +147,21 @@ in
     configWritable = false;
     configDir = "${dataDir}/home/home-assistant/appdata/hass";
 
+    # Explicit list, not "default_config": skips its heavy unused deps
     extraComponents = [
-      "default_config"
+      "frontend"
+      "config"
+      "history"
+      "logbook"
+      "mobile_app"
+      "my"
+      "sun"
+      "webhook"
+      "zeroconf"
+      "ssdp"
+      "energy"
+      "media_source"
+      "homeassistant_alerts"
       "met"
       "wake_on_lan"
       "openrgb"
