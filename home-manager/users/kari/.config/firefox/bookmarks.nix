@@ -210,7 +210,6 @@
     { name = "Google Translate"; url = "https://translate.google.com/"; }
     { name = "CroxyProxy"; url = "https://www.croxyproxy.com/"; }
     { name = "MD to PDF Converter"; url = "https://cloudconvert.com/md-to-pdf"; }
-    { name = "Downdetector"; url = "https://downdetector.com/"; }
     { name = "MyTime"; url = "https://mytime.io/"; }
     { name = "Word2Markdown"; url = "https://word2md.com/"; }
 
@@ -235,6 +234,7 @@
 
     # Shopping
     { name = "Amazon"; url = "https://www.amazon.de/"; }
+    { name = "AliExpress"; url = "https://www.aliexpress.com/"; }
     { name = "Crucial"; url = "https://www.crucial.com/"; }
     { name = "Verkkokauppa"; url = "https://www.verkkokauppa.com/fi/etusivu"; }
     { name = "Jimms"; url = "https://www.jimms.fi/"; }
