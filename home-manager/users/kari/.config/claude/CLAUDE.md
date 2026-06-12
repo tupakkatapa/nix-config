@@ -61,6 +61,8 @@ Slash commands under `/tt:*`. Auto-invoke when user intent clearly matches.
 - `/tt:edge-cases` — hypothetical risk discovery
 - `/tt:docs` — write documentation (Diátaxis)
 - `/tt:research` — produce a durable research brief from unfamiliar subject matter
+- `/tt:finish` — final pre-merge sign-off: docs current (+ changelog) → tests prove it (targeted; CI runs full) → breaking/regression analysis → `/tt:review`, then an evidence-backed merge promise (or refuses, naming the blocker)
+- `/tt:summary` — high-level brief of what a branch changed (endpoints/fields/client-visible behaviour + key implementation notes); read-only, no gating
 
 **Actions** (single operations):
 - `/tt:act:check` — pre-commit, linters, tests
@@ -104,6 +106,7 @@ Mode taxonomy (consumed by lens specialists):
 | `/tt:edge-cases` | risk-discovery | what could go wrong? |
 | `/tt:docs` | authoring | discipline for writing |
 | `/tt:research` | research | what do I need to understand? |
+| `/tt:finish` | verification | is this safe to merge? |
 
 ## Ralph Loop
 
