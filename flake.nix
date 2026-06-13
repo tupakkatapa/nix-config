@@ -10,6 +10,9 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    # openrgb 1.0rc2 (26.05) has a broken `-z` (zone) CLI parser; pin openrgb to
+    # 25.11's 0.9 on torgue until upstream fixes it. See torgue/default.nix.
+    nixpkgs-2511.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     treefmt-nix.url = "github:numtide/treefmt-nix";

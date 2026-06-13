@@ -11,7 +11,7 @@ in
     main.font = "${FONT}:size=8";
 
     # Color settings
-    colors = {
+    colors-dark = {
       background = colors.base00;
       foreground = colors.base06;
 

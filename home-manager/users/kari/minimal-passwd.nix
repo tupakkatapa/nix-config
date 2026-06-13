@@ -90,7 +90,10 @@ in
             config.age.secrets.ed25519-sk-trezor.path
           ];
           ForwardAgent = true;
-          AddKeysToAgent = "yes";
+          # SK keys are hardware-backed (PIN/touch per use). Loading them into
+          # the agent breaks signing: the agent has no askpass for the PIN
+          # ("agent refused operation"). Use directly so ssh prompts on the tty.
+          AddKeysToAgent = "no";
         };
         "hyperion" = {
           User = "core";

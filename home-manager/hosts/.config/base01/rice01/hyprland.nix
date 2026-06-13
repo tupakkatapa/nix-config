@@ -75,7 +75,7 @@ in
     # Window behiavior
     windowrule = [
       # Sets the workspace on which a window should open
-      "workspace 4 silent, class:discord"
+      "match:class discord, workspace 4 silent"
     ];
   };
 }

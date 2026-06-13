@@ -134,7 +134,6 @@ in
       dwindle = {
         force_split = 2; # Always split to the right
         preserve_split = true;
-        pseudotile = true;
         split_width_multiplier = "1.3";
       };
 
@@ -144,8 +143,6 @@ in
         "wl-clipboard-history -t"
         "wlsunset -S 12:00 -s 12:00 -t 3000 -T 6500 -d 43200"
         "waybar"
-        "${TERMINAL} -a oterm -e oterm"
-        "${TERMINAL} -a notepad -e ${EDITOR} ~/Documents/notepad.md"
       ];
 
       bind = [
@@ -225,68 +222,68 @@ in
       # Window behavior
       windowrule = [
         # Program specific (float, position and size etc.)
-        "float, class:blueberry"
-        "float, class:imv"
-        "float, class:qjackctl"
-        "float, class:moe.launcher.an-anime-game-launcher"
-        "float, class:mpv"
-        "float, class:org.raspberrypi.rpi-imager"
+        "match:class blueberry, float on"
+        "match:class imv, float on"
+        "match:class qjackctl, float on"
+        "match:class moe.launcher.an-anime-game-launcher, float on"
+        "match:class mpv, float on"
+        "match:class org.raspberrypi.rpi-imager, float on"
 
-        "center, class:org.pwmt.zathura"
-        "float, class:org.pwmt.zathura"
-        "size 800 1150, class:org.pwmt.zathura"
+        "match:class org.pwmt.zathura, center on"
+        "match:class org.pwmt.zathura, float on"
+        "match:class org.pwmt.zathura, size 800 1150"
 
-        "center, title:Runelite"
-        "float, title:RuneLite"
-        "size 800 500, title:RuneLite"
+        "match:title Runelite, center on"
+        "match:title RuneLite, float on"
+        "match:title RuneLite, size 800 500"
 
-        "center, title:QEMU"
-        "float, title:QEMU"
-        "size 1400 800, title:QEMU"
+        "match:title QEMU, center on"
+        "match:title QEMU, float on"
+        "match:title QEMU, size 1400 800"
 
-        "center, title:^(Picture-in-Picture)$"
-        "float, title:^(Picture-in-Picture)$"
-        "pin, title:^(Picture-in-Picture)$"
+        "match:title ^(Picture-in-Picture)$, center on"
+        "match:title ^(Picture-in-Picture)$, float on"
+        "match:title ^(Picture-in-Picture)$, pin on"
 
-        "center, title:^(Properties)$"
-        "size 480 650, title:^(Properties)$"
+        "match:title ^(Properties)$, center on"
+        "match:title ^(Properties)$, size 480 650"
 
-        "center, class:foot"
-        "float, class:foot"
-        "size 1400 800, class:foot"
+        "match:class foot, center on"
+        "match:class foot, float on"
+        "match:class foot, size 1400 800"
 
-        "center, class:tui-suite"
-        "float, class:tui-suite"
-        "size 1400 800, class:tui-suite"
+        "match:class tui-suite, center on"
+        "match:class tui-suite, float on"
+        "match:class tui-suite, size 1400 800"
 
-        "workspace special:oterm silent, class:oterm"
-        "float, class:oterm"
-        "size 1400 800, class:oterm"
-        "center, class:oterm"
+        "match:class oterm, workspace special:oterm silent"
+        "match:class oterm, float on"
+        "match:class oterm, size 1400 800"
+        "match:class oterm, center on"
 
-        "workspace special:notepad silent, class:notepad"
-        "float, class:notepad"
-        "size 1400 800, class:notepad"
-        "center, class:notepad"
+        "match:class notepad, workspace special:notepad silent"
+        "match:class notepad, float on"
+        "match:class notepad, size 1400 800"
+        "match:class notepad, center on"
 
-        "center, class:org.gnome.Nautilus"
-        "float, class:org.gnome.Nautilus"
-        "size 1400 800, class:org.gnome.Nautilus"
+        "match:class org.gnome.Nautilus, center on"
+        "match:class org.gnome.Nautilus, float on"
+        "match:class org.gnome.Nautilus, size 1400 800"
 
-        "center, class:thunar"
-        "float, class:thunar"
-        "size 1400 800, class:thunar"
+        "match:class thunar, center on"
+        "match:class thunar, float on"
+        "match:class thunar, size 1400 800"
 
-        "center, class:Thunar"
-        "float, class:Thunar"
-        "size 1400 800, class:Thunar"
+        "match:class Thunar, center on"
+        "match:class Thunar, float on"
+        "match:class Thunar, size 1400 800"
 
         # Sets an idle inhibit rule for the window
-        "idleinhibit focus, class:mpv"
-        "idleinhibit fullscreen, class:${BROWSER}"
+        "match:class mpv, idle_inhibit focus"
+        "match:class ${BROWSER}, idle_inhibit fullscreen"
 
         # Additional opacity multiplier
-        "opacity 0.95 override 0.95 override, class:foot"
+        "match:class foot, opacity 0.95 override 0.95 override"
       ];
     };
   };

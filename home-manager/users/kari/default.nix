@@ -18,6 +18,15 @@ in
   # Trezor hardware wallet
   services.trezord.enable = true;
 
+  # Passwordless on-demand SFTP mount at login (sshfs auth still needs a YubiKey touch)
+  security.sudo.extraRules = [{
+    users = [ user ];
+    commands = [
+      { command = "/run/wrappers/bin/mount /mnt/sftp"; options = [ "NOPASSWD" ]; }
+      { command = "/run/wrappers/bin/umount /mnt/sftp"; options = [ "NOPASSWD" ]; }
+    ];
+  }];
+
   # Home-manager config
   home-manager.users."${user}" = {
     imports = [
