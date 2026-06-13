@@ -17,7 +17,9 @@
       };
     };
 
-    config = { pkgs, ... }: (globalContainerConfig "searx") // {
+    config = { pkgs, ... }: {
+      imports = [ (globalContainerConfig "searx") ];
+
       services.searx = {
         enable = true;
         package = pkgs.searxng;

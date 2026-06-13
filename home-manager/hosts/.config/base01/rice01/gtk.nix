@@ -19,6 +19,7 @@ in
       name = "gruvbox-dark";
       package = pkgs.gruvbox-dark-gtk;
     };
+    gtk4.theme = config.gtk.theme;
   };
 
   home.pointerCursor = {

@@ -5,6 +5,7 @@
 {
   programs.nixvim = {
     enable = true;
+    nixpkgs.source = pkgs.path;
 
     # Telescope deps
     extraPackages = with pkgs; [ fd ripgrep ];
@@ -337,7 +338,7 @@
       treesitter = {
         enable = true;
         settings.indent.enable = true;
-        folding = false;
+        folding.enable = false;
         nixvimInjections = true;
         grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
           bash

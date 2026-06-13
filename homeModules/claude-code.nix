@@ -27,7 +27,7 @@ let
       };
       pluginSrc = p; # The derivation itself has plugin files
     })
-    cfg.plugins;
+    cfg.pluginPackages;
 
   # Collect runtime inputs from all plugins
   allRuntimeInputs = lib.unique (lib.flatten (map (p: p.runtimeInputs) allPlugins));
@@ -98,7 +98,7 @@ let
 
 in
 {
-  options.programs.claude-code.plugins = lib.mkOption {
+  options.programs.claude-code.pluginPackages = lib.mkOption {
     type = lib.types.listOf lib.types.package;
     default = [ ];
     description = "List of claude plugin packages (built with mkClaudePlugin)";

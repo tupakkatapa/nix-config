@@ -27,8 +27,9 @@ in
       };
     };
 
-    config = _: (globalContainerConfig "molesk") // {
+    config = { ... }: {
       imports = [
+        (globalContainerConfig "molesk")
         inputs.molesk.nixosModules.default
       ];
 

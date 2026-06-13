@@ -82,36 +82,33 @@ in
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks = {
+      settings = {
         "*" = {
-          identityFile = [
+          IdentityFile = [
             config.age.secrets.ed25519-sk-yubikey.path
             config.age.secrets.ed25519-sk-yubikey-2.path
             config.age.secrets.ed25519-sk-trezor.path
           ];
-          forwardAgent = true;
-          addKeysToAgent = "yes";
+          ForwardAgent = true;
+          AddKeysToAgent = "yes";
         };
         "hyperion" = {
-          user = "core";
-          hostname = "10.42.0.1";
-          extraOptions."StrictHostKeyChecking" = "no";
+          User = "core";
+          HostName = "10.42.0.1";
+          StrictHostKeyChecking = "no";
         };
         "torgue" = {
-          hostname = "10.42.0.7";
-          extraOptions."StrictHostKeyChecking" = "no";
+          HostName = "10.42.0.7";
+          StrictHostKeyChecking = "no";
         };
         "vladof" = {
-          hostname = "10.42.0.8";
-          extraOptions."StrictHostKeyChecking" = "no";
+          HostName = "10.42.0.8";
+          StrictHostKeyChecking = "no";
         };
-        "10.42.0.*".extraOptions."StrictHostKeyChecking" = "no";
+        "10.42.0.*".StrictHostKeyChecking = "no";
       };
     };
-    services.ssh-agent = {
-      enable = true;
-      enableFishIntegration = true;
-    };
+    services.ssh-agent.enable = true;
 
     # Electronic mail
     accounts.email.accounts."ponkila" = {

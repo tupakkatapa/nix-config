@@ -33,7 +33,9 @@ in
       };
     };
 
-    config = { pkgs, ... }: (globalContainerConfig "transmission") // {
+    config = { pkgs, ... }: {
+      imports = [ (globalContainerConfig "transmission") ];
+
       services.transmission = {
         enable = true;
         package = pkgs.transmission_4;

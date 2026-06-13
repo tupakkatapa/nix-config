@@ -12,11 +12,15 @@ let
   globalContainerConfig = serviceName: {
     system.stateVersion = "24.11";
     nixpkgs.config.allowUnfree = true;
+    i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "fi_FI.UTF-8/UTF-8" ];
+    documentation.enable = false;
+
     networking = {
       domain = "${domain}";
       useDHCP = false;
       # Workaround for bug https://github.com/NixOS/nixpkgs/issues/162686
       useHostResolvConf = lib.mkForce false;
+      resolvconf.enable = false; # we write /etc/resolv.conf directly below
     };
 
     # Disable systemd-resolved since it's not working in containers

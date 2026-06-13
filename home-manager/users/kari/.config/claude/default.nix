@@ -27,7 +27,7 @@ in
 
   programs.claude-code = {
     enable = true;
-    skillsDir = ./skills;
+    skills = ./skills;
 
     # Mounted under `/tt:*` below.
     commands = { };
@@ -123,10 +123,10 @@ in
     };
 
     # Global CLAUDE.md - applies to all projects
-    memory.source = ./CLAUDE.md;
+    context = ./CLAUDE.md;
 
     # Claude plugins as Nix packages
-    plugins = with pkgs.claude-plugins; [
+    pluginPackages = with pkgs.claude-plugins; [
       caveman
       ralph-wiggum
       superpowers

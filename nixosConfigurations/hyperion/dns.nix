@@ -6,8 +6,8 @@ let
   dnscryptListsSrc = pkgs.fetchFromGitHub {
     owner = "DNSCrypt";
     repo = "dnscrypt-resolvers";
-    rev = "0975c492be42e03931e907a6173e8906d261ddc8";
-    hash = "sha256-Iiiy4Hr1imJrzI0yxsX9XEe6OHwILStMNcBjLJsFhiY=";
+    rev = "dcfd7691fad0a146968fbdc23d9d84292871f860";
+    hash = "sha256-n9cQdMe0PyhARuiTak3Ly6N6tLT8W9UlMLPHOyl2XJo=";
   };
   dnscryptLists = pkgs.runCommand "dnscrypt-lists-verified"
     {
@@ -26,8 +26,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "StevenBlack";
       repo = "hosts";
-      rev = "88c487e3709e4c45f94264562c770a0ca5e65508";
-      hash = "sha256-DkcMg7kgNnn+FL9fxhsTaSa/Q0RkFanvTvcH65DIwa4=";
+      rev = "b4f4d7af895a3d18be12d1ea2da9430660cebf9e";
+      hash = "sha256-HRk8pd3FAj5P3KObzO91NF2BrYV8Wo7hDA8xWYsbTm4=";
     };
     phases = [ "installPhase" ];
     installPhase = ''

@@ -4,7 +4,7 @@ let
 
   # Override tumbler to exclude libgepub (EPUB support) which pulls in WebKitGTK
   # Saves 141.46 MiB from initrd by preventing 1.4 GiB WebKitGTK closure
-  tumblerWithoutEpub = pkgs.xfce.tumbler.overrideAttrs (old: {
+  tumblerWithoutEpub = pkgs.tumbler.overrideAttrs (old: {
     buildInputs = lib.filter (x: (x.pname or "") != "libgepub") old.buildInputs;
   });
 
@@ -26,7 +26,7 @@ let
   # Double-click handler: extract archive to /tmp + open dir in Thunar
   archiveOpen = pkgs.writeShellApplication {
     name = "thunar-archive-open";
-    runtimeInputs = [ pkgs.libarchive pkgs.libnotify pkgs.xfce.thunar ];
+    runtimeInputs = [ pkgs.libarchive pkgs.libnotify pkgs.thunar ];
     text = ''
       f="$1"
       base="$(basename "$f")"
@@ -52,10 +52,10 @@ let
 in
 {
   home.packages = with pkgs; [
-    xfce.thunar
-    xfce.thunar-volman
+    thunar
+    thunar-volman
     tumblerWithoutEpub
-    xfce.xfconf
+    xfconf
     libarchive
     p7zip
     unrar

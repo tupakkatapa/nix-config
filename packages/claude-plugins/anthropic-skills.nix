@@ -1,11 +1,11 @@
 { fetchFromGitHub, mkClaudePlugin }:
 let
-  rev = "1ed29a03dc852d30fa6ef2ca53a67dc2c2c2c563";
+  rev = "57546260929473d4e0d1c1bb75297be2fdfa1949";
   src = fetchFromGitHub {
     owner = "anthropics";
     repo = "skills";
     inherit rev;
-    hash = "sha256-9FGubcwHcGBJcKl02aJ+YsTMiwDOdgU/FHALjARG51c=";
+    hash = "sha256-1D9otXxDvmKASBu/vtAEWv6kE+U+jG4OxZpRLZbGEF0=";
   };
   marketplace = {
     name = "anthropic-agent-skills";

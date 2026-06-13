@@ -6,7 +6,7 @@
   #   nix-store --generate-binary-cache-key vladof.coditon.com-1 priv.pem pub.pem
   #   agenix rekey edit nixosConfigurations/vladof/secrets/harmonia-key.age # paste priv.pem
   #   then update system/nix-settings.nix with the pub.pem contents
-  services.harmonia = {
+  services.harmonia.cache = {
     enable = true;
     signKeyPaths = [ config.age.secrets.harmonia-key.path ];
     settings = {

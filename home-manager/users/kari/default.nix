@@ -15,9 +15,6 @@ in
   # Required for hyprlock via home-manager
   security.pam.services.hyprlock = { };
 
-  # Android development
-  programs.adb.enable = true;
-
   # Trezor hardware wallet
   services.trezord.enable = true;
 
@@ -79,10 +76,11 @@ in
       ] else [ ]);
 
     home.packages = (with pkgs; [
+      android-tools
       monitor-adjust
       guitarix
       gxplugins-lv2
-      helvum
+      crosspipe
 
       # Desktop fonts
       nerd-fonts.jetbrains-mono

@@ -73,6 +73,7 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
+    configType = "hyprlang";
 
     # Submaps are impossible to be defined in settings
     extraConfig =

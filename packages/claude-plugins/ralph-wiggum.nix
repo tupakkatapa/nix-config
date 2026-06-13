@@ -1,11 +1,11 @@
 { fetchFromGitHub, mkClaudePlugin }:
 let
-  rev = "f298d940faf08deec44f7a7a4d382c673450a302";
+  rev = "ee81682a72b07705672332d1dc963927a998c177";
   src = fetchFromGitHub {
     owner = "anthropics";
     repo = "claude-code";
     inherit rev;
-    hash = "sha256-XDfZJuMBL94wxwuuK3Ugxsf1V3B9ylX6zhMWPXz4fU0=";
+    hash = "sha256-hgMewrcB+xQuWw1jYovfjFc2LYxI2+vcKITHEn/Wfrs=";
   };
 in
 mkClaudePlugin {

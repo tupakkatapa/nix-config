@@ -21,7 +21,9 @@ in
       };
     };
 
-    config = _: (globalContainerConfig "conduit") // {
+    config = { ... }: {
+      imports = [ (globalContainerConfig "conduit") ];
+
       services.matrix-conduit = {
         enable = true;
         settings.global = {

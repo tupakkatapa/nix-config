@@ -54,7 +54,9 @@ in
       };
     };
 
-    config = _: (globalContainerConfig "plex") // {
+    config = { ... }: {
+      imports = [ (globalContainerConfig "plex") ];
+
       services.plex = {
         enable = true;
         dataDir = "/var/lib/plex";

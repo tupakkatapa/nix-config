@@ -21,14 +21,15 @@ in
       };
     };
 
-    config = { pkgs, ... }: (globalContainerConfig "ollama") // {
+    config = { pkgs, ... }: {
+      imports = [ (globalContainerConfig "ollama") ];
+
       services.ollama = {
         enable = true;
-        package = pkgs.ollama;
+        package = pkgs.ollama-cpu;
         openFirewall = true;
         inherit (containerConfig.ollama) port;
         host = "0.0.0.0";
-        acceleration = false;
         loadModels = [
           # https://ollama.com/library
           "qwen3:4b"

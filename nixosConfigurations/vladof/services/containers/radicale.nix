@@ -25,7 +25,9 @@ in
       };
     };
 
-    config = _: (globalContainerConfig "radicale") // {
+    config = { ... }: {
+      imports = [ (globalContainerConfig "radicale") ];
+
       services.radicale = {
         enable = true;
         settings = {

@@ -25,7 +25,9 @@ in
       };
     };
 
-    config = _: (globalContainerConfig "vaultwarden") // {
+    config = { ... }: {
+      imports = [ (globalContainerConfig "vaultwarden") ];
+
       services.vaultwarden = {
         enable = true;
         dbBackend = "sqlite";

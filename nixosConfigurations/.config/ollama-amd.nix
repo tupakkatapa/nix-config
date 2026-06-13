@@ -1,11 +1,11 @@
-{ lib, ... }: {
+{ lib, pkgs, ... }: {
   # GPU compute support for ROCm
   hardware.amdgpu.opencl.enable = true;
   hardware.graphics.enable = true;
 
   services.ollama = {
     enable = true;
-    acceleration = "rocm";
+    package = pkgs.ollama-rocm;
     # RX 6700 is gfx1031, override to supported gfx1030
     rocmOverrideGfx = "10.3.0";
     environmentVariables = {

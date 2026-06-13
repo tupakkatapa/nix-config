@@ -21,7 +21,9 @@ in
       };
     };
 
-    config = _: (globalContainerConfig "ntfy") // {
+    config = { ... }: {
+      imports = [ (globalContainerConfig "ntfy") ];
+
       services.ntfy-sh = {
         enable = true;
         settings = {

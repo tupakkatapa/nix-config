@@ -29,7 +29,9 @@ in
       };
     };
 
-    config = _: (globalContainerConfig "kavita") // {
+    config = { ... }: {
+      imports = [ (globalContainerConfig "kavita") ];
+
       services.kavita = {
         enable = true;
         dataDir = "/var/lib/kavita";
