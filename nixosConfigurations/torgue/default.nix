@@ -6,7 +6,7 @@
   # `-z` -> "Invalid option"), so the Corsair zone sizes can't be set and its
   # LEDs stay dark. Pin openrgb to 25.11's 0.9 (server + client) until fixed.
   nixpkgs.overlays = [
-    (_: prev: { openrgb = inputs.nixpkgs-2511.legacyPackages.${prev.system}.openrgb; })
+    (_: prev: { openrgb = inputs.nixpkgs-2511.legacyPackages.${prev.stdenv.hostPlatform.system}.openrgb; })
   ];
 
   age.rekey = {

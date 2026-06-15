@@ -10,7 +10,7 @@
           "--asterisks"
           "--remember"
           "--time"
-          "--cmd Hyprland"
+          "--cmd start-hyprland"
         ];
         user = "greeter";
       };
