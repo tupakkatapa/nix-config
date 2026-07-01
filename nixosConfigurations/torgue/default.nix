@@ -52,6 +52,14 @@
         imports = [ ../.config/auto-scrcpy.nix ];
       }
       {
+        name = "plexamp";
+        imports = [{
+          environment.systemPackages = with pkgs; [
+            plexamp
+          ];
+        }];
+      }
+      {
         name = "daw";
         imports = [ /mnt/860/home/kari/other/daw.nix ];
         postEnable = "bitwig-studio";
