@@ -139,24 +139,20 @@
     after = [ "openrgb.service" ];
     requires = [ "openrgb.service" ];
     wantedBy = [ "multi-user.target" ];
+    unitConfig = {
+      StartLimitIntervalSec = 90;
+      StartLimitBurst = 10;
+    };
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      # Devices (esp. the Corsair USB HID) enumerate after the server socket is
+      # up, so early runs hit "Invalid device ID"; retry until they appear.
+      Restart = "on-failure";
+      RestartSec = 5;
     };
     path = [ pkgs.openrgb ];
     script = ''
-      # Server opens its socket only after device detection (~60-90s);
-      # `after = openrgb.service` only waits for spawn, so poll until ready.
-      ready=0
-      for _ in $(seq 1 90); do
-        openrgb --client --list >/dev/null 2>&1 && { ready=1; break; }
-        sleep 2
-      done
-      if [ "$ready" -ne 1 ]; then
-        echo "openrgb server did not accept connections within 180s" >&2
-        exit 1
-      fi
-
       # Set Corsair zone sizes (resets on power cycle)
       openrgb --client -d 1 -z 0 --mode static --size 30 --color 000000
       openrgb --client -d 1 -z 1 --mode static --size 30 --color 000000
