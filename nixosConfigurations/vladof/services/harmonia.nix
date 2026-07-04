@@ -17,9 +17,13 @@
     };
   };
 
+  # Static user for User=harmonia (module uses DynamicUser, base.nix disables it)
+  users.users.harmonia = { isSystemUser = true; group = "harmonia"; };
+  users.groups.harmonia = { };
+
+  # No owner: key read via LoadCredential as root
   age.secrets.harmonia-key = {
     rekeyFile = ../secrets/harmonia-key.age;
-    owner = "harmonia";
     mode = "400";
   };
 
