@@ -117,6 +117,65 @@ let
       cfg.scheduleSlots
   );
 
+  # Temporary-scene helpers (off-type scenes have no brightness/preset)
+  tempSceneInputNumbers = builtins.listToAttrs (
+    builtins.concatMap
+      (s:
+        [{
+          name = "temp_${s.key}_duration";
+          value = {
+            name = "Duration";
+            icon = "mdi:timer-sand";
+            inherit (cfg.tempSceneDuration) min max step;
+            initial = s.defaultDuration;
+            unit_of_measurement = "min";
+          };
+        }]
+        ++ (if s.defaultPreset != null then [{
+          name = "temp_${s.key}_brightness";
+          value = {
+            name = "Brightness";
+            icon = "mdi:brightness-percent";
+            min = 0;
+            max = 100;
+            step = 5;
+            initial = s.defaultBrightness;
+            unit_of_measurement = "%";
+          };
+        }] else [ ]))
+      cfg.temporaryScenes
+  );
+
+  tempSceneInputSelects = builtins.listToAttrs (
+    builtins.concatMap
+      (s:
+        if s.defaultPreset != null then [{
+          name = "temp_${s.key}_preset";
+          value = {
+            name = "Preset";
+            icon = "mdi:palette";
+            options = cfg.presetOptions;
+            initial = s.defaultPreset;
+          };
+        }] else [ ])
+      cfg.temporaryScenes
+  );
+
+  # One countdown timer per temporary scene
+  tempSceneTimers = builtins.listToAttrs (
+    map
+      (s: {
+        name = "scene_${s.key}";
+        value = {
+          name = s.alias;
+          # Seed only; timer.start passes the slider duration at runtime
+          duration = s.defaultDuration * 60;
+          restore = true;
+        };
+      })
+      cfg.temporaryScenes
+  );
+
   # Template sensor: active slot name (offset-aware)
   slotList = builtins.concatStringsSep ", " (
     map (s: "('${s.alias}', (state_attr('input_datetime.sched_${s.key}_time', 'timestamp') | int + time_offset) % 86400)") cfg.scheduleSlots
@@ -167,6 +226,8 @@ in
       "openrgb"
       "zha"
       "philips_js"
+      "timer" # temporary-scene countdowns
+      "scene" # snapshot + restore prior state
     ];
 
     lovelaceConfig = dashboard;
@@ -231,12 +292,14 @@ in
           has_time = true;
         };
       };
-      input_number = globalInputNumbers // slotInputNumbers // {
+      input_number = globalInputNumbers // slotInputNumbers // tempSceneInputNumbers // {
         schedule_time_offset = {
           inherit (cfg.timeOffset) name icon min max step initial unit_of_measurement;
         };
       };
-      input_select = slotInputSelects;
+      input_select = slotInputSelects // tempSceneInputSelects;
+
+      timer = tempSceneTimers;
 
       light = [
         {

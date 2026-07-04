@@ -2,6 +2,16 @@ cfg:
 let
   take = n: list: builtins.genList (i: builtins.elemAt list i) n;
   drop = n: list: builtins.genList (i: builtins.elemAt list (i + n)) (builtins.length list - n);
+  # Split a list into rows of `size` (last row may be shorter)
+  chunk = size: list:
+    let len = builtins.length list; in
+    builtins.genList
+      (i:
+        let start = i * size; in
+        builtins.genList (j: builtins.elemAt list (start + j)) (
+          if start + size <= len then size else len - start
+        ))
+      ((len + size - 1) / size);
   halfBrightness = builtins.length cfg.brightnessLevels / 2;
   halfTemps = builtins.length cfg.temperatures / 2;
 
@@ -36,6 +46,41 @@ let
   mkMachineEntities = name: [
     { entity = "switch.${name}"; secondary_info = "last-changed"; }
   ];
+
+  mkTempSceneButton = scene: {
+    type = "button";
+    name = scene.alias;
+    inherit (scene) icon;
+    tap_action = { action = "call-service"; service = "script.scene_temp_${scene.key}"; };
+  };
+
+  mkTempSceneSettings = scene: {
+    type = "entities";
+    title = scene.alias;
+    show_header_toggle = false;
+    entities =
+      [ "timer.scene_${scene.key}" ]
+      ++ (if scene.defaultPreset != null then [
+        "input_number.temp_${scene.key}_brightness"
+        "input_select.temp_${scene.key}_preset"
+      ] else [ ])
+      ++ [ "input_number.temp_${scene.key}_duration" ];
+  };
+
+  # One shared Cancel: stops whichever scene is running (only one active at a time)
+  cancelTempSceneCard = {
+    type = "button";
+    name = "Cancel";
+    icon = "mdi:close";
+    tap_action = {
+      action = "call-service";
+      service = "timer.cancel";
+      target.entity_id = map (s: "timer.scene_${s.key}") cfg.temporaryScenes;
+    };
+  };
+
+  # Empty spacer to keep the grid aligned
+  blankCard = { type = "button"; name = " "; tap_action.action = "none"; };
 
   # Schedule settings card entries per slot
   mkSlotCard = slot: {
@@ -140,6 +185,15 @@ in
           entity = cfg.group.all;
           name = "All Lights";
         }
+        # Toggle: buttons below target all lights vs only on ones
+        {
+          type = "entities";
+          show_header_toggle = false;
+          entities = [{
+            entity = "input_boolean.control_all_lights";
+            name = "Control All Lights";
+          }];
+        }
         # Brightness row 1: Off + first half
         {
           type = "horizontal-stack";
@@ -186,7 +240,17 @@ in
         }
       ];
     }
-    # View 3: Schedule Settings
+    # View 3: Temporary Scenes
+    {
+      title = "Scenes";
+      icon = "mdi:motion-play-outline";
+      cards =
+        # 3-wide grid: scene buttons + Cancel, padded with a blank
+        map (row: { type = "horizontal-stack"; cards = row; })
+          (chunk 3 (map mkTempSceneButton cfg.temporaryScenes ++ [ cancelTempSceneCard blankCard ]))
+        ++ map mkTempSceneSettings cfg.temporaryScenes;
+    }
+    # View 4: Schedule Settings
     {
       title = "Schedule";
       icon = "mdi:calendar-clock";

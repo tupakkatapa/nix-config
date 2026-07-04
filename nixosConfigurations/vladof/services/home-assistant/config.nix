@@ -34,6 +34,8 @@ rec {
     schedule_enabled = { name = "Schedule"; icon = "mdi:calendar-clock"; initial = true; };
     continuous_transitions = { name = "Continuous"; icon = "mdi:transition"; initial = true; };
     schedule_override = { name = "Override"; icon = "mdi:hand-back-right"; initial = false; };
+    # When on, Preset-tab buttons target all lights incl. off ones (see onLights)
+    control_all_lights = { name = "Control All Lights"; icon = "mdi:lightbulb-group"; initial = false; };
   };
 
   buttonTransition = {
@@ -182,7 +184,54 @@ rec {
     time = { name = "Time"; icon = "mdi:clock-outline"; initial = "08:30"; };
   };
 
+  # Temporary scenes: hold a light state for a duration, then rejoin the schedule
+  # (if enabled) or restore the prior state. Data-driven like scheduleSlots.
+  # defaultPreset = null makes an "off-type" scene: turn the lights off for the
+  # duration (no brightness/preset), then rejoin the schedule.
+  temporaryScenes = [
+    {
+      key = "workout";
+      alias = "Workout";
+      icon = "mdi:dumbbell";
+      lights = with lights; [ bedroom ];
+      defaultBrightness = 90;
+      defaultPreset = "Daylight";
+      defaultDuration = 45; # minutes
+    }
+    {
+      key = "cleaning";
+      alias = "Cleaning";
+      icon = "mdi:broom";
+      lights = allLights;
+      defaultBrightness = 100;
+      defaultPreset = "Daylight";
+      defaultDuration = 30;
+    }
+    {
+      key = "movie";
+      alias = "Movie";
+      icon = "mdi:movie-open";
+      lights = with lights; [ livingRoom dining hallway ];
+      defaultBrightness = 10;
+      defaultPreset = "Cozy";
+      defaultDuration = 120;
+    }
+    {
+      key = "nap";
+      alias = "Nap";
+      icon = "mdi:power-sleep";
+      lights = with lights; [ livingRoom dining hallway ];
+      defaultBrightness = 0;
+      defaultPreset = null;
+      defaultDuration = 30;
+    }
+  ];
+
+  # Duration slider bounds (minutes)
+  tempSceneDuration = { min = 5; max = 180; step = 5; };
+
   # Helpers
   slotKeys = map (s: s.key) scheduleSlots;
   activeSlots = builtins.filter (s: s.key != "off") scheduleSlots;
+  tempSceneKeys = map (s: s.key) temporaryScenes;
 }

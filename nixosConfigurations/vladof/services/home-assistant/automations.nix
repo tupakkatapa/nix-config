@@ -198,9 +198,46 @@ let
     in
     builtins.concatMap mkContinuous slotPairs;
 
+  # Temporary scene timer elapsed: rejoin schedule (if enabled) else restore snapshot
+  mkTempSceneEnd = scene: [{
+    alias = "Temp Scene End: ${scene.alias}";
+    mode = "restart";
+    trigger = [{
+      platform = "event";
+      event_type = "timer.finished";
+      event_data.entity_id = "timer.scene_${scene.key}";
+    }];
+    action = [{
+      choose = [{
+        conditions = [{
+          condition = "state";
+          entity_id = "input_boolean.schedule_enabled";
+          state = "on";
+        }];
+        sequence = [{
+          service = "script.turn_on";
+          target.entity_id = "script.resume_schedule";
+        }];
+      }];
+      # Schedule off: restore snapshot, drop override
+      default = [
+        {
+          service = "scene.turn_on";
+          target.entity_id = "scene.temp_prev_${scene.key}";
+          data.transition = btnTransition;
+        }
+        {
+          service = "input_boolean.turn_off";
+          target.entity_id = "input_boolean.schedule_override";
+        }
+      ];
+    }];
+  }];
+
 in
 builtins.concatMap mkSlotAutomation cfg.scheduleSlots
 ++ continuousAutomations
+++ builtins.concatMap mkTempSceneEnd cfg.temporaryScenes
 ++ [
   # Wake PC: standalone WOL automation
   {

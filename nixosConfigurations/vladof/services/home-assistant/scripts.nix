@@ -1,11 +1,19 @@
 cfg:
 let
   btnTransition = "{{ states('input_number.button_transition') | float }}";
-  onLights = "{{ expand('${cfg.group.all}') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list or expand('${cfg.group.all}') | map(attribute='entity_id') | list }}";
+  # control_all_lights on: all lights; off: only lights already on (fallback all)
+  onLights = "{{ (expand('${cfg.group.all}') | map(attribute='entity_id') | list) if is_state('input_boolean.control_all_lights', 'on') else (expand('${cfg.group.all}') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | list or expand('${cfg.group.all}') | map(attribute='entity_id') | list) }}";
   setOverride = {
     service = "input_boolean.turn_on";
     target.entity_id = "input_boolean.schedule_override";
   };
+
+  # Prepended to manual actions so they end an active temporary scene
+  tempTimerIds = map (s: "timer.scene_${s.key}") cfg.temporaryScenes;
+  cancelTempTimers =
+    if tempTimerIds != [ ] then
+      [{ service = "timer.cancel"; target.entity_id = tempTimerIds; }]
+    else [ ];
 
   # Brightness button scripts (Page 2, only affect on lights)
   mkBrightness = { pct, ... }: {
@@ -75,6 +83,7 @@ let
         selector.boolean = { };
       };
       sequence =
+        cancelTempTimers ++
         # Turn on slot lights with preset from helper
         (if slot.lights != [ ] then
           let
@@ -160,6 +169,84 @@ let
     };
   };
 
+  # Temporary-scene start: snapshot state, freeze schedule, light scene, start timer
+  # (end behaviour lives in automations.nix)
+  mkTempScene = scene:
+    let
+      presetEntity = "states('input_select.temp_${scene.key}_preset')";
+      brightnessEntity = "states('input_number.temp_${scene.key}_brightness') | int";
+      hsLookup = builtins.concatStringsSep ", " (
+        map (c: "'${c.alias}': [${toString (builtins.elemAt c.hs 0)}, ${toString (builtins.elemAt c.hs 1)}]") cfg.colors
+      );
+      kelvinLookup = builtins.concatStringsSep ", " (
+        map (t: "'${t.alias}': ${toString t.kelvin}") cfg.temperatures
+      );
+      isColor = builtins.concatStringsSep "" [
+        "{{ ${presetEntity} in ["
+        (builtins.concatStringsSep ", " (map (c: "'${c.alias}'") cfg.colors))
+        "] }}"
+      ];
+    in
+    {
+      name = "scene_temp_${scene.key}";
+      value = {
+        inherit (scene) alias;
+        sequence =
+          cancelTempTimers
+          # Snapshot state for restore, then freeze the schedule
+          ++ [{
+            service = "scene.create";
+            data = {
+              scene_id = "temp_prev_${scene.key}";
+              snapshot_entities = cfg.allLights;
+            };
+          }
+            setOverride]
+          # On-type: light scene with preset. Off-type (null preset): turn lights off.
+          ++ (if scene.defaultPreset != null then [
+            {
+              service = "light.turn_on";
+              target.entity_id = scene.lights;
+              data = {
+                transition = btnTransition;
+                brightness_pct = "{{ ${brightnessEntity} }}";
+              };
+            }
+            {
+              choose = [{
+                conditions = [{ condition = "template"; value_template = isColor; }];
+                sequence = [{
+                  service = "light.turn_on";
+                  target.entity_id = scene.lights;
+                  data = {
+                    transition = btnTransition;
+                    hs_color = "{{ {${hsLookup}}[${presetEntity}] }}";
+                  };
+                }];
+              }];
+              default = [{
+                service = "light.turn_on";
+                target.entity_id = scene.lights;
+                data = {
+                  transition = btnTransition;
+                  color_temp_kelvin = "{{ {${kelvinLookup}}[${presetEntity}] }}";
+                };
+              }];
+            }
+          ] else [{
+            service = "light.turn_off";
+            target.entity_id = scene.lights;
+            data = { transition = btnTransition; };
+          }])
+          # Start countdown (slider minutes → HH:MM:SS)
+          ++ [{
+            service = "timer.start";
+            target.entity_id = "timer.scene_${scene.key}";
+            data.duration = "{% set m = states('input_number.temp_${scene.key}_duration') | int %}{{ '%02d:%02d:00' | format(m // 60, m % 60) }}";
+          }];
+      };
+    };
+
   # Resume schedule script
   resumeSchedule =
     let
@@ -180,7 +267,7 @@ let
     in
     {
       alias = "Resume Schedule";
-      sequence = [
+      sequence = cancelTempTimers ++ [
         {
           service = "input_boolean.turn_off";
           target.entity_id = "input_boolean.schedule_override";
@@ -197,7 +284,7 @@ in
   # Basic controls
   all_on = {
     alias = "On";
-    sequence = [
+    sequence = cancelTempTimers ++ [
       {
         service = "light.turn_on";
         target.entity_id = cfg.group.all;
@@ -211,7 +298,7 @@ in
   };
   all_off = {
     alias = "Off";
-    sequence = [
+    sequence = cancelTempTimers ++ [
       {
         service = "light.turn_off";
         target.entity_id = cfg.group.all;
@@ -226,4 +313,5 @@ in
 // builtins.listToAttrs (map mkBrightness cfg.brightnessLevels)
 // builtins.listToAttrs (map mkTemperature cfg.temperatures)
 // builtins.listToAttrs (map mkColor cfg.colors)
-  // builtins.listToAttrs (map mkScene cfg.scheduleSlots)
+// builtins.listToAttrs (map mkScene cfg.scheduleSlots)
+  // builtins.listToAttrs (map mkTempScene cfg.temporaryScenes)
