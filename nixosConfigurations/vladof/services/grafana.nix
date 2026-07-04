@@ -14,7 +14,11 @@
   services.grafana.dataDir = "${dataDir}/home/grafana/appdata/grafana";
 
   # Secrets
-  age.secrets.grafana-secret-key.rekeyFile = ../secrets/grafana-secret-key.age;
+  age.secrets.grafana-secret-key = {
+    rekeyFile = ../secrets/grafana-secret-key.age;
+    owner = "grafana";
+    mode = "400";
+  };
   services.grafana.settings.security.secret_key = "$__file{${config.age.secrets.grafana-secret-key.path}}";
 
   # Pin grafana gid (uid 196 already static upstream)
