@@ -4,8 +4,8 @@
 
   hardware.graphics.enable = true;
 
-  # Strip unused libs (no CUDA/OpenCL/ray-tracing, only NVENC/NVDEC + EGL)
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable.overrideAttrs (old: {
+  # legacy_580: 595+ dropped Pascal (GTX 10xx). Strip unused libs (NVENC/NVDEC + EGL only).
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_580.overrideAttrs (old: {
     postFixup = (old.postFixup or "") + ''
       rm -f "$out"/lib/libnvoptix.so* "$out"/lib/nvoptix.bin \
             "$out"/lib/libnvidia-rtcore.so* "$out"/lib/libnvidia-opencl.so*
