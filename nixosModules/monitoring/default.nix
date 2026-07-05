@@ -245,6 +245,9 @@ in
         ip saddr 10.42.0.0/24 tcp dport 3100 accept
       '';
 
+      # Reassert ownership on persisted @loki each boot (unpinned uid drifts)
+      systemd.tmpfiles.rules = [ "Z /var/lib/loki - loki loki - -" ];
+
       services.grafana = {
         enable = true;
         settings = {
