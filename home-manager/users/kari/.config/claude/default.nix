@@ -34,7 +34,7 @@ in
 
     settings = {
       # Model & reasoning
-      model = "opus";
+      model = "opus[1m]";
       alwaysThinkingEnabled = true;
       showThinkingSummaries = true;
 
