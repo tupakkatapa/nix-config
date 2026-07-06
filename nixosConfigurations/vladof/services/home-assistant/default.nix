@@ -282,7 +282,7 @@ in
       }];
 
       input_boolean = globalInputBooleans // slotEnabledBooleans // {
-        wake_pc = { inherit (cfg.wakePC.enabled) name icon; };
+        wake_pc = { inherit (cfg.wakePC.enabled) name icon initial; };
         wake_pc_weekend = { inherit (cfg.wakePC.weekend) name icon initial; };
       };
       input_datetime = slotInputDatetimes // {

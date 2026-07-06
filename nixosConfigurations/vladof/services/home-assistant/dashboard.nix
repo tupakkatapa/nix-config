@@ -2,6 +2,8 @@ cfg:
 let
   take = n: list: builtins.genList (i: builtins.elemAt list i) n;
   drop = n: list: builtins.genList (i: builtins.elemAt list (i + n)) (builtins.length list - n);
+  # Map with a 1-based index
+  imap1 = f: list: builtins.genList (i: f (i + 1) (builtins.elemAt list i)) (builtins.length list);
   # Split a list into rows of `size` (last row may be shorter)
   chunk = size: list:
     let len = builtins.length list; in
@@ -82,10 +84,10 @@ let
   # Empty spacer to keep the grid aligned
   blankCard = { type = "button"; name = " "; tap_action.action = "none"; };
 
-  # Schedule settings card entries per slot
-  mkSlotCard = slot: {
+  # Schedule settings card entries per slot (n = order)
+  mkSlotCard = n: slot: {
     type = "entities";
-    title = slot.alias;
+    title = "${toString n}. ${slot.alias}";
     show_header_toggle = false;
     entities =
       [ "input_boolean.sched_${slot.key}_enabled" ]
@@ -278,7 +280,7 @@ in
             "input_datetime.wake_pc_time"
           ];
         }
-      ] ++ map mkSlotCard cfg.scheduleSlots;
+      ] ++ imap1 mkSlotCard cfg.scheduleSlots;
     }
   ];
 }

@@ -92,7 +92,7 @@ rec {
       icon = "mdi:weather-sunset-up";
       lights = with lights; [ bedside livingRoom dining hallway bedroom ];
 
-      defaultTime = "07:00";
+      defaultTime = "09:30";
       defaultBrightness = 100;
       defaultPreset = "Daylight";
       defaultTransition = -30;
@@ -103,7 +103,7 @@ rec {
       icon = "mdi:white-balance-sunny";
       lights = with lights; [ livingRoom dining hallway ];
 
-      defaultTime = "09:00";
+      defaultTime = "12:00";
       defaultBrightness = 100;
       defaultPreset = "Cool";
       defaultTransition = -30;
@@ -147,7 +147,7 @@ rec {
       icon = "mdi:bed";
       lights = with lights; [ bedside bedroom ];
 
-      defaultTime = "22:30";
+      defaultTime = "23:00";
       defaultBrightness = 5;
       defaultPreset = "Candle";
       defaultTransition = -30;
@@ -158,7 +158,7 @@ rec {
       icon = "mdi:lightbulb-off";
       lights = [ ];
 
-      defaultTime = "23:00";
+      defaultTime = "01:00";
       defaultBrightness = 0;
       defaultPreset = null;
       defaultTransition = 0;
@@ -178,10 +178,10 @@ rec {
 
   # Wake PC
   wakePC = {
-    enabled = { name = "Enabled"; icon = "mdi:power"; };
+    enabled = { name = "Enabled"; icon = "mdi:power"; initial = true; };
     # When off, Wake PC is skipped on Sat/Sun (weekday() >= 5).
     weekend = { name = "Weekends"; icon = "mdi:calendar-weekend"; initial = false; };
-    time = { name = "Time"; icon = "mdi:clock-outline"; initial = "08:30"; };
+    time = { name = "Time"; icon = "mdi:clock-outline"; initial = "09:30"; };
   };
 
   # Temporary scenes: hold a light state for a duration, then rejoin the schedule
