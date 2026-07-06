@@ -26,7 +26,10 @@ if [[ $2 == "fullscreen" ]]; then
   grim "$screenshot_path"
 else
   notify-send "Select a region"
-  grim -g "$(slurp)" "$screenshot_path"
+  # Bail on cancel (Esc): slurp prints nothing, exits non-zero
+  geometry=$(slurp) || exit 0
+  [[ -z $geometry ]] && exit 0
+  grim -g "$geometry" "$screenshot_path"
 fi
 
 notify-send "Screenshot saved in $1" \
