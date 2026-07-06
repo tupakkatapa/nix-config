@@ -61,11 +61,11 @@ in
     };
   };
 
-  # uinput access for Sunshine virtual input devices
+  # uinput access for Sunshine virtual input devices.
+  # The sunshine module ships its own udev rule (GROUP="uinput", MODE="0660");
+  # kari gains access via the "uinput" group (see kari/minimal.nix). No custom
+  # rule here — a GROUP="input" rule is silently overridden by the module's.
   boot.kernelModules = [ "uinput" ];
-  services.udev.extraRules = ''
-    KERNEL=="uinput", SUBSYSTEM=="misc", GROUP="input", MODE="0660"
-  '';
 
   # Force HDMI 1080p output without connected display (virtual display)
   hardware.display.edid.modelines."1920x1080" =

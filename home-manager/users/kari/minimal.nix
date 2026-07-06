@@ -36,6 +36,7 @@ in
       "rtkit"
       "sftp"
       "sshd"
+      "uinput" # Sunshine virtual input devices (/dev/uinput)
       "users"
       "vboxusers"
       "video"
