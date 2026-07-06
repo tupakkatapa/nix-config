@@ -60,12 +60,13 @@ in
       ];
 
       "custom/player" = {
-        exec-if = "${playerctl} status";
-        exec = ''${playerctl} metadata --format '{"text": "{{artist}} - {{title}}", "alt": "{{status}}", "tooltip": "{{title}} ({{artist}} - {{album}})"}' '';
+        exec-if = "${playerctl} status 2>/dev/null | grep -q Playing";
+        # markup_escape keeps quotes/&/<> in track metadata from breaking the JSON
+        exec = ''${playerctl} metadata --format '{"text": "{{markup_escape(artist)}} - {{markup_escape(title)}}", "alt": "{{status}}", "tooltip": "{{markup_escape(title)}} ({{markup_escape(artist)}} - {{markup_escape(album)}})"}' '';
         return-type = "json";
         interval = 2;
         max-length = 100;
-        format = "{icon} {}";
+        format = "{icon} {text}";
         format-icons = {
           "Playing" = "󰐊";
           "Paused" = "󰏤";
