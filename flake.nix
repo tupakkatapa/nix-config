@@ -39,6 +39,8 @@
     anytui.inputs.nixpkgs.follows = "nixpkgs";
     anytui.url = "github:tupakkatapa/anytui";
     claude-desktop.url = "github:aaddrick/claude-desktop-debian";
+    herdr.inputs.nixpkgs.follows = "nixpkgs";
+    herdr.url = "github:ogulcancelik/herdr";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
     llm-agents.url = "github:numtide/llm-agents.nix";
     molesk.inputs.nixpkgs.follows = "nixpkgs";
@@ -93,6 +95,7 @@
               claude-code
               ping-sweep
               claude-desktop
+              herdr
               ;
             # Inputs
             wl-harmonograph = inputs'.wl-harmonograph.packages.default;
@@ -146,6 +149,7 @@
             inherit (inputs'.nixie.packages) pxe-generate;
             inherit (inputs'.nixie.packages) refind-generate;
             inherit (inputs'.ping-sweep.packages) ping-sweep;
+            inherit (inputs'.herdr.packages) herdr;
             inherit (inputs'.llm-agents.packages) claude-code codex;
             inherit (inputs'.claude-desktop.packages) claude-desktop;
           }

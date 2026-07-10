@@ -941,6 +941,27 @@
         "type": "github"
       }
     },
+    "herdr": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1783688957,
+        "narHash": "sha256-61uly7UK6V7X4jaA87OMtj8L5WakAF8O9f/c0gNDr2E=",
+        "owner": "ogulcancelik",
+        "repo": "herdr",
+        "rev": "66be0b655fe922867f1eed100a41d67038b6ffd6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ogulcancelik",
+        "repo": "herdr",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -1976,6 +1997,7 @@
         "claude-desktop": "claude-desktop",
         "flake-parts": "flake-parts_4",
         "git-hooks": "git-hooks_2",
+        "herdr": "herdr",
         "home-manager": "home-manager_2",
         "hyprland-plugins": "hyprland-plugins",
         "hyprwm-contrib": "hyprwm-contrib",
@@ -2015,6 +2037,27 @@
       "original": {
         "owner": "tupakkatapa",
         "repo": "nixos-runtime-modules",
+        "type": "github"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "herdr",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783577481,
+        "narHash": "sha256-EWMxOWrJ031f8f/lrcEmhTRs4npw1/5N3Hcjin846c8=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "4cdea398dc491b082dccdce0fad1ed0b75fa3394",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
         "type": "github"
       }
     },

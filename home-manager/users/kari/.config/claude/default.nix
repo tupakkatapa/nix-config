@@ -140,7 +140,14 @@ in
     grim
     slurp
     gh
+    herdr
   ];
+
+  # herdr agent multiplexer: gruvbox theme
+  xdg.configFile."herdr/config.toml".text = ''
+    [theme]
+    name = "gruvbox"
+  '';
 
   # Slash commands
   home.file.".claude/commands/tt".source = ./commands;

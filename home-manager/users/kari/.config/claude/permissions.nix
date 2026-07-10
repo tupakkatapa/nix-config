@@ -115,6 +115,9 @@
     # File operations
     "Bash(cp:*)"
     "Bash(mv:*)"
+
+    # herdr: spawn/drive worker agents in panes + worktrees
+    "Bash(herdr:*)"
   ];
 
   deny = [
