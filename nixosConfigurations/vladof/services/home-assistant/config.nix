@@ -31,8 +31,8 @@ rec {
 
   # Global settings
   globalSettings = {
-    schedule_enabled = { name = "Schedule"; icon = "mdi:calendar-clock"; initial = true; };
-    continuous_transitions = { name = "Continuous"; icon = "mdi:transition"; initial = true; };
+    schedule_enabled = { name = "Schedule"; icon = "mdi:calendar-clock"; };
+    continuous_transitions = { name = "Continuous"; icon = "mdi:transition"; };
     schedule_override = { name = "Override"; icon = "mdi:hand-back-right"; initial = false; };
     # When on, Preset-tab buttons target all lights incl. off ones (see onLights)
     control_all_lights = { name = "Control All Lights"; icon = "mdi:lightbulb-group"; initial = false; };
@@ -178,9 +178,9 @@ rec {
 
   # Wake PC
   wakePC = {
-    enabled = { name = "Enabled"; icon = "mdi:power"; initial = true; };
+    enabled = { name = "Enabled"; icon = "mdi:power"; };
     # When off, Wake PC is skipped on Sat/Sun (weekday() >= 5).
-    weekend = { name = "Weekends"; icon = "mdi:calendar-weekend"; initial = false; };
+    weekend = { name = "Weekends"; icon = "mdi:calendar-weekend"; };
     time = { name = "Time"; icon = "mdi:clock-outline"; initial = "09:30"; };
   };
 

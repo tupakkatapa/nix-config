@@ -14,7 +14,8 @@
 #
 # Live state (user edits to times/brightness/presets) persists ONLY because configDir
 # sits under dataDir, which is the persisted @main subvolume (see persistence.nix).
-# The `initial` values seed first boot only.
+# `initial` re-applies on EVERY HA restart, not just first boot: set it on design
+# values Nix should own; omit it on switches the user flips so they restore last state.
 { pkgs
 , dataDir
 , haConfig
@@ -32,8 +33,8 @@ let
   # Global settings → input_boolean
   globalInputBooleans = builtins.mapAttrs
     (_: v: {
-      inherit (v) name icon initial;
-    })
+      inherit (v) name icon;
+    } // (if v ? initial then { inherit (v) initial; } else { }))
     cfg.globalSettings;
 
   # Button transition → input_number
@@ -112,7 +113,7 @@ let
     map
       (s: {
         name = "sched_${s.key}_enabled";
-        value = { name = "Enabled"; icon = "mdi:power"; initial = true; };
+        value = { name = "Enabled"; icon = "mdi:power"; };
       })
       cfg.scheduleSlots
   );
@@ -282,8 +283,8 @@ in
       }];
 
       input_boolean = globalInputBooleans // slotEnabledBooleans // {
-        wake_pc = { inherit (cfg.wakePC.enabled) name icon initial; };
-        wake_pc_weekend = { inherit (cfg.wakePC.weekend) name icon initial; };
+        wake_pc = { inherit (cfg.wakePC.enabled) name icon; };
+        wake_pc_weekend = { inherit (cfg.wakePC.weekend) name icon; };
       };
       input_datetime = slotInputDatetimes // {
         wake_pc_time = {
