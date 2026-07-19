@@ -4,7 +4,7 @@
     { name = "Hyperion"; url = "https://10.42.0.1"; }
     { name = "Netboot"; url = "http://10.42.0.1:52080/"; }
     { name = "Grafana"; url = "https://grafana.coditon.com"; }
-    { name = "Home Assistant"; url = "https://home.coditon.com"; }
+    { name = "Home Assistant"; url = "https://home.coditon.com/nixos-lovelace/0"; }
     { name = "Radicale"; url = "https://dav.coditon.com/"; }
     { name = "Plex"; url = "https://plex.coditon.com"; }
     { name = "Torrent"; url = "https://torrent.coditon.com"; }
@@ -126,6 +126,7 @@
 
     # Videos & Streaming
     { name = "YouTube"; url = "https://www.youtube.com/feed/subscriptions"; }
+    { name = "TVkaista"; url = "https://www.tvkaista.org/"; }
     { name = "Twitch"; url = "https://www.twitch.tv/"; }
     { name = "Kick"; url = "https://kick.com/"; }
 
