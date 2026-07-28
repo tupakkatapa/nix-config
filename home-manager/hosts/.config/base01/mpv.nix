@@ -3,8 +3,10 @@
     enable = true;
     defaultProfiles = [ "gpu-hq" ];
     config = {
-      gpu-api = "opengl";
-      gpu-context = "wayland";
+      # opengl's userptr upload path oopses in kernel 6.18.37 amdgpu (NULL deref
+      # in amdgpu_hmm_invalidate_gfx), freezing mpv; vulkan avoids it
+      gpu-api = "vulkan";
+      gpu-context = "waylandvk";
       vo = "gpu-next";
       hwdec = "auto-copy-safe";
       volume = 50;
