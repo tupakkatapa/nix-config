@@ -13,9 +13,12 @@
     })
   ];
 
-  # Use LTS kernel
   boot.kernelParams = [ "boot.shell_on_fail" ];
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages;
+  # 6.18 stable (>= .36) and 7.1 carry a bad amdgpu userptr backport that
+  # oopses on GPU frame upload (NULL deref in amdgpu_hmm_invalidate_gfx).
+  # 7.0 verified clean; grep changelog for "waiting for all submissions"
+  # before bumps, revert to `lib.mkDefault pkgs.linuxPackages` once fixed.
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_7_0;
 
   # Set the console keymap
   console.keyMap = "fi";
