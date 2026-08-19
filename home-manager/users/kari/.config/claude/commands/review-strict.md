@@ -2,8 +2,7 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -98,7 +97,7 @@ Apply findings whose disposition is "tidying" or "docs" inline now — these are
 ## 6. Run Automated Checks
 Skip only if subject is an implementation plan.
 
-Run pre-commit hooks (if configured), linters, and the project's tests. Fix all failures before continuing.
+Run pre-commit hooks (if configured), linters, and the project's tests. Fix failures introduced by this session's tidying/docs commits; pre-existing failures are findings — route them through their §3 disposition, don't fix them here.
 
 ## 7. Summary
 

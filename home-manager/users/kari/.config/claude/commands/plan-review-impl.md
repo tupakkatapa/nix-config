@@ -2,17 +2,16 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
 You are running an end-to-end **plan → review → implement** cycle, chaining three sub-agendas in one continuous pass. No user gates between phases — each phase's artefact flows directly into the next.
 
-This is the **green-field complement** to `/tt:review-plan-impl`. Where that workflow audits *existing code* before planning changes to it, this one drafts a plan for *new* work, audits the **plan itself** before any code exists, then builds. The premise: a flawed plan is far cheaper to fix than flawed code. You review the design, not the diff.
+This is for **green-field work**: draft a plan for *new* work, audit the **plan itself** before any code exists, then build. The premise: a flawed plan is far cheaper to fix than flawed code. You review the design, not the diff. (Hardening *existing* code is the inverse — chain `/tt:review → /tt:plan → /tt:impl`.)
 
 Distinct from:
-- `/tt:review-plan-impl` — review existing code → plan → implement. For hardening an artefact that already exists.
+- `/tt:review → /tt:plan → /tt:impl` chained — audits existing code first. For hardening an artefact that already exists.
 - `/tt:plan` alone — produces an approved plan; no built-in audit-the-plan or execution phase.
 - `/tt:impl` alone — executes an existing plan; presupposes the plan is sound.
 - `/tt:research` — when the subject matter is unfamiliar enough that you cannot plan yet.
@@ -23,7 +22,7 @@ Distinct from:
 - Architectural green-field where you want the plan adversarially vetted before sinking implementation effort.
 - Any work where "measure twice, cut once" pays — catch the design flaw at the plan stage.
 
-**When NOT to use:** Existing code that needs hardening (use `/tt:review-plan-impl`), small diffs (use `/tt:review`), pure bugfixes (use `/tt:debug`), or unfamiliar territory where you can't plan yet (use `/tt:research` first).
+**When NOT to use:** Existing code that needs hardening (chain `/tt:review → /tt:plan → /tt:impl`), small diffs (use `/tt:review`), pure bugfixes (use `/tt:debug`), or unfamiliar territory where you can't plan yet (use `/tt:research` first).
 
 ## Discipline (non-negotiable)
 
@@ -47,7 +46,7 @@ Capture success criteria, constraints, non-goals, deadlines. Pass the scope verb
 
 ## 2. Phase 1 — Plan
 
-Invoke `/tt:plan` against the chosen scope. Follow its discipline exactly: investigate the codebase, consult language context (`/tt:mod:*`), produce success criteria, constraints, non-goals, milestones, risk register.
+Invoke `/tt:plan` against the chosen scope. Follow its discipline — investigate the codebase, consult language context (`/tt:mod:*`), produce success criteria, constraints, non-goals, steps, risks & trade-offs — **except its approval/handoff steps (§6–7), which this orchestrator's discipline #2 overrides**.
 
 **Artefact produced**: a plan file at `docs/plans/YYYY-MM-DD-<short-kebab-title>.md` (or per project convention).
 
@@ -57,25 +56,25 @@ Invoke `/tt:plan` against the chosen scope. Follow its discipline exactly: inves
 
 Invoke `/tt:review` (escalate to `/tt:review-strict` for design-sensitive or large-scope work) with the **plan file as the artefact** and mode framed as planning. The lens panel inspects the *design*, not a diff:
 
-- **`scope`** — is the plan gold-plated? Premature abstraction, speculative configurability, milestones that aren't needed for the success criteria?
+- **`scope`** — is the plan gold-plated? Premature abstraction, speculative configurability, steps that aren't needed for the success criteria?
 - **`architecture`** — are the proposed boundaries, dependency directions, and data flow right *before* they're cast in code?
 - **`security`** — does the design cross trust boundaries it doesn't account for? Secrets, authz, input validation planned in?
 - **`reliability`** — failure modes, idempotency, observability, recovery considered in the plan?
-- **`testing`** — are the success criteria actually testable? Does the plan name how each milestone is verified?
+- **`testing`** — are the success criteria actually testable? Does the plan name how each step is verified?
 - remaining lenses (`ux`, `performance`, `quality`, `docs`, `aesthetics`) as they have surface on the design.
 
 **Artefact produced**: structured findings on the plan, severity-ordered Blocker → High → Medium → Low → Nit.
 
 **Auto-disposition rules** (no user prompt):
 - **Blockers / Highs** → amend the plan in place to resolve them, *unless* the finding invalidates the core approach (wrong abstraction, unachievable success criteria, missing prerequisite) → **stop the cycle** and report; route to re-plan or `/tt:research`.
-- **Mediums** → fold into the plan where they touch planned milestones; otherwise capture as a "deferred follow-up" note in the plan.
+- **Mediums** → fold into the plan where they touch planned steps; otherwise capture as a "deferred follow-up" note in the plan.
 - **Lows / Nits** → capture as a "deferred follow-up" note in the plan. Do not block.
 
 The amended plan is *self-approved* — the orchestrator carries it forward without a user prompt. Proceed directly to Phase 3.
 
 ## 4. Phase 3 — Implement
 
-Invoke `/tt:impl` against the revised plan. Follow its discipline exactly: locate the plan, consult language context, execute step-by-step with verification per step.
+Invoke `/tt:impl` against the revised plan. Follow its discipline — locate the plan, consult language context, execute step-by-step with verification per step — except its handoff; Phase 4 owns the close.
 
 **Artefact produced**: the working tree changed to satisfy the plan, plus evidence of verification (test output, `nix flake check`, `nix fmt`, linter clean, manual smoke-test notes).
 

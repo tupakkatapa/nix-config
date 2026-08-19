@@ -1,8 +1,7 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -133,7 +132,7 @@ For each finding:
 - **Confidence** — High / Medium / Low.
 
 ## Mode Awareness
-This role describes a lens. The orchestrating agenda decides the mode. See `~/.claude/CLAUDE.md` for the canonical taxonomy (planning / review / diagnosis / restructure / risk-discovery / authoring).
+This role describes a lens. The orchestrating agenda decides the mode. See `~/.claude/CLAUDE.md` for the canonical taxonomy (planning / review / diagnosis / restructure / risk-discovery / authoring / research / verification).
 
 Default when invoked solo: produce a prioritised findings list with concrete refactors. Apply Blocker / High refactors directly only if they are *tidyings inside a module boundary* (rename, extract, inline within the same file/module, behaviour-preserving, tests still green). Cross-module structural moves (relocations, dependency-direction flips, new module boundaries) belong to `architecture` — surface those rather than apply them. Surface behavioural changes to the orchestrator instead.
 

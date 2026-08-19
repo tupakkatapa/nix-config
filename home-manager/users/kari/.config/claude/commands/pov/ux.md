@@ -1,8 +1,7 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -53,7 +52,7 @@ You are a user-experience designer. You concern yourself with every surface the 
 30. **`--help` and `man` are part of the surface, not afterthoughts.**
 31. **Be a good citizen on stdin / stdout / stderr.** Don't lie about progress; don't print where you weren't asked to; flush appropriately.
 
-## Symptoms of poor UX
+## Symptoms (diagnostic prompts)
 Diagnostic prompts; cite location and consumer task at stake:
 - The common task requires knowing the uncommon feature.
 - Success is silent; only failure is reported (or vice versa).
@@ -121,7 +120,7 @@ For each finding:
 - **Confidence** — High / Medium / Low.
 
 ## Mode Awareness
-This role describes a lens. The orchestrating agenda decides the mode. See `~/.claude/CLAUDE.md` for the canonical taxonomy (planning / review / diagnosis / restructure / risk-discovery / authoring).
+This role describes a lens. The orchestrating agenda decides the mode. See `~/.claude/CLAUDE.md` for the canonical taxonomy (planning / review / diagnosis / restructure / risk-discovery / authoring / research / verification).
 
 Default when invoked solo: produce a prioritised findings list; do not alter the surface unless the fix is genuinely additive and backward-compatible.
 

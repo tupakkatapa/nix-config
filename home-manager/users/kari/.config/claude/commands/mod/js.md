@@ -1,14 +1,13 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
 # JavaScript project context (tupakkatapa house style)
 
-Distilled from `~/Workspace/local/tupakkatapa/molesk` (the canonical JS+Nix project). Assumes the Nix layer described in `/tt:mod:nix`. Shell scripts in the project follow `/tt:mod:sh`. Per-project `./CLAUDE.md` may override anything here.
+Distilled from `~/Workspace/tupakkatapa/molesk` (the canonical JS+Nix project). Assumes the Nix layer described in `/tt:mod:nix`. Shell scripts in the project follow `/tt:mod:sh`. Per-project `./CLAUDE.md` may override anything here.
 
 ## Philosophy
 - **Yarn, not npm or pnpm.** `yarn.lock` is the source of truth; pairs cleanly with `pkgs.mkYarnPackage` for Nix packaging. Lock file commits with every dependency change.

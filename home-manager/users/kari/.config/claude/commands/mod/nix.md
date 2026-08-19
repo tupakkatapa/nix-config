@@ -1,18 +1,17 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
 # Nix project & module context (tupakkatapa house style)
 
-Concrete conventions distilled from `~/Workspace/local/tupakkatapa/{nixos-runtime-modules,nixos-sftp-mount,ftpilot,levari,molesk,mozid,gh-dotenv-sync,nvimkata,ping-sweep,anytui}`. Use this when planning, scaffolding, or reviewing any Nix-heavy project. Per-project `./CLAUDE.md` may override anything here.
+Concrete conventions distilled from `~/Workspace/tupakkatapa/{nixos-runtime-modules,nixos-sftp-mount,molesk,mozid,nvimkata,anytui}` (plus `ftpilot`, `levari`, `ping-sweep`, `gh-dotenv-sync` — not currently checked out). Use this when planning, scaffolding, or reviewing any Nix-heavy project. Per-project `./CLAUDE.md` may override anything here.
 
 ## Philosophy
 - **Declarative over imperative.** No global state outside the Nix store. Configuration is data; reload by rebuild, not by mutation.
-- **Pin to a stable release for shipped projects.** `github:NixOS/nixpkgs/nixos-25.11` is the current default. `nixos-unstable` is acceptable when a project relies on a feature not yet in stable; pin it deliberately and document why in the README.
+- **Pin to a stable release for shipped projects.** `github:NixOS/nixpkgs/nixos-26.05` is the current default. `nixos-unstable` is acceptable when a project relies on a feature not yet in stable; pin it deliberately and document why in the README.
 - **One devshell, one source of truth.** The devshell defines the build/test/format toolchain. CI (when present) runs `nix flake check`; pre-commit runs the same tools locally.
 - **CI is optional, `nix flake check` is the gate.** No GitHub Actions in any current project. `nix flake check` validates module evaluation, formatter, and (when wired) pre-commit hooks. If CI is added later, it should run that single command.
 
@@ -30,7 +29,7 @@ Use **flake-parts** for any project with more than one output. Canonical skeleto
 ```nix
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     flake-parts.url = "github:hercules-ci/flake-parts";
     git-hooks.url = "github:cachix/git-hooks.nix";
     git-hooks.inputs.nixpkgs.follows = "nixpkgs";
@@ -87,7 +86,7 @@ treefmt.config = {
 };
 ```
 
-`nix fmt` runs treefmt. CI checks it via `flakeCheck = true`. Per-language formatters added in `/tt:mod:{rust,javascript}`. Shell-script formatting (`shellcheck`, `shfmt`) is opt-in per project — see `/tt:mod:sh` for the snippet — not part of the default Nix stack.
+`nix fmt` runs treefmt. CI checks it via `flakeCheck = true`. Per-language formatters added in `/tt:mod:{rs,js}`. Shell-script formatting (`shellcheck`, `shfmt`) is opt-in per project — see `/tt:mod:sh` for the snippet — not part of the default Nix stack.
 
 ## Pre-commit hooks
 
@@ -98,7 +97,7 @@ pre-commit.settings.hooks = {
     enable = true;
     package = config.treefmt.build.wrapper;
   };
-  # per-language hooks added in /tt:mod:{rust,javascript}
+  # per-language hooks added in /tt:mod:{rs,js}
 };
 ```
 

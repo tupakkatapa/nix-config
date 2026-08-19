@@ -2,8 +2,7 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -50,7 +49,7 @@ A symptom can have multiple coincident causes. Don't stop at the first that fits
 - If not, return to step 3 with the new evidence — don't escalate the fix to compensate for a wrong diagnosis.
 
 ## 6. Fix — commit ordering matters
-Apply Beck's two-hats discipline rigorously. The order of commits in a debug session is:
+Write the §7 regression test **before** the fix (repro-test rule: it must fail against the unfixed code); the commit order below governs how changes land, not the order they're written. Apply Beck's two-hats discipline rigorously. The order of commits in a debug session is:
 
 1. **Structural prep (if needed)** — testability seams (Feathers), broken dependencies, characterisation tests. Each its own commit, behaviour-preserving. Apply via `/tt:refactor` discipline.
 2. **Behavioural fix** — the minimal change at the root, not at the symptom. Its own commit.

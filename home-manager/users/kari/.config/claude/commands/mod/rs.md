@@ -1,14 +1,13 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
 # Rust project context (tupakkatapa house style)
 
-Distilled from `~/Workspace/local/tupakkatapa/{nixos-runtime-modules,ftpilot,levari,ping-sweep,nvimkata,anytui}`. Assumes the Nix layer described in `/tt:mod:nix`. Shell scripts in the project follow `/tt:mod:sh`. Per-project `./CLAUDE.md` may override anything here.
+Distilled from `~/Workspace/tupakkatapa/{nixos-runtime-modules,nvimkata,anytui}` (plus `ftpilot`, `levari`, `ping-sweep` — not currently checked out). Assumes the Nix layer described in `/tt:mod:nix`. Shell scripts in the project follow `/tt:mod:sh`. Per-project `./CLAUDE.md` may override anything here.
 
 ## Philosophy
 - **Pedantic clippy is non-negotiable.** Code merges only with `clippy::pedantic` and `clippy::cognitive_complexity` denied. Fix the lint; don't silence it.

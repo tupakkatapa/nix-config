@@ -2,15 +2,14 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
 You are performing a **structural change that preserves behaviour**. This agenda is bound by Kent Beck's *two hats* rule: while wearing the structural hat, you do not change what the code does — only how it is arranged. Distinct from `/tt:impl` (adds capability) and `/tt:debug` (changes behaviour to fix a defect). The substantive judgement comes from the `/tt:pov:*` panel applied in **restructure** mode — "what is the smallest behaviour-preserving change that reduces complexity here?"
 
 ## 1. Clarify Scope
-If the refactor target is unclear, ask the user to choose:
+Default: the module/code under discussion. Only if genuinely underivable, ask the user to choose:
 - [ ] A specific module/file/function (ask which)
 - [ ] A code smell across the codebase (ask which — duplication, long function, feature envy, etc.)
 - [ ] Preparation for an upcoming feature (ask which, what shape it needs)

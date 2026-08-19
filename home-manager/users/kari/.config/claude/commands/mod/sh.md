@@ -1,14 +1,13 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
 # Shell script context (tupakkatapa house style)
 
-Conventions for bash scripts across any project. The canonical `say()` pattern comes from `~/Workspace/local/majbacka-labs/nixie/packages/refind-generate/refind-generate.sh:29`. This file is the **target idiom** — `mozid.sh` and `gh-envsync.sh` are pre-idiom scripts and will be aligned as they're touched; new scripts follow this file from the start.
+Conventions for bash scripts across any project. The canonical `say()` pattern comes from `~/Workspace/majbacka-labs/nixie/packages/refind-generate/refind-generate.sh:29`. This file is the **target idiom** — `mozid.sh` and `gh-dotenv-sync` are pre-idiom scripts and will be aligned as they're touched; new scripts follow this file from the start.
 
 Linked from `/tt:mod:nix`, `/tt:mod:rs`, and `/tt:mod:js` — any project's shell scripts follow this file.
 
@@ -174,7 +173,7 @@ Show on `-h`/`--help` and on argument errors. Exit 0 on `--help`, exit 1 on bad 
 
 ## Packaging shell scripts via Nix
 
-`stdenv.mkDerivation` with `makeWrapper` and `substituteAll` for path injection:
+`stdenv.mkDerivation` with `makeWrapper` for path injection:
 
 ```nix
 stdenv.mkDerivation {

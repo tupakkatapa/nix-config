@@ -1,8 +1,7 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -22,9 +21,9 @@ Decide:
 - Clean tree, no commits ahead → **upcoming work**.
 - Uncommitted changes only → **work in progress (uncommitted)**.
 - Local commits ahead on integration branch → **work already committed to wrong branch**.
-- Already on a feature branch → ask the user whether this is intentional; the action is normally invoked from the integration branch.
+- Already on a feature branch → normally invoked from the integration branch; state the detected situation and proceed with the fundamentally-right reading (branch from integration unless the work clearly continues the current branch).
 
-If the scenario is ambiguous (mix of states, unusual setup), state what was detected and ask the user to confirm before proceeding.
+If the scenario is ambiguous (mix of states, unusual setup), state what was detected, pick the safest interpretation, and proceed — reserve confirmation for the destructive path (§3).
 
 ## 2. Choose Branch Name
 

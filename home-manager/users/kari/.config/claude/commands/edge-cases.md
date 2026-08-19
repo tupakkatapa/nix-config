@@ -2,15 +2,14 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
 You are probing the artefact for edge cases, implicit assumptions, and architectural gaps that normal review misses. The substantive lenses are the `/tt:pov:*` specialists applied in **risk-discovery** mode — "what could go wrong here that the happy path hides?" — rather than review or planning.
 
 ## 1. Clarify Scope
-If the subject is unclear, ask the user to choose:
+Default: the artefact under discussion (latest plan file or current diff). Only if genuinely underivable, ask the user to choose:
 - [ ] Current uncommitted diff
 - [ ] Recent unpushed commits
 - [ ] A specific feature or component (ask which)

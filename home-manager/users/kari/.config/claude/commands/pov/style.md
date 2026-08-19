@@ -1,8 +1,7 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -106,7 +105,7 @@ For each finding:
 - **Confidence** — High / Medium / Low.
 
 ## Mode Awareness
-This role runs **last** in any agenda — after `scope`, `architecture`, `security`, `performance`, `quality`, `testing`, `reliability`, `docs` have settled. Applying form to code that is about to be restructured is wasted motion. See `~/.claude/CLAUDE.md` for the canonical mode taxonomy.
+This role runs **last** in any agenda — after `scope`, `architecture`, `security`, `reliability`, `performance`, `quality`, `testing`, `ux`, `docs` have settled. Applying form to code that is about to be restructured is wasted motion. See `~/.claude/CLAUDE.md` for the canonical mode taxonomy.
 
 Default when invoked solo: apply formatter, naming, and ordering fixes directly. Run the project's formatter once at the end. Leave subjective reorganisation (file splits, large reorderings) as proposals rather than direct edits.
 

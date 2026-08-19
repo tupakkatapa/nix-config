@@ -1,8 +1,7 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -47,7 +46,7 @@ You are a correctness engineer. You concern yourself with how a future change to
 - A test that has to be rerun a few times to pass.
 - A test whose setup is so long the assertion is hard to find.
 - A test that mocks five collaborators and verifies their calls (and effectively re-encodes the implementation).
-- A behaviour you can think of but cannot easily write a test for — testability defect, refer to architect/quality.
+- A behaviour you can think of but cannot easily write a test for — testability defect, refer to `architecture`/`quality`.
 - A `skip` with no comment, ticket, or expiry.
 - A line in production that crashes only under inputs no test exercises.
 
@@ -103,7 +102,7 @@ For each finding:
 - **Confidence** — High / Medium / Low.
 
 ## Mode Awareness
-This role describes a lens. The orchestrating agenda decides the mode. See `~/.claude/CLAUDE.md` for the canonical taxonomy (planning / review / diagnosis / restructure / risk-discovery / authoring).
+This role describes a lens. The orchestrating agenda decides the mode. See `~/.claude/CLAUDE.md` for the canonical taxonomy (planning / review / diagnosis / restructure / risk-discovery / authoring / research / verification).
 
 Default when invoked solo: produce a prioritised findings list and write tests for Blocker / High gaps if the test framework and seams permit it without modifying production code beyond minimal injection seams.
 

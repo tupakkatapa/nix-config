@@ -2,8 +2,7 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -15,7 +14,7 @@ Distinct from:
 - `/tt:refactor` — restructures behaviour-preserving (planning is inline, scoped to the structural move).
 
 ## 1. Clarify Scope
-If the planning subject is unclear, ask the user to choose:
+Derive the subject from context — default: the work under discussion. Only if genuinely underivable, ask the user to choose:
 - [ ] A new feature or capability (ask which)
 - [ ] A rework of existing functionality (ask which, what shape it needs)
 - [ ] A migration or breaking change (ask source/target, callers affected)

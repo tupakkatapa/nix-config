@@ -1,8 +1,7 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -17,7 +16,7 @@ Find the current version in the codebase (`pyproject.toml`, `Cargo.toml`, `packa
 
 ## 2. Choose the Increment
 
-Semantic Versioning, driven by the consolidated change set (run `/tt:act:changelog`'s "Identify Changes" step to see it):
+Semantic Versioning, driven by the change set §3 step 1 will consolidate (preview with `git log` if needed — don't run the changelog procedure twice):
 
 | Bump | When |
 |---|---|

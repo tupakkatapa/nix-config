@@ -2,8 +2,7 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -27,9 +26,10 @@ Determine what merges (via `AskUserQuestion` if unclear): current branch vs its 
 
 ## 2. Gate — Docs current
 Apply `/tt:docs` discipline to the diff. Every changed public surface is reflected in the docs the project keeps — reference docs, public contracts (API endpoints/fields, CLI flags, config/module options), how-tos, tutorials.
+- **In-code comments and docstrings are doc territory too.** Every comment/docstring on or near changed lines must be current and true — no stale version numbers, dead file/line references, contradicted invariants, or descriptions that no longer match the code. Plans/ADRs the diff executes are current (status + any deviation noted).
 - If the project keeps a **changelog**, run `/tt:act:changelog` to bring it current. If there is no changelog, skip silently.
-- **Block** if any touched surface is undocumented, or a doc contradicts the code.
-- **Evidence:** each touched surface → its doc location (or "internal, n/a"); changelog updated or "no changelog".
+- **Block** if any touched surface is undocumented, a doc/comment/docstring contradicts the code, or a changed/added doc buries its signal in bloat (global Principle "Durable artefacts are high-signal").
+- **Evidence:** each touched surface → its doc location (or "internal, n/a"); comments/docstrings on the diff verified true; changelog updated or "no changelog".
 
 ## 3. Gate — Tests prove it
 For every behavioural change, a test exists that exercises it and **would fail if the change were reverted** — positive, negative, and edge cases. Run **only the new/changed tests** (targeted); CI runs the full suite.
@@ -42,7 +42,7 @@ Analyse, do not run the suite. Diff public surfaces against base — endpoints, 
 - **Evidence:** the public-surface diff verdict (breaking / non-breaking, with the compared symbols) + the regression reasoning.
 
 ## 5. Gate — Review
-Invoke `/tt:review` against the diff (escalate to `/tt:review-strict` for security, architecture, or third-party-facing surfaces).
+Invoke `/tt:review` against the diff (escalate to `/tt:review-strict` for security, architecture, or third-party-facing surfaces), with its Automated Checks step scoped to the §3 targeted tests — the full suite stays CI's (Discipline #5).
 - **Block** on any unresolved Blocker or High.
 - **Evidence:** the review's disposition summary.
 

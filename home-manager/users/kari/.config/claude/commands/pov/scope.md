@@ -1,8 +1,7 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -73,7 +72,7 @@ For each finding:
 - **Confidence** — High / Medium / Low (Low → caller should sanity-check before acting).
 
 ## Mode Awareness
-This role describes a lens, not an action. The orchestrating agenda decides the mode in which findings are applied. See `~/.claude/CLAUDE.md` for the canonical mode taxonomy (planning / review / diagnosis / restructure / risk-discovery / authoring).
+This role describes a lens, not an action. The orchestrating agenda decides the mode in which findings are applied. See `~/.claude/CLAUDE.md` for the canonical mode taxonomy (planning / review / diagnosis / restructure / risk-discovery / authoring / research / verification).
 
 Default when invoked solo with no mode hint: produce a prioritised findings list against the current artefact in scope and do not modify anything.
 

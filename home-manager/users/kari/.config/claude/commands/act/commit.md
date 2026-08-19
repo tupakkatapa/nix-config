@@ -2,21 +2,20 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
 - **Do not push anything unless explicitly told to do so.**
 
 ---
 
 You are preparing a commit for the current changes.
 
-If automated checks (pre-commit hooks, linters, project tests) have not been run recently, run them first to catch issues before committing.
+If automated checks have not been run recently, run `/tt:act:check` first.
 
 ## 1. Review Diff
 - Read the diff to understand what was changed
 - Identify the feature, fix, or refactor being committed
 
 ## 2. Determine Commit Strategy
-- Check whether the most recent commit is unpushed (`git log @{upstream}..HEAD` returns it).
+- Check whether the most recent commit is unpushed (`git log @{upstream}..HEAD 2>/dev/null` returns it; no upstream set → every local commit counts as unpushed).
 - **Authorship check before amending** — `git log -1 --format='%ae'` must equal `git config user.email`. Amending someone else's commit silently rewrites authorship and can break signing. If they differ → create a new commit instead.
 - If unpushed AND authored by current user AND current diff is cumulative to that commit → `git commit --amend`.
 - Otherwise → create a new commit.

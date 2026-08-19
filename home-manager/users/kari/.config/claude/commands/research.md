@@ -2,8 +2,7 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -11,7 +10,7 @@ You are conducting **research**: building durable knowledge about an unfamiliar 
 
 Distinct from:
 - `/tt:plan` — research ends with a brief; planning ends with an approved approach. A plan presupposes that the relevant facts are already known.
-- `/tt:act:explain` — produces an in-conversation explanation. This agenda produces a durable file other agendas can consume.
+- an inline explanation — answered in-conversation, evaporates with it. This agenda produces a durable file other agendas can consume.
 - `/tt:debug` — diagnoses an existing failure. Research has no failure to bind to; it scopes the unknown.
 - `/tt:docs` — writes user-facing docs from established knowledge. Research is investigator's notes; if those notes deserve to outlive the investigator they get promoted via `/tt:docs` (explanation mode).
 
@@ -35,7 +34,7 @@ If a single brief spans multiple target types (e.g. "compare our impl against up
 A research session without a question wanders. Capture explicitly:
 
 - **Question(s)** — one to three precise questions this brief must answer. "Tell me about X" is not a research question; "would X meet our isolation requirements and what does the migration cost?" is.
-- **Decision(s) it informs** — the downstream agenda this feeds (`/tt:plan`, `/tt:debug`, `/tt:refactor`, …). Research detached from a decision is `/tt:act:explain`, not this agenda.
+- **Decision(s) it informs** — the downstream agenda this feeds (`/tt:plan`, `/tt:debug`, `/tt:refactor`, …). Research detached from a decision is a plain inline explanation, not this agenda.
 - **Out-of-scope** — adjacent questions deferred so the brief doesn't sprawl.
 - **Stop condition** — the level of confidence that ends the session. Research expands forever otherwise.
 

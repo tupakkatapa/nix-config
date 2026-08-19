@@ -1,7 +1,6 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
 - Requires the Linear MCP (`mcp__claude_ai_Linear__*`). If it is unavailable, stop and tell the user to connect it.
 - **A Linear issue must fit in one cycle.** If the work spans multiple cycles it is a Project; multiple quarters, an Initiative. Surface that — do not file an oversized issue.
 
@@ -58,8 +57,9 @@ For `8`, recommend a split. For `16`, **do not file as one issue** — propose t
 **Very short, but descriptive enough that a human can tell what it is about at a glance.** Discipline:
 
 - A few words — fits in a list without wrapping. No ticket-speak, no trailing period.
-- Lead with the area/component when it disambiguates (e.g. `torgue: persist radicle key`, `linear cmd: add title guidance`).
+- Lead with a lowercase `area:` prefix (e.g. `<component>: <what changes>`). **Reuse the team's existing area tokens** — skim current issue titles first; only coin a new token when nothing fits.
 - Imperative or noun phrase. Says *what changes*, not how.
+- **Bugs: symptom first, fix second** — `<area>: <observed symptom> — <fix>`, not `<area>: refactor <thing>`. A title that reads like a refactor hides that something is broken.
 - A reader skimming the cycle board must grasp the subject from the title alone — the description fills in detail.
 
 ## 6. Write the Description
@@ -78,9 +78,13 @@ Keep it short enough that a reader skims it in seconds and knows what to do.
 - **Project.** `list_projects` (scoped to the team). If the issue advances an existing project's deliverable, attach it. If it belongs to a coherent, cycle-spanning body of work with no project yet, propose a new one (`save_project`) — **confirm with the user before creating**.
 - **Labels.** `list_issue_labels` (team + workspace scope). Apply the existing labels that fit. Only create a new label (`create_issue_label`) when no existing one captures a recurring category, never a one-off — **confirm with the user before creating**.
 - **Relations.** Search existing issues (`list_issues`) for ones this **relates to**, **blocks**, **is blocked by**, or **duplicates**. If it duplicates an open issue, **stop and surface that** instead of filing a dup.
+- **Assignee.** Default to the requester (`assignee: "me"`) unless the request names someone else. Don't file unassigned.
+- **Release & cycle.** If the work is committed to an upcoming release, attach it (`addReleases`) **and** set the matching cycle — release and cycle move together (an issue rides the cycle its release ships in). Uncommitted work gets neither.
+- **Customer.** If the request originates from a customer (support thread, partner ask), attach a customer need (`save_customer_need`) to the **existing** customer record — search first (`list_customers`); never create a duplicate record for a name variant.
+- **Source.** Attach the originating Slack/Notion/PR/doc link via `links` so provenance survives.
 
 ## 8. File the Issue
 
-Call `save_issue` with: `team`, `title`, `description` (Markdown, literal newlines — no escape sequences), `priority`, `estimate`, and `project`/`labels`/`cycle`/`assignee`/`relatedTo`/`blocks`/`blockedBy`/`duplicateOf` only when justified (§7). Do **not** pass `id` (that is for updates).
+Call `save_issue` with: `team`, `title`, `description` (Markdown, literal newlines — no escape sequences), `priority`, `estimate`, `assignee`, and `project`/`labels`/`cycle`/`addReleases`/`relatedTo`/`blocks`/`blockedBy`/`duplicateOf`/`links` only when justified (§7). Do **not** pass `id` (that is for updates).
 
 Report the created issue identifier and URL. If you escalated to Project/Initiative, created a project or label, or split a `16`, list every artefact created.

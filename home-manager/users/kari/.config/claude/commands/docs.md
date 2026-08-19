@@ -2,8 +2,7 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -11,11 +10,11 @@ You are writing documentation as the primary task — a new tutorial, how-to, re
 
 Distinct from:
 - `/tt:pov:docs` — dimensional viewpoint, applied *during* review/planning/diagnosis. This agenda is what you reach for when docs are the deliverable.
-- `/tt:explain` (action) — produces an in-conversation explanation for the user. This agenda produces durable files in the repo.
+- an inline explanation — answered in-conversation, evaporates with it. This agenda produces durable files in the repo.
 
 ## 1. Clarify Subject and Audience
 
-If the subject is unclear, ask the user to choose:
+Derive the subject from context — default: the capability just built or discussed. Only if genuinely underivable, ask the user to choose:
 - [ ] A new capability that needs documenting
 - [ ] An existing capability that is currently undocumented or stale
 - [ ] An incident/runbook (operational response)
@@ -37,7 +36,7 @@ Diátaxis (Procida) separates documentation into four distinct modes. Picking th
 
 Special cases (canonical formats):
 - **Runbook** → How-to (task: respond to incident X). Test the procedure under a game day before declaring it ready.
-- **Changelog** → Reference (what changed in version X). Use *Keep a Changelog* format (keepachangelog.com, current 1.1.0): Added / Changed / Deprecated / Removed / Fixed / Security. See `/tt:act:bump`.
+- **Changelog** → Reference (what changed in version X). Use *Keep a Changelog* format (keepachangelog.com, current 1.1.0): Added / Changed / Deprecated / Removed / Fixed / Security. Content rules: `/tt:act:changelog`; release cut: `/tt:act:bump`.
 - **ADR** → Explanation (why we chose X over Y, what we rejected). Use MADR format (adr.github.io/madr): context → decision drivers → considered options → decision → consequences. Immutable once accepted; supersede rather than rewrite.
 - **README** → usually mixed; if so, *separate the sections* into the four modes rather than blending.
 
@@ -80,7 +79,7 @@ For explanation:
 
 - Follow the project's existing docs layout. If none exists, propose one: typically `docs/tutorials/`, `docs/how-to/`, `docs/reference/`, `docs/explanation/`.
 - For ADRs: `docs/adr/NNNN-<slug>.md` numbered sequentially (MADR or similar conventions).
-- For changelogs: a single `CHANGELOG.md` at the repo root (Keep a Changelog format — see `/tt:act:bump`).
+- For changelogs: a single `CHANGELOG.md` at the repo root (Keep a Changelog format — see `/tt:act:changelog`).
 - Cross-link related docs; an unreachable doc is an absent doc.
 
 ## 7. Verify

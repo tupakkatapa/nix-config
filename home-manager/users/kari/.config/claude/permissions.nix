@@ -25,6 +25,7 @@
     "Bash(git remote)"
     "Bash(git remote:*)"
     "Bash(git add:*)"
+    "Bash(git commit:*)"
     "Bash(git rev-parse:*)"
     "Bash(git stash)"
     "Bash(git stash:*)"
@@ -45,7 +46,6 @@
     "Bash(cat:*)"
     "Bash(head:*)"
     "Bash(tail:*)"
-    "Bash(mkdir:*)"
     "Bash(pwd)"
     "Bash(stat:*)"
     "Bash(tree:*)"
@@ -96,6 +96,7 @@
     "mcp__context7__*"
     "mcp__searxng__*"
     "mcp__playwright__*"
+    "mcp__houtini-lm__*"
 
     # Vision (Wayland screenshots)
     "Bash(grim:*)"
@@ -115,6 +116,7 @@
     # File operations
     "Bash(cp:*)"
     "Bash(mv:*)"
+    "Bash(mkdir:*)"
 
     # herdr: spawn/drive worker agents in panes + worktrees
     "Bash(herdr:*)"
@@ -123,6 +125,7 @@
   deny = [
     # Secrets - always block
     "Read(**/.env)"
+    "Read(**/.env.*)"
     "Read(**/.ssh/*)"
     "Read(**/.gnupg/*)"
     "Read(**/*secret*)"
@@ -131,5 +134,8 @@
     # Destructive operations
     "Bash(sudo rm:*)"
     "Bash(rm -rf:*)"
+    "Bash(rm -fr:*)"
+    "Bash(git push --force:*)"
+    "Bash(git push -f:*)"
   ];
 }

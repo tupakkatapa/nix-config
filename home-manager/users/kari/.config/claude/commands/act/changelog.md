@@ -1,8 +1,7 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -10,18 +9,14 @@ You are updating the changelog (Keep a Changelog + Semantic Versioning) **withou
 
 ## 1. Identify Changes
 
-Determine the integration branch dynamically (don't hardcode `main`):
+Detect the integration branch as in `/tt:act:branch` §3 (symbolic-ref → `gh` → `main` fallback), then:
 
 ```bash
-integration=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||')
-integration=${integration:-$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name 2>/dev/null)}
-integration=${integration:-main}
-
 git log "$integration..HEAD" --oneline --no-merges
 ```
 
 Or diff against the last version-bump commit on a feature branch:
-`git log $(git log --grep '^chore: bump' -1 --format=%H)..HEAD --oneline --no-merges`.
+`git log $(git log --grep '^chore: bump' -1 --format=%H)..HEAD --oneline --no-merges`. If no bump commit exists, fall back to the integration-branch diff above (an empty inner result would silently yield `HEAD..HEAD` = nothing).
 
 New, unreleased work goes under `## [Unreleased]`. Do **not** invent a version heading or date here — that is `/tt:act:bump`'s job at release time.
 
@@ -34,6 +29,7 @@ The default failure mode is **too many, too granular, too technical** entries (o
 - **Client-targeted, not engineer-targeted.** Each entry reads like a `/tt:act:issue` title: short, leads with *what changed* for the user, plain language, no ticket-speak (no ticket IDs, no PR numbers, no commit hashes).
 - **Cut the minutiae.** Omit endpoint paths, parameter names, rate limits, scopes, internal flags/IDs, migrations, and symbol names **unless the user directly types or sees them**. Prefer the user-visible outcome over the implementation detail.
 - **Brief. Human readable.**
+- **The entry is the headline; docs carry the detail.** A changelog line tells the consumer *what changed and whether they must act* — not how. If a reader needs more, they go to the docs. Never let an entry grow into a spec; if it wants a second clause of mechanism, cut the mechanism.
 
 ### Consolidation example (Don't → Do)
 
@@ -69,9 +65,9 @@ Section order within a version:
 ```markdown
 ### Added
 ### Changed
-### Fixed
-### Removed
 ### Deprecated
+### Removed
+### Fixed
 ```
 
 **Dating rule — production, not staging.** A version heading is dated with the day its changes reach **production** (merge to the prod branch, typically `main`), **never** the staging date. Until work ships to prod it stays under `## [Unreleased]`. If the same version is on staging today and prod next week, the date is next week's. When unsure which day a release hits prod, ask rather than guess. (Re-derive a stale date from the actual prod-merge day at release time.)
@@ -95,10 +91,6 @@ Section order within a version:
 
 - Behaviour change a caller would notice (response shape, default value)
 
-### Fixed
-
-- Bug that affected real user-visible behaviour (not internal refactors)
-
 ### Deprecated
 
 - Capability scheduled for removal — name the replacement and the timeline
@@ -106,4 +98,8 @@ Section order within a version:
 ### Removed
 
 - Capability that no longer exists (and which release deprecated it, if applicable)
+
+### Fixed
+
+- Bug that affected real user-visible behaviour (not internal refactors)
 ```

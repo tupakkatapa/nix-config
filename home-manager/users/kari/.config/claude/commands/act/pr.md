@@ -1,7 +1,6 @@
 
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
 
 ---
 
@@ -17,7 +16,7 @@ Open a pull request for the current branch, **draft by default** (PR-first workf
 
 Compose the PR body from available sources, in this order:
 
-1. **Plan file** (`docs/plans/<branch-name>.md` or most recent in the directory) — Goal, Success criteria, Approach summary.
+1. **Plan file** (`docs/plans/<branch-name minus type prefix>.md` — branch `feat/2026-05-16-add-foo` → plan `2026-05-16-add-foo.md`; else most recent in the directory) — Goal, Success criteria, Approach summary.
 2. **Commits on the branch** (`git log --oneline <upstream>..HEAD`) — list, grouped if many.
 3. **Open questions / known TODOs** — anything explicitly marked in the plan as deferred.
 
@@ -54,7 +53,7 @@ body_file=/tmp/pr-body.md
 gh pr create --draft --title "<title>" --body-file "$body_file"
 ```
 
-Pass `--base "$integration"` if the integration branch is not the repo default (see `branch.md` §3 for how to detect it).
+Pass `--base "$integration"` if the integration branch is not the repo default (see `/tt:act:branch` §3 for how to detect it).
 
 If `gh` is unavailable, print the title, body, and the URL that would open the web form (`https://github.com/<owner>/<repo>/compare/<branch>?expand=1`), and ask the user to open it manually.
 

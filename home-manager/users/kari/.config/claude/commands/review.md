@@ -2,8 +2,7 @@
 ## Preamble
 - Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
 - Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- When unsure what to do, choose the most fundamentally right action instead of asking for clarification.
-- **Do not push or commit anything unless explicitly told to do so.**
+- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
 
 ---
 
@@ -11,10 +10,10 @@ You are conducting a code review across the `/tt:pov:*` dimensions inline (singl
 
 **Read lens files lazily.** Don't load all 10 into main context upfront — each lens file is a reference. When you reach a lens in §2, read the section you need (Identity → Symptoms → Dimensions → Output Schema), apply, move on. Skip lenses with no surface in this artefact entirely.
 
-**Escalate to subagent dispatch when:** (a) the diff is too large for one context, or (b) the artefact triggers most of the panel and reading every lens file inline would pollute the main context. In that case dispatch via the Task tool in three stages: sequential `scope` → `architecture`; parallel `ux`/`security`/`performance`/`reliability`/`quality`/`testing`; final `docs` → `aesthetics`. Each subagent reads only its own lens file; main context only sees the consolidated findings. Default to inline for small-to-medium diffs — cross-lens synthesis (scope cuts removing downstream concerns) is the value, and panel dispatch sacrifices it.
+**Escalate to subagent dispatch when:** (a) the diff is too large for one context, or (b) the artefact triggers most of the panel and reading every lens file inline would pollute the main context. In that case dispatch via the Task tool in three stages: sequential `scope` → `arch`; parallel `ux`/`sec`/`perf`/`reliability`/`quality`/`testing`; final `docs` → `style` (names = lens file names under `commands/pov/`). Each subagent reads only its own lens file; main context only sees the consolidated findings. Default to inline for small-to-medium diffs — cross-lens synthesis (scope cuts removing downstream concerns) is the value, and panel dispatch sacrifices it.
 
 ## 1. Clarify Scope
-If the review subject is unclear, ask the user to choose:
+Default: the current uncommitted diff; if the tree is clean, the unpushed commits. Only if neither applies or intent is ambiguous, ask the user to choose:
 - [ ] Current uncommitted diff
 - [ ] Recent unpushed commits
 - [ ] A specific fix/feature (ask which)
@@ -54,12 +53,12 @@ Review *finds* defects. Fixing them is a separate hat per Beck's *two hats* rule
 - **Documentation fix — apply inline (it's text).** Wrong reference, dead link, broken example, mode-confused doc — fix in a docs-only commit.
 - **Defer with rationale.** Low / Nit findings batched into a follow-up. Note in the summary so they don't get lost.
 
-Severity ordering for triage: Blocker → High → Medium → Low → Nit. Conflict-resolution order between lenses (when findings overlap): scope → architecture → security → reliability → performance → quality → testing → ux → docs → aesthetics. Removing something supersedes restructuring it; restructuring supersedes polishing it.
+Severity ordering for triage: Blocker → High → Medium → Low → Nit. Conflicting findings resolve by the §2 lens order; removing something supersedes restructuring it; restructuring supersedes polishing it.
 
 ## 4. Run Automated Checks
 Skip if subject is an implementation plan.
 
-Run pre-commit hooks (if configured), linters, and the project's tests. Fix all failures before continuing.
+Run pre-commit hooks (if configured), linters, and the project's tests. Fix failures introduced by this session's tidying/docs commits; pre-existing failures are findings — route them through §3 disposition, don't fix them here.
 
 ## 5. Summary
 - Issues fixed in this pass.
