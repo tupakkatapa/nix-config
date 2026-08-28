@@ -2,9 +2,10 @@
 , inputs
 , ...
 }: {
-  # openrgb 1.0rc2 (26.05) regressed the client `-z`/`--size` CLI parser (any
-  # `-z` -> "Invalid option"), so the Corsair zone sizes can't be set and its
-  # LEDs stay dark. Pin openrgb to 25.11's 0.9 (server + client) until fixed.
+  # openrgb 1.0rc2+ (26.05, still broken in 1.0rc3.1) regressed the client
+  # `-z`/`--size` CLI parser (any `-z` -> "Invalid option"), so the Corsair zone
+  # sizes can't be set and its LEDs stay dark. Pin openrgb to 25.11's 0.9
+  # (server + client) until fixed.
   nixpkgs.overlays = [
     (_: prev: { openrgb = inputs.nixpkgs-2511.legacyPackages.${prev.stdenv.hostPlatform.system}.openrgb; })
   ];

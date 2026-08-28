@@ -74,7 +74,7 @@ in
         ./.config/neovim.nix
         ./.config/tmux.nix
       ]
-      # Importing host-spesific home-manager config if it exists
+      # Importing host-specific home-manager config if it exists
       ++ optionalPaths
         [ ../../hosts/${config.networking.hostName}/default.nix ];
 

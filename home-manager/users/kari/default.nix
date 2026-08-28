@@ -67,7 +67,7 @@ in
       splash-screen = false;
     };
 
-    # Use spesific startup
+    # Use specific startup
     wayland.windowManager.hyprland.settings.exec-once =
       let
         # User-level variable, cannot use $BROWSER as might not be set yet

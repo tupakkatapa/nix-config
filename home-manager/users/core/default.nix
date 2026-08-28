@@ -15,7 +15,7 @@ in
 
   home-manager.users."${user}" = {
     imports = [ ./.config/foot.nix ]
-      # Importing host-spesific home-manager config if it exists
+      # Importing host-specific home-manager config if it exists
       ++ optionalPaths [ ../../hosts/${config.networking.hostName}/default.nix ];
 
     # Allow fonts trough home.packages

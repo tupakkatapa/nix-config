@@ -72,7 +72,7 @@ in
       "HARMONOGRAPH_BG=1d2021 HARMONOGRAPH_FG=${colors.base08},${colors.base0A},${colors.base0B} ${harmonograph}"
     ];
 
-    # Window behiavior
+    # Window behavior
     windowrule = [
       # Sets the workspace on which a window should open
       "match:class discord, workspace 4 silent"

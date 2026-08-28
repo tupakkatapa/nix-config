@@ -46,7 +46,7 @@
   "app.normandy.enabled" = false;
   "app.normandy.api_url" = "";
 
-  # Creash Reports
+  # Crash Reports
   "breakpad.reportURL" = "";
   "browser.tabs.crashReporting.sendReport" = false;
 
@@ -81,7 +81,7 @@
   "network.captive-portal-service.enabled" = false;
   "network.connectivity-service.enabled" = false;
 
-  # Search Bar: Suggestiongs, Autofill, Forms
+  # Search Bar: Suggestions, Autofill, Forms
   "browser.urlbar.speculativeConnect.enabled" = false;
   "browser.urlbar.quicksuggest.enabled" = false;
   "browser.urlbar.suggest.quicksuggest.nonsponsored" = false;

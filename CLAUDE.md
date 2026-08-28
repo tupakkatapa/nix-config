@@ -107,7 +107,7 @@ docs/                              # Setup guides (new host, yubikey, fido2-luks
 
 ## Related repositories
 
-- **Nixie** (closed-source): `github:majbacka-labs/nixie` — DHCP/PXE netboot module. Local: `~/Workspace/{local,remote}/nixie`. Current branch: `jesse/dev31`.
+- **Nixie** (closed-source): `github:majbacka-labs/nixie` — DHCP/PXE netboot module. Local: `~/Workspace/{local,remote}/nixie`.
 - **nixos.fi** (informational): `github:majbacka-labs/nixos.fi` — Public docs about the Nixie netboot approach.
 - **nixos-runtime-modules**: `github:tupakkatapa/nixos-runtime-modules` — Toggle NixOS module configurations at runtime.
 - **nixos-sftp-mount**: `github:tupakkatapa/nixos-sftp-mount` — NixOS module for SFTP server/client mounting.

@@ -72,9 +72,4 @@
 
   # Nixpkgs
   nixpkgs.config.allowUnfree = true;
-
-  # Allow insecure packages
-  nixpkgs.config.permittedInsecurePackages = [
-    "python3.13-ecdsa-0.19.1" # TODO: dependency of yubikey-manager, has CVE-2024-23342
-  ];
 }

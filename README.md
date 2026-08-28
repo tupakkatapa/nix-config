@@ -24,7 +24,7 @@ Hardware specs for each host are documented in [SPECS.md](SPECS.md).
 
 - **./home-manager**
 
-  User and host-spesific configurations for Home Manager. Additionally, contains user configurations even without home-manager enabled.
+  User and host-specific configurations for Home Manager. Additionally, contains user configurations even without home-manager enabled.
 
   <details> <summary>View details</summary>
     &nbsp;
@@ -47,7 +47,7 @@ Hardware specs for each host are documented in [SPECS.md](SPECS.md).
 
 - **./nixosModules**
 
-  Here are my custom modules. You can use them by adding my flake as an input, and importing the spesific module in your host configuration.
+  Here are my custom modules. You can use them by adding my flake as an input, and importing the specific module in your host configuration.
 
   <details> <summary>Example usage</summary>
     &nbsp;

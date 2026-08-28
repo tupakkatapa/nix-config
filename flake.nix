@@ -10,7 +10,7 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-    # openrgb 1.0rc2 (26.05) has a broken `-z` (zone) CLI parser; pin openrgb to
+    # openrgb 1.0rc2+ (26.05) has a broken `-z` (zone) CLI parser; pin openrgb to
     # 25.11's 0.9 on torgue until upstream fixes it. See torgue/default.nix.
     nixpkgs-2511.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -23,12 +23,6 @@
     agenix-rekey.url = "github:oddlama/agenix-rekey";
     agenix-rekey.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Hyprland
-    hyprland-plugins.inputs.nixpkgs.follows = "nixpkgs";
-    hyprland-plugins.url = "github:hyprwm/hyprland-plugins";
-    hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
-    hyprwm-contrib.url = "github:hyprwm/contrib";
-
     # Netboot stuff
     nixie.inputs.nixpkgs.follows = "nixpkgs";
     nixie.url = "github:majbacka-labs/nixie/jesse/dev050"; # https, private
@@ -38,7 +32,6 @@
     # Other
     anytui.inputs.nixpkgs.follows = "nixpkgs";
     anytui.url = "github:tupakkatapa/anytui";
-    claude-desktop.url = "github:aaddrick/claude-desktop-debian";
     herdr.inputs.nixpkgs.follows = "nixpkgs";
     herdr.url = "github:ogulcancelik/herdr";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -94,7 +87,6 @@
               codex
               claude-code
               ping-sweep
-              claude-desktop
               herdr
               ;
             # Inputs
@@ -151,7 +143,6 @@
             inherit (inputs'.ping-sweep.packages) ping-sweep;
             inherit (inputs'.herdr.packages) herdr;
             inherit (inputs'.llm-agents.packages) claude-code codex;
-            inherit (inputs'.claude-desktop.packages) claude-desktop;
           }
           // (with flake.nixosConfigurations; {
             "bandit" = bandit.config.system.build.kexecTree;

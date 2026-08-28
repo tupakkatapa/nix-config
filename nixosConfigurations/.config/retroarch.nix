@@ -16,7 +16,7 @@ let
     mgba # GBA
     dolphin # GameCube / Wii
     mupen64plus # N64
-    mesen # NES - Famicon
+    mesen # NES - Famicom
     bsnes # SNES
 
     flycast # Dreamcast
