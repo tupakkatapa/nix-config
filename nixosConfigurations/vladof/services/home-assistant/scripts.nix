@@ -10,6 +10,29 @@ let
 
   # Prepended to manual actions so they end an active temporary scene
   tempTimerIds = map (s: "timer.scene_${s.key}") cfg.temporaryScenes;
+
+  # A temporary scene only restores its snapshot on timer.finished, so
+  # cancelling one leaves its lights where they were. Without this, starting a
+  # mode while another is active blends the two, and the new snapshot captures
+  # that blend as the state to return to. Restore every active mode first so a
+  # mode always starts from the pre-mode state — including a restart of the
+  # same mode, which would otherwise snapshot itself and never return.
+  resetActiveTempScenes = map
+    (scene: {
+      choose = [{
+        conditions = [{
+          condition = "state";
+          entity_id = "timer.scene_${scene.key}";
+          state = "active";
+        }];
+        sequence = [{
+          service = "scene.turn_on";
+          target.entity_id = "scene.temp_prev_${scene.key}";
+          data.transition = btnTransition;
+        }];
+      }];
+    })
+    cfg.temporaryScenes;
   cancelTempTimers =
     if tempTimerIds != [ ] then
       [{ service = "timer.cancel"; target.entity_id = tempTimerIds; }]
@@ -192,7 +215,8 @@ let
       value = {
         inherit (scene) alias;
         sequence =
-          cancelTempTimers
+          resetActiveTempScenes
+          ++ cancelTempTimers
           # Snapshot state for restore, then freeze the schedule
           ++ [{
             service = "scene.create";

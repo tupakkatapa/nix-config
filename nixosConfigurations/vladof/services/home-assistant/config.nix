@@ -193,7 +193,7 @@ rec {
       key = "workout";
       alias = "Workout";
       icon = "mdi:dumbbell";
-      lights = with lights; [ bedroom ];
+      lights = with lights; [ bedroom dining ];
       defaultBrightness = 90;
       defaultPreset = "Daylight";
       defaultDuration = 45; # minutes
