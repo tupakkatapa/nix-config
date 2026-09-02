@@ -53,7 +53,7 @@
       RemainAfterExit = true;
     };
     script = ''
-      ${lib.getExe' config.nix.package "nix-store"} --load-db < /nix/store/nix-path-registration
+      ${lib.getExe' config.nix.package "nix-store"} --load-db < /nix/.ro-store/nix-path-registration
       touch /etc/NIXOS
       ${lib.getExe' config.nix.package "nix-env"} -p /nix/var/nix/profiles/system --set /run/current-system
     '';
