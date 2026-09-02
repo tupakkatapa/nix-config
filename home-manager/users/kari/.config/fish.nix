@@ -73,6 +73,13 @@ in
       yta-pl = yta + " -o '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'";
       yta-cp = yta + " -o '%(title)s.%(ext)s' -o 'chapter:%(title)s/%(section_number)s - %(section_title)s.%(ext)s' --split-chapters --exec 'rm %(title)s.%(ext)s'";
 
+      # '...' -> '../..'
+      dots = {
+        regex = ''\.\.\.+'';
+        position = "anywhere";
+        function = "expand_dots";
+      };
+
       # Misc
       vim = mkIf hasNeovim "nvim";
       amimullvad = "curl https://am.i.mullvad.net/connected";
@@ -81,6 +88,9 @@ in
     };
     functions = {
       fish_greeting = "";
+      expand_dots = ''
+        string repeat -n (math (string length -- $argv[1]) - 1) ../
+      '';
     };
     interactiveShellInit =
       # Use vim bindings and cursors
