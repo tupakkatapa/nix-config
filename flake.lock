@@ -57,11 +57,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1787997820,
-        "narHash": "sha256-Bg2umImuo2C3TyMNBlWPqE8fulnCoL3dt6n96VjNgh8=",
+        "lastModified": 1788023646,
+        "narHash": "sha256-Ps5tl5tFsTsic22rYg0Ced9b0WxhRmYLL1dz+vEmoMc=",
         "owner": "tupakkatapa",
         "repo": "anytui",
-        "rev": "1a11557eeb9ba9dfc5b4360dea01ce663e75ab34",
+        "rev": "ae0f0bbc7df18696d3cfbbe86854d106aa6c4c6f",
         "type": "github"
       },
       "original": {

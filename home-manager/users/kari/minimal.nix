@@ -52,6 +52,9 @@ in
       # kari@yubikey
       "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOdsfK46X5IhxxEy81am6A8YnHo2rcF2qZ75cHOKG7ToAAAACHNzaDprYXJp ssh:kari"
       "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOcS3prYIi5uC9LxscaKSYzyuF2Sh7f3I5V9s1sCWSc1AAAACXNzaDprYXJpMg== ssh:kari2"
+
+      # kari@3ds
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCy/Zj1ft5IHaQ8/eg5BNu7Z4x3NfepyPR7b0WWasoCsnpz4RRvXRm91ATO4QfyHdvKEzoqfkyHFQ2YNhfm3HkreOomUARN6UGnvA11RfyWIjoC2pGqH0JOEQMOstsdqDcAxPkXRPPBUCLbMIXkwOpDVp67jc9Qo2bBNmqzCMGtTxdOlkqF2bxT7rm0RzsQ5F9KTfBfxqmfW/3SThelH4pH8I9bjeKLtEz9uOEllI9GKRdU71ADbrh88paSCi29idLXwMyfsT0qh9MGqmRvdgNWvYEkhlKbg/OmPYBX2SGarQZ4umJWWQsDai4qbNAu310XQDR38AbqWo8xWd6pS9tB kari@3ds"
     ];
     shell = pkgs.fish;
   };

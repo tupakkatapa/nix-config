@@ -56,6 +56,12 @@
             AllowedIPs = [ "172.16.16.4/32" "fd42:42:42:3::4/128" ];
             PersistentKeepalive = 25;
           }
+          # 3DS
+          {
+            PublicKey = "DNHefmxNZmMAA+iHcRoDEeaWRQyCPwDos8+YCcJR9kE=";
+            AllowedIPs = [ "172.16.16.5/32" ];
+            PersistentKeepalive = 25;
+          }
         ];
       };
 

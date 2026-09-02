@@ -149,8 +149,8 @@ _:
       # Allow LAN → WAN and Mullvad
       iifname "br-lan" oifname { "enp1s0", "mullvad" } accept
 
-      # Allow WireGuard → WAN, Mullvad, and LAN
-      iifname "wg0" oifname { "enp1s0", "mullvad", "br-lan" } accept
+      # Allow WireGuard → WAN, Mullvad, WireGuard and LAN
+      iifname "wg0" oifname { "enp1s0", "mullvad", "br-lan", "wg0" } accept
 
       # wg1: only garage on vladof, no other LAN access
       iifname "wg1" oifname "br-lan" ip daddr 10.42.0.8 tcp dport { 3900, 3901, 3902, 3903 } accept
