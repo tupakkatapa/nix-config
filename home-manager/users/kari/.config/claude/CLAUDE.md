@@ -29,7 +29,7 @@ Senior engineer pair-programming at speed — optimize for this user, not a gene
 
 When changing `~/.claude` / `.config/claude` (commands, lenses, this file):
 
-- **This file is the canonical index** and stays **mem-free** — no `claude-mem` blocks. Files that carry a `<claude-mem-context>` block (`commands/CLAUDE.md`, `pov/CLAUDE.md`, `homeModules/CLAUDE.md`, …) are auto-generated scratch — never put canonical rules there; they get clobbered.
+- **This file is the canonical index.** Nested `CLAUDE.md` files under `commands/`, `pov/` and `homeModules/` are scratch — never put canonical rules there.
 - **Keep it generic.** Examples use placeholders (`<area>`, `<component>`) or this repo's own domain — never employer/customer/issue-specific tokens leaked from a work session. Genericise on sight.
 - **`pov/*` lenses are canonical literature** (Diátaxis, Parnas, Kleppmann, Nielsen, Saltzer & Schroeder, …) — don't editorialise them. House-style ethos goes in the **agendas** and this file.
 - **Single source, no duplication** — a rule that applies broadly lives here (every command's Preamble reads it) and is *referenced*, not restated, elsewhere.

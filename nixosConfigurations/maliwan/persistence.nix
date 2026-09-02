@@ -20,7 +20,6 @@ in
   fileSystems = aux
     {
       # User data
-      "/home/kari/.claude-mem" = "@kari-claude-mem";
       "/home/kari/.claude/projects" = "@kari-claude-projects";
       "/home/kari/.config/mozilla" = "@kari-mozilla";
       "/home/kari/.config/Yubico" = "@kari-yubico";
@@ -84,7 +83,6 @@ in
     "d /home/kari/.claude       755 kari kari -"
 
     # Enforce ownership on subvol mountpoints
-    "Z /home/kari/.claude-mem              - kari kari -"
     "Z /home/kari/.claude/projects         - kari kari -"
     "Z /home/kari/.config/mozilla          - kari kari -"
     "Z /home/kari/.config/Yubico           - kari kari -"

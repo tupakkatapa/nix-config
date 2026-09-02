@@ -31,4 +31,4 @@ A lens is mode-agnostic; the *agenda* supplies the mode that frames the lens's d
 
 ## Registry
 
-`CLAUDE.md` (this directory) is the canonical index — every command with a one-line description, plus the mode taxonomy. Add a command file under `commands/`, then register it there. (`commands/CLAUDE.md` is unrelated — a claude-mem scratch file, not the registry.)
+`CLAUDE.md` (this directory) is the canonical index — every command with a one-line description, plus the mode taxonomy. Add a command file under `commands/`, then register it there. (`commands/CLAUDE.md` is unrelated — scratch, not the registry.)

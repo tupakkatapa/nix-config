@@ -20,7 +20,6 @@ in
   fileSystems = aux
     {
       # User data
-      "/home/kari/.claude-mem" = "@kari-claude-mem";
       "/home/kari/.claude/projects" = "@kari-claude-projects";
       "/home/kari/.config/guitarix" = "@kari-guitarix";
       "/home/kari/.config/mozilla" = "@kari-mozilla";
@@ -72,7 +71,7 @@ in
   system.fsPackages = [ pkgs.sshfs ];
   programs.fuse.userAllowOther = true;
 
-  # Service path redirects into @main
+  # SSH host key on disk
   services.openssh.hostKeys = [{
     path = "${dataDir}/ssh/ssh_host_ed25519_key";
     type = "ed25519";
@@ -99,7 +98,6 @@ in
     "d /var/lib/ollama/models   755 ollama ollama -"
 
     # Enforce ownership on subvol mountpoints
-    "Z /home/kari/.claude-mem              - kari kari -"
     "Z /home/kari/.claude/projects         - kari kari -"
     "Z /home/kari/.config/guitarix         - kari kari -"
     "Z /home/kari/.config/mozilla          - kari kari -"

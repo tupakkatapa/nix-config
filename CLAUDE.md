@@ -61,7 +61,7 @@ home-manager/
   hosts/<host>/                    # Host-specific HM (conditionally imported if path exists)
     .config/base01/                # Shared graphical "rice" (hyprland, waybar, wofi, mako, gtk, foot theme, nixvim theme)
       rice01/                      # Current rice variant (colors, wallpaper, animations)
-packages/                          # Custom packages (kb-shortcuts, monitor-adjust, pinit, 2mp3, claude-plugins, chroma-mcp, fat-nix-deps)
+packages/                          # Custom packages (kb-shortcuts, monitor-adjust, pinit, 2mp3, claude-plugins, fat-nix-deps)
 docs/                              # Setup guides (new host, yubikey, fido2-luks)
 ```
 
