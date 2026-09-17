@@ -96,8 +96,8 @@
           PrivateKeyFile = config.age.secrets.mullvad-private.path;
         };
         wireguardPeers = [{
-          PublicKey = "/iivwlyqWqxQ0BVWmJRhcXIFdJeo0WbHQ/hZwuXaN3g=";
-          Endpoint = "193.32.127.66:51820";
+          PublicKey = "+gmNrLlaJW+Ggpu1R3LMJWqDzXumLMJSuBaXRBjTn00=";
+          Endpoint = "193.32.127.69:51820";
           AllowedIPs = [ "0.0.0.0/0" "::/0" ];
         }];
       };
