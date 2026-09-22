@@ -24,11 +24,10 @@ in
     (import ./services extendedArgs)
     (import ./persistence.nix extendedArgs)
     ../.config/hw/cpu-intel.nix
-    ../.config/hw/gpu-nvidia.nix
+    ../.config/hw/gpu-intel.nix
     ../.config/motd.nix
     ../.config/hw/pipewire.nix
     ../.config/hw/yubikey.nix
-    ./sunshine.nix
   ];
 
   # Disk-aware garbage collection

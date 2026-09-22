@@ -20,7 +20,6 @@ in
     {
       # User data
       "/home/kari/.config/mozilla" = "@kari-mozilla";
-      "/home/kari/.config/sunshine" = "@kari-sunshine";
       "/home/kari/.local/share/atuin" = "@kari-atuin";
       "/home/kari/.local/share/zoxide" = "@kari-zoxide";
 
@@ -113,7 +112,6 @@ in
 
     # Enforce ownership on subvol mountpoints
     "Z /home/kari/.config/mozilla       - kari kari -"
-    "Z /home/kari/.config/sunshine      - kari kari -"
     "Z /home/kari/.local/share/atuin    - kari kari -"
     "Z /home/kari/.local/share/zoxide   - kari kari -"
   ];

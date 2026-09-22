@@ -12,22 +12,14 @@ in
     privateNetwork = true;
     inherit (containerConfig.plex) hostAddress localAddress;
 
-    # GPU access for NVENC hardware transcoding
+    # GPU access for QuickSync hardware transcoding
     allowedDevices = [
-      { modifier = "rw"; node = "/dev/nvidia0"; }
-      { modifier = "rw"; node = "/dev/nvidiactl"; }
-      { modifier = "rw"; node = "/dev/nvidia-uvm"; }
+      { modifier = "rw"; node = "/dev/dri/renderD128"; }
     ];
 
-    # Bind mount the persistent data directory and GPU devices
+    # Bind mount the persistent data directory and the render node
     bindMounts = {
-      "/dev/nvidia0".hostPath = "/dev/nvidia0";
-      "/dev/nvidiactl".hostPath = "/dev/nvidiactl";
-      "/dev/nvidia-uvm".hostPath = "/dev/nvidia-uvm";
-      "/run/opengl-driver" = {
-        hostPath = "/run/opengl-driver";
-        isReadOnly = true;
-      };
+      "/dev/dri/renderD128".hostPath = "/dev/dri/renderD128";
       "/var/lib/plex" = {
         hostPath = "${dataDir}/home/plex/appdata/plex";
         isReadOnly = false;
@@ -54,7 +46,7 @@ in
       };
     };
 
-    config = { ... }: {
+    config = { pkgs, ... }: {
       imports = [ (globalContainerConfig "plex") ];
 
       services.plex = {
@@ -64,8 +56,14 @@ in
         group = "plex";
       };
 
-      # NVIDIA for hardware transcoding
-      hardware.graphics.enable = true;
+      # QuickSync for hardware transcoding
+      hardware.graphics = {
+        enable = true;
+        extraPackages = with pkgs; [ intel-media-driver ];
+      };
+
+      # Render node is root:render 0660 on the host; gid is static across NixOS
+      users.users.plex.extraGroups = [ "render" "video" ];
 
       # Ensure plex data directory exists with correct permissions
       systemd.tmpfiles.rules = [
