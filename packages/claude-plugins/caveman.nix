@@ -1,16 +1,16 @@
 { fetchFromGitHub, mkClaudePlugin }:
 let
-  rev = "25d22f864ad68cc447a4cb93aefde918aa4aec9f";
+  rev = "8b0c1d3699b8d83e87fe4605b378da20c41555e0";
   src = fetchFromGitHub {
     owner = "JuliusBrussee";
     repo = "caveman";
     inherit rev;
-    hash = "sha256-FbmfhFaPs/SnSZdfNdErdIUHXt1FfBzErpPpLy8kdIc=";
+    hash = "sha256-dsGzPscjy7FfaovfYML2q+RmuBJwwEJ9sjeHi+Niv6Y=";
   };
 in
 mkClaudePlugin {
   pname = "caveman";
-  version = "1.5.0";
+  version = "2.7.0";
   inherit rev src;
   marketplace = {
     name = "caveman";

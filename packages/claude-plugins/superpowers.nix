@@ -1,22 +1,22 @@
 { fetchFromGitHub, mkClaudePlugin }:
 let
-  rev = "6fd4507659784c351abbd2bc264c7162cfd386dc";
+  rev = "5bf4e78011075bcfc0dc295f0724994cd123ee71";
   src = fetchFromGitHub {
     owner = "obra";
     repo = "superpowers";
     inherit rev;
-    hash = "sha256-P/FD8HTQO+QzvMe3A/B2v2vjs8T6ZmIYH3MPp79dSzo=";
+    hash = "sha256-rgeJhjQyABYlhlyFRmgyhbZmmmIPPNkch4CXyTkGEyM=";
   };
   marketplaceSrc = fetchFromGitHub {
     owner = "obra";
     repo = "superpowers-marketplace";
-    rev = "c16dd5785082eb1c11246d3705ebe47410a16fb2";
-    hash = "sha256-8J3Qjzi1pdbsOQcZQ3wImOvbtZP9K+qJOpY6iDN8eQg=";
+    rev = "14fb891be25c7c8d7fb22a07cc1b91eeb37b4a36";
+    hash = "sha256-PjOZfxyNeUb1VR2scVR8L+4UjdC9TeQCm+E//9DduHc=";
   };
 in
 mkClaudePlugin {
   pname = "superpowers";
-  version = "4.0.3";
+  version = "6.4.1";
   inherit rev src;
   marketplace = {
     name = "superpowers-marketplace";

@@ -128,6 +128,7 @@ in
     # Claude plugins as Nix packages
     pluginPackages = with pkgs.claude-plugins; [
       caveman
+      ponytail
       ralph-wiggum
       superpowers
       document-skills

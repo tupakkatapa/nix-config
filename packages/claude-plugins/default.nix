@@ -34,6 +34,7 @@ let
 in
 {
   caveman = callPlugin ./caveman.nix;
+  ponytail = callPlugin ./ponytail.nix;
   ralph-wiggum = callPlugin ./ralph-wiggum.nix;
   superpowers = callPlugin ./superpowers.nix;
   inherit (anthropicSkills) document-skills example-skills;
