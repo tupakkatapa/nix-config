@@ -52,7 +52,7 @@ flake.nix                          # Entry point, host definitions, withDefaults
 system/                            # Shared NixOS base configs (base.nix, openssh.nix, nix-settings.nix, kexec-tree.nix)
 library/                           # customLib: hyprland helpers, xdg mime helpers, base16 color schemes
 nixosConfigurations/<host>/        # Host-specific: hardware, networking, persistence, services
-  .config/                         # Shared NixOS modules (gaming-amd, pipewire, podman, keyd, yubikey, tuigreet-hypr, ai-tools)
+  .config/                         # Shared NixOS modules (gaming-amd, pipewire, podman, keyd, yubikey, tuigreet-hypr)
 nixosModules/                      # Reusable NixOS modules (monitoring, state-saver, auto-scrcpy)
 homeModules/                       # Reusable HM modules (claude-code plugin system)
 home-manager/
@@ -81,7 +81,7 @@ docs/                              # Setup guides (new host, yubikey, fido2-luks
 - **customLib** injected via `specialArgs` to all modules. Contains: `customLib.hyprland.{generateMonitors, generateWorkspaces, generateWorkspaceBindings}`, `customLib.xdg.createMimes`, `customLib.colors.<scheme>`.
 - **Conditional host HM import**: `optionalPaths [ ../../hosts/${config.networking.hostName}/default.nix ]` — only imports if the path exists.
 - **kexecTree**: All hosts build a kexec-bootable squashfs image via `system/kexec-tree.nix` with overlay root filesystem.
-- **Runtime modules**: `torgue` uses `services.runtimeModules` to toggle configs (retroarch, ai-tools, daw) at runtime without rebuild.
+- **Runtime modules**: `torgue` uses `services.runtimeModules` to toggle configs (retroarch, ollama, daw) at runtime without rebuild.
 - **Persistence**: Ephemeral hosts use `state-saver` module + host-specific `persistence.nix` to bind-mount persistent data from attached drives.
 - **Secrets**: agenix + agenix-rekey with FIDO2 HMAC age plugins. Master identity keys are `master.hmac` and `master-2.hmac` in repo root.
 

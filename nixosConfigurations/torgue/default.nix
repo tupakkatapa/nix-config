@@ -41,10 +41,6 @@
         imports = [ ../.config/retroarch.nix ];
       }
       {
-        name = "ai-tools";
-        imports = [ ../.config/ai-tools.nix ];
-      }
-      {
         name = "ollama";
         imports = [ ../.config/ollama-amd.nix ];
       }
