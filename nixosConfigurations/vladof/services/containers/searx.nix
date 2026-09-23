@@ -4,6 +4,14 @@
 , ...
 }:
 {
+  # SNAT to dedicated address so hyperion routes only searx around Mullvad
+  # (engines block VPN exits). Inserted before module's masquerade rule.
+  networking.nat.extraCommands = ''
+    iptables -w -t nat -I nixos-nat-post 1 \
+      -s ${containerConfig.searx.localAddress} -o enp0s31f6 \
+      -j SNAT --to-source 10.42.0.28
+  '';
+
   containers.searx = {
     autoStart = true;
     privateNetwork = true;

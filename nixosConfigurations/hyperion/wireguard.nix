@@ -183,6 +183,12 @@
             Table = "main";
             Priority = 85;
           }
+          # Vladof searx container bypasses Mullvad (engines block VPN exits)
+          {
+            From = "10.42.0.28";
+            Table = "main";
+            Priority = 85;
+          }
           # Vladof DNS bypasses Mullvad (ACME DNS-01; CF refuses VPN exits)
           {
             From = "10.42.0.8";
