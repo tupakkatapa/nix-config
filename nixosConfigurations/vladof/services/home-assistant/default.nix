@@ -256,7 +256,9 @@ in
         ];
       };
 
+      # extraComponents alone does not load these
       wake_on_lan = { };
+      mobile_app = { };
 
       shell_command = builtins.listToAttrs (
         builtins.concatMap
