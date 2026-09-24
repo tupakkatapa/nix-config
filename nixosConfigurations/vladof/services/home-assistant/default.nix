@@ -4,6 +4,7 @@
 #   - scheduleSlots: ordered times of day (morning..off). The "active slot" is the
 #     latest slot whose offset-adjusted time is <= now (see activeSlotTemplate).
 #   - schedule_time_offset (input_number, hours): shifts ALL slot times; positive = later.
+#     schedule_weekend_offset adds to it on Sat/Sun (see cfg.offsetHours).
 #   - schedule_override (input_boolean): any manual button/scene sets it, freezing the
 #     schedule; auto-cleared at the morning slot and by the Resume script.
 #   - Two mutually-exclusive transition modes, selected by the continuous_transitions
@@ -182,7 +183,7 @@ let
     map (s: "('${s.alias}', (state_attr('input_datetime.sched_${s.key}_time', 'timestamp') | int + time_offset) % 86400)") cfg.scheduleSlots
   );
   activeSlotTemplate = ''
-    {%- set time_offset = states('input_number.schedule_time_offset') | float * 3600 | int -%}
+    {%- set time_offset = ${cfg.offsetHours} * 3600 | int -%}
     {%- set ns = namespace(active='Off') -%}
     {%- set now_s = now().hour * 3600 + now().minute * 60 + now().second -%}
     {%- set slots = [${slotList}] | sort(attribute='1') -%}
@@ -191,7 +192,7 @@ let
         {%- set ns.active = name -%}
       {%- endif -%}
     {%- endfor -%}
-    {%- set offset_h = states('input_number.schedule_time_offset') | float -%}
+    {%- set offset_h = ${cfg.offsetHours} -%}
     {%- if states('input_boolean.schedule_override') == 'on' -%}
       Override
     {%- elif offset_h != 0 -%}
@@ -298,6 +299,9 @@ in
       input_number = globalInputNumbers // slotInputNumbers // tempSceneInputNumbers // {
         schedule_time_offset = {
           inherit (cfg.timeOffset) name icon min max step initial unit_of_measurement;
+        };
+        schedule_weekend_offset = {
+          inherit (cfg.weekendOffset) name icon min max step initial unit_of_measurement;
         };
       };
       input_select = slotInputSelects // tempSceneInputSelects;

@@ -176,6 +176,20 @@ rec {
     unit_of_measurement = "h";
   };
 
+  # Extra shift added on Sat/Sun, on top of timeOffset (sleep in without bright lights)
+  weekendOffset = timeOffset // {
+    name = "Weekend Offset";
+    icon = "mdi:calendar-weekend";
+    min = 0;
+    initial = 3;
+  };
+
+  # Jinja expression: effective offset in hours. "Weekend" = logical Sat/Sun, where
+  # the day rolls over at 04:00 so Friday night stays unshifted and Sunday night's
+  # post-midnight slots stay shifted.
+  # ponytail: fixed 04:00 rollover, derive from the off slot if late nights exceed it
+  offsetHours = "(states('input_number.schedule_time_offset') | float + (states('input_number.schedule_weekend_offset') | float if (now() - timedelta(hours=4)).weekday() >= 5 else 0))";
+
   # Wake PC
   wakePC = {
     enabled = { name = "Enabled"; icon = "mdi:power"; };
@@ -196,7 +210,7 @@ rec {
       lights = with lights; [ bedroom dining ];
       defaultBrightness = 90;
       defaultPreset = "Daylight";
-      defaultDuration = 45; # minutes
+      defaultDuration = 70; # minutes
     }
     {
       key = "cleaning";

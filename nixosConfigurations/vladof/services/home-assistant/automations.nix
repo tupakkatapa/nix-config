@@ -64,7 +64,7 @@ let
         trigger = [{
           platform = "template";
           value_template = ''
-            {% set time_offset = states('input_number.schedule_time_offset') | float * 3600 | int %}
+            {% set time_offset = ${cfg.offsetHours} * 3600 | int %}
             {% set slot_ts = (state_attr('input_datetime.sched_off_time', 'timestamp') | int + time_offset) % 86400 %}
             {{ now().strftime('%H:%M') == (slot_ts | timestamp_custom('%H:%M', false)) }}'';
         }];
@@ -88,7 +88,7 @@ let
         platform = "template";
         value_template = ''
           {% set t = ${transitionEntity} %}
-          {% set time_offset = states('input_number.schedule_time_offset') | float * 3600 | int %}
+          {% set time_offset = ${cfg.offsetHours} * 3600 | int %}
           {% set slot_ts = (state_attr('input_datetime.sched_${slot.key}_time', 'timestamp') | int + time_offset) % 86400 %}
           {% set offset = (t | abs * 60) if t < 0 else 0 %}
           {% set trigger_ts = (slot_ts - offset) % 86400 %}
@@ -167,7 +167,7 @@ let
           trigger = [{
             platform = "template";
             value_template = ''
-              {% set time_offset = states('input_number.schedule_time_offset') | float * 3600 | int %}
+              {% set time_offset = ${cfg.offsetHours} * 3600 | int %}
               {% set slot_ts = (state_attr('input_datetime.sched_${current.key}_time', 'timestamp') | int + time_offset) % 86400 %}
               {{ now().strftime('%H:%M') == (slot_ts | timestamp_custom('%H:%M', false)) }}'';
           }];
@@ -246,7 +246,7 @@ builtins.concatMap mkSlotAutomation cfg.scheduleSlots
     trigger = [{
       platform = "template";
       value_template = ''
-        {% set time_offset = states('input_number.schedule_time_offset') | float * 3600 | int %}
+        {% set time_offset = ${cfg.offsetHours} * 3600 | int %}
         {% set slot_ts = (state_attr('input_datetime.wake_pc_time', 'timestamp') | int + time_offset) % 86400 %}
         {{ now().strftime('%H:%M') == (slot_ts | timestamp_custom('%H:%M', false)) }}'';
     }];

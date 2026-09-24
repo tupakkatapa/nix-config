@@ -278,7 +278,7 @@ let
         map (s: "('${s.key}', (state_attr('input_datetime.sched_${s.key}_time', 'timestamp') | int + time_offset) % 86400)") cfg.scheduleSlots
       );
       resolveSlot = ''
-        {%- set time_offset = states('input_number.schedule_time_offset') | float * 3600 | int -%}
+        {%- set time_offset = ${cfg.offsetHours} * 3600 | int -%}
         {%- set ns = namespace(active='off') -%}
         {%- set now_s = now().hour * 3600 + now().minute * 60 + now().second -%}
         {%- set slots = [${slotTimeChecks}] | sort(attribute='1') -%}

@@ -266,6 +266,7 @@ in
             "input_boolean.schedule_enabled"
             "input_boolean.continuous_transitions"
             "input_number.schedule_time_offset"
+            "input_number.schedule_weekend_offset"
             "input_number.button_transition"
           ];
         }
