@@ -6,6 +6,8 @@ date: "2024-04-10"
 
 > Updated 2025-03-09
 
+⚠️ **Do not use this setup. The bind mounts wiped whole directories, root cause still unknown. I now use a plain `fileSystems` entry with `fsType = "sshfs"`, see [my config](https://github.com/tupakkatapa/nix-config/blob/main/nixosConfigurations/torgue/persistence.nix).**
+
 In this blog post, I discuss how I've begun to centralize the data I use on a daily basis. My intention in the long run is to gather all my data in one place, and in such a form that it is directly accessible from any device.
 
 ## Introduction
