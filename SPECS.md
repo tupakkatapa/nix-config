@@ -40,7 +40,7 @@ All notable hardware specifications for this flake's hosts are documented in thi
 | **Case** | BFC-NEO-100-KKXSB-RP |
 | **CPU** | Intel Core i3-6300 - 2C/4T, 3.8 GHz, LGA1151 |
 | **Cooling** | Intel stock cooler |
-| **GPU** | NVIDIA GeForce GTX 1080 |
+| **GPU** | Intel HD Graphics 530 |
 | **RAM** | 72 GiB DDR4 @ 2133 MT/s - 4+32+4+32 GiB |
 | **PCIe** | - |
 | **PSU** | Corsair VS550 550W |
