@@ -26,10 +26,15 @@ pkgs.stdenv.mkDerivation rec {
     chmod +x $out/bin/mem-warn
     wrapProgram $out/bin/mem-warn \
       --prefix PATH : ${lib.makeBinPath buildInputs}
+
+    cp $src/scripts/bat-warn.sh $out/bin/bat-warn
+    chmod +x $out/bin/bat-warn
+    wrapProgram $out/bin/bat-warn \
+      --prefix PATH : ${lib.makeBinPath buildInputs}
   '';
 
   meta = with lib; {
-    description = "Window-manager helpers: lock-countdown, mem-warn, and other overlay notifiers";
+    description = "Window-manager helpers: lock-countdown, mem-warn, bat-warn, and other overlay notifiers";
     license = licenses.gpl3Plus;
   };
 }

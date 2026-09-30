@@ -152,22 +152,21 @@ in
         orientation = "inherit";
         modules = [
           "memory"
-          "custom/separator-hw"
+          "custom/separator"
           "pulseaudio"
-          "custom/separator-hw2"
+          "custom/separator"
           "backlight"
           "custom/brightness"
+          "custom/separator#bat"
           "battery"
         ];
       };
 
-      "custom/separator-hw2" = {
-        format = "|";
-        tooltip = false;
-      };
-
-      "custom/separator-hw" = {
-        format = "|";
+      # Laptop only: hidden when there is no battery
+      "custom/separator#bat" = {
+        exec = "echo '|'";
+        exec-if = "test -e /sys/class/power_supply/BAT0";
+        interval = "once";
         tooltip = false;
       };
 
@@ -226,9 +225,13 @@ in
       battery = {
         bat = "BAT0";
         interval = 10;
+        states = {
+          warning = 20;
+          critical = 10;
+        };
         format-icons = [ "󰂎" "󰁺" "󰁾" "󰁹" ];
-        format = " <span color='#${colors.base02}'>|</span> {icon} {capacity}%";
-        format-charging = " <span color='#${colors.base02}'>|</span> 󰂄 {capacity}%";
+        format = "{icon} {capacity}%";
+        format-charging = "󰂄 {capacity}%";
         onclick = "";
       };
 
@@ -320,16 +323,14 @@ in
       #hardware #custom-brightness,
       #hardware #backlight,
       #hardware #battery,
-      #hardware #custom-separator-hw,
-      #hardware #custom-separator-hw2 {
+      #hardware #custom-separator {
         padding: 0;
         border: none;
         background-color: transparent;
       }
 
       #connectivity #custom-separator,
-      #hardware #custom-separator-hw,
-      #hardware #custom-separator-hw2 {
+      #hardware #custom-separator {
         color: #${colors.base02};
         padding: 0 5px;
       }
@@ -340,6 +341,13 @@ in
       #custom-green-dot {
         padding: 0 5px;
         background-color: transparent;
+      }
+
+      /* Low battery (not while charging) */
+      #hardware #battery.warning:not(.charging) { color: #${colors.base09}; }
+      #hardware #battery.critical:not(.charging) {
+        color: #${colors.base00};
+        background-color: #${colors.base08};
       }
 
       /* Dot-specific colors */
