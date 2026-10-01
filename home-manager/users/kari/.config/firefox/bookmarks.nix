@@ -1,7 +1,6 @@
 {
   Services = [
     # Self-Hosted
-    { name = "Hyperion"; url = "https://10.42.0.1"; }
     { name = "Netboot"; url = "http://10.42.0.1:52080/"; }
     { name = "Grafana"; url = "https://grafana.coditon.com"; }
     { name = "Home Assistant"; url = "https://home.coditon.com/nixos-lovelace/0"; }
@@ -14,14 +13,12 @@
     { name = "Vaultwarden"; url = "https://vault.coditon.com"; }
     { name = "Kavita"; url = "https://lib.coditon.com"; }
     { name = "Search"; url = "https://search.coditon.com"; }
-    { name = "Nextcloud"; url = "https://next.coditon.com"; }
     { name = "ntfy"; url = "https://ntfy.coditon.com"; }
     { name = "Cert"; url = "https://cert.coditon.com"; }
     { name = "Claude-Mem"; url = "http://127.0.0.1:37777/"; }
 
     # Email
     { name = "Outlook"; url = "https://outlook.live.com/mail"; }
-    { name = "Ponkila Mail"; url = "https://mail.ponkila.com/"; }
     { name = "Protonmail"; url = "https://account.proton.me/mail"; }
     { name = "Gmail"; url = "https://mail.google.com/"; }
 
@@ -34,10 +31,12 @@
 
     # Social
     { name = "X"; url = "https://x.com/"; }
+    { name = "Instagram"; url = "https://www.instagram.com/"; }
 
     # Cloud & Infrastructure
     { name = "Cloudflare"; url = "https://dash.cloudflare.com/"; }
     { name = "Hetzner"; url = "https://console.hetzner.cloud"; }
+    { name = "Hostinger"; url = "https://www.hostinger.com/"; }
     { name = "Spaceship"; url = "https://www.spaceship.com/"; }
     { name = "Domaincompare"; url = "https://www.domaincompare.io/"; }
     { name = "GoDaddy"; url = "https://www.godaddy.com/"; }
@@ -126,6 +125,7 @@
 
     # Videos & Streaming
     { name = "YouTube"; url = "https://www.youtube.com/feed/subscriptions"; }
+    { name = "YouTube Music"; url = "https://music.youtube.com/"; }
     { name = "TVkaista"; url = "https://www.tvkaista.org/"; }
     { name = "Twitch"; url = "https://www.twitch.tv/"; }
     { name = "Kick"; url = "https://kick.com/"; }
@@ -137,7 +137,9 @@
     { name = "Zophar"; url = "https://www.zophar.net/"; }
 
     # Literature
-    { name = "Sci-Hub"; url = "https://sci-hub.se/"; }
+    { name = "Sci-Hub 1"; url = "https://sci-hub.ru/"; }
+    { name = "Sci-Hub 2"; url = "https://sci-hub.st/"; }
+    { name = "Sci-Hub 3"; url = "https://sci-hub.su/"; }
     { name = "Anna's Archive 1"; url = "https://annas-archive.gl/"; }
     { name = "Anna's Archive 2"; url = "https://annas-archive.pk/"; }
     { name = "Anna's Archive 3"; url = "https://annas-archive.gd/"; }
@@ -160,6 +162,7 @@
     { name = "Notion"; url = "https://www.notion.com/"; }
     { name = "Miro"; url = "https://miro.com"; }
     { name = "Linear"; url = "https://linear.app/"; }
+    { name = "HubSpot"; url = "https://www.hubspot.com/"; }
 
     # Privacy
     { name = "Mullvad"; url = "https://mullvad.net/"; }
