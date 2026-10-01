@@ -71,7 +71,7 @@ _:
 
     interfaces = {
       "br-lan" = {
-        allowedTCPPorts = [ 22 53 80 443 52080 ]; # SSH, DNS, HTTP, HTTPS, Nixie HTTP
+        allowedTCPPorts = [ 22 53 52080 ]; # SSH, DNS, Nixie HTTP
         allowedUDPPorts = [ 53 67 69 123 547 ]; # DNS, DHCP, TFTP, NTP, DHCPv6
       };
 

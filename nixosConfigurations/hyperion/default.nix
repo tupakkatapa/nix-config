@@ -27,7 +27,6 @@ in
   imports = [
     (import ./nixie.nix extendedArgs)
     (import ./persistence.nix extendedArgs)
-    (import ./dashboard extendedArgs)
     (import ./dns.nix extendedArgs)
     (import ./ntp.nix extendedArgs)
     ../.config/hw/cpu-intel.nix
