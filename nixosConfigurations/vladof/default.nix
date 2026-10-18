@@ -61,6 +61,8 @@ in
     wants = [ "network-online.target" ];
     after = [ "network-online.target" ];
   };
+  # Stop switches from starting autovt@tty1, which kills cage
+  systemd.targets.getty.wants = lib.mkForce [ ];
 
 
   # SFTP server: chrooted sftp user under ${dataDir}/sftp
