@@ -74,6 +74,7 @@ in
     (import ./radicale.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
     (import ./ntfy.nix { inherit lib domain dataDir containerConfig globalContainerConfig; })
     (import ./conduit.nix { inherit lib domain dataDir containerConfig globalContainerConfig; })
+    (import ./kaloriina.nix { inherit dataDir containerConfig inputs globalContainerConfig; })
     (import ./molesk { inherit config lib pkgs domain dataDir containerConfig inputs globalContainerConfig; })
   ];
   boot.enableContainers = true;

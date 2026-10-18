@@ -142,6 +142,7 @@ in
           ''"vault.coditon.com. IN A 10.42.0.8"''
           ''"grafana.coditon.com. IN A 10.42.0.8"''
           ''"home.coditon.com. IN A 10.42.0.8"''
+          ''"health.coditon.com. IN A 10.42.0.8"''
           ''"ntfy.coditon.com. IN A 10.42.0.8"''
           ''"matrix.coditon.com. IN A 10.42.0.8"''
           ''"element.coditon.com. IN A 10.42.0.8"''

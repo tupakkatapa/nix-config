@@ -34,6 +34,8 @@
     anytui.url = "github:tupakkatapa/anytui";
     herdr.inputs.nixpkgs.follows = "nixpkgs";
     herdr.url = "github:ogulcancelik/herdr";
+    kaloriina.inputs.nixpkgs.follows = "nixpkgs";
+    kaloriina.url = "github:tupakkatapa/kaloriina";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
     llm-agents.url = "github:numtide/llm-agents.nix";
     molesk.inputs.nixpkgs.follows = "nixpkgs";

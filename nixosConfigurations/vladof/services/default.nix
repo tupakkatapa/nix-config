@@ -85,6 +85,13 @@ let
         lastOctet = 20;
         uid = 10011;
       };
+      kaloriina = {
+        addr = "health.${domain}";
+        port = 46667;
+        private = true;
+        lastOctet = 21;
+        uid = 10012;
+      };
     };
 
   # Service configuration
