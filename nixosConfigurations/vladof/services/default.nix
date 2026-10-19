@@ -46,7 +46,7 @@ let
       plex = {
         addr = "plex.${domain}";
         port = 32400;
-        private = false;
+        private = true;
         lastOctet = 14;
         uid = 10005;
       };
@@ -149,6 +149,50 @@ let
       disable_guests = true;
     };
   };
+
+  # WAN listener ports, only public sites bind them
+  wanHttpPort = 8880;
+  wanHttpsPort = 8443;
+
+  # Public sites by hostname, bound on :443 and on the WAN listener port
+  publicSiteConfig =
+    lib.mapAttrs'
+      (_name: service: {
+        name = service.addr;
+        value = ''
+          reverse_proxy http://${service.localAddress}:${toString service.port}
+        '';
+      })
+      publicServices
+    // {
+      # Element web client
+      "element.${domain}" = ''
+        root * ${elementWeb}
+        file_server
+      '';
+      # Bare-domain Matrix .well-known delegation
+      "${domain}" = ''
+        handle /.well-known/matrix/server {
+          header Content-Type application/json
+          respond `${wellKnownServer}` 200
+        }
+        handle /.well-known/matrix/client {
+          header Content-Type application/json
+          header Access-Control-Allow-Origin *
+          respond `${wellKnownClient}` 200
+        }
+        handle {
+          redir https://index.${domain}{uri} permanent
+        }
+      '';
+    };
+
+  publicVirtualHosts = lib.concatMapAttrs
+    (host: extraConfig: {
+      "${host}" = { useACMEHost = host; inherit extraConfig; };
+      "${host}:${toString wanHttpsPort}" = { useACMEHost = host; inherit extraConfig; };
+    })
+    publicSiteConfig;
 in
 {
   imports = [
@@ -164,18 +208,8 @@ in
     enable = true;
     virtualHosts =
       # Public services with ACME certs
-      lib.mapAttrs'
-        (_name: service: {
-          name = service.addr;
-          value = {
-            useACMEHost = service.addr;
-            extraConfig = ''
-              reverse_proxy http://${service.localAddress}:${toString service.port}
-            '';
-          };
-        })
-        publicServices
-      # Private services with self-signed certs
+      publicVirtualHosts
+      # Private services with self-signed certs, :443 only
       // lib.mapAttrs'
         (_name: service: {
           name = service.addr;
@@ -217,30 +251,17 @@ in
             file_server
           '';
         };
-        # Element web client
-        "element.${domain}" = {
-          useACMEHost = "element.${domain}";
+        # WAN plain-HTTP listener, host-agnostic so private names stay hidden
+        "http://:${toString wanHttpPort}" = {
           extraConfig = ''
-            root * ${elementWeb}
-            file_server
+            redir https://{host}{uri} permanent
           '';
         };
-        # Bare-domain Matrix .well-known delegation
-        "${domain}" = {
-          useACMEHost = domain;
+        # WAN HTTPS catch-all, unknown hosts get nothing instead of an empty 200
+        "https://:${toString wanHttpsPort}" = {
           extraConfig = ''
-            handle /.well-known/matrix/server {
-              header Content-Type application/json
-              respond `${wellKnownServer}` 200
-            }
-            handle /.well-known/matrix/client {
-              header Content-Type application/json
-              header Access-Control-Allow-Origin *
-              respond `${wellKnownClient}` 200
-            }
-            handle {
-              redir https://index.${domain}{uri} permanent
-            }
+            tls ${serverCertPem} ${serverCertKey}
+            abort
           '';
         };
       };
@@ -286,17 +307,19 @@ in
       ++ [
         80
         443
+        wanHttpPort # WAN HTTP
+        wanHttpsPort # WAN HTTPS
         8080 # magic port
-        53654 # index
       ];
   };
 
   # Secrets
   age.secrets = {
+    # Owner, not group: caddy is in the acme group to read issued certs
     "acme-cf-dns-token" = {
       rekeyFile = ../secrets/acme-cf-dns-token.age;
-      group = "acme";
-      mode = "440";
+      owner = "acme";
+      mode = "400";
     };
     "server-key" = {
       rekeyFile = ../secrets/server-key.age;

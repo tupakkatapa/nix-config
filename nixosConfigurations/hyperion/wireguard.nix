@@ -117,11 +117,11 @@
       };
     };
     networks = {
+      # No IPMasquerade, it would SNAT peers into the LAN as 10.42.0.1 too
       "wg0" = {
         matchConfig.Name = "wg0";
         address = [ "172.16.16.1/24" "fd42:42:42:3::1/64" ];
         networkConfig = {
-          IPMasquerade = "both";
           IPv4Forwarding = true;
           IPv6Forwarding = true;
         };
@@ -130,7 +130,6 @@
         matchConfig.Name = "wg1";
         address = [ "172.16.17.1/24" "fd42:42:42:4::1/64" ];
         networkConfig = {
-          IPMasquerade = "both";
           IPv4Forwarding = true;
           IPv6Forwarding = true;
         };
@@ -139,7 +138,6 @@
         matchConfig.Name = "wg2";
         address = [ "172.16.18.1/24" "fd42:42:42:5::1/64" ];
         networkConfig = {
-          IPMasquerade = "both";
           IPv4Forwarding = true;
           IPv6Forwarding = true;
         };

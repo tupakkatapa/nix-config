@@ -11,7 +11,6 @@ in
 
   # Secrets
   age.secrets = {
-    "password".rekeyFile = ./secrets/password.age;
     "wg-dinar" = {
       rekeyFile = ./secrets/wg-dinar.age;
       owner = "systemd-network";
@@ -61,10 +60,6 @@ in
   nix.extraOptions = ''
     !include ${config.age.secrets.nix-access-tokens.path}
   '';
-
-  # Set password
-  # echo "password" | mkpasswd -s
-  users.users.${user}.hashedPasswordFile = config.age.secrets.password.path;
 
   # Create directories, these are persistent
   systemd.tmpfiles.rules = [

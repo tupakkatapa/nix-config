@@ -54,7 +54,13 @@ in
           "10.42.1.1" # WiFi
           "fd42:42:42:2::1" # WiFi
           "172.16.16.1" # WireGuard
+          "fd42:42:42:3::1" # WireGuard
+          "172.16.17.1" # WireGuard, garage tunnel
+          "fd42:42:42:4::1" # WireGuard, garage tunnel
         ];
+
+        # Allow binding tunnel addresses before they are up
+        ip-freebind = true;
 
         # Access control: default deny
         access-control = [
@@ -67,6 +73,9 @@ in
           "10.42.1.0/24 allow" # WiFi
           "fd42:42:42:2::/64 allow" # WiFi
           "172.16.16.0/24 allow" # WireGuard
+          "fd42:42:42:3::/64 allow" # WireGuard
+          "172.16.17.0/24 allow" # WireGuard, garage tunnel
+          "fd42:42:42:4::/64 allow" # WireGuard, garage tunnel
         ];
 
         port = 53;
@@ -103,10 +112,14 @@ in
         log-replies = false;
         log-local-actions = false;
         private-address = [
+          "0.0.0.0/8"
           "10.0.0.0/8"
+          "127.0.0.0/8"
           "172.16.0.0/12"
           "192.168.0.0/16"
           "169.254.0.0/16"
+          "::1"
+          "::ffff:0:0/96"
           "fd00::/8"
           "fe80::/10"
         ];
@@ -144,9 +157,9 @@ in
           ''"home.coditon.com. IN A 10.42.0.8"''
           ''"health.coditon.com. IN A 10.42.0.8"''
           ''"ntfy.coditon.com. IN A 10.42.0.8"''
+          ''"plex.coditon.com. IN A 10.42.0.8"''
           ''"matrix.coditon.com. IN A 10.42.0.8"''
           ''"element.coditon.com. IN A 10.42.0.8"''
-          ''"seed.coditon.com. IN A 10.42.0.8"''
           ''"kaakkuri.coditon.com. IN A 10.42.0.25"''
           ''"hyperion.coditon.com. IN A 10.42.0.1"''
           ''"router.coditon.com. IN A 10.42.0.1"''

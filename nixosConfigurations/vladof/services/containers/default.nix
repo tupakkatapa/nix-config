@@ -57,7 +57,6 @@ in
         home = "${dataDir}/home/${name}";
         uid = lib.mkForce service.uid;
         group = name;
-        extraGroups = [ "sftp" ];
       })
       containerConfig;
     groups = lib.mapAttrs (_name: service: { gid = lib.mkForce service.uid; }) containerConfig;
@@ -84,9 +83,15 @@ in
     "vaultwarden-env".rekeyFile = ../../secrets/vaultwarden-env.age;
     "kavita-token".rekeyFile = ../../secrets/kavita-token.age;
     "searx-env".rekeyFile = ../../secrets/searx-env.age;
+    "transmission-creds" = {
+      rekeyFile = ../../secrets/transmission-creds.age;
+      owner = toString containerConfig.transmission.uid;
+      mode = "400";
+    };
     "radicale-admin-pass" = {
       rekeyFile = ../../secrets/radicale-admin-pass.age;
-      mode = "0444";
+      owner = toString containerConfig.radicale.uid;
+      mode = "0400";
     };
   };
 
@@ -98,30 +103,49 @@ in
       externalInterface = "enp0s31f6";
     };
     firewall = {
+      # Own chains so rules can be flushed on reload instead of accumulating
       extraCommands =
-        # Route traffic to containers (privateNetwork isolates them from the host)
-        lib.concatStringsSep "\n"
+        ''
+          iptables -t nat -N vladof-ctr-dnat 2>/dev/null || iptables -t nat -F vladof-ctr-dnat
+          iptables -N vladof-ctr-fwd 2>/dev/null || iptables -F vladof-ctr-fwd
+          iptables -t nat -A PREROUTING -j vladof-ctr-dnat
+          iptables -A FORWARD -j vladof-ctr-fwd
+
+          # Block containers from initiating new connections (except DNS)
+          iptables -A vladof-ctr-fwd -i ve-+ -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+          iptables -A vladof-ctr-fwd -i ve-+ -d 10.42.0.1 -p udp --dport 53 -j ACCEPT
+          iptables -A vladof-ctr-fwd -i ve-+ -d 10.42.0.1 -p tcp --dport 53 -j ACCEPT
+          iptables -A vladof-ctr-fwd -i ve-+ -o ve-+ -j DROP
+          iptables -A vladof-ctr-fwd -i ve-+ -d 10.23.0.0/24 -j DROP
+          iptables -A vladof-ctr-fwd -i ve-+ -d 10.42.0.0/24 -j DROP
+          iptables -A vladof-ctr-fwd -i ve-+ -d 10.42.1.0/24 -j DROP
+          iptables -A vladof-ctr-fwd -i ve-+ -d 172.16.16.0/24 -j DROP
+          iptables -A vladof-ctr-fwd -i ve-+ -d 172.16.17.0/24 -j DROP
+          iptables -A vladof-ctr-fwd -i ve-+ -d 172.16.18.0/24 -j DROP
+
+          # Host services take INPUT, so they miss the FORWARD rules above
+          iptables -I nixos-fw 1 -i ve-+ -m conntrack --ctstate NEW -j nixos-fw-refuse
+        ''
+        # Raw ports for public services and plex, the rest go through Caddy
+        + lib.concatStringsSep "\n"
           (
             lib.mapAttrsToList
               (name: service: ''
                 # ${name}
-                iptables -t nat -A PREROUTING -p tcp -d 10.42.0.8 --dport ${toString service.port} -j DNAT --to-destination ${service.localAddress}:${toString service.port}
-                iptables -t nat -A PREROUTING -p tcp -d 172.16.16.1 --dport ${toString service.port} -j DNAT --to-destination ${service.localAddress}:${toString service.port}
-                iptables -A FORWARD -p tcp -d ${service.localAddress} --dport ${toString service.port} -j ACCEPT
+                iptables -t nat -A vladof-ctr-dnat ! -i ve-+ -p tcp -d 10.42.0.8 --dport ${toString service.port} -j DNAT --to-destination ${service.localAddress}:${toString service.port}
+                iptables -A vladof-ctr-fwd ! -i ve-+ -p tcp -d ${service.localAddress} --dport ${toString service.port} -j ACCEPT
               '')
-              containerConfig
-          )
-        # Block containers from initiating new connections to private subnets (except DNS)
-        + ''
-          iptables -A FORWARD -i ve-+ -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-          iptables -A FORWARD -i ve-+ -d 10.42.0.1 -p udp --dport 53 -j ACCEPT
-          iptables -A FORWARD -i ve-+ -d 10.42.0.1 -p tcp --dport 53 -j ACCEPT
-          iptables -A FORWARD -i ve-+ -d 10.42.0.0/24 -j DROP
-          iptables -A FORWARD -i ve-+ -d 10.42.1.0/24 -j DROP
-          iptables -A FORWARD -i ve-+ -d 172.16.16.0/24 -j DROP
-          iptables -A FORWARD -i ve-+ -d 172.16.17.0/24 -j DROP
-          iptables -A FORWARD -i ve-+ -d 172.16.18.0/24 -j DROP
-        '';
+              (lib.filterAttrs (name: service: !service.private || name == "plex") containerConfig)
+          );
+
+      extraStopCommands = ''
+        iptables -t nat -D PREROUTING -j vladof-ctr-dnat 2>/dev/null || true
+        iptables -D FORWARD -j vladof-ctr-fwd 2>/dev/null || true
+        iptables -t nat -F vladof-ctr-dnat 2>/dev/null || true
+        iptables -F vladof-ctr-fwd 2>/dev/null || true
+        iptables -t nat -X vladof-ctr-dnat 2>/dev/null || true
+        iptables -X vladof-ctr-fwd 2>/dev/null || true
+      '';
     };
   };
 }

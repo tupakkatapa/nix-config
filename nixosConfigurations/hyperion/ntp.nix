@@ -28,14 +28,15 @@ in
       allow 10.42.0.0/24
       allow 10.42.1.0/24
       allow 172.16.16.0/24
+      allow 172.16.17.0/24
+      allow fd42:42:42:1::/64
+      allow fd42:42:42:2::/64
+      allow fd42:42:42:3::/64
 
       # Serve time even if not synced (for initial PXE boot)
       local stratum 10
 
-      # Only listen on internal interfaces (not WAN)
-      bindaddress 10.42.0.1
-      bindaddress 10.42.1.1
-      bindaddress 127.0.0.1
+      # No bindaddress: chrony keeps only the last one per family
 
       noclientlog
       makestep 1.0 3

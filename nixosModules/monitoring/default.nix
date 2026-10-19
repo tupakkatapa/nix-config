@@ -258,10 +258,8 @@ in
             root_url = "https://${cfg.server.grafana.domain}";
           };
           analytics.reporting_enabled = false;
-          "auth.anonymous" = {
-            enabled = true;
-            org_role = "Viewer";
-          };
+          # Grafana proxies the Loki datasource, so this would expose all logs
+          "auth.anonymous".enabled = false;
           security = {
             cookie_secure = true;
             cookie_samesite = "strict";

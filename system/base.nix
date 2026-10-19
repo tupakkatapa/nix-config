@@ -58,6 +58,17 @@
   # Journald + kernel audit subsystem + auditd daemon
   security.audit.enable = true;
   security.auditd.enable = true;
+
+  # Audit rules, the subsystem records little without them. Watches only,
+  # execve syscall rules would flood the 1G budget.
+  security.audit.rules = [
+    "-w /etc/shadow -p wa -k identity"
+    "-w /etc/passwd -p wa -k identity"
+    "-w /etc/group -p wa -k identity"
+    "-w /etc/sudoers -p wa -k privilege"
+    "-w /etc/sudoers.d -p wa -k privilege"
+    "-a always,exit -F arch=b64 -S init_module,finit_module,delete_module -k modules"
+  ];
   security.auditd.settings = {
     max_log_file = 100; # MB per file
     num_logs = 10; # rotate-and-keep 10 files (~1G total)

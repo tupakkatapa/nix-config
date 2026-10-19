@@ -11,13 +11,6 @@
     dataDir = "${dataDir}/home/root/appdata/nixie";
     logDir = "${dataDir}/home/root/appdata/nixie/logs";
 
-    fileServer = {
-      https = {
-        enable = false;
-        address = "ipxe.coditon.com";
-      };
-    };
-
     menus = [
       {
         name = "kaakkuri-ephemeral-alpha";
@@ -128,6 +121,7 @@
           ];
         }
         {
+          # Guest network. `serve` gates DHCP and RA too, not just PXE
           name = "wifi";
           serve = true;
           interfaces = [ "wlp0s20f3" ];
@@ -142,6 +136,7 @@
             poolStart = "fd42:42:42:2::1000";
             poolEnd = "fd42:42:42:2::ffff";
           };
+          # Required for a served subnet, 69 and 52080 are closed on br-wifi
           defaultMenu = "bandit";
         }
       ];

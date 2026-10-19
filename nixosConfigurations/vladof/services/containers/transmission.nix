@@ -1,4 +1,6 @@
 { lib
+, config
+, domain
 , dataDir
 , containerConfig
 , globalContainerConfig
@@ -31,6 +33,10 @@ in
         hostPath = "${dataDir}/sftp/media/series";
         isReadOnly = true;
       };
+      "/etc/transmission-creds.json" = {
+        hostPath = config.age.secrets.transmission-creds.path;
+        isReadOnly = true;
+      };
     };
 
     config = { pkgs, ... }: {
@@ -43,14 +49,19 @@ in
         home = "/var/lib/transmission";
         user = "transmission";
         group = "transmission";
+        # rpc-username and rpc-password
+        credentialsFile = "/etc/transmission-creds.json";
         settings = {
           download-dir = "/downloads";
           incomplete-dir = "/downloads/.incomplete";
           download-queue-enabled = false;
-          rpc-authentication-required = false;
-          rpc-bind-address = "0.0.0.0";
+          # The RPC sets script-torrent-done-filename, an open one is RCE
+          rpc-authentication-required = true;
+          rpc-bind-address = containerConfig.transmission.localAddress;
           rpc-port = containerConfig.transmission.port;
-          rpc-host-whitelist-enabled = false;
+          rpc-host-whitelist-enabled = true;
+          rpc-host-whitelist = "torrent.${domain}";
+          # No IP whitelist, caddy reaches us from a link-local address
           rpc-whitelist-enabled = false;
           # Force verification of existing torrents
           start-added-torrents = true;

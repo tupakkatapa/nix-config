@@ -17,6 +17,12 @@
     IPv6PrivacyExtensions = "yes";
   };
   systemd.network.networks."br-lan".networkConfig.IPv6LinkLocalAddressGenerationMode = "random";
+
+  # Killswitch backstop, metric loses to the kernel default (0 on v4, 1024 on v6)
+  systemd.network.networks."br-lan".routes = [
+    { Destination = "0.0.0.0/0"; Type = "blackhole"; Table = 51820; Metric = 2000; }
+    { Destination = "::/0"; Type = "blackhole"; Table = 51820; Metric = 2000; }
+  ];
   systemd.network.networks."br-wifi".networkConfig.IPv6LinkLocalAddressGenerationMode = "random";
 
   # WiFi Access Point

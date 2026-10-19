@@ -204,7 +204,8 @@ in
 {
   services.home-assistant = {
     enable = true;
-    openFirewall = true;
+    # Caddy proxies this from 127.0.0.1
+    openFirewall = false;
     configWritable = false;
     configDir = "${dataDir}/home/home-assistant/appdata/hass";
 
@@ -248,13 +249,8 @@ in
       http = {
         server_port = port;
         use_x_forwarded_for = true;
-        trusted_proxies = [
-          "127.0.0.1"
-          "10.42.0.0/24"
-          "10.42.1.0/24"
-          "172.16.16.0/24"
-          "169.254.0.0/16"
-        ];
+        # Caddy only, a subnet here would let clients spoof X-Forwarded-For
+        trusted_proxies = [ "127.0.0.1" ];
       };
 
       # extraComponents alone does not load these

@@ -26,17 +26,11 @@ _:
           # Mark inbound WAN connections so responses bypass Mullvad
           iifname "enp1s0" ct state new ct mark set 0x1
 
-          # Port forwarding to Vladof
-          iifname "enp1s0" tcp dport 80 dnat ip to 10.42.0.8:80
-          iifname "enp1s0" tcp dport 80 dnat ip6 to [fd42:42:42:1::8]:80
-          iifname "enp1s0" tcp dport 443 dnat ip to 10.42.0.8:443
-          iifname "enp1s0" tcp dport 443 dnat ip6 to [fd42:42:42:1::8]:443
-          iifname "enp1s0" tcp dport 32400 dnat ip to 10.42.0.8:32400   # Plex
-          iifname "enp1s0" tcp dport 32400 dnat ip6 to [fd42:42:42:1::8]:32400
-          iifname "enp1s0" tcp dport 54783 dnat ip to 10.42.0.8:54783   # Blog
-          iifname "enp1s0" tcp dport 54783 dnat ip6 to [fd42:42:42:1::8]:54783
-          iifname "enp1s0" tcp dport 8776 dnat ip to 10.42.0.8:8776     # Radicle seed
-          iifname "enp1s0" tcp dport 8776 dnat ip6 to [fd42:42:42:1::8]:8776
+          # Port forwarding to Vladof, web lands on its WAN-only listener ports
+          iifname "enp1s0" tcp dport 80 dnat ip to 10.42.0.8:8880
+          iifname "enp1s0" tcp dport 80 dnat ip6 to [fd42:42:42:1::8]:8880
+          iifname "enp1s0" tcp dport 443 dnat ip to 10.42.0.8:8443
+          iifname "enp1s0" tcp dport 443 dnat ip6 to [fd42:42:42:1::8]:8443
 
           # Port forwarding to Kaakkuri
           iifname "enp1s0" tcp dport 9001 dnat ip to 10.42.0.25:9001
@@ -128,11 +122,8 @@ _:
       # Allow established/related (stateful)
       ct state established,related accept
 
-      # Rate limit forwarded services to vladof (WAN → LAN)
-      iifname "enp1s0" tcp dport { 80, 443 } ct state new limit rate over 30/second drop
-      iifname "enp1s0" tcp dport 32400 ct state new limit rate over 30/second drop
-      iifname "enp1s0" tcp dport 54783 ct state new limit rate over 10/second drop
-      iifname "enp1s0" tcp dport 8776 ct state new limit rate over 30/second drop  # Radicle seed
+      # Rate limit forwarded services to vladof (WAN → LAN), ports are post-DNAT
+      iifname "enp1s0" tcp dport { 8880, 8443 } ct state new limit rate over 30/second drop
 
       # vladof DNS egress allowed (ACME DNS-01)
       iifname "br-lan" ip saddr 10.42.0.8 oifname { "enp1s0", "mullvad" } udp dport 53 accept
@@ -172,12 +163,12 @@ _:
       ct state new limit rate over 100/second drop
 
       # Allow port-forwarded services from WAN to LAN (IPv4)
-      iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.8 tcp dport { 80, 443, 32400, 54783 } accept
+      iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.8 tcp dport { 8880, 8443 } accept
       iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.25 tcp dport { 9001, 30303 } accept
       iifname "enp1s0" oifname "br-lan" ip daddr 10.42.0.25 udp dport { 30303, 51821 } accept
 
       # Allow port-forwarded services from WAN to LAN (IPv6)
-      iifname "enp1s0" oifname "br-lan" ip6 daddr fd42:42:42:1::8 tcp dport { 80, 443, 32400, 54783 } accept
+      iifname "enp1s0" oifname "br-lan" ip6 daddr fd42:42:42:1::8 tcp dport { 8880, 8443 } accept
       iifname "enp1s0" oifname "br-lan" ip6 daddr fd42:42:42:1::25 tcp dport { 9001, 30303 } accept
       iifname "enp1s0" oifname "br-lan" ip6 daddr fd42:42:42:1::25 udp dport { 30303, 51821 } accept
 

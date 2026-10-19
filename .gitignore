@@ -14,3 +14,7 @@ refind
 result
 target
 tmp
+
+# Private keys
+*-key.pem
+ca-key.pem

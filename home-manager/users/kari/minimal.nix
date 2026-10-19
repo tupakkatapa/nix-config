@@ -1,5 +1,4 @@
 { pkgs
-, lib
 , config
 , inputs
 , ...
@@ -16,10 +15,14 @@ in
     ../../../nixosConfigurations/vladof/services/certs/ca-cert.pem
   ];
 
+  # Set password
+  # echo "password" | mkpasswd -s
+  age.secrets."password".rekeyFile = ./secrets/password.age;
+
   users.users.${user} = {
     isNormalUser = true;
     group = "${user}";
-    password = lib.mkIf (config.users.users.${user}.hashedPasswordFile == null) "irak";
+    hashedPasswordFile = config.age.secrets.password.path;
     extraGroups = optionalGroups [
       "acme"
       "adbusers"
