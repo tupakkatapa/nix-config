@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, config, ... }:
 let
   user = "core";
   optionalGroups = groups:
@@ -72,15 +72,6 @@ in
 
   # Autologin
   services.getty.autologinUser = "core";
-
-  # Passwordless sudo
-  security.sudo.extraRules = lib.mkDefault [{
-    users = [ "core" ];
-    commands = [{
-      command = "ALL";
-      options = [ "NOPASSWD" ];
-    }];
-  }];
 
   # Install some packages
   environment.systemPackages = with pkgs; [

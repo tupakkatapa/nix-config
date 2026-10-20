@@ -174,12 +174,38 @@ in
         };
       };
 
-      # Vector runs DynamicUser=true; module sets SupplementaryGroups to a single string.
-      # Override with list when audit access is needed so both groups apply.
+      # base.nix forces DynamicUser=false, without a static user this is root
+      users.users.vector = {
+        isSystemUser = true;
+        group = "vector";
+      };
+      users.groups.vector = { };
+
       security.auditd.settings.log_group = lib.mkIf config.security.auditd.enable "audit";
       users.groups.audit = lib.mkIf config.security.auditd.enable { };
-      systemd.services.vector.serviceConfig.SupplementaryGroups =
-        lib.mkIf config.security.auditd.enable [ "systemd-journal" "audit" ];
+      systemd.services.vector.serviceConfig = {
+        User = "vector";
+        Group = "vector";
+        # Upstream sets a single string, mkForce so both apply
+        SupplementaryGroups = lib.mkForce
+          ([ "systemd-journal" ] ++ lib.optional config.security.auditd.enable "audit");
+        CapabilityBoundingSet = [ "" ];
+        AmbientCapabilities = lib.mkForce [ "" ];
+        NoNewPrivileges = true;
+        ProtectSystem = "strict";
+        ProtectHome = true;
+        PrivateTmp = true;
+        PrivateDevices = true;
+        ProtectKernelTunables = true;
+        ProtectKernelModules = true;
+        ProtectControlGroups = true;
+        RestrictAddressFamilies = [ "AF_INET" "AF_INET6" "AF_UNIX" ];
+        RestrictSUIDSGID = true;
+        LockPersonality = true;
+        MemoryDenyWriteExecute = true;
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [ "@system-service" "~@privileged" ];
+      };
     }
 
     # Server bundle: Prometheus + Grafana + Loki
@@ -240,10 +266,22 @@ in
         };
       };
 
-      # Internal-only ingress on WireGuard subnet
-      networking.firewall.extraInputRules = ''
-        ip saddr 10.42.0.0/24 tcp dport 3100 accept
-      '';
+      # Internal-only ingress on LAN, extraInputRules is nftables-only
+      networking.firewall = lib.mkMerge [
+        (lib.mkIf config.networking.nftables.enable {
+          extraInputRules = ''
+            ip saddr 10.42.0.0/24 tcp dport 3100 accept
+          '';
+        })
+        (lib.mkIf (!config.networking.nftables.enable) {
+          extraCommands = ''
+            iptables -I nixos-fw -p tcp --dport 3100 -s 10.42.0.0/24 -j nixos-fw-accept
+          '';
+          extraStopCommands = ''
+            iptables -D nixos-fw -p tcp --dport 3100 -s 10.42.0.0/24 -j nixos-fw-accept 2>/dev/null || true
+          '';
+        })
+      ];
 
       # Reassert ownership on persisted @loki each boot (unpinned uid drifts)
       systemd.tmpfiles.rules = [ "Z /var/lib/loki - loki loki - -" ];

@@ -49,7 +49,7 @@
     hostName = "maliwan";
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 8080 ]; # magic port
+      allowedTCPPorts = [ ];
     };
     useDHCP = false;
     wireless.iwd = {

@@ -94,15 +94,15 @@ in
     mcpServers = {
       nixos = {
         command = "nix";
-        args = [ "run" "github:utensils/mcp-nixos" "--" ];
+        args = [ "run" "github:utensils/mcp-nixos/6a517811658c21f97bd7703b35546085117fc310" "--" ];
       };
       context7 = {
         command = "npx";
-        args = [ "-y" "@upstash/context7-mcp" ];
+        args = [ "-y" "@upstash/context7-mcp@4.4.4" ];
       };
       searxng = {
         command = "npx";
-        args = [ "-y" "mcp-searxng" ];
+        args = [ "-y" "mcp-searxng@2.7.0" ];
         env = {
           SEARXNG_URL = "https://search.coditon.com";
           NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-bundle.crt";
@@ -110,11 +110,11 @@ in
       };
       playwright = {
         command = "npx";
-        args = [ "-y" "@playwright/mcp@latest" ];
+        args = [ "-y" "@playwright/mcp@0.0.83" ];
       };
       houtini-lm = {
         command = "npx";
-        args = [ "-y" "@houtini/lm" ];
+        args = [ "-y" "@houtini/lm@3.3.4" ];
         env = {
           HOUTINI_LM_ENDPOINT_URL = "http://localhost:11434";
           HOUTINI_LM_MODEL = "qwen3.5:9b";

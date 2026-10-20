@@ -95,6 +95,19 @@ in
     };
   };
 
+  # Bind mounts pin the inode at start, agenix drops the old generation on switch
+  systemd.services = lib.mapAttrs'
+    (name: secretFile: lib.nameValuePair "container@${name}" {
+      restartTriggers = [ secretFile ];
+    })
+    {
+      kavita = config.age.secrets.kavita-token.file;
+      radicale = config.age.secrets.radicale-admin-pass.file;
+      searx = config.age.secrets.searx-env.file;
+      transmission = config.age.secrets.transmission-creds.file;
+      vaultwarden = config.age.secrets.vaultwarden-env.file;
+    };
+
   # Host networking for all containers
   networking = {
     nat = {
@@ -126,6 +139,13 @@ in
           # Host services take INPUT, so they miss the FORWARD rules above
           iptables -I nixos-fw 1 -i ve-+ -m conntrack --ctstate NEW -j nixos-fw-refuse
         ''
+        # veths get fe80:: on both ends, containers are v4-only
+        + lib.optionalString config.networking.enableIPv6 ''
+          ip6tables -N vladof-ctr-fwd6 2>/dev/null || ip6tables -F vladof-ctr-fwd6
+          ip6tables -A FORWARD -j vladof-ctr-fwd6
+          ip6tables -A vladof-ctr-fwd6 -i ve-+ -j DROP
+          ip6tables -I nixos-fw 1 -i ve-+ -j nixos-fw-refuse
+        ''
         # Raw ports for public services and plex, the rest go through Caddy
         + lib.concatStringsSep "\n"
           (
@@ -145,6 +165,11 @@ in
         iptables -F vladof-ctr-fwd 2>/dev/null || true
         iptables -t nat -X vladof-ctr-dnat 2>/dev/null || true
         iptables -X vladof-ctr-fwd 2>/dev/null || true
+      ''
+      + lib.optionalString config.networking.enableIPv6 ''
+        ip6tables -D FORWARD -j vladof-ctr-fwd6 2>/dev/null || true
+        ip6tables -F vladof-ctr-fwd6 2>/dev/null || true
+        ip6tables -X vladof-ctr-fwd6 2>/dev/null || true
       '';
     };
   };

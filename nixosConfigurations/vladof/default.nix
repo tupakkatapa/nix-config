@@ -33,9 +33,6 @@ in
   # Disk-aware garbage collection
   sys2x.gc.useDiskAware = true;
 
-  # Autologin
-  services.getty.autologinUser = user;
-
   # Cage-kiosk (firefox)
   services.cage = {
     enable = true;

@@ -82,7 +82,8 @@
     hostName = "torgue";
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 8080 6742 ];
+      # Wired only, wlp7s0 roams onto untrusted networks
+      interfaces."enp3s0".allowedTCPPorts = [ 6742 9100 ];
     };
     useDHCP = false;
     wireless.iwd = {
@@ -129,7 +130,7 @@
   # Monitoring + central log shipping
   services.monitoring = {
     enable = true;
-    openFirewall = true;
+    openFirewall = false;
   };
 
   services.hardware.openrgb = {

@@ -26,6 +26,8 @@ in
 
       services.ntfy-sh = {
         enable = true;
+        user = "ntfy";
+        group = "ntfy";
         settings = {
           base-url = "https://${containerConfig.ntfy.addr}";
           listen-http = "0.0.0.0:${builtins.toString containerConfig.ntfy.port}";

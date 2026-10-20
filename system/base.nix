@@ -65,8 +65,7 @@
     "-w /etc/shadow -p wa -k identity"
     "-w /etc/passwd -p wa -k identity"
     "-w /etc/group -p wa -k identity"
-    "-w /etc/sudoers -p wa -k privilege"
-    "-w /etc/sudoers.d -p wa -k privilege"
+    "-w /run/wrappers/bin/sudo -p x -k privilege"
     "-a always,exit -F arch=b64 -S init_module,finit_module,delete_module -k modules"
   ];
   security.auditd.settings = {

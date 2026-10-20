@@ -309,7 +309,6 @@ in
         443
         wanHttpPort # WAN HTTP
         wanHttpsPort # WAN HTTPS
-        8080 # magic port
       ];
   };
 

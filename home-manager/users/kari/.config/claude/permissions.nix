@@ -107,8 +107,6 @@
     "Bash(make:*)"
     "Bash(just:*)"
     "Bash(node:*)"
-    "Bash(npm:*)"
-    "Bash(npx:*)"
     "Bash(cargo:*)"
     "Bash(python:*)"
     "Bash(uv:*)"

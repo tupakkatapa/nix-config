@@ -24,14 +24,10 @@ in
     group = "${user}";
     hashedPasswordFile = config.age.secrets.password.path;
     extraGroups = optionalGroups [
-      "acme"
       "adbusers"
       "audio"
-      "caddy"
       "cups"
-      "disk"
       "i2c"
-      "input"
       "jackaudio"
       "libvirtd"
       "podman"

@@ -26,22 +26,27 @@
       pure-eval = false;
       # Don't warn about dirty Git trees
       warn-dirty = false;
-      # Allows this server to be used as a remote builder
+      # @wheel is needed to receive unsigned closures from nixos-rebuild
+      # --target-host, which copies as the SSH user rather than through sudo
       trusted-users = [ "root" "@wheel" ];
 
+      # hyperion builds the netboot images, so it must not trust a cache
+      # vladof can sign for
       extra-substituters = [
-        "http://10.42.0.8:5000" # vladof harmonia (LAN binary cache)
         "https://cache.nixos.org"
         "https://devenv.cachix.org"
         "https://nix-community.cachix.org"
         "https://nixpkgs-wayland.cachix.org"
+      ] ++ lib.optionals (config.networking.hostName != "hyperion") [
+        "http://10.42.0.8:5000" # vladof harmonia (LAN binary cache)
       ];
       extra-trusted-public-keys = [
-        "vladof.coditon.com-1:VNlHYPLDol9HKt8Q8HQLAEkhwB7B1KvbWbYHNkyfuMI="
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
+      ] ++ lib.optionals (config.networking.hostName != "hyperion") [
+        "vladof.coditon.com-1:VNlHYPLDol9HKt8Q8HQLAEkhwB7B1KvbWbYHNkyfuMI="
       ];
     };
 
