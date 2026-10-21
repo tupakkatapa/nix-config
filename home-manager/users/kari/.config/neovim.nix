@@ -22,9 +22,9 @@
     };
 
     extraConfigLua = ''
-      -- Over SSH there is no WAYLAND_DISPLAY, so wl-copy cannot reach a
-      -- clipboard. OSC 52 carries the yank up the terminal stream instead.
-      if vim.env.SSH_TTY then
+      -- No WAYLAND_DISPLAY over SSH, so OSC 52 carries the yank up the
+      -- terminal stream instead. tmux forwards SSH_CONNECTION, not SSH_TTY.
+      if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
         local osc52 = require("vim.ui.clipboard.osc52")
         vim.g.clipboard = {
           name = "OSC 52",
@@ -32,9 +32,10 @@
             ["+"] = osc52.copy("+"),
             ["*"] = osc52.copy("*"),
           },
+          -- Terminals answer OSC 52 writes but not reads
           paste = {
-            ["+"] = osc52.paste("+"),
-            ["*"] = osc52.paste("*"),
+            ["+"] = function() return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") } end,
+            ["*"] = function() return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") } end,
           },
         }
       end

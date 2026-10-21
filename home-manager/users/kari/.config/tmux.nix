@@ -19,6 +19,9 @@ in
       # Outer terminfo is xterm-256color, which does not advertise RGB
       set -ga terminal-overrides ",*:RGB"
 
+      # "external" default drops OSC 52 from applications
+      set -g set-clipboard on
+
       set -g mouse on
       bind-key v split-window -h -c "#{pane_current_path}"
       bind-key g split-window -v -c "#{pane_current_path}"
