@@ -139,7 +139,6 @@ in
 
       # Startup
       exec-once = [
-        "dunst"
         # Opens as a plain Firefox window and renames after load, so no window rule catches it
         "${pkgs.wm-helpers}/bin/float-on-title '^Extension: \\(Bitwarden Password Manager\\).*' 420 640"
         "wl-clipboard-history -t"
