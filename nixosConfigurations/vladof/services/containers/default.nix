@@ -5,6 +5,7 @@
 , dataDir
 , containerConfig
 , inputs
+, unstable
 , ...
 }:
 let
@@ -67,7 +68,7 @@ in
     (import ./kavita.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
     (import ./vaultwarden.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
     (import ./transmission.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
-    (import ./searx.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
+    (import ./searx.nix { inherit config lib domain dataDir containerConfig globalContainerConfig unstable; })
     (import ./ollama.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
     (import ./plex.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
     (import ./radicale.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })

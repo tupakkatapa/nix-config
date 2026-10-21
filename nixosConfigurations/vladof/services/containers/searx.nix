@@ -1,6 +1,7 @@
 { config
 , containerConfig
 , globalContainerConfig
+, unstable
 , ...
 }:
 {
@@ -25,12 +26,12 @@
       };
     };
 
-    config = { pkgs, ... }: {
+    config = { ... }: {
       imports = [ (globalContainerConfig "searx") ];
 
       services.searx = {
         enable = true;
-        package = pkgs.searxng;
+        package = unstable.searxng;
         settings = {
           server = {
             inherit (containerConfig.searx) port;
