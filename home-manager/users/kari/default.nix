@@ -12,10 +12,6 @@ in
   imports = [ ./minimal-gui.nix ];
 
   age.secrets = {
-    "wg-dinar" = {
-      rekeyFile = ./secrets/wg-dinar.age;
-      owner = "systemd-network";
-    };
     "wg-home" = {
       rekeyFile = ./secrets/wg-home.age;
       owner = "systemd-network";
@@ -252,19 +248,6 @@ in
           PersistentKeepalive = 25;
         }];
       };
-      "99-dinar" = {
-        netdevConfig = {
-          Kind = "wireguard";
-          Name = "dinar";
-        };
-        wireguardConfig.PrivateKeyFile = config.age.secrets.wg-dinar.path;
-        wireguardPeers = [{
-          PublicKey = "s7XsWWxjl8zi6DTx4KkhjmI1jVseV9KVlc+cInFNyzE=";
-          AllowedIPs = [ "192.168.100.0/24" ];
-          Endpoint = [ "coin.dinar.fi:51820" ];
-          PersistentKeepalive = 25;
-        }];
-      };
     };
     networks = {
       "99-home" = {
@@ -322,16 +305,6 @@ in
         ];
         dns = [ "10.42.0.1" ];
         domains = [ "~coditon.com" ];
-      };
-      "99-dinar" = {
-        matchConfig.Name = "dinar";
-        address = [ "192.168.100.121/32" ];
-        linkConfig.ActivationPolicy = "manual";
-        routes = [{
-          Gateway = "192.168.100.1";
-          GatewayOnLink = true;
-          Destination = "192.168.100.0/24";
-        }];
       };
     };
   };
