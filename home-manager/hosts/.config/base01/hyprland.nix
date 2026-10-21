@@ -140,6 +140,8 @@ in
       # Startup
       exec-once = [
         "dunst"
+        # Opens as a plain Firefox window and renames after load, so no window rule catches it
+        "${pkgs.wm-helpers}/bin/float-on-title '^Extension: \\(Bitwarden Password Manager\\).*' 420 640"
         "wl-clipboard-history -t"
         "wlsunset -S 12:00 -s 12:00 -t 3000 -T 6500 -d 43200"
         "waybar"
@@ -233,13 +235,13 @@ in
         "match:class org.pwmt.zathura, float on"
         "match:class org.pwmt.zathura, size 800 1150"
 
-        "match:title Runelite, center on"
-        "match:title RuneLite, float on"
-        "match:title RuneLite, size 800 500"
+        "match:title ^(RuneLite).*, center on"
+        "match:title ^(RuneLite).*, float on"
+        "match:title ^(RuneLite).*, size 800 500"
 
-        "match:title QEMU, center on"
-        "match:title QEMU, float on"
-        "match:title QEMU, size 1400 800"
+        "match:title ^(QEMU).*, center on"
+        "match:title ^(QEMU).*, float on"
+        "match:title ^(QEMU).*, size 1400 800"
 
         "match:title ^(Picture-in-Picture)$, center on"
         "match:title ^(Picture-in-Picture)$, float on"

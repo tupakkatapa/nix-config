@@ -10,6 +10,8 @@ pkgs.stdenv.mkDerivation rec {
     hyprland # lock-countdown (hyprctl cursorpos)
     libnotify # all
     procps # lock-countdown (pgrep)
+    jq # float-on-title (monitor geometry)
+    socat # float-on-title (socket2)
     systemd # lock-countdown (loginctl)
   ];
   nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -31,10 +33,15 @@ pkgs.stdenv.mkDerivation rec {
     chmod +x $out/bin/bat-warn
     wrapProgram $out/bin/bat-warn \
       --prefix PATH : ${lib.makeBinPath buildInputs}
+
+    cp $src/scripts/float-on-title.sh $out/bin/float-on-title
+    chmod +x $out/bin/float-on-title
+    wrapProgram $out/bin/float-on-title \
+      --prefix PATH : ${lib.makeBinPath buildInputs}
   '';
 
   meta = with lib; {
-    description = "Window-manager helpers: lock-countdown, mem-warn, bat-warn, and other overlay notifiers";
+    description = "Window-manager helpers: lock-countdown, mem-warn, bat-warn, float-on-title";
     license = licenses.gpl3Plus;
   };
 }
