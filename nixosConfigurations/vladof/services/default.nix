@@ -4,6 +4,7 @@
 , domain
 , dataDir
 , inputs
+, unstable
 , ...
 }:
 let
@@ -196,7 +197,7 @@ let
 in
 {
   imports = [
-    (import ./containers { inherit pkgs lib config domain dataDir containerConfig containerSubnet inputs; })
+    (import ./containers { inherit pkgs lib config domain dataDir containerConfig containerSubnet inputs unstable; })
     (import ./home-assistant { inherit pkgs dataDir config; haConfig = serviceConfig.home-assistant; })
     (import ./garage.nix { inherit pkgs config; })
     (import ./grafana.nix { inherit domain dataDir config; })

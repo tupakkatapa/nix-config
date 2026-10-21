@@ -23,19 +23,19 @@ in
       "/home/kari/.local/share/atuin" = "@kari-atuin";
       "/home/kari/.local/share/zoxide" = "@kari-zoxide";
       "/home/kari/.config/gh" = "@kari-gh";
-      "/home/kari/.claude/projects" = "@kari-claude-projects";
+      "/home/kari/.claude/projects" = "@kari-claude-projects"; # mv to ssd
 
       # System state
       "/var/log/journal" = "@var-log-journal";
       "/var/lib/acme" = "@acme";
-      "/var/lib/prometheus" = "@prometheus";
-      "/var/lib/loki" = "@loki";
+      "/var/lib/prometheus" = "@prometheus"; # mv to ssd
+      "/var/lib/loki" = "@loki"; # mv to ssd
     } // boot {
     # dataDir: agenix reads SSH host key from here in stage-2
     "${dataDir}" = "@main";
     # Persistent nix rw-store (overrides kexec-tree.nix tmpfs).
     # Subvol must contain `store/` and `work/` subdirs (create on disk).
-    "/nix/.rw-store" = "@nix-rw-store";
+    "/nix/.rw-store" = "@nix-rw-store"; # mv to ssd
   } // {
     "/mnt/jhvst" = {
       device = "/dev/disk/by-label/jhvst";

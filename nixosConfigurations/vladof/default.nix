@@ -2,6 +2,7 @@
 , lib
 , config
 , inputs
+, unstable
 , ...
 }:
 let
@@ -10,7 +11,7 @@ let
   dataDir = "/mnt/wd-red";
 
   # Inherit global stuff for imports
-  extendedArgs = { inherit pkgs lib config domain dataDir inputs; };
+  extendedArgs = { inherit pkgs lib config domain dataDir inputs unstable; };
 in
 {
   age.rekey = {
@@ -71,7 +72,7 @@ in
         AllowAgentForwarding no
         AllowTcpForwarding no
         ChrootDirectory %h
-        ForceCommand internal-sftp
+        ForceCommand internal-sftp -u 0002
         PermitTunnel no
         X11Forwarding no
       Match all
