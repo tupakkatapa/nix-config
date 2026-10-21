@@ -30,8 +30,15 @@ in
         openFirewall = true;
         inherit (containerConfig.ollama) port;
         host = "0.0.0.0";
+        environmentVariables = {
+          OLLAMA_FLASH_ATTENTION = "1";
+          OLLAMA_KV_CACHE_TYPE = "q8_0";
+          OLLAMA_KEEP_ALIVE = "-1";
+        };
         loadModels = [
           # https://ollama.com/library
+          # "huihui_ai/qwen3.5-abliterated:9b"
+          # "qwen3.5:9b"
           "qwen3:4b"
         ];
       };

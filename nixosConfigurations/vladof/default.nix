@@ -24,6 +24,7 @@ in
   imports = [
     (import ./services extendedArgs)
     (import ./persistence.nix extendedArgs)
+    (import ../.config/retroarch.nix (extendedArgs // { share = "${dataDir}/sftp/appdata/retroarch"; }))
     ../.config/hw/cpu-intel.nix
     ../.config/hw/gpu-intel.nix
     ../.config/motd.nix

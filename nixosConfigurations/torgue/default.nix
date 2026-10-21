@@ -37,14 +37,6 @@
     builtinModules.enable = true;
     modules = [
       {
-        name = "retroarch";
-        imports = [ ../.config/retroarch.nix ];
-      }
-      {
-        name = "ollama";
-        imports = [ ../.config/ollama-amd.nix ];
-      }
-      {
         name = "auto-scrcpy";
         imports = [ ../.config/auto-scrcpy.nix ];
       }

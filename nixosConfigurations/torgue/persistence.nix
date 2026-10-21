@@ -32,7 +32,6 @@ in
       "/home/kari/.local/share/zoxide" = "@kari-zoxide";
 
       # System state
-      "/var/lib/ollama" = "@ollama";
       "/var/lib/bluetooth" = "@var-lib-bluetooth";
       "/var/log/journal" = "@var-log-journal";
     } // boot {
@@ -89,21 +88,12 @@ in
   # Audit log on disk
   security.auditd.settings.log_file = "${dataDir}/home/root/logs/audit/audit.log";
 
-  # Pin ollama UID (not in nixpkgs static ids)
-  users.users.ollama = {
-    uid = 987;
-    group = "ollama";
-  };
-  users.groups.ollama.gid = 987;
-
   # Parent dirs for nested subvol mountpoints
   systemd.tmpfiles.rules = [
     "d /mnt/sftp                755 root root -"
     "d /home/kari/.config       755 kari kari -"
     "d /home/kari/.local        755 kari kari -"
     "d /home/kari/.local/share  755 kari kari -"
-    "d /var/lib/ollama          755 ollama ollama -"
-    "d /var/lib/ollama/models   755 ollama ollama -"
 
     # Enforce ownership on subvol mountpoints
     "Z /home/kari/.config/guitarix         - kari kari -"

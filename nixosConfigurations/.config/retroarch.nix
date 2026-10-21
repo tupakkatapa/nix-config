@@ -1,6 +1,6 @@
 # https://archive.org/details/retro-roms-best-set
 # https://myrient.erista.me/files/No-Intro/
-{ pkgs, ... }:
+{ pkgs, share, ... }:
 let
   cores = with pkgs.libretro; [
     mame # Arcade
@@ -35,7 +35,13 @@ in
 
     # Paths
     assets_directory = "${pkgs.retroarch-assets}/share/retroarch/assets"
-    rgui_browser_directory = "~/.config/retroarch/roms"
+    rgui_browser_directory = "${share}/roms"
+    system_directory = "${share}/bios"
+    savefile_directory = "${share}/saves"
+    savestate_directory = "${share}/states"
+    playlist_directory = "${share}/playlists"
+    thumbnails_directory = "${share}/thumbnails"
+    cheat_database_path = "${share}/cheats"
 
     # Input settings
     # Xbox controllers have a remapping issue with the left analog stick; I have found this to be the case with Dolphin and PCSX2 emulators.
