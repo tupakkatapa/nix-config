@@ -63,7 +63,7 @@ in
       permissions = {
         defaultMode = "auto";
         inherit (permissions) allow deny;
-        additionalDirectories = [ "/home/kari/Workspace" "/tmp" ];
+        additionalDirectories = [ "/mnt/sftp/code/workspace" "/mnt/wd-red/sftp/code/workspace" "/tmp" ];
       };
       hooks = {
         SessionStart = [{

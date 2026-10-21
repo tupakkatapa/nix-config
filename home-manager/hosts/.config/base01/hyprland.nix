@@ -248,6 +248,10 @@ in
         "match:title ^(Properties)$, center on"
         "match:title ^(Properties)$, size 480 650"
 
+        "match:title ^(OpenSSH Authentication).*, center on"
+        "match:title ^(OpenSSH Authentication).*, float on"
+        "match:title ^(OpenSSH Authentication).*, size 480 200"
+
         "match:class foot, center on"
         "match:class foot, float on"
         "match:class foot, size 1400 800"

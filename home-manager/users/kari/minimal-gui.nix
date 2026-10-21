@@ -3,8 +3,8 @@ let
   user = "kari";
 in
 {
-  # This configuration extends the minimal version
-  imports = [ ./minimal.nix ];
+  # This configuration extends the minimal-dev version
+  imports = [ ./minimal-dev.nix ];
 
   # Required for home-manager GTK apps
   programs.dconf.enable = true;
@@ -24,7 +24,6 @@ in
       BROWSER = "firefox";
       FONT = "JetBrainsMono Nerd Font";
       TERMINAL = "foot";
-      THEME = "gruvbox-dark-medium";
     };
   };
 }

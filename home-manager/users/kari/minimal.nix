@@ -5,6 +5,7 @@
 }:
 let
   user = "kari";
+
   optionalGroups = groups:
     builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
   optionalPaths = paths: builtins.filter (path: builtins.pathExists path) paths;
@@ -35,6 +36,7 @@ in
       "rtkit"
       "sftp"
       "sshd"
+      "transmission"
       "users"
       "vboxusers"
       "video"
@@ -57,6 +59,13 @@ in
     shell = pkgs.fish;
   };
   users.groups.${user} = { };
+
+  # sudo accepts a signature from the agent, so a YubiKey touch replaces the password
+  security.pam.sshAgentAuth = {
+    enable = true;
+    authorizedKeysFiles = [ "/etc/ssh/authorized_keys.d/%u" ];
+  };
+  security.pam.services.sudo.sshAgentAuth = true;
   environment.shells = [ pkgs.fish ];
   programs.fish.enable = true;
 
@@ -97,6 +106,7 @@ in
     home.sessionVariables = {
       EDITOR = "nvim";
       MANPAGER = "nvim +Man!";
+      THEME = "gruvbox-dark-medium";
     };
 
     home.packages = with pkgs; [

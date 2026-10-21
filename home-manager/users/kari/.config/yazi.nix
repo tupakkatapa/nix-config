@@ -19,6 +19,7 @@
   programs.yazi = {
     enable = true;
     enableFishIntegration = true;
+    shellWrapperName = "y";
 
     plugins = with pkgs.yaziPlugins; {
       inherit chmod diff full-border jump-to-char smart-enter;

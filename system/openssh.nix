@@ -7,7 +7,6 @@
     openFirewall = lib.mkDefault true;
     allowSFTP = lib.mkDefault false;
     extraConfig = ''
-      AllowAgentForwarding no
       AllowStreamLocalForwarding no
       AllowTcpForwarding yes
       AuthenticationMethods publickey

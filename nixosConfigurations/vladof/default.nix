@@ -28,6 +28,7 @@ in
     ../.config/motd.nix
     ../.config/hw/pipewire.nix
     ../.config/hw/yubikey.nix
+    ../.config/nix-ld.nix
   ];
 
   # Disk-aware garbage collection
@@ -67,6 +68,7 @@ in
     allowSFTP = true;
     extraConfig = ''
       Match User sftp
+        AllowAgentForwarding no
         AllowTcpForwarding no
         ChrootDirectory %h
         ForceCommand internal-sftp

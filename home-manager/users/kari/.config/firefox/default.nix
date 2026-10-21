@@ -94,8 +94,8 @@ in
           "font.name.serif.x-western" = "${FONT}";
 
           # Downloads
-          "browser.download.dir" = "${config.home.homeDirectory}/Downloads";
-          "browser.download.lastDir" = "${config.home.homeDirectory}/Downloads";
+          "browser.download.dir" = config.xdg.userDirs.download;
+          "browser.download.lastDir" = config.xdg.userDirs.download;
           "browser.download.folderList" = 2;
         }
         // (import ./hardened.nix));

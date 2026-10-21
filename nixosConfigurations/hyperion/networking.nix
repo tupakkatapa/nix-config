@@ -56,7 +56,7 @@
   # Dynamic DNS
   services.cloudflare-dyndns = {
     enable = true;
-    domains = [ "coditon.com" ];
+    domains = [ "coditon.com" "vpn.coditon.com" ];
     proxied = false;
     ipv4 = true;
     ipv6 = true;

@@ -33,7 +33,7 @@
 
   services.runtimeModules = {
     enable = true;
-    flakeUrl = "path:/home/kari/Workspace/tupakkatapa/nix-config";
+    flakeUrl = "path:/mnt/sftp/code/workspace/tupakkatapa/nix-config";
     builtinModules.enable = true;
     modules = [
       {
@@ -114,6 +114,8 @@
           IPv6AcceptRA = true;
         };
         dhcpV6Config.DUIDType = "link-layer";
+        # Resolves outside the tunnel it brings up
+        domains = [ "~vpn.coditon.com" ];
       };
       "20-wan" = {
         linkConfig.RequiredForOnline = "routable";
@@ -123,6 +125,8 @@
           IPv6AcceptRA = true;
         };
         dhcpV6Config.DUIDType = "link-layer";
+        # Resolves outside the tunnel it brings up
+        domains = [ "~vpn.coditon.com" ];
       };
     };
   };

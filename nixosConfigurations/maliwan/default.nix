@@ -73,6 +73,8 @@
           IPv6AcceptRA = true;
         };
         dhcpV6Config.DUIDType = "link-layer";
+        # Resolves outside the tunnel it brings up
+        domains = [ "~vpn.coditon.com" ];
       };
     };
   };

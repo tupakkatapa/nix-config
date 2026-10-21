@@ -163,6 +163,8 @@ in
           ''"kaakkuri.coditon.com. IN A 10.42.0.25"''
           ''"hyperion.coditon.com. IN A 10.42.0.1"''
           ''"router.coditon.com. IN A 10.42.0.1"''
+          ''"vpn.coditon.com. IN A 10.42.0.1"''
+          ''"vpn.coditon.com. IN AAAA fd42:42:42:1::1"''
           ''"torgue.coditon.com. IN A 10.42.0.7"''
           ''"vladof.coditon.com. IN A 10.42.0.8"''
           ''"maliwan.coditon.com. IN A 10.42.0.9"''

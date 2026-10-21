@@ -22,6 +22,8 @@ in
       "/home/kari/.config/mozilla" = "@kari-mozilla";
       "/home/kari/.local/share/atuin" = "@kari-atuin";
       "/home/kari/.local/share/zoxide" = "@kari-zoxide";
+      "/home/kari/.config/gh" = "@kari-gh";
+      "/home/kari/.claude/projects" = "@kari-claude-projects";
 
       # System state
       "/var/log/journal" = "@var-log-journal";
@@ -99,6 +101,7 @@ in
     # SFTP subdir ownership enforcement (container writes target these paths)
     "Z ${dataDir}/sftp/appdata                   -   sftp sftp                                     -"
     "Z ${dataDir}/sftp/code                      -   sftp sftp                                     -"
+    "d ${dataDir}/sftp/code/workspace            2775 sftp sftp                                     -"
     "Z ${dataDir}/sftp/docs                      -   sftp sftp                                     -"
     "Z ${dataDir}/sftp/games                     -   sftp sftp                                     -"
     "Z ${dataDir}/sftp/media                     -   sftp sftp                                     -"
@@ -109,10 +112,13 @@ in
     "d /home/kari/.config       755 kari kari -"
     "d /home/kari/.local        755 kari kari -"
     "d /home/kari/.local/share  755 kari kari -"
+    "d /home/kari/.claude       755 kari kari -"
 
     # Enforce ownership on subvol mountpoints
     "Z /home/kari/.config/mozilla       - kari kari -"
     "Z /home/kari/.local/share/atuin    - kari kari -"
     "Z /home/kari/.local/share/zoxide   - kari kari -"
+    "Z /home/kari/.config/gh            0700 kari kari -"
+    "Z /home/kari/.claude/projects      - kari kari -"
   ];
 }

@@ -11,8 +11,13 @@ in
     enable = true;
     keyMode = "vi";
     prefix = "C-Space";
+    # Default is "screen", whose terminfo claims 8 colours
+    terminal = "tmux-256color";
     extraConfig = ''
       set -s escape-time 0
+
+      # Outer terminfo is xterm-256color, which does not advertise RGB
+      set -ga terminal-overrides ",*:RGB"
 
       set -g mouse on
       bind-key v split-window -h -c "#{pane_current_path}"

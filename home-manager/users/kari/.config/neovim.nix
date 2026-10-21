@@ -22,6 +22,23 @@
     };
 
     extraConfigLua = ''
+      -- Over SSH there is no WAYLAND_DISPLAY, so wl-copy cannot reach a
+      -- clipboard. OSC 52 carries the yank up the terminal stream instead.
+      if vim.env.SSH_TTY then
+        local osc52 = require("vim.ui.clipboard.osc52")
+        vim.g.clipboard = {
+          name = "OSC 52",
+          copy = {
+            ["+"] = osc52.copy("+"),
+            ["*"] = osc52.copy("*"),
+          },
+          paste = {
+            ["+"] = osc52.paste("+"),
+            ["*"] = osc52.paste("*"),
+          },
+        }
+      end
+
       -- Replace netrw-hijack with explicit sidebar layout to avoid nui async
       -- render race on `nvim DIR` and orphan directory buffer requiring 2x :q.
       vim.api.nvim_create_autocmd("VimEnter", {
@@ -55,6 +72,8 @@
     '';
 
     opts = {
+      # SSH drops COLORTERM, so neither autodetect heuristic survives
+      termguicolors = true;
       cursorline = true;
       swapfile = false;
       number = true;

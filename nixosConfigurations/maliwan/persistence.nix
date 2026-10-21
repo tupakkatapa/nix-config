@@ -20,13 +20,9 @@ in
   fileSystems = aux
     {
       # User data
-      "/home/kari/.claude/projects" = "@kari-claude-projects";
       "/home/kari/.config/mozilla" = "@kari-mozilla";
       "/home/kari/.config/Yubico" = "@kari-yubico";
-      "/home/kari/.config/gh" = "@kari-gh";
       "/home/kari/.gnupg" = "@kari-gnupg";
-      "/home/kari/Workspace" = "@kari-workspace";
-      "/home/kari/Downloads" = "@kari-downloads";
       "/home/kari/.local/share/atuin" = "@kari-atuin";
       "/home/kari/.local/share/zoxide" = "@kari-zoxide";
 
@@ -54,6 +50,12 @@ in
         "reconnect"
         "noauto"
         "port=22"
+        # Defaults are 1s, so every lookup is a round trip; 20s bounds how
+        # stale a container-written file can look
+        "attr_timeout=20"
+        "entry_timeout=20"
+        "auto_cache"
+        "ConnectTimeout=10"
         "IdentityFile=/home/kari/.ssh/id_ed25519_sk_yubikey"
         "IdentityFile=/home/kari/.ssh/id_ed25519_sk_yubikey_2"
         "IdentityFile=/home/kari/.ssh/id_ed25519_sk_trezor"
@@ -87,16 +89,11 @@ in
     "d /home/kari/.config       755 kari kari -"
     "d /home/kari/.local        755 kari kari -"
     "d /home/kari/.local/share  755 kari kari -"
-    "d /home/kari/.claude       755 kari kari -"
 
     # Enforce ownership on subvol mountpoints
-    "Z /home/kari/.claude/projects         - kari kari -"
     "Z /home/kari/.config/mozilla          - kari kari -"
     "Z /home/kari/.config/Yubico           - kari kari -"
-    "Z /home/kari/.config/gh               0700 kari kari -"
     "Z /home/kari/.gnupg                   0700 kari kari -"
-    "Z /home/kari/Workspace                - kari kari -"
-    "Z /home/kari/Downloads                - kari kari -"
     "Z /home/kari/.local/share/atuin       - kari kari -"
     "Z /home/kari/.local/share/zoxide      - kari kari -"
   ];

@@ -66,12 +66,12 @@ _:
     interfaces = {
       "br-lan" = {
         allowedTCPPorts = [ 22 53 52080 ]; # SSH, DNS, Nixie HTTP
-        allowedUDPPorts = [ 53 67 69 123 547 ]; # DNS, DHCP, TFTP, NTP, DHCPv6
+        allowedUDPPorts = [ 53 67 69 123 547 51820 ]; # DNS, DHCP, TFTP, NTP, DHCPv6, WireGuard
       };
 
       "wg0" = {
         allowedTCPPorts = [ 22 53 ]; # SSH, DNS
-        allowedUDPPorts = [ 53 123 ]; # DNS, NTP
+        allowedUDPPorts = [ 53 123 51820 ]; # DNS, NTP, WireGuard
       };
 
       "br-wifi" = {
@@ -142,6 +142,9 @@ _:
 
       # Allow WireGuard → WAN, Mullvad, WireGuard and LAN
       iifname "wg0" oifname { "enp1s0", "mullvad", "br-lan", "wg0" } accept
+
+      # LAN and wg0 are the same trust domain, only egress is filtered
+      iifname "br-lan" oifname "wg0" accept
 
       # wg1: only garage on vladof, no other LAN access
       iifname "wg1" oifname "br-lan" ip daddr 10.42.0.8 tcp dport { 3900, 3901, 3902, 3903 } accept

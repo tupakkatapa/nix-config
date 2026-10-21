@@ -75,7 +75,7 @@ Wait for confirmation or course-correction. Avoid downloading and re-downloading
 ### 6. Download the section
 
 ```bash
-cd ~/Downloads && \
+cd "$XDG_DOWNLOAD_DIR" && \
 nix run nixpkgs#yt-dlp -- \
   --download-sections "*MM:SS-MM:SS" \
   --force-keyframes-at-cuts \
@@ -87,7 +87,7 @@ nix run nixpkgs#yt-dlp -- \
 
 `--force-keyframes-at-cuts` re-encodes to make the cut points frame-accurate. Without it, yt-dlp aligns to the nearest keyframe, which can over- or under-shoot by several seconds.
 
-The output extension depends on the chosen format — usually `.webm` (VP9 + Opus) or `.mp4` (H.264 + AAC). Pick a short, descriptive slug; default to `~/Downloads/<slug>.<ext>`.
+The output extension depends on the chosen format — usually `.webm` (VP9 + Opus) or `.mp4` (H.264 + AAC). Pick a short, descriptive slug; default to `"$XDG_DOWNLOAD_DIR"/<slug>.<ext>`.
 
 ### 7. Transcode to mp4 (default)
 
@@ -108,7 +108,7 @@ CRF 18 is visually lossless for most content; bump to 23 if size matters more th
 Only the final `.mp4` should remain. Delete the source download and the VTT used for locating:
 
 ```bash
-rm -f ~/Downloads/<slug>.webm ~/Downloads/<slug>.mkv ~/Downloads/<slug>.m4a
+rm -f "$XDG_DOWNLOAD_DIR"/<slug>.webm "$XDG_DOWNLOAD_DIR"/<slug>.mkv "$XDG_DOWNLOAD_DIR"/<slug>.m4a
 rm -f /tmp/<video-id>.en.vtt /tmp/<video-id>.*.vtt
 ```
 
