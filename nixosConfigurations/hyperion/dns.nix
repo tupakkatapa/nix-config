@@ -156,6 +156,7 @@ in
           ''"grafana.coditon.com. IN A 10.42.0.8"''
           ''"home.coditon.com. IN A 10.42.0.8"''
           ''"health.coditon.com. IN A 10.42.0.8"''
+          ''"atuin.coditon.com. IN A 10.42.0.8"''
           ''"ntfy.coditon.com. IN A 10.42.0.8"''
           ''"plex.coditon.com. IN A 10.42.0.8"''
           ''"matrix.coditon.com. IN A 10.42.0.8"''

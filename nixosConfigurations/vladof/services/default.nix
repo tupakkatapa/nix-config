@@ -93,6 +93,13 @@ let
         lastOctet = 21;
         uid = 10012;
       };
+      atuin = {
+        addr = "atuin.${domain}";
+        port = 8888;
+        private = true;
+        lastOctet = 22;
+        uid = 10013;
+      };
     };
 
   # Service configuration

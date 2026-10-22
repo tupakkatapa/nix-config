@@ -26,7 +26,6 @@ in
       "/home/kari/Bitwig Studio" = "@kari-bitwig-projects";
       "/home/kari/.steam" = "@kari-steam-cfg";
       "/home/kari/.local/share/Steam" = "@kari-steam-install";
-      "/home/kari/.local/share/atuin" = "@kari-atuin";
       "/home/kari/.local/share/zoxide" = "@kari-zoxide";
 
       # System state
@@ -97,7 +96,6 @@ in
     "Z /home/kari/Bitwig\\x20Studio         - kari kari -"
     "Z /home/kari/.steam                   - kari kari -"
     "Z /home/kari/.local/share/Steam       - kari kari -"
-    "Z /home/kari/.local/share/atuin       - kari kari -"
     "Z /home/kari/.local/share/zoxide      - kari kari -"
   ];
 }

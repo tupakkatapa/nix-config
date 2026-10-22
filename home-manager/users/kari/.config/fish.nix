@@ -134,7 +134,8 @@ in
     enableFishIntegration = true;
     flags = [ "--disable-up-arrow" ];
     settings = {
-      auto_sync = false;
+      auto_sync = true;
+      sync_address = "https://atuin.coditon.com";
       update_check = false;
       search_mode = "fuzzy";
       filter_mode = "global";

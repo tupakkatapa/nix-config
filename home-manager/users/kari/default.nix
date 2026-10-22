@@ -46,11 +46,22 @@ in
       owner = user;
       group = "users";
     };
+    "atuin-key" = {
+      rekeyFile = ./secrets/atuin-key.age;
+      path = "/home/${user}/.local/share/atuin/key";
+      owner = user;
+    };
+    "atuin-session" = {
+      rekeyFile = ./secrets/atuin-session.age;
+      path = "/home/${user}/.local/share/atuin/session";
+      owner = user;
+    };
   };
 
   # agenix drops the key files here
   systemd.tmpfiles.rules = [
     "d /home/${user}/.ssh 755 ${user} ${user} -"
+    "d /home/${user}/.local/share/atuin 700 ${user} ${user} -"
   ];
 
   # Required for hyprlock via home-manager
@@ -104,6 +115,10 @@ in
     ];
 
     programs.git.signing.key = "/home/${user}/.ssh/id_ed25519_sk_yubikey";
+
+    # A fresh host_id per boot would add a new record store on the server each time
+    home.file.".local/share/atuin/host_id".text =
+      builtins.substring 0 32 (builtins.hashString "sha256" config.networking.hostName);
 
     # Electronic mail
     accounts.email.accounts."ponkila" = {
