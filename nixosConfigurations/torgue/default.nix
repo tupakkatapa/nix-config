@@ -25,7 +25,6 @@
     ../.config/keyd.nix
     ../.config/hw/pipewire.nix
     ../.config/nix-ld.nix
-    ../.config/podman.nix
     ../.config/tuigreet-hypr.nix
     ../.config/hw/yubikey.nix
     ./persistence.nix

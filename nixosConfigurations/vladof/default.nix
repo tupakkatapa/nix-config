@@ -31,6 +31,7 @@ in
     ../.config/hw/pipewire.nix
     ../.config/hw/yubikey.nix
     ../.config/nix-ld.nix
+    ../.config/podman.nix
   ];
 
   # Disk-aware garbage collection
