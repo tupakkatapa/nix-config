@@ -103,9 +103,14 @@ in
         Description = "Load the SK key into the agent";
         After = [ "ssh-agent.service" ];
         Requires = [ "ssh-agent.service" ];
+        PartOf = [ "ssh-agent.service" ];
       };
       Service = {
         Type = "oneshot";
+        RemainAfterExit = true;
+        # The agent is up before its socket is
+        Restart = "on-failure";
+        RestartSec = 1;
         Environment = [ "SSH_AUTH_SOCK=%t/ssh-agent" ];
         ExecStart = "${pkgs.openssh}/bin/ssh-add /home/${user}/.ssh/id_ed25519_sk_yubikey";
       };
@@ -114,7 +119,13 @@ in
 
     # Forwarded signing requests reach an agent with no tty
     systemd.user.services.ssh-agent.Service.Environment = [
-      "SSH_ASKPASS=${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass"
+      # The agent starts before Hyprland exports its display
+      "SSH_ASKPASS=${pkgs.writeShellScript "ssh-askpass-session" ''
+        while IFS= read -r var; do export "$var"; done < <(
+          ${pkgs.systemd}/bin/systemctl --user show-environment | ${pkgs.gnugrep}/bin/grep -E '^(WAYLAND_DISPLAY|DISPLAY)='
+        )
+        exec ${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass "$@"
+      ''}"
       "SSH_ASKPASS_REQUIRE=force"
     ];
 

@@ -71,6 +71,8 @@
         networkConfig = {
           DHCP = "yes";
           IPv6AcceptRA = true;
+          # Stays the default DNS route despite its route-only domain
+          DNSDefaultRoute = true;
         };
         dhcpV6Config.DUIDType = "link-layer";
         # Resolves outside the tunnel it brings up

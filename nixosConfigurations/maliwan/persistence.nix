@@ -56,6 +56,7 @@ in
         "entry_timeout=20"
         "auto_cache"
         "ConnectTimeout=10"
+        "IdentityAgent=none"
         "IdentityFile=/home/kari/.ssh/id_ed25519_sk_yubikey"
         "IdentityFile=/home/kari/.ssh/id_ed25519_sk_yubikey_2"
         "IdentityFile=/home/kari/.ssh/id_ed25519_sk_trezor"
