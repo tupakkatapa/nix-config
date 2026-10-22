@@ -56,7 +56,6 @@ in
       # Nix
       nfc = "nix flake check --impure --accept-flake-config";
       buidl = "sudo nixos-rebuild test --impure --flake .#$(hostname) --accept-flake-config";
-      rbuidl = "nixos-rebuild test --impure --ask-sudo-password --sudo --flake .#X --target-host $USER@10.42.0.X";
       gc = "nix-collect-garbage --delete-older-than 7d";
       ns = "nix-shell -p";
 
@@ -90,6 +89,12 @@ in
       fish_greeting = "";
       expand_dots = ''
         string repeat -n (math (string length -- $argv[1]) - 1) ../
+      '';
+      rbuidl = ''
+        nixos-rebuild test --impure --ask-sudo-password --sudo --flake .#$argv[1] --target-host $argv[1]
+      '';
+      wrk = ''
+        ssh -t vladof exec fish -C (string escape -- "cd $argv")
       '';
     };
     interactiveShellInit =

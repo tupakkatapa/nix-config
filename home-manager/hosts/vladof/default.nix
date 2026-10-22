@@ -10,5 +10,6 @@ _: {
     createDirectories = false;
     setSessionVariables = true;
     download = "/mnt/wd-red/sftp/dnld";
+    documents = "/mnt/wd-red/sftp/docs";
   };
 }

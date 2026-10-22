@@ -78,6 +78,7 @@ in
       createDirectories = false;
       setSessionVariables = true;
       download = "/mnt/sftp/dnld";
+      documents = "/mnt/sftp/docs";
     };
 
     programs.ssh.settings = {
