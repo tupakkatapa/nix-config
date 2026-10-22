@@ -59,6 +59,7 @@ in
     shell = pkgs.fish;
   };
   users.groups.${user} = { };
+  security.pam.u2f.settings.authfile = pkgs.writeText "u2f_keys" "${user}:oWamwkdoQjqQzKw+gde7vVtawlzgoYGo+s3bBTbcyZqUnPsQE5qbibLzBA0Z/HLKCDZeypnW8kGA98c31eXyuw==,Ewk4+aaaFslov8nU9bJ/gPyrn6zT5LZBAj/C8VPPoqn3zrXYwav1IIxcJI7MHi52kRBmH9cOcnITzY6ahKClNQ==,es256,+presence:wN9r1EZaUFHLBLhyckYAbvxLmI/CKYmqSsNYRqlbtldA0EfwGzadOvisFLlTOhIKjE/U/8WqEE4qdqIRocmoxQ==,WV7N85H7Rqi+yW4Uy/o9/KqKQCpPxuU+9nwECAwJGHvN0XDx+WrzceTb9DEZxs0NRzbT/DYkTDrKvaX355vZ+w==,es256,+presence";
 
   environment.shells = [ pkgs.fish ];
   programs.fish.enable = true;

@@ -14,12 +14,12 @@
     Defaults env_keep += "SSH_AUTH_SOCK"
   '';
 
-  # U2F
-  # Logging-in
-  # nix-shell -p pam_u2f
-  # mkdir -p ~/.config/Yubico
-  # pamu2fcfg > ~/.config/Yubico/u2f_keys
+  # Origin defaults to the hostname; fixed so one registration works fleet-wide
   security.pam = {
+    u2f.settings = {
+      origin = "pam://coditon";
+      appid = "pam://coditon";
+    };
     services = {
       greetd.u2fAuth = true;
       sudo.u2fAuth = true;
