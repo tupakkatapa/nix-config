@@ -60,12 +60,6 @@ in
   };
   users.groups.${user} = { };
 
-  # sudo accepts a signature from the agent, so a YubiKey touch replaces the password
-  security.pam.rssh = {
-    enable = true;
-    settings.auth_key_file = "/etc/ssh/authorized_keys.d/\${user}";
-  };
-  security.pam.services.sudo.rssh = true;
   environment.shells = [ pkgs.fish ];
   programs.fish.enable = true;
 

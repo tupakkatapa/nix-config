@@ -1,7 +1,6 @@
 { pkgs
 , unstable
 , config
-, lib
 , ...
 }:
 let
@@ -87,36 +86,10 @@ in
         config.age.secrets.ed25519-sk-yubikey-2.path
         config.age.secrets.ed25519-sk-trezor.path
       ];
-      # Local sessions prompt on the tty; the agent is only ever forwarded
-      "Match exec \"test -z \\\"$SSH_CONNECTION\\\"\"".IdentityAgent = "none";
-      # IdentityAgent none hides the agent from ForwardAgent yes, so name the socket
-      "hyperion".ForwardAgent = lib.mkForce "/run/user/%i/ssh-agent";
-      "torgue".ForwardAgent = lib.mkForce "/run/user/%i/ssh-agent";
-      "vladof".ForwardAgent = lib.mkForce "/run/user/%i/ssh-agent";
-      "maliwan".ForwardAgent = lib.mkForce "/run/user/%i/ssh-agent";
-      "maliwan-lan".ForwardAgent = lib.mkForce "/run/user/%i/ssh-agent";
+      # A key used once is then there for forwarded sudo and signing
+      "*".AddKeysToAgent = "yes";
     };
     services.ssh-agent.enable = true;
-
-    # Loading the handle needs no PIN, only signatures do
-    systemd.user.services.ssh-add-sk = {
-      Unit = {
-        Description = "Load the SK key into the agent";
-        After = [ "ssh-agent.service" ];
-        Requires = [ "ssh-agent.service" ];
-        PartOf = [ "ssh-agent.service" ];
-      };
-      Service = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        # The agent is up before its socket is
-        Restart = "on-failure";
-        RestartSec = 1;
-        Environment = [ "SSH_AUTH_SOCK=%t/ssh-agent" ];
-        ExecStart = "${pkgs.openssh}/bin/ssh-add /home/${user}/.ssh/id_ed25519_sk_yubikey";
-      };
-      Install.WantedBy = [ "default.target" ];
-    };
 
     # Forwarded signing requests reach an agent with no tty
     systemd.user.services.ssh-agent.Service.Environment = [
@@ -130,18 +103,7 @@ in
       "SSH_ASKPASS_REQUIRE=force"
     ];
 
-    programs.git.signing = {
-      key = "/home/${user}/.ssh/id_ed25519_sk_yubikey";
-      # ssh-keygen prefers the agent when the key is loaded, and the agent has no tty
-      # Locally the key file is enough and prompts on the tty; over ssh the
-      # forwarded agent is the only key there is
-      signer = "${pkgs.writeShellScript "ssh-keygen-local-tty" ''
-        if [ -z "''${SSH_CONNECTION-}" ]; then
-          exec env -u SSH_AUTH_SOCK ${pkgs.openssh}/bin/ssh-keygen "$@"
-        fi
-        exec ${pkgs.openssh}/bin/ssh-keygen "$@"
-      ''}";
-    };
+    programs.git.signing.key = "/home/${user}/.ssh/id_ed25519_sk_yubikey";
 
     # Electronic mail
     accounts.email.accounts."ponkila" = {

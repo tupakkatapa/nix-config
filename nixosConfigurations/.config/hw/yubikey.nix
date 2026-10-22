@@ -6,7 +6,6 @@
     age-plugin-fido2-hmac
     yubikey-manager
   ];
-  services.yubikey-agent.enable = true;
   programs.yubikey-touch-detector.enable = true;
 
   # Preserve SSH_AUTH_SOCK for sudo so YubiKey-backed SSH keys work
@@ -26,6 +25,13 @@
       sudo.u2fAuth = true;
       hyprlock.u2fAuth = true;
       login.u2fAuth = true;
+      sudo.rssh = true;
+    };
+
+    # sudo accepts a signature from the agent, so a YubiKey touch replaces the password
+    rssh = {
+      enable = true;
+      settings.auth_key_file = "/etc/ssh/authorized_keys.d/\${user}";
     };
   };
 }
