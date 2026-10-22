@@ -27,13 +27,11 @@ in
       "/home/kari/.config/Yubico" = "@kari-yubico";
       "/home/kari/.steam" = "@kari-steam-cfg";
       "/home/kari/.local/share/Steam" = "@kari-steam-install";
-      "/home/kari/.gnupg" = "@kari-gnupg";
       "/home/kari/.local/share/atuin" = "@kari-atuin";
       "/home/kari/.local/share/zoxide" = "@kari-zoxide";
 
       # System state
       "/var/lib/bluetooth" = "@var-lib-bluetooth";
-      "/var/log/journal" = "@var-log-journal";
     } // boot {
     # dataDir: agenix reads SSH host key from here in stage-2
     "${dataDir}" = "@main";
@@ -86,9 +84,6 @@ in
     }
   ];
 
-  # Audit log on disk
-  security.auditd.settings.log_file = "${dataDir}/home/root/logs/audit/audit.log";
-
   # Parent dirs for nested subvol mountpoints
   systemd.tmpfiles.rules = [
     "d /mnt/sftp                755 root root -"
@@ -104,7 +99,6 @@ in
     "Z /home/kari/.config/Yubico           - kari kari -"
     "Z /home/kari/.steam                   - kari kari -"
     "Z /home/kari/.local/share/Steam       - kari kari -"
-    "Z /home/kari/.gnupg                   0700 kari kari -"
     "Z /home/kari/.local/share/atuin       - kari kari -"
     "Z /home/kari/.local/share/zoxide      - kari kari -"
   ];

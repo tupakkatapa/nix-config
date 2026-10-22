@@ -1,7 +1,13 @@
 { lib
 , pkgs
+, config
 , ...
-}: {
+}:
+let
+  # Without a disk behind /var/log, logs live in RAM; Vector ships them to Loki
+  persistentLogs = config.fileSystems ? "/var/log/journal";
+in
+{
   # Pin static UIDs for all systemd units (ephemeral hosts can't keep dynamic UIDs stable)
   imports = [
     (_: {
@@ -46,14 +52,21 @@
   };
 
   # Logging daemon
-  services.journald.extraConfig = ''
-    Storage=persistent
-    SystemMaxUse=10G
-    SystemMaxFileSize=128M
-    SystemKeepFree=1G
-    Compress=yes
-    ForwardToSyslog=no
-  '';
+  services.journald.extraConfig =
+    if persistentLogs then ''
+      Storage=persistent
+      SystemMaxUse=10G
+      SystemMaxFileSize=128M
+      SystemKeepFree=1G
+      Compress=yes
+      ForwardToSyslog=no
+    '' else ''
+      Storage=volatile
+      RuntimeMaxUse=256M
+      RuntimeMaxFileSize=32M
+      Compress=yes
+      ForwardToSyslog=no
+    '';
 
   # Journald + kernel audit subsystem + auditd daemon
   security.audit.enable = true;
@@ -69,12 +82,12 @@
     "-a always,exit -F arch=b64 -S init_module,finit_module,delete_module -k modules"
   ];
   security.auditd.settings = {
-    max_log_file = 100; # MB per file
-    num_logs = 10; # rotate-and-keep 10 files (~1G total)
+    max_log_file = if persistentLogs then 100 else 16; # MB per file
+    num_logs = if persistentLogs then 10 else 4; # ~1G or ~64M total
     max_log_file_action = "ROTATE";
-    space_left = 200; # MB
+    space_left = if persistentLogs then 200 else 32; # MB
     space_left_action = "SYSLOG";
-    admin_space_left = 100;
+    admin_space_left = if persistentLogs then 100 else 16;
     admin_space_left_action = "SUSPEND";
     disk_full_action = "SUSPEND";
     disk_error_action = "SUSPEND";
