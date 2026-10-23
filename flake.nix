@@ -231,7 +231,10 @@
                     };
                   };
                   useGlobalPkgs = true;
+                  # nix-env at activation would build on vladof (max-jobs = 0) before the network is up
+                  useUserPackages = true;
                 };
+                environment.pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];
                 age.rekey = {
                   masterIdentities = [
                     {
