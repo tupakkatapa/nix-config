@@ -992,11 +992,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1792340731,
-        "narHash": "sha256-jQPdgSc2i7qD7HRccjxtEw/NI90q4/XqAPmuKKvDxcc=",
+        "lastModified": 1792748354,
+        "narHash": "sha256-a73Sl3zxsAcrXGZiw/Mm11k2iCmefYPNzhTgdLazv+Q=",
         "owner": "tupakkatapa",
         "repo": "kaloriina",
-        "rev": "47a0f7d3afc905efb8cb2b83230ba22df848287f",
+        "rev": "72c8ea0ee4f5403b5a3749d9aa28402133b12443",
         "type": "github"
       },
       "original": {
