@@ -90,13 +90,13 @@
           clients = [
             {
               menu = "torgue";
-              mac = "d4:5d:64:d1:12:52";
+              mac = "30:9c:23:3c:b9:01";
               ipv4.address = "10.42.0.7";
               ipv6.address = "fd42:42:42:1::7";
             }
             {
               menu = "vladof";
-              mac = "30:9c:23:3c:b9:01";
+              mac = "d4:5d:64:d1:12:52";
               ipv4.address = "10.42.0.8";
               ipv6.address = "fd42:42:42:1::8";
             }

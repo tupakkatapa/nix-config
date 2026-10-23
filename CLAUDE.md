@@ -39,10 +39,10 @@ All hosts get `withDefaults`. Desktop/server hosts additionally get `withExtra`.
 
 | Host | User | Role | Deploy | Key modules |
 |------|------|------|--------|-------------|
-| `torgue` | kari | AMD desktop, Hyprland | netboot | gaming-amd, pipewire, podman, runtime-modules |
+| `torgue` | kari | Intel desktop, Hyprland | netboot | pipewire, podman, runtime-modules |
 | `maliwan` | kari | AMD laptop, Hyprland | refind | gaming-amd, pipewire, podman |
-| `vladof` | kari (minimal-gui) | Homelab, Firefox kiosk | netboot | nixie, molesk, sftp-server, services/* |
-| `hyperion` | core (minimal) | Router + Nixie netboot server | refind | nixie, dns, firewall, wireguard |
+| `vladof` | kari (minimal-gui) | Home server + big screen (Hyprland) | netboot | gaming-amd, nixie, molesk, sftp-server, services/* |
+| `hyperion` | core (minimal) | Nixie router | refind | nixie, dns, firewall, wireguard |
 | `bandit` | core (minimal) | Headless minimal | netboot | (bare minimum) |
 
 ### Directory structure
@@ -129,6 +129,6 @@ docs/                              # Guides (new host, yubikey, agent forwarding
 - `nixpkgs.config.allowUnfree = true` is set globally.
 - `pure-eval = false` and `accept-flake-config = true` — impure evaluation is intentional for development workflow.
 - `nix-access-tokens` secret provides GitHub API tokens to avoid rate limits.
-- Blog content under `nixosConfigurations/vladof/services/blog-contents` is all rights reserved (rest is GPL-3.0).
+- Blog content under `nixosConfigurations/vladof/services/containers/molesk/contents` is all rights reserved (rest is GPL-3.0).
 - `.gitignore` ignores `.claude` and `**/CLAUDE.md` except root and kari's claude config CLAUDE.md.
 - The `claude` fish abbreviation wraps claude-code in a tmux session: `tmux new-session 'claude -c'`.

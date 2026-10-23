@@ -15,6 +15,14 @@ let
   extendedArgs = { inherit pkgs lib config domain dataDir inputs unstable; };
 in
 {
+  # openrgb 1.0rc2+ (26.05, still broken in 1.0rc3.1) regressed the client
+  # `-z`/`--size` CLI parser (any `-z` -> "Invalid option"), so the Corsair zone
+  # sizes can't be set and its LEDs stay dark. Pin openrgb to 25.11's 0.9
+  # (server + client) until fixed.
+  nixpkgs.overlays = [
+    (_: prev: { openrgb = inputs.nixpkgs-2511.legacyPackages.${prev.stdenv.hostPlatform.system}.openrgb; })
+  ];
+
   age.rekey = {
     hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEJktZ00i+OxH4Azi1tLkwoYrJ0qo2RIZ5huzzK+g2w root@vladof";
     agePlugins = [ pkgs.age-plugin-fido2-hmac ];
@@ -22,12 +30,26 @@ in
     storageMode = "local";
   };
 
+  # Bluetooth pairing keys; re-pairing a device needs a re-export
+  age.secrets.bt-galaxy-buds4-pro = {
+    rekeyFile = ./secrets/bt-galaxy-buds4-pro.age;
+    path = "/var/lib/bluetooth/BC:09:1B:26:19:8D/78:C1:1D:EA:46:EF/info";
+    symlink = false;
+  };
+  age.secrets.bt-mx-master-2s = {
+    rekeyFile = ./secrets/bt-mx-master-2s.age;
+    path = "/var/lib/bluetooth/BC:09:1B:26:19:8D/CC:47:F4:B7:4B:AF/info";
+    symlink = false;
+  };
+
   imports = [
     (import ./services extendedArgs)
     (import ./persistence.nix extendedArgs)
     (import ../.config/retroarch.nix (extendedArgs // { share = "${dataDir}/sftp/appdata/retroarch"; }))
-    ../.config/hw/cpu-intel.nix
-    ../.config/hw/gpu-intel.nix
+    ../.config/hw/bluetooth.nix
+    ../.config/hw/cpu-amd.nix
+    ../.config/hw/gpu-amd.nix
+    ../.config/hw/gamepad.nix
     ../.config/motd.nix
     ../.config/hw/pipewire.nix
     ../.config/hw/yubikey.nix
@@ -50,34 +72,50 @@ in
   users.groups.nixremote = { };
   nix.settings.trusted-users = [ "nixremote" ];
 
-  # Cage-kiosk (firefox)
-  services.cage = {
+  # Couch desktop on the TV: autologin into Hyprland
+  services.greetd = {
     enable = true;
-    inherit user;
-    program = lib.concatStringsSep " \\\n\t" [
-      "${config.home-manager.users."${user}".programs.firefox.package}/bin/firefox"
-      "https://www.youtube.com"
-      "http://10.23.0.14:32400" # plex
-    ];
-    environment = {
-      XKB_DEFAULT_LAYOUT = "fi";
-      HOME = "/home/${user}";
-      XCURSOR_THEME = "Capitaine Cursors (Gruvbox)";
-      XCURSOR_SIZE = "32";
+    settings.default_session = {
+      command = "start-hyprland";
+      inherit user;
     };
   };
-  systemd.services.cage-tty1 = {
-    serviceConfig = {
-      Restart = "always";
-      RestartSec = 3;
-      StartLimitBurst = 0; # unlimited restarts
-    };
-    wants = [ "network-online.target" ];
-    after = [ "network-online.target" ];
-  };
-  # Stop switches from starting autovt@tty1, which kills cage
-  systemd.targets.getty.wants = lib.mkForce [ ];
 
+  services.hardware.openrgb = {
+    enable = true;
+    motherboard = "amd";
+    server.port = 6742;
+  };
+
+  # Apply colors after server is ready (client mode)
+  systemd.services.openrgb-colors = {
+    description = "Apply OpenRGB colors";
+    after = [ "openrgb.service" ];
+    requires = [ "openrgb.service" ];
+    wantedBy = [ "multi-user.target" ];
+    unitConfig = {
+      StartLimitIntervalSec = 90;
+      StartLimitBurst = 10;
+    };
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      # Devices (esp. the Corsair USB HID) enumerate after the server socket is
+      # up, so early runs hit "Invalid device ID"; retry until they appear.
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    path = [ pkgs.openrgb ];
+    script = ''
+      # Set Corsair zone sizes (resets on power cycle)
+      openrgb --client -d 1 -z 0 --mode static --size 30 --color 000000
+      openrgb --client -d 1 -z 1 --mode static --size 30 --color 000000
+      # Apply colors (Corsair at 50% brightness: 850255->43012B, 330066->1A0033)
+      openrgb --client -d 0 --mode static --color 330066
+      openrgb --client -d 1 -z 0 --mode direct --color 43012B
+      openrgb --client -d 1 -z 1 --mode direct --color 1A0033
+    '';
+  };
 
   # SFTP server: chrooted sftp user under ${dataDir}/sftp
   services.openssh = {
@@ -143,7 +181,7 @@ in
     enable = true;
     wait-online.anyInterface = true;
     links."10-wol" = {
-      matchConfig.MACAddress = "30:9c:23:3c:b9:01";
+      matchConfig.MACAddress = "d4:5d:64:d1:12:52";
       linkConfig = {
         NamePolicy = "kernel database onboard slot path";
         WakeOnLan = "magic";
@@ -152,7 +190,7 @@ in
     networks = {
       "10-wan" = {
         linkConfig.RequiredForOnline = "routable";
-        matchConfig.Name = [ "enp0s31f6" ];
+        matchConfig.Name = [ "enp3s0" ];
         # SNAT source for searx container, below DHCP pool (see containers/searx.nix).
         # /32 so it adds no prefix route; host LAN traffic keeps sourcing from the lease.
         address = [ "10.42.0.28/32" ];

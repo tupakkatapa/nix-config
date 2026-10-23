@@ -18,3 +18,6 @@ tmp
 # Private keys
 *-key.pem
 ca-key.pem
+
+# Working plans
+docs/plans/

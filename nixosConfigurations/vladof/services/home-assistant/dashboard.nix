@@ -159,7 +159,7 @@ in
             { type = "light"; entity = cfg.lights.bedroom; name = "Bedroom"; }
           ];
         }
-        # OpenRGB devices on torgue
+        # OpenRGB devices on vladof
         {
           type = "entities";
           title = "RGB";

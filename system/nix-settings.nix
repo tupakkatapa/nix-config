@@ -64,7 +64,7 @@ in
       sshKey = (lib.findFirst (k: k.type == "ed25519") null config.services.openssh.hostKeys).path;
       protocol = "ssh-ng";
       systems = [ "x86_64-linux" ];
-      maxJobs = 4;
+      maxJobs = 8;
       supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
     }];
     extraOptions = ''
