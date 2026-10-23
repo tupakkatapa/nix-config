@@ -55,7 +55,7 @@ in
 
       # Nix
       nfc = "nix flake check --impure --accept-flake-config";
-      buidl = "sudo nixos-rebuild test --impure --flake .#$(hostname) --accept-flake-config";
+      buidl = "nixos-rebuild test --sudo --ask-sudo-password --impure --flake path:.#$(hostname) --accept-flake-config";
       gc = "nix-collect-garbage --delete-older-than 7d";
       ns = "nix-shell -p";
 
@@ -91,7 +91,7 @@ in
         string repeat -n (math (string length -- $argv[1]) - 1) ../
       '';
       rbuidl = ''
-        nixos-rebuild test --impure --ask-sudo-password --sudo --flake .#$argv[1] --target-host $argv[1]
+        nixos-rebuild test --impure --ask-sudo-password --sudo --flake path:.#$argv[1] --target-host $argv[1]
       '';
       wrk = ''
         ssh -t vladof exec fish -C (string escape -- "cd $argv")
