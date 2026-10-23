@@ -15,17 +15,6 @@ let
   caltui = "${pkgs.caltui}/bin/caltui";
   ddc-brightness = "${pkgs.monitor-adjust}/bin/ddc-brightness";
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
-
-  hasTmux = config.programs.tmux.enable;
-  tmux = "${pkgs.tmux}/bin/tmux";
-
-  tmux-status = pkgs.writeShellScript "tmux-status" ''
-    export TMUX_TMPDIR="''${TMUX_TMPDIR:-$XDG_RUNTIME_DIR}"
-    count=$(${tmux} list-sessions 2>/dev/null | wc -l)
-    sessions=$(${tmux} list-sessions 2>/dev/null || echo "no sessions")
-    tooltip=$(echo "$sessions" | sed 's/"/\\"/g' | tr '\n' '\t' | sed 's/\t/\\n/g')
-    echo "{\"text\": \"$count\", \"tooltip\": \"$tooltip\"}"
-  '';
 in
 {
   programs.waybar = {
@@ -51,8 +40,6 @@ in
 
       modules-right = [
         "tray"
-        "custom/claude-afk"
-      ] ++ (if hasTmux then [ "custom/tmux" ] else [ ]) ++ [
         "custom/ping-sweep"
         "group/hardware"
         "group/connectivity"
@@ -237,21 +224,6 @@ in
 
       tray = { spacing = 8; };
 
-      "custom/claude-afk" = {
-        exec = "systemctl --user is-active --quiet claude-afk && echo '󰂞 afk' || echo '󰂛 afk'";
-        interval = 5;
-        on-click = "systemctl --user is-active --quiet claude-afk && systemctl --user stop claude-afk || systemctl --user start claude-afk";
-        tooltip = false;
-      };
-
-      "custom/tmux" = {
-        exec = "${tmux-status}";
-        return-type = "json";
-        interval = 5;
-        format = "󰆍 {}";
-        on-click = "TMUX_TMPDIR=$XDG_RUNTIME_DIR ${TERMINAL} -e ${tmux} new-session -A";
-      };
-
       memory = {
         format = "󰍛 {used:0.0f}/{total:0.0f} GiB";
         tooltip-format = "{used:0.1f}/{total:0.1f} GiB used\nSwap: {swapUsed:0.1f}/{swapTotal:0.1f} GiB";
@@ -303,8 +275,6 @@ in
       #custom-player,
       #custom-hostname,
       #custom-ping-sweep,
-      #custom-claude-afk,
-      #custom-tmux,
       #window,
       #hardware,
       #connectivity {

@@ -3,25 +3,9 @@ let
   git = "${pkgs.git}/bin/git";
   permissions = import ./permissions.nix;
 
-  # ntfy notification helper
-  notify = message: ''
-    notify-send -u normal 'Claude Code' '${message}'; \
-    systemctl --user is-active --quiet claude-afk && \
-    curl -s -H 'Title: Claude Code' -H 'Priority: default' -H 'Tags: robot' -H 'Icon: https://www.anthropic.com/favicon.ico' -d '${message}' https://ntfy.coditon.com/claude || true
-  '';
+  notify = message: "notify-send -u normal 'Claude Code' '${message}'";
 in
 {
-  # Claude Code AFK notification service
-  systemd.user.services.claude-afk = {
-    Unit.Description = "Claude Code AFK notification mode";
-    Service = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = "${pkgs.coreutils}/bin/true";
-      ExecStartPost = "${pkgs.curl}/bin/curl -s -H 'Title: AFK Mode' -H 'Tags: robot' -H 'Icon: https://www.anthropic.com/favicon.ico' -d 'Notifications enabled' https://ntfy.coditon.com/claude";
-    };
-  };
-
   # Cleanup orphaned Claude subagents and MCP servers which clog RAM
   imports = [ (import ./cleanup.nix { inherit pkgs; }) ];
 
