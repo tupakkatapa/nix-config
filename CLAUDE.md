@@ -62,7 +62,7 @@ home-manager/
     .config/base01/                # Shared graphical "rice" (hyprland, waybar, wofi, mako, gtk, foot theme, nixvim theme)
       rice01/                      # Current rice variant (colors, wallpaper, animations)
 packages/                          # Custom packages (kb-shortcuts, monitor-adjust, pinit, 2mp3, claude-plugins, fat-nix-deps, webp-convert)
-docs/                              # Guides (new host, yubikey, agent forwarding, fido2-luks, CA cert, bluetooth devices)
+docs/                              # Guides (new host, yubikey, agent forwarding, fido2-luks, CA cert, bluetooth devices, TPM host key)
 ```
 
 ### User config layering
