@@ -5,6 +5,7 @@
 }:
 let
   user = "kari";
+  hyperionWgKey = "jRlrkYOWatx3pvJPt22uuWDiWJ8K9d+teJ2IEiMJ3SA=";
 in
 {
   # This configuration extends the minimal-gui version
@@ -220,6 +221,23 @@ in
     ]);
   };
 
+  # networkd resolves Endpoint once; the uplink's DNS answers vpn.coditon.com
+  # with the LAN address at home, so a roamed client must look it up again
+  systemd.services.wg-home-reresolve = {
+    description = "Re-resolve the home tunnel endpoint";
+    after = [ "systemd-networkd.service" ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      [ -e /sys/class/net/home ] || exit 0
+      ${pkgs.wireguard-tools}/bin/wg set home peer ${hyperionWgKey} endpoint vpn.coditon.com:51820
+    '';
+  };
+  systemd.timers.wg-home-reresolve = {
+    wantedBy = [ "timers.target" ];
+    timerConfig.OnUnitActiveSec = "30s";
+    timerConfig.OnBootSec = "30s";
+  };
+
   systemd.network = {
     netdevs = {
       "99-home" = {
@@ -234,7 +252,7 @@ in
           FirewallMark = 34952;
         };
         wireguardPeers = [{
-          PublicKey = "jRlrkYOWatx3pvJPt22uuWDiWJ8K9d+teJ2IEiMJ3SA=";
+          PublicKey = hyperionWgKey;
           AllowedIPs = [ "0.0.0.0/0" "10.42.0.0/24" "172.16.16.0/24" "fd42:42:42:1::/64" "fd42:42:42:3::/64" ];
           Endpoint = [ "vpn.coditon.com:51820" ];
           PersistentKeepalive = 25;
