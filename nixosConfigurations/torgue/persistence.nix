@@ -2,12 +2,6 @@
 let
   dataDir = "/mnt/860";
   device = "/dev/disk/by-uuid/d69f5624-937a-453d-937c-eae63dd94b06";
-  # Auxiliary subvols: nofail (boot continues if missing)
-  aux = lib.mapAttrs (_: subvol: {
-    inherit device;
-    fsType = "btrfs";
-    options = [ "compress=zstd:2" "noatime" "nofail" "subvol=${subvol}" ];
-  });
   # Boot-critical subvols: mounted in initrd, override kexec-tree defaults
   boot = lib.mapAttrs (_: subvol: lib.mkForce {
     inherit device;
@@ -17,18 +11,14 @@ let
   });
 in
 {
-  fileSystems = aux
+  fileSystems = boot
     {
-      # User data
-      "/home/kari/.steam" = "@kari-steam-cfg";
-      "/home/kari/.local/share/Steam" = "@kari-steam-install";
-    } // boot {
-    # dataDir: agenix reads SSH host key from here in stage-2
-    "${dataDir}" = "@main";
-    # Persistent nix rw-store (overrides kexec-tree.nix tmpfs).
-    # Subvol must contain `store/` and `work/` subdirs (create on disk).
-    "/nix/.rw-store" = "@nix-rw-store";
-  } // {
+      # dataDir: agenix reads SSH host key from here in stage-2
+      "${dataDir}" = "@main";
+      # Persistent nix rw-store (overrides kexec-tree.nix tmpfs).
+      # Subvol must contain `store/` and `work/` subdirs (create on disk).
+      "/nix/.rw-store" = "@nix-rw-store";
+    } // {
     # On-demand SFTP mount from vladof (YubiKey-resident key, requires touch)
     "/mnt/sftp" = {
       device = "sftp@10.42.0.8:/";
@@ -74,15 +64,11 @@ in
     }
   ];
 
-  # Parent dirs for nested subvol mountpoints
+  # SFTP mountpoint; home parents owned by kari, else nested tmpfiles and agenix paths create them as root
   systemd.tmpfiles.rules = [
     "d /mnt/sftp                755 root root -"
     "d /home/kari/.config       755 kari kari -"
     "d /home/kari/.local        755 kari kari -"
     "d /home/kari/.local/share  755 kari kari -"
-
-    # Enforce ownership on subvol mountpoints
-    "Z /home/kari/.steam                   - kari kari -"
-    "Z /home/kari/.local/share/Steam       - kari kari -"
   ];
 }
