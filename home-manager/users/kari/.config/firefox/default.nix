@@ -6,7 +6,8 @@
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) FONT;
+  inherit (config.home.sessionVariables) FONT THEME;
+  colors = customLib.colors.${THEME};
 
   # Convert about:config prefs to policy format
   lockPrefs = builtins.mapAttrs (_: value: { Value = value; Status = "locked"; });
@@ -19,6 +20,14 @@ let
   localSettings = {
     # Skips the install-time help tab
     ${firefox-addons.sponsorblock.addonId} = { alreadyInstalled = true; };
+    ${firefox-addons.dark-background-light-text.addonId} = {
+      default_foreground_color = "#${colors.base05}";
+      default_background_color = "#${colors.base00}";
+      default_link_color = "#${colors.base0D}";
+      default_visited_color = "#${colors.base0E}";
+      default_active_color = "#${colors.base08}";
+      default_selection_color = "#${colors.base02}";
+    };
   };
   syncSettings = {
     ${firefox-addons.vimium.addonId} = lib.importJSON ./extension-settings/vimium.json;
