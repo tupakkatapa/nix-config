@@ -84,6 +84,18 @@ in
     };
   };
 
+  # systembus-notify must match earlyoom's (both mkDefault)
+  services.smartd = {
+    enable = true;
+    notifications.systembus-notify.enable = true;
+  };
+
+  # Repairs bad blocks from the RAID1 mirror
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [ dataDir ];
+  };
+
   # Persistent dir tree
   systemd.tmpfiles.rules = [
     "d ${dataDir}/ssh                            700 root root                                     -"
