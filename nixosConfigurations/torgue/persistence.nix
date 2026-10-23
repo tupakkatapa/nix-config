@@ -23,9 +23,6 @@ in
       "/home/kari/.config/mozilla" = "@kari-mozilla";
       "/home/kari/.steam" = "@kari-steam-cfg";
       "/home/kari/.local/share/Steam" = "@kari-steam-install";
-
-      # System state
-      "/var/lib/bluetooth" = "@var-lib-bluetooth";
     } // boot {
     # dataDir: agenix reads SSH host key from here in stage-2
     "${dataDir}" = "@main";

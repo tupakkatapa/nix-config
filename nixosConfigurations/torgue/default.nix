@@ -17,6 +17,18 @@
     storageMode = "local";
   };
 
+  # Bluetooth pairing keys; re-pairing a device needs a re-export
+  age.secrets.bt-galaxy-buds4-pro = {
+    rekeyFile = ./secrets/bt-galaxy-buds4-pro.age;
+    path = "/var/lib/bluetooth/BC:09:1B:26:19:8D/78:C1:1D:EA:46:EF/info";
+    symlink = false;
+  };
+  age.secrets.bt-mx-master-2s = {
+    rekeyFile = ./secrets/bt-mx-master-2s.age;
+    path = "/var/lib/bluetooth/BC:09:1B:26:19:8D/CC:47:F4:B7:4B:AF/info";
+    symlink = false;
+  };
+
   imports = [
     ../.config/hw/bluetooth.nix
     ../.config/hw/cpu-amd.nix

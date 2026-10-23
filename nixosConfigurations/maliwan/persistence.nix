@@ -21,9 +21,6 @@ in
     {
       # User data
       "/home/kari/.config/mozilla" = "@kari-mozilla";
-
-      # System state
-      "/var/lib/bluetooth" = "@var-lib-bluetooth";
     } // boot {
     # dataDir: agenix reads SSH host key from here in stage-2
     "${dataDir}" = "@main";
