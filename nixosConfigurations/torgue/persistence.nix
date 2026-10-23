@@ -20,13 +20,9 @@ in
   fileSystems = aux
     {
       # User data
-      "/home/kari/.config/guitarix" = "@kari-guitarix";
       "/home/kari/.config/mozilla" = "@kari-mozilla";
-      "/home/kari/.BitwigStudio" = "@kari-bitwig-config";
-      "/home/kari/Bitwig Studio" = "@kari-bitwig-projects";
       "/home/kari/.steam" = "@kari-steam-cfg";
       "/home/kari/.local/share/Steam" = "@kari-steam-install";
-      "/home/kari/.local/share/zoxide" = "@kari-zoxide";
 
       # System state
       "/var/lib/bluetooth" = "@var-lib-bluetooth";
@@ -90,12 +86,8 @@ in
     "d /home/kari/.local/share  755 kari kari -"
 
     # Enforce ownership on subvol mountpoints
-    "Z /home/kari/.config/guitarix         - kari kari -"
     "Z /home/kari/.config/mozilla          - kari kari -"
-    "Z /home/kari/.BitwigStudio            - kari kari -"
-    "Z /home/kari/Bitwig\\x20Studio         - kari kari -"
     "Z /home/kari/.steam                   - kari kari -"
     "Z /home/kari/.local/share/Steam       - kari kari -"
-    "Z /home/kari/.local/share/zoxide      - kari kari -"
   ];
 }

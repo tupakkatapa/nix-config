@@ -195,8 +195,6 @@ in
     home.packages = (with pkgs; [
       android-tools
       monitor-adjust
-      guitarix
-      gxplugins-lv2
       crosspipe
       wireguard-go
       wireguard-tools
