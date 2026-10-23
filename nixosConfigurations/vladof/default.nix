@@ -3,6 +3,7 @@
 , config
 , inputs
 , unstable
+, outputs
 , ...
 }:
 let
@@ -36,6 +37,18 @@ in
 
   # Disk-aware garbage collection
   sys2x.gc.useDiskAware = true;
+
+  # Remote builder for the desktops; the forced command keeps their host keys to the store protocol
+  users.users.nixremote = {
+    isSystemUser = true;
+    group = "nixremote";
+    shell = pkgs.bashInteractive;
+    openssh.authorizedKeys.keys = map
+      (host: ''command="${config.nix.package}/bin/nix-daemon --stdio",restrict ${outputs.nixosConfigurations.${host}.config.age.rekey.hostPubkey}'')
+      [ "torgue" "maliwan" ];
+  };
+  users.groups.nixremote = { };
+  nix.settings.trusted-users = [ "nixremote" ];
 
   # Cage-kiosk (firefox)
   services.cage = {

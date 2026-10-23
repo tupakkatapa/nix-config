@@ -2,7 +2,11 @@
 , config
 , lib
 , ...
-}: {
+}:
+let
+  builds = builtins.elem config.networking.hostName [ "torgue" "maliwan" ];
+in
+{
   nix = {
     # This will add each flake input as a registry
     # To make nix3 commands consistent with your flake
@@ -29,6 +33,8 @@
       # @wheel is needed to receive unsigned closures from nixos-rebuild
       # --target-host, which copies as the SSH user rather than through sudo
       trusted-users = [ "root" "@wheel" ];
+      # vladof builds; local builds only via --max-jobs auto (e.g. maliwan offline)
+      max-jobs = lib.mkIf builds 0;
 
       # hyperion builds the netboot images, so it must not trust a cache
       # vladof can sign for
@@ -50,20 +56,17 @@
       ];
     };
 
-    # buildMachines = [
-    #   {
-    #     # For this to work, the host should be listed in the known hosts for the root user
-    #     # To do this, run: sudo su -c 'ssh kari@buidl0.ponkila.com -i /root/.ssh/id_ed25519'
-    #     systems = ["aarch64-linux" "i686-linux" "x86_64-linux"];
-    #     supportedFeatures = ["benchmark" "big-parallel" "kvm" "nixos-test"];
-    #     sshUser = "core";
-    #     protocol = "ssh";
-    #     sshKey = "/root/.ssh/id_ed25519";
-    #     hostName = "192.168.100.5";
-    #     maxJobs = 20;
-    #   }
-    # ];
     distributedBuilds = true;
+    buildMachines = lib.optionals builds [{
+      # nix-daemon connects as root: no ssh alias, and resolved skips single-label names
+      hostName = "10.42.0.8";
+      sshUser = "nixremote";
+      sshKey = (lib.findFirst (k: k.type == "ed25519") null config.services.openssh.hostKeys).path;
+      protocol = "ssh-ng";
+      systems = [ "x86_64-linux" ];
+      maxJobs = 4;
+      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+    }];
     extraOptions = ''
       # optional, useful when the builder has a faster internet connection than yours
       builders-use-substitutes = true

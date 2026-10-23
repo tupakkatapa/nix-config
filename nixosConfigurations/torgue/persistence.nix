@@ -15,9 +15,6 @@ in
     {
       # dataDir: agenix reads SSH host key from here in stage-2
       "${dataDir}" = "@main";
-      # Persistent nix rw-store (overrides kexec-tree.nix tmpfs).
-      # Subvol must contain `store/` and `work/` subdirs (create on disk).
-      "/nix/.rw-store" = "@nix-rw-store";
     } // {
     # On-demand SFTP mount from vladof (YubiKey-resident key, requires touch)
     "/mnt/sftp" = {
