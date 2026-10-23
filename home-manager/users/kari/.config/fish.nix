@@ -56,6 +56,7 @@ in
       # Nix
       nfc = "nix flake check --impure --accept-flake-config";
       buidl = "nixos-rebuild test --sudo --ask-sudo-password --impure --flake path:.#$(hostname) --accept-flake-config";
+      refidn = "sudo nix run github:tupakkatapa/nix-config#refind-generate -- github:tupakkatapa/nix-config -n $(hostname) -t 1 --prune -i /dev/sdX";
       gc = "nix-collect-garbage --delete-older-than 7d";
       ns = "nix-shell -p";
 

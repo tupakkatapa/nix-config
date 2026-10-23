@@ -77,13 +77,13 @@ in
           HostName = "10.42.0.8";
           ForwardAgent = true;
         };
-        # 10.42.0.9 is leased to the wired MAC, so the tunnel address is stable
+        # 10.42.0.9 is leased to the wired MAC; on wifi or away, use -wg
         "maliwan" = {
-          HostName = "172.16.16.3";
+          HostName = "10.42.0.9";
           ForwardAgent = true;
         };
-        "maliwan-lan" = {
-          HostName = "10.42.0.9";
+        "maliwan-wg" = {
+          HostName = "172.16.16.3";
           ForwardAgent = true;
         };
         "10.42.0.*".StrictHostKeyChecking = "no";
