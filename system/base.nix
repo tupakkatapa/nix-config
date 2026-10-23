@@ -81,6 +81,8 @@ in
     "-w /run/wrappers/bin/sudo -p x -k privilege"
     "-a always,exit -F arch=b64 -S init_module,finit_module,delete_module -k modules"
   ];
+  # The sudo watch needs /run/wrappers to exist
+  systemd.services.audit-rules-nixos.after = [ "suid-sgid-wrappers.service" ];
   security.auditd.settings = {
     max_log_file = if persistentLogs then 100 else 16; # MB per file
     num_logs = if persistentLogs then 10 else 4; # ~1G or ~64M total
