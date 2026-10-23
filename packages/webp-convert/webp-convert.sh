@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -uo pipefail
-trap 'exit 0' SIGINT
 
 verbose=false
 

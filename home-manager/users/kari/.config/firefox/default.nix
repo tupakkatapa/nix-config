@@ -189,20 +189,6 @@ in
     };
   };
 
-  # Converts WebP that still lands in Downloads (direct .webp links)
-  systemd.user.paths.webp-convert = {
-    Unit.Description = "Watch downloads for WebP images";
-    Path.PathChanged = config.xdg.userDirs.download;
-    Install.WantedBy = [ "paths.target" ];
-  };
-  systemd.user.services.webp-convert = {
-    Unit.Description = "Convert downloaded WebP images to JPEG or PNG";
-    Service = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.webp-convert}/bin/webp-convert ${lib.escapeShellArg config.xdg.userDirs.download}";
-    };
-  };
-
   # Seeds a fresh profile; each file is built aside and moved in only when
   # complete, and a failure warns instead of failing the whole activation
   home.activation.firefoxSeed = lib.hm.dag.entryAfter [ "linkGeneration" ] (''

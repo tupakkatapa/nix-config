@@ -94,6 +94,22 @@ in
     '';
   };
 
+  # WebP saved by clients' Firefox; transmission's files may still be seeding
+  systemd.paths.webp-convert = {
+    wantedBy = [ "multi-user.target" ];
+    pathConfig.PathChanged = "${dataDir}/sftp/dnld";
+  };
+  systemd.services.webp-convert = {
+    description = "Convert downloaded WebP images to JPEG or PNG";
+    startLimitIntervalSec = 0;
+    serviceConfig = {
+      Type = "oneshot";
+      User = "sftp";
+      Group = "sftp";
+    };
+    script = "${pkgs.findutils}/bin/find ${dataDir}/sftp/dnld -maxdepth 1 -type f -iname '*.webp' -user sftp -exec ${pkgs.webp-convert}/bin/webp-convert {} +";
+  };
+
   users.users.sftp = {
     isSystemUser = true;
     useDefaultShell = false;

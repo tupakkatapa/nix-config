@@ -62,7 +62,7 @@ home-manager/
     .config/base01/                # Shared graphical "rice" (hyprland, waybar, wofi, mako, gtk, foot theme, nixvim theme)
       rice01/                      # Current rice variant (colors, wallpaper, animations)
 packages/                          # Custom packages (kb-shortcuts, monitor-adjust, pinit, 2mp3, claude-plugins, fat-nix-deps, webp-convert)
-docs/                              # Setup guides (new host, yubikey, agent forwarding, fido2-luks)
+docs/                              # Guides (new host, yubikey, agent forwarding, fido2-luks, CA cert, bluetooth devices)
 ```
 
 ### User config layering
@@ -81,7 +81,7 @@ docs/                              # Setup guides (new host, yubikey, agent forw
 - **customLib** injected via `specialArgs` to all modules. Contains: `customLib.hyprland.{generateMonitors, generateWorkspaces, generateWorkspaceBindings}`, `customLib.xdg.createMimes`, `customLib.colors.<scheme>`.
 - **Conditional host HM import**: `optionalPaths [ ../../hosts/${config.networking.hostName}/default.nix ]` — only imports if the path exists.
 - **kexecTree**: All hosts build a kexec-bootable squashfs image via `system/kexec-tree.nix` with overlay root filesystem.
-- **Runtime modules**: `torgue` uses `services.runtimeModules` to toggle configs (retroarch, ollama, daw) at runtime without rebuild.
+- **Runtime modules**: `torgue` uses `services.runtimeModules` to toggle configs (retroarch, ollama) at runtime without rebuild.
 - **Persistence**: Ephemeral hosts use `state-saver` module + host-specific `persistence.nix` to bind-mount persistent data from attached drives.
 - **Secrets**: agenix + agenix-rekey with FIDO2 HMAC age plugins. Master identity keys are `master.hmac` and `master-2.hmac` in repo root.
 
@@ -111,7 +111,7 @@ docs/                              # Setup guides (new host, yubikey, agent forw
 - **nixos.fi** (informational): `github:majbacka-labs/nixos.fi` — Public docs about the Nixie netboot approach.
 - **nixos-runtime-modules**: `github:tupakkatapa/nixos-runtime-modules` — Toggle NixOS module configurations at runtime.
 - **nixos-sftp-mount**: `github:tupakkatapa/nixos-sftp-mount` — NixOS module for SFTP server/client mounting.
-- **mozid**: `github:tupakkatapa/mozid` — Firefox extension ID resolver (CLI + Nix lib).
+- **mozid**: `github:tupakkatapa/mozid` — Firefox extension ID resolver; used here only as the `mozid` fish abbreviation.
 
 ## Code style
 
