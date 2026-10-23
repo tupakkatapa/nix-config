@@ -56,6 +56,11 @@ in
       path = "/home/${user}/.local/share/atuin/session";
       owner = user;
     };
+    # Torrent Control logs in to vladof's transmission with the same credentials
+    "torrent-control-creds" = {
+      rekeyFile = ../../../nixosConfigurations/vladof/secrets/transmission-creds.age;
+      owner = user;
+    };
   };
 
   # agenix drops the key files here

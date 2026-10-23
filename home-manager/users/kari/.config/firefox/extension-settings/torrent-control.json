@@ -1,0 +1,27 @@
+{
+  "globals": {
+    "currentServer": 0,
+    "addPaused": false,
+    "addAdvanced": false,
+    "contextMenu": 1,
+    "catchUrls": true,
+    "enableNotifications": true,
+    "enableRssFeeds": true,
+    "labels": [],
+    "matchRegExp": []
+  },
+  "servers": [
+    {
+      "name": "Default",
+      "application": "transmission",
+      "hostname": "https://torrent.coditon.com/",
+      "username": "",
+      "password": "",
+      "directories": [],
+      "clientOptions": {},
+      "httpAuth": null,
+      "defaultLabel": null,
+      "defaultDirectory": null
+    }
+  ]
+}

@@ -219,6 +219,28 @@
         "type": "github"
       }
     },
+    "firefox-addons": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "pkgs/firefox-addons",
+        "lastModified": 1792728173,
+        "narHash": "sha256-Ky9DXNJOvxbK6GMGuTkQzHiC4dYOuyfOoFvKlBhWChU=",
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "rev": "972a75a44c88022030bf2b52adf84fb31ea8bbd0",
+        "type": "gitlab"
+      },
+      "original": {
+        "dir": "pkgs/firefox-addons",
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "type": "gitlab"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -1069,26 +1091,6 @@
         "type": "github"
       }
     },
-    "mozid": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1771793506,
-        "narHash": "sha256-2wV29yBjq3DytCfh7gGGe4HSyDPbmmvqsuWbXBSIG3c=",
-        "owner": "tupakkatapa",
-        "repo": "mozid",
-        "rev": "8e28335bd15c83f83408cf0542a465d1d1b0e8ae",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tupakkatapa",
-        "repo": "mozid",
-        "type": "github"
-      }
-    },
     "nix": {
       "inputs": {
         "flake-compat": [
@@ -1550,6 +1552,7 @@
         "agenix": "agenix",
         "agenix-rekey": "agenix-rekey",
         "anytui": "anytui",
+        "firefox-addons": "firefox-addons",
         "flake-parts": "flake-parts_3",
         "git-hooks": "git-hooks_2",
         "herdr": "herdr",
@@ -1557,7 +1560,6 @@
         "kaloriina": "kaloriina",
         "llm-agents": "llm-agents",
         "molesk": "molesk",
-        "mozid": "mozid",
         "nix-extras": "nix-extras",
         "nix-index-database": "nix-index-database",
         "nixie": "nixie",

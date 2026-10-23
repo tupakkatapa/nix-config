@@ -1,0 +1,6 @@
+{
+  "keyMappings": "# Close tab with \"q\", restore with \"Q\"\nunmap x\nunmap X\nmap q removeTab\nmap Q restoreTab\n\n# Switch J and K\nmap J nextTab\nmap K previousTab",
+  "searchEngines": "# Translate\ndl: https://www.deepl.com/translator#fi/en/%s DeepL\ngt: https://translate.google.com/?sl=fi&tl=en&text=%s&op=translate Google translate\n\n# Search\ns: https://search.coditon.com/search?q=%s SearXNG\ng: https://www.google.com/search?q=%s Google\nd: https://duckduckgo.com/?q=%s DuckDuckGo\n\n# Git\nghn: https://github.com/search?q=language%3Anix+%s&type=code GitHub Nix\nghc: https://github.com/search?q=%s&type=code GitHub Code\nghu: https://github.com/search?q=%s&type=users GitHub Users\nghr: https://github.com/search?q=%s&type=repositories GitHub Repo\n\n# Languages\nrs: https://crates.io/search?q=%s Crates\njs: https://www.npmjs.com/search?q=%s Node\npy: https://pypi.org/search/?q=%s PyPi\n\n# Nix\nno: https://search.nixos.org/options?channel=unstable&query=%s NixOS Options\nnp: https://search.nixos.org/packages?channel=unstable&query=%s NixOS Packages\nhm: https://home-manager-options.extranix.com/?query=%s Home Manager Options\n\n# Other\nyt: https://www.youtube.com/results?search_query=%s Youtube\ngm: https://www.google.com/maps?q=%s Google maps",
+  "settingsVersion": "2.1.2",
+  "searchUrl": "https://search.coditon.com/search?q="
+}

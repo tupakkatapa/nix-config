@@ -32,6 +32,8 @@
     # Other
     anytui.inputs.nixpkgs.follows = "nixpkgs";
     anytui.url = "github:tupakkatapa/anytui";
+    firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
+    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     herdr.inputs.nixpkgs.follows = "nixpkgs";
     herdr.url = "github:ogulcancelik/herdr";
     kaloriina.inputs.nixpkgs.follows = "nixpkgs";
@@ -40,8 +42,6 @@
     llm-agents.url = "github:numtide/llm-agents.nix";
     molesk.inputs.nixpkgs.follows = "nixpkgs";
     molesk.url = "github:tupakkatapa/molesk";
-    mozid.inputs.nixpkgs.follows = "nixpkgs";
-    mozid.url = "github:tupakkatapa/mozid";
     nix-extras.inputs.nixpkgs.follows = "nixpkgs";
     nix-extras.url = "git+https://git.sr.ht/~dblsaiko/nix-extras";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
@@ -76,6 +76,7 @@
             overlays = [
               self.overlays.default
               inputs.anytui.overlays.default
+              inputs.firefox-addons.overlays.default
             ];
           };
           overlayAttrs = {
@@ -83,6 +84,7 @@
               # Custom packages used in configurations
               kb-shortcuts
               monitor-adjust
+              webp-convert
               wm-helpers
               # Inputs
               codex
@@ -128,6 +130,8 @@
             shellHook = config.pre-commit.installationScript;
           };
 
+          checks.webp-convert = config.packages.webp-convert.tests.convert;
+
           # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
           packages = {
             "2mp3" = pkgs.callPackage ./packages/2mp3 { };
@@ -135,6 +139,7 @@
             "kb-shortcuts" = pkgs.callPackage ./packages/kb-shortcuts { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
             "pinit" = pkgs.callPackage ./packages/pinit { };
+            "webp-convert" = pkgs.callPackage ./packages/webp-convert { };
             "wm-helpers" = pkgs.callPackage ./packages/wm-helpers { };
             # Inputs
             inherit (inputs'.nixie.packages) lkddb-filter;
@@ -188,6 +193,7 @@
                 nixpkgs.overlays = [
                   self.overlays.default
                   inputs.anytui.overlays.default
+                  inputs.firefox-addons.overlays.default
                 ];
                 system.stateVersion = "25.11";
               }
@@ -219,7 +225,6 @@
                   extraSpecialArgs = {
                     inherit (config.networking) hostName;
                     inherit customLib;
-                    inherit (inputs) mozid;
                     unstable = import inputs.nixpkgs-unstable {
                       system = config.system or "x86_64-linux";
                       config.allowUnfree = true;

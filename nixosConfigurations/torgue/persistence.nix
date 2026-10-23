@@ -20,7 +20,6 @@ in
   fileSystems = aux
     {
       # User data
-      "/home/kari/.config/mozilla" = "@kari-mozilla";
       "/home/kari/.steam" = "@kari-steam-cfg";
       "/home/kari/.local/share/Steam" = "@kari-steam-install";
     } // boot {
@@ -83,7 +82,6 @@ in
     "d /home/kari/.local/share  755 kari kari -"
 
     # Enforce ownership on subvol mountpoints
-    "Z /home/kari/.config/mozilla          - kari kari -"
     "Z /home/kari/.steam                   - kari kari -"
     "Z /home/kari/.local/share/Steam       - kari kari -"
   ];

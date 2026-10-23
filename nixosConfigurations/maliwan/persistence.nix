@@ -2,12 +2,6 @@
 let
   dataDir = "/mnt/lenovo";
   device = "/dev/disk/by-uuid/9425613c-6e4f-41d2-8f67-7473e523a6bf";
-  # Auxiliary subvols: nofail (boot continues if missing)
-  aux = lib.mapAttrs (_: subvol: {
-    inherit device;
-    fsType = "btrfs";
-    options = [ "compress=zstd:2" "noatime" "nofail" "subvol=${subvol}" ];
-  });
   # Boot-critical subvols: mounted in initrd, override kexec-tree defaults
   boot = lib.mapAttrs (_: subvol: lib.mkForce {
     inherit device;
@@ -17,17 +11,14 @@ let
   });
 in
 {
-  fileSystems = aux
+  fileSystems = boot
     {
-      # User data
-      "/home/kari/.config/mozilla" = "@kari-mozilla";
-    } // boot {
-    # dataDir: agenix reads SSH host key from here in stage-2
-    "${dataDir}" = "@main";
-    # Persistent nix rw-store (overrides kexec-tree.nix tmpfs).
-    # Subvol must contain `store/` and `work/` subdirs (create on disk).
-    "/nix/.rw-store" = "@nix-rw-store";
-  } // {
+      # dataDir: agenix reads SSH host key from here in stage-2
+      "${dataDir}" = "@main";
+      # Persistent nix rw-store (overrides kexec-tree.nix tmpfs).
+      # Subvol must contain `store/` and `work/` subdirs (create on disk).
+      "/nix/.rw-store" = "@nix-rw-store";
+    } // {
     # On-demand SFTP mount from vladof (YubiKey-resident key, requires touch)
     "/mnt/sftp" = {
       device = "sftp@10.42.0.8:/";
@@ -79,8 +70,5 @@ in
     "d /home/kari/.config       755 kari kari -"
     "d /home/kari/.local        755 kari kari -"
     "d /home/kari/.local/share  755 kari kari -"
-
-    # Enforce ownership on subvol mountpoints
-    "Z /home/kari/.config/mozilla          - kari kari -"
   ];
 }

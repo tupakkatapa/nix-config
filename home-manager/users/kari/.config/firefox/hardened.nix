@@ -149,6 +149,8 @@
 
   # Extensions
   "extensions.enabledScopes" = 5;
+  # Profile-scope extensions come from Nix, no approval prompt
+  "extensions.autoDisableScopes" = 0;
   "extensions.postDownloadThirdPartyPrompt" = false;
 
   # Shutdown Settings & Sanitizing
