@@ -55,8 +55,8 @@ in
           "fd42:42:42:2::1" # WiFi
           "172.16.16.1" # WireGuard
           "fd42:42:42:3::1" # WireGuard
-          "172.16.17.1" # WireGuard, garage tunnel
-          "fd42:42:42:4::1" # WireGuard, garage tunnel
+          "172.16.17.1" # WireGuard, wg1
+          "fd42:42:42:4::1" # WireGuard, wg1
         ];
 
         # Allow binding tunnel addresses before they are up
@@ -74,8 +74,8 @@ in
           "fd42:42:42:2::/64 allow" # WiFi
           "172.16.16.0/24 allow" # WireGuard
           "fd42:42:42:3::/64 allow" # WireGuard
-          "172.16.17.0/24 allow" # WireGuard, garage tunnel
-          "fd42:42:42:4::/64 allow" # WireGuard, garage tunnel
+          "172.16.17.0/24 allow" # WireGuard, wg1
+          "fd42:42:42:4::/64 allow" # WireGuard, wg1
         ];
 
         port = 53;
@@ -153,7 +153,6 @@ in
           ''"search.coditon.com. IN A 10.42.0.8"''
           ''"torrent.coditon.com. IN A 10.42.0.8"''
           ''"vault.coditon.com. IN A 10.42.0.8"''
-          ''"grafana.coditon.com. IN A 10.42.0.8"''
           ''"home.coditon.com. IN A 10.42.0.8"''
           ''"health.coditon.com. IN A 10.42.0.8"''
           ''"atuin.coditon.com. IN A 10.42.0.8"''

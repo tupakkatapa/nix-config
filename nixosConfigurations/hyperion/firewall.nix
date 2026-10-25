@@ -81,7 +81,7 @@ _:
 
       "enp1s0" = {
         allowedTCPPorts = [ ];
-        allowedUDPPorts = [ 51820 51822 ]; # WireGuard (wg0, wg1)
+        allowedUDPPorts = [ 51820 51822 51823 ]; # WireGuard (wg0, wg1, wg2)
       };
 
       "wg1" = {
@@ -146,15 +146,9 @@ _:
       # LAN and wg0 are the same trust domain, only egress is filtered
       iifname "br-lan" oifname "wg0" accept
 
-      # wg1: only garage on vladof, no other LAN access
-      iifname "wg1" oifname "br-lan" ip daddr 10.42.0.8 tcp dport { 3900, 3901, 3902, 3903 } accept
-      iifname "wg1" oifname "br-lan" ip6 daddr fd42:42:42:1::8 tcp dport { 3900, 3901, 3902, 3903 } accept
-      iifname "wg1" oifname "br-lan" drop
-      iifname "wg1" oifname { "enp1s0", "mullvad" } accept
-
-      # wg2: WAN only, no LAN access
-      iifname "wg2" oifname "br-lan" drop
-      iifname "wg2" oifname { "enp1s0", "mullvad" } accept
+      # wg1, wg2: WAN only, no LAN access
+      iifname { "wg1", "wg2" } oifname "br-lan" drop
+      iifname { "wg1", "wg2" } oifname { "enp1s0", "mullvad" } accept
 
       # Allow WiFi → WAN only (no LAN access - guest network)
       iifname "br-wifi" oifname { "enp1s0", "mullvad" } accept

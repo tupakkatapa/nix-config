@@ -83,6 +83,8 @@ in
         description = "Prometheus metrics retention.";
       };
 
+      grafana.enable = lib.mkEnableOption "Grafana" // { default = true; };
+
       grafana.domain = lib.mkOption {
         type = lib.types.str;
         default = "";
@@ -286,7 +288,7 @@ in
       # Reassert ownership on persisted @loki each boot (unpinned uid drifts)
       systemd.tmpfiles.rules = [ "Z /var/lib/loki - loki loki - -" ];
 
-      services.grafana = {
+      services.grafana = lib.mkIf cfg.server.grafana.enable {
         enable = true;
         settings = {
           server = {

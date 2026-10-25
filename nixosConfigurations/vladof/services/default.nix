@@ -109,11 +109,6 @@ let
       port = 8123;
       private = true;
     };
-    grafana = {
-      addr = "grafana.${domain}";
-      port = 3000;
-      private = true;
-    };
   };
 
   # Filter for public and private services
@@ -206,10 +201,17 @@ in
   imports = [
     (import ./containers { inherit pkgs lib config domain dataDir containerConfig containerSubnet inputs unstable; })
     (import ./home-assistant { inherit pkgs dataDir config; haConfig = serviceConfig.home-assistant; })
-    (import ./garage.nix { inherit pkgs config; })
-    (import ./grafana.nix { inherit domain dataDir config; })
     (import ./harmonia.nix { inherit config; })
   ];
+
+  services.monitoring = {
+    enable = true;
+    server = {
+      enable = true;
+      grafana.enable = false;
+      extraExporters.kaakkuri = "10.42.0.25:9100";
+    };
+  };
 
   # Reverse proxy
   services.caddy = {

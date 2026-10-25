@@ -36,16 +36,6 @@ in
     # Persistent nix rw-store (overrides kexec-tree.nix tmpfs).
     # Subvol must contain `store/` and `work/` subdirs (create on disk).
     "/nix/.rw-store" = "@nix-rw-store"; # mv to ssd
-  } // {
-    "/mnt/jhvst" = {
-      device = "/dev/disk/by-label/jhvst";
-      fsType = "btrfs";
-    };
-    "/mnt/archive" = {
-      device = "/dev/disk/by-uuid/7716e9fc-2f0e-4398-b1ff-df6723a01d2c";
-      fsType = "btrfs";
-      options = [ "compress=zstd:9" "noatime" "nofail" ];
-    };
   };
 
   # SSH host keys on disk
@@ -104,9 +94,6 @@ in
     "d ${dataDir}/home/root                      755 root root                                     -"
     "d ${dataDir}/home/root/logs                 755 root root                                     -"
     "d ${dataDir}/home/root/logs/audit           750 root root                                     -"
-    "d ${dataDir}/home/grafana                   755 grafana grafana                               -"
-    "d ${dataDir}/home/grafana/appdata           755 grafana grafana                               -"
-    "Z ${dataDir}/home/grafana/appdata/grafana   755 grafana grafana                               -"
 
     "v ${dataDir}/.snapshots                     750 root root                                     -"
 

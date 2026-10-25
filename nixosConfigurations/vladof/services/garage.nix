@@ -1,6 +1,10 @@
-{ pkgs, config, ... }:
+# Garage S3 node, not imported. To bring it back: mount a data disk in
+# persistence.nix, import this from services/default.nix with `dir` on that
+# disk, and open 3900-3903 from the peer's tunnel in hyperion's firewall.
+# secrets/garage-rpc-secret.age is the cluster secret the peer already has.
+{ pkgs, config, dir, ... }:
 let
-  garageDir = "/mnt/jhvst/garage";
+  garageDir = "${dir}/garage";
 in
 {
   services.garage = {

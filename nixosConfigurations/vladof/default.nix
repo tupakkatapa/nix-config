@@ -45,7 +45,6 @@ in
   imports = [
     (import ./services extendedArgs)
     (import ./persistence.nix extendedArgs)
-    (import ../.config/retroarch.nix (extendedArgs // { share = "${dataDir}/sftp/appdata/retroarch"; }))
     ../.config/hw/bluetooth.nix
     ../.config/hw/cpu-amd.nix
     ../.config/hw/gpu-amd.nix
@@ -56,6 +55,21 @@ in
     ../.config/nix-ld.nix
     ../.config/podman.nix
   ];
+
+  services.runtimeModules = {
+    enable = true;
+    flakeUrl = "path:${dataDir}/sftp/code/workspace/tupakkatapa/nix-config";
+    builtinModules.enable = true;
+    modules = [{
+      name = "retroarch";
+      imports = [ (import ../.config/retroarch.nix (extendedArgs // { share = "${dataDir}/sftp/appdata/retroarch"; })) ];
+      postEnable = "retroarch";
+    }];
+  };
+
+  # Overrides the graphical-desktop default set (CJK, unifont, emoji)
+  fonts.enableDefaultPackages = false;
+  fonts.packages = [ pkgs.dejavu_fonts pkgs.liberation_ttf ];
 
   # Disk-aware garbage collection
   sys2x.gc.useDiskAware = true;
@@ -72,11 +86,11 @@ in
   users.groups.nixremote = { };
   nix.settings.trusted-users = [ "nixremote" ];
 
-  # Couch desktop on the TV: autologin into Hyprland
+  # Couch desktop on the TV: autologin into sway
   services.greetd = {
     enable = true;
     settings.default_session = {
-      command = "start-hyprland";
+      command = "sway";
       inherit user;
     };
   };
