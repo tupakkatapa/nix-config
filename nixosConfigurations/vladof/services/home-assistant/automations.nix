@@ -260,7 +260,7 @@ builtins.concatMap mkSlotAutomation cfg.scheduleSlots
     ];
     action = [{
       service = "switch.turn_on";
-      target.entity_id = "switch.torgue";
+      target.entity_id = "switch.maliwan";
     }];
   }
 ]

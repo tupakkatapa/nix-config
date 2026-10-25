@@ -2,23 +2,6 @@
 
 All notable hardware specifications for this flake's hosts are documented in this file.
 
-## torgue
-
-Diskless, netboots from hyperion.
-
-| | |
-| :-- | :-- |
-| **Model/Board** | MSI B250 PC MATE |
-| **Case** | BFC-NEO-100-KKXSB-RP |
-| **CPU** | Intel Core i3-6300 - 2C/4T, 3.8 GHz, LGA1151 |
-| **Cooling** | Intel stock cooler |
-| **GPU** | Intel HD Graphics 530 |
-| **RAM** | 72 GiB DDR4 @ 2133 MT/s - 4+32+4+32 GiB |
-| **PCIe** | - |
-| **PSU** | Corsair VS550 550W |
-| **Storage** | - |
-| **Display** | 3440x1440 21:9 |
-
 ## maliwan
 
 Diskless, boots rEFInd from USB.

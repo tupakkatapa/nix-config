@@ -81,7 +81,7 @@ in
     shell = pkgs.bashInteractive;
     openssh.authorizedKeys.keys = map
       (host: ''command="${config.nix.package}/bin/nix-daemon --stdio",restrict ${outputs.nixosConfigurations.${host}.config.age.rekey.hostPubkey}'')
-      [ "torgue" "maliwan" ];
+      [ "maliwan" ];
   };
   users.groups.nixremote = { };
   nix.settings.trusted-users = [ "nixremote" ];

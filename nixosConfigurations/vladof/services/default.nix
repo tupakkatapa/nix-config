@@ -200,7 +200,7 @@ in
 {
   imports = [
     (import ./containers { inherit pkgs lib config domain dataDir containerConfig containerSubnet inputs unstable; })
-    (import ./home-assistant { inherit pkgs dataDir config; haConfig = serviceConfig.home-assistant; })
+    (import ./home-assistant { inherit dataDir; haConfig = serviceConfig.home-assistant; })
     (import ./harmonia.nix { inherit config; })
   ];
 
@@ -333,11 +333,6 @@ in
     "server-key" = {
       rekeyFile = ../secrets/server-key.age;
       owner = "caddy";
-      mode = "400";
-    };
-    "hass-ssh-key" = {
-      rekeyFile = ../secrets/hass-ssh-key.age;
-      owner = "hass";
       mode = "400";
     };
   };

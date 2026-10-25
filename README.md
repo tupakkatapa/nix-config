@@ -4,8 +4,7 @@
 | :-:       |  :-:    | :-:          | :-:   | :-
 [hyperion](nixosConfigurations/hyperion/default.nix) | x86_64 | refind  | [core (minimal)](home-manager/users/core/minimal.nix)         | [Nixie](https://github.com/majbacka-labs/nixos.fi) router
 [maliwan](nixosConfigurations/maliwan/default.nix)   | "      | "       | [kari](home-manager/users/kari/default.nix)                   | Laptop, Hyprland
-[torgue](nixosConfigurations/torgue/default.nix)     | "      | netboot | "                                                             | Desktop, Hyprland, [screenshot](https://raw.githubusercontent.com/tupakkatapa/nix-config/main/nixosConfigurations/torgue/screenshot.png)
-[vladof](nixosConfigurations/vladof/default.nix)     | "      | "       | [kari (minimal-gui)](home-manager/users/kari/minimal-gui.nix) | Home server + big screen
+[vladof](nixosConfigurations/vladof/default.nix)     | "      | netboot | [kari (minimal-gui)](home-manager/users/kari/minimal-gui.nix) | Home server + big screen
 [bandit](nixosConfigurations/bandit/default.nix)     | "      | "       | [core (minimal)](home-manager/users/core/minimal.nix)         | Headless
 
 These hosts are **truly declarative** by being **ephemeral** - [majbacka-labs/nixos.fi](https://github.com/majbacka-labs/nixos.fi).

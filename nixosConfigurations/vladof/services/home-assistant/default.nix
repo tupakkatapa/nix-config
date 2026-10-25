@@ -17,14 +17,11 @@
 # sits under dataDir, which is the persisted @main subvolume (see persistence.nix).
 # `initial` re-applies on EVERY HA restart, not just first boot: set it on design
 # values Nix should own; omit it on switches the user flips so they restore last state.
-{ pkgs
-, dataDir
+{ dataDir
 , haConfig
-, config
 }:
 let
   inherit (haConfig) port;
-  hassSshKey = config.age.secrets.hass-ssh-key.path;
 
   cfg = import ./config.nix;
   dashboard = import ./dashboard.nix cfg;
@@ -257,22 +254,6 @@ in
       wake_on_lan = { };
       mobile_app = { };
 
-      shell_command = builtins.listToAttrs (
-        builtins.concatMap
-          (name:
-            let m = cfg.machines.${name}; in
-            if m.canShutdown then [{
-              inherit name;
-              # Empty remote command is intentional: torgue's authorized_keys forces
-              # `sudo systemctl poweroff` (see nixosConfigurations/torgue/default.nix).
-              # StrictHostKeyChecking=no because torgue is an ephemeral netboot host whose
-              # host key changes every boot; pinning is impractical (LAN-only, 10.42.0.0/24).
-              value = "${pkgs.openssh}/bin/ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 -i ${hassSshKey} service@${m.ip}";
-            }]
-            else [ ])
-          cfg.machineOrder
-      );
-
       template = [{
         sensor = [{
           name = "Active Schedule";
@@ -318,16 +299,12 @@ in
       ];
 
       switch = map
-        (name:
-          let m = cfg.machines.${name}; in
-          {
-            platform = "wake_on_lan";
-            inherit name;
-            inherit (m) mac;
-            broadcast_address = "10.42.0.255";
-          } // (if m.canShutdown then {
-            turn_off = [{ service = "shell_command.${name}"; }];
-          } else { }))
+        (name: {
+          platform = "wake_on_lan";
+          inherit name;
+          inherit (cfg.machines.${name}) mac;
+          broadcast_address = "10.42.0.255";
+        })
         cfg.machineOrder;
 
       automation = automations;

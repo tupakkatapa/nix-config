@@ -4,7 +4,7 @@
 , ...
 }:
 let
-  builds = builtins.elem config.networking.hostName [ "torgue" "maliwan" ];
+  builds = config.networking.hostName == "maliwan";
 in
 {
   nix = {

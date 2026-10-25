@@ -11,7 +11,7 @@
     nix-index-database.url = "github:nix-community/nix-index-database";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     # openrgb 1.0rc2+ (26.05) has a broken `-z` (zone) CLI parser; pin openrgb to
-    # 25.11's 0.9 on torgue until upstream fixes it. See torgue/default.nix.
+    # 25.11's 0.9 on vladof until upstream fixes it. See vladof/default.nix.
     nixpkgs-2511.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -151,7 +151,6 @@
           }
           // (with flake.nixosConfigurations; {
             "bandit" = bandit.config.system.build.kexecTree;
-            "torgue" = torgue.config.system.build.kexecTree;
             "vladof" = vladof.config.system.build.kexecTree;
             "maliwan" = maliwan.config.system.build.kexecTree;
             "hyperion" = hyperion.config.system.build.kexecTree;
@@ -160,7 +159,6 @@
           # Whitelist hosts using agenix-rekey
           agenix-rekey.nixosConfigurations = {
             inherit (self.nixosConfigurations)
-              torgue
               vladof
               maliwan
               hyperion
@@ -252,14 +250,6 @@
           };
 
           # Hosts
-          torgue = withExtra {
-            modules = [
-              ./home-manager/users/kari
-              ./nixosConfigurations/torgue
-              ./system/kexec-tree.nix
-            ];
-          };
-
           vladof = withExtra {
             modules = [
               ./home-manager/users/kari/minimal-gui.nix
@@ -299,7 +289,6 @@
             {
               "bandit" = nixosSystem (withDefaults bandit);
               "maliwan" = nixosSystem (withDefaults maliwan);
-              "torgue" = nixosSystem (withDefaults torgue);
               "vladof" = nixosSystem (withDefaults vladof);
               "hyperion" = nixosSystem (withDefaults hyperion);
             };

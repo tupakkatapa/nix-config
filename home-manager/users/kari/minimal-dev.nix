@@ -29,10 +29,6 @@ in
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEJktZ00i+OxH4Azi1tLkwoYrJ0qo2RIZ5huzzK+g2w";
       extraHostNames = [ "10.42.0.8" ];
     };
-    torgue = {
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIEbmDddLZ2QyGJZWsTVcev4hlzrQFt19+HOLLV14H5B";
-      extraHostNames = [ "10.42.0.7" ];
-    };
     hyperion = {
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFXTPhVIrcmsJp9AwrPGfh3bX4Ixq6NmwTve3ExlLp16";
       extraHostNames = [ "10.42.0.1" ];
@@ -67,10 +63,6 @@ in
         "hyperion" = {
           User = "core";
           HostName = "10.42.0.1";
-          ForwardAgent = true;
-        };
-        "torgue" = {
-          HostName = "10.42.0.7";
           ForwardAgent = true;
         };
         "vladof" = {

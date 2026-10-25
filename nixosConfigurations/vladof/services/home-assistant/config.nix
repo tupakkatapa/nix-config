@@ -22,12 +22,11 @@ rec {
   };
 
   machines = {
-    torgue = { ip = "10.42.0.7"; mac = "30:9c:23:3c:b9:01"; canShutdown = true; };
-    maliwan = { ip = "10.42.0.9"; mac = "18:3d:2d:d2:de:41"; canShutdown = false; };
-    kaakkuri = { ip = "10.42.0.25"; mac = "70:85:c2:b5:be:db"; canShutdown = false; };
-    tv = { ip = "10.42.0.6"; mac = "70:af:24:ad:4e:f1"; canShutdown = false; };
+    maliwan = { ip = "10.42.0.9"; mac = "18:3d:2d:d2:de:41"; };
+    kaakkuri = { ip = "10.42.0.25"; mac = "70:85:c2:b5:be:db"; };
+    tv = { ip = "10.42.0.6"; mac = "70:af:24:ad:4e:f1"; };
   };
-  machineOrder = [ "torgue" "maliwan" "kaakkuri" "tv" ];
+  machineOrder = [ "maliwan" "kaakkuri" "tv" ];
 
   # Global settings
   globalSettings = {

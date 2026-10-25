@@ -104,7 +104,6 @@ in
         format = "{icon} {volume}%";
         format-muted = "󰖁 0%";
         format-icons = {
-          "alsa_output.pci-0000_0c_00.4.analog-stereo" = "󰓃"; # Speakers (torgue)
           "alsa_output.pci-0000_c4_00.6.HiFi__Speaker__sink" = "󰓃"; # Speakers (maliwan)
           "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo" = "󰋋"; # Corsair Virtuoso XT
           "bluez_output.80_7B_1E_02_53_95.1" = "󰋋"; # Corsair Virtuoso XT (Bluetooth)

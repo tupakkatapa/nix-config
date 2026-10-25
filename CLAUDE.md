@@ -39,8 +39,7 @@ All hosts get `withDefaults`. Desktop/server hosts additionally get `withExtra`.
 
 | Host | User | Role | Deploy | Key modules |
 |------|------|------|--------|-------------|
-| `torgue` | kari | Intel desktop, Hyprland | netboot | pipewire, podman, runtime-modules |
-| `maliwan` | kari | AMD laptop, Hyprland | refind | gaming-amd, pipewire, podman |
+| `maliwan` | kari | AMD laptop, docked at the desk, Hyprland | refind | gaming-amd, pipewire, podman, runtime-modules |
 | `vladof` | kari (minimal-gui) | Home server + big screen (Hyprland) | netboot | gaming-amd, nixie, molesk, sftp-server, services/* |
 | `hyperion` | core (minimal) | Nixie router | refind | nixie, dns, firewall, wireguard |
 | `bandit` | core (minimal) | Headless minimal | netboot | (bare minimum) |
@@ -81,7 +80,7 @@ docs/                              # Guides (new host, yubikey, agent forwarding
 - **customLib** injected via `specialArgs` to all modules. Contains: `customLib.hyprland.{generateMonitors, generateWorkspaces, generateWorkspaceBindings}`, `customLib.xdg.createMimes`, `customLib.colors.<scheme>`.
 - **Conditional host HM import**: `optionalPaths [ ../../hosts/${config.networking.hostName}/default.nix ]` — only imports if the path exists.
 - **kexecTree**: All hosts build a kexec-bootable squashfs image via `system/kexec-tree.nix` with overlay root filesystem.
-- **Runtime modules**: `torgue` uses `services.runtimeModules` to toggle configs (retroarch, ollama) at runtime without rebuild.
+- **Runtime modules**: `maliwan` (auto-scrcpy, plexamp) and `vladof` (retroarch) use `services.runtimeModules` to toggle configs at runtime without rebuild.
 - **Persistence**: Ephemeral hosts use `state-saver` module + host-specific `persistence.nix` to bind-mount persistent data from attached drives.
 - **Secrets**: agenix + agenix-rekey with FIDO2 HMAC age plugins. Master identity keys are `master.hmac` and `master-2.hmac` in repo root.
 
@@ -119,7 +118,7 @@ docs/                              # Guides (new host, yubikey, agent forwarding
 - Pre-commit hooks configured but `check.enable = false` (manual via `pre-commit run`).
 - Nix files: 2-space indent, nixpkgs-fmt style. Use `let/in` blocks, avoid `with pkgs;` in most places (explicit `pkgs.` preferred except `home.packages`).
 - New packages go in `packages/`, new NixOS modules in `nixosModules/`, new HM modules in `homeModules/`.
-- Host naming: Borderlands gun manufacturers (torgue, maliwan, vladof, hyperion, bandit).
+- Host naming: Borderlands gun manufacturers (maliwan, vladof, hyperion, bandit).
 - NEVER suggest `apt install`, `brew install`, or `pip install`. Use `nix-shell -p` for temporary, add to config for permanent.
 
 ## Gotchas

@@ -1,4 +1,4 @@
-{ pkgs, config, hostName, customLib, ... }:
+{ pkgs, config, customLib, ... }:
 let
   inherit (config.home.sessionVariables) TERMINAL BROWSER EDITOR FILEMANAGER;
   mod = "ALT";
@@ -6,32 +6,15 @@ let
   # Use the imported global customLib
   hyprLib = customLib.hyprland;
 
-  # Define monitor configurations for different hosts
-  monitorSpecs =
-    if (hostName == "torgue") then [
-      {
-        name = "DP-4";
-        mode = "3440x1440@60";
-        position = 0;
-        workspaces = "1-9";
-        primary = true;
-      }
-      {
-        name = "HDMI-A-1";
-        mode = "3840x2160@60";
-        position = 1;
-        workspaces = "10";
-        primary = false;
-      }
-    ] else [
-      {
-        name = "";
-        mode = "preferred";
-        position = null;
-        workspaces = "1-9";
-        primary = true;
-      }
-    ];
+  monitorSpecs = [
+    {
+      name = "";
+      mode = "preferred";
+      position = null;
+      workspaces = "1-9";
+      primary = true;
+    }
+  ];
 
   # Use the library functions to generate configurations
   monitorConfig = hyprLib.generateMonitors monitorSpecs;
