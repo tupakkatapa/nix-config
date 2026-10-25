@@ -192,11 +192,10 @@ in
         # Open programs on specific workspaces
         "[workspace 4 silent] ${browser} ${browserFlags "personal"} https://web.whatsapp.com https://web.telegram.org/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
         "[workspace 5 silent] ${browser} ${browserFlags "work"} https://app.slack.com/client https://mail.google.com/mail https://calendar.google.com/calendar https://drive.google.com/drive/home https://linear.app/inform-re/inbox"
-      ]
-      ++ (if config.networking.hostName != "maliwan" then [
+
         # Open terminal with SFTP mount on login
         "foot -e $SHELL -c 'echo \"\\$ sudo mount /mnt/sftp\" && sudo mount /mnt/sftp && sleep 1 || read -p \"Press enter to continue..\"'"
-      ] else [ ]);
+      ];
 
     home.packages = (with pkgs; [
       android-tools
@@ -263,7 +262,7 @@ in
       "99-home" = {
         matchConfig.Name = "home";
         address = [ "172.16.16.3/32" "fd42:42:42:3::3/128" ];
-        linkConfig.ActivationPolicy = if config.networking.hostName == "maliwan" then "up" else "manual";
+        linkConfig.ActivationPolicy = "manual";
         routingPolicyRules = [
           # The tunnel's own packets go out the uplink
           {

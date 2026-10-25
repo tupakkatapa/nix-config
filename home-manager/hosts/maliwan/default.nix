@@ -6,6 +6,24 @@
 
   imports = [ ../.config/base01/rice01 ];
 
+  # One display at a time: the dock when connected, the panel otherwise
+  services.kanshi = {
+    enable = true;
+    settings = [
+      {
+        profile.name = "docked";
+        profile.outputs = [
+          { criteria = "eDP-1"; status = "disable"; }
+          { criteria = "Lenovo Group Limited P34w-20 VVE53307"; mode = "3440x1440@59.973"; position = "0,0"; }
+        ];
+      }
+      {
+        profile.name = "undocked";
+        profile.outputs = [{ criteria = "eDP-1"; status = "enable"; }];
+      }
+    ];
+  };
+
   xdg.configFile."pipewire-out-switcher/devices.json".text = builtins.toJSON {
     speakers = "alsa_output.pci-0000_c4_00.6.HiFi__Speaker__sink";
     headset = "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo";

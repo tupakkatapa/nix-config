@@ -18,12 +18,29 @@
     ../.config/hw/cpu-amd.nix
     ../.config/hw/gpu-amd.nix
     ../.config/keyd.nix
+    ../.config/nix-ld.nix
     ../.config/hw/pipewire.nix
     ../.config/podman.nix
     ../.config/tuigreet-hypr.nix
     ../.config/hw/yubikey.nix
     ./persistence.nix
   ];
+
+  services.runtimeModules = {
+    enable = true;
+    flakeUrl = "path:/mnt/sftp/code/workspace/tupakkatapa/nix-config";
+    builtinModules.enable = true;
+    modules = [
+      {
+        name = "auto-scrcpy";
+        imports = [ ../.config/auto-scrcpy.nix ];
+      }
+      {
+        name = "plexamp";
+        imports = [{ environment.systemPackages = [ pkgs.plexamp ]; }];
+      }
+    ];
+  };
 
   # Disk-aware garbage collection
   sys2x.gc.useDiskAware = true;
@@ -71,10 +88,14 @@
   systemd.network = {
     enable = true;
     wait-online.anyInterface = true;
+    links."10-wol" = {
+      matchConfig.MACAddress = "18:3d:2d:d2:de:41";
+      linkConfig.WakeOnLan = "magic";
+    };
     networks = {
       "10-wan" = {
         linkConfig.RequiredForOnline = "routable";
-        matchConfig.Name = [ "enp195s0f0" "wlan0" ];
+        matchConfig.Name = [ "enp195s0f0" "enp198s0f4u1u2" "wlan0" ];
         networkConfig = {
           DHCP = "yes";
           IPv6AcceptRA = true;
