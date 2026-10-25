@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   age.rekey = {
-    hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJcbYE9n5NE8EhxIrlR9tc4ZredoxvTPubQniNGQWH+s root@maliwan";
+    hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF9ktPcKS8ma2/F2OgmJvQez+tItcIAHEnNmkWhnUQob root@maliwan";
     agePlugins = [ pkgs.age-plugin-fido2-hmac ];
     localStorageDir = ./secrets/rekeyed;
     storageMode = "local";
@@ -41,6 +41,8 @@
       }
     ];
   };
+
+  services.tpmHostKey.enable = true;
 
   # Disk-aware garbage collection
   sys2x.gc.useDiskAware = true;

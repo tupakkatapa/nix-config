@@ -82,6 +82,7 @@
           overlayAttrs = {
             inherit (config.packages)
               # Custom packages used in configurations
+              tpm-host-key
               kb-shortcuts
               monitor-adjust
               webp-convert
@@ -130,11 +131,13 @@
             shellHook = config.pre-commit.installationScript;
           };
 
+          checks.tpm-host-key = config.packages.tpm-host-key.tests.derive;
           checks.webp-convert = config.packages.webp-convert.tests.convert;
 
           # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
           packages = {
             "2mp3" = pkgs.callPackage ./packages/2mp3 { };
+            "tpm-host-key" = pkgs.callPackage ./packages/tpm-host-key { };
             "fat-nix-deps" = pkgs.callPackage ./packages/fat-nix-deps { };
             "kb-shortcuts" = pkgs.callPackage ./packages/kb-shortcuts { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
@@ -207,6 +210,7 @@
               inputs.nix-extras.nixosModules.common
               inputs.nixie.nixosModules.refindGenerate
               inputs.runtime-modules.nixosModules.runtimeModules
+              self.nixosModules.tpmHostKey
               self.nixosModules.monitoring
               self.nixosModules.openrgb
               ({ config, ... }: {
@@ -296,6 +300,7 @@
           # NixOS modules
           nixosModules = {
             autoScrcpy.imports = [ ./nixosModules/auto-scrcpy.nix ];
+            tpmHostKey.imports = [ ./nixosModules/tpm-host-key ];
             monitoring.imports = [ ./nixosModules/monitoring ];
             openrgb.imports = [ ./nixosModules/openrgb ];
           };

@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
   # On-demand SFTP mount from vladof (YubiKey-resident key, requires touch)
   fileSystems."/mnt/sftp" = {
@@ -30,31 +30,6 @@
   # SSHFS support for /mnt/sftp
   system.fsPackages = [ pkgs.sshfs ];
   programs.fuse.userAllowOther = true;
-
-  # Unsealed from the TPM before agenix, which reads it as its identity
-  services.openssh.hostKeys = [{
-    path = "/etc/ssh/ssh_host_ed25519_key";
-    type = "ed25519";
-  }];
-  system.activationScripts.hostKeyUnseal = {
-    deps = [ "specialfs" ];
-    text = ''
-      # Snippets share one shell, so the umask stays scoped
-      key=/etc/ssh/ssh_host_ed25519_key
-      if [ ! -e "$key" ]; then
-        install -d -m 755 /etc/ssh
-        if (umask 077; ${config.systemd.package}/bin/systemd-creds decrypt --name=ssh-host-key ${./ssh-host-key.cred} "$key.tmp"); then
-          mv "$key.tmp" "$key"
-          echo tpm > /run/host-key-source
-        else
-          rm -f "$key.tmp"
-          echo "host key: TPM unseal failed" >&2
-          echo none > /run/host-key-source
-        fi
-      fi
-    '';
-  };
-  system.activationScripts.agenixInstall.deps = [ "hostKeyUnseal" ];
 
   # SFTP mountpoint; home parents owned by kari, else nested tmpfiles and agenix paths create them as root
   systemd.tmpfiles.rules = [

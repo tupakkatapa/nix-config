@@ -34,7 +34,7 @@ in
       extraHostNames = [ "10.42.0.1" ];
     };
     maliwan = {
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJcbYE9n5NE8EhxIrlR9tc4ZredoxvTPubQniNGQWH+s";
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF9ktPcKS8ma2/F2OgmJvQez+tItcIAHEnNmkWhnUQob";
       extraHostNames = [ "10.42.0.9" "172.16.16.3" ];
     };
   };

@@ -61,7 +61,10 @@ in
       # nix-daemon connects as root: no ssh alias, and resolved skips single-label names
       hostName = "10.42.0.8";
       sshUser = "nixremote";
-      sshKey = (lib.findFirst (k: k.type == "ed25519") null config.services.openssh.hostKeys).path;
+      sshKey =
+        if config.services.tpmHostKey.enable
+        then config.services.tpmHostKey.keyPath
+        else (lib.findFirst (k: k.type == "ed25519") null config.services.openssh.hostKeys).path;
       protocol = "ssh-ng";
       systems = [ "x86_64-linux" ];
       maxJobs = 8;
