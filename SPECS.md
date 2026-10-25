@@ -16,7 +16,7 @@ Diskless, boots rEFInd from USB.
 | **RAM** | 64 GiB DDR5 @ 5600 MT/s |
 | **PCIe** | - |
 | **PSU** | - |
-| **Storage** | - |
+| **Storage** | SK Hynix HFS001TEJ9X162N 1TB NVMe |
 | **Display** | 16" 1920x1200 |
 
 ## vladof
@@ -30,10 +30,10 @@ Home server: runs the services and holds the data; netboots from hyperion.
 | **CPU** | AMD Ryzen 7 3700X - 8C/16T, 4.4 GHz, AM4 |
 | **Cooling** | DeepCool AK620 HW |
 | **GPU** | Sapphire PULSE RX 6700 10GB GDDR6 |
-| **RAM** | 80 GiB DDR4 @ 2400 MT/s - 8+32+8+32 GiB |
+| **RAM** | 128 GiB DDR4 @ 3200 MT/s - 32+32+32+32 GiB |
 | **PCIe** | TP-Link Archer TX50E Wi-Fi 6 + Bluetooth 5.0 |
 | **PSU** | Cooler Master RS-600-ACAB-D3 600W |
-| **Storage** | WD Red Pro WD121KFBX 12TB, WD Red Plus WD120EFBX 12TB, WD Black WD2003FZEX 2TB, Seagate ST8000DM004 8TB, SK Hynix HFS001TEJ9X162N 1TB NVMe |
+| **Storage** | WD Red Pro WD121KFBX 12TB, WD Red Plus WD120EFBX 12TB |
 | **Display** | TV |
 
 ## hyperion

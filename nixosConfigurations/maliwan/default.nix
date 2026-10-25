@@ -90,7 +90,10 @@
     wait-online.anyInterface = true;
     links."10-wol" = {
       matchConfig.MACAddress = "18:3d:2d:d2:de:41";
-      linkConfig.WakeOnLan = "magic";
+      linkConfig = {
+        NamePolicy = "kernel database onboard slot path";
+        WakeOnLan = "magic";
+      };
     };
     networks = {
       "10-wan" = {
