@@ -3,7 +3,7 @@ let
   git = "${pkgs.git}/bin/git";
   permissions = import ./permissions.nix;
 
-  notify = message: "notify-send -u normal 'Claude Code' '${message}'";
+  notify = message: "${pkgs.libnotify}/bin/notify-send -u normal 'Claude Code' '${message}' || true";
 in
 {
   # Cleanup orphaned Claude subagents and MCP servers which clog RAM
