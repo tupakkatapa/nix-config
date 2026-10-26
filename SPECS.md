@@ -4,7 +4,7 @@ All notable hardware specifications for this flake's hosts are documented in thi
 
 ## maliwan
 
-Diskless, boots rEFInd from USB.
+Diskless; netboots from hyperion at home, boots rEFInd from USB on the go.
 
 | | |
 | :-- | :-- |
@@ -16,8 +16,8 @@ Diskless, boots rEFInd from USB.
 | **RAM** | 64 GiB DDR5 @ 5600 MT/s |
 | **PCIe** | - |
 | **PSU** | - |
-| **Storage** | SK Hynix HFS001TEJ9X162N 1TB NVMe |
-| **Display** | 16" 1920x1200 |
+| **Storage** | - |
+| **Display** | 16" 1920x1200, Lenovo ThinkVision P34w-20 34" 3440x1440 (docked) |
 
 ## vladof
 
@@ -33,8 +33,8 @@ Home server: runs the services and holds the data; netboots from hyperion.
 | **RAM** | 128 GiB DDR4 @ 3200 MT/s - 32+32+32+32 GiB |
 | **PCIe** | TP-Link Archer TX50E Wi-Fi 6 + Bluetooth 5.0 |
 | **PSU** | Cooler Master RS-600-ACAB-D3 600W |
-| **Storage** | WD Red Pro WD121KFBX 12TB, WD Red Plus WD120EFBX 12TB |
-| **Display** | TV |
+| **Storage** | WD Red Pro WD121KFBX 12TB, WD Red Plus WD120EFBX 12TB, SK Hynix HFS001TEJ9X162N 1TB NVMe, Samsung 860 EVO 1TB SATA |
+| **Display** | Philips 55OLED903/12 55" 3840x2160 |
 
 ## hyperion
 

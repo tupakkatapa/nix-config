@@ -39,7 +39,7 @@ All hosts get `withDefaults`. Desktop/server hosts additionally get `withExtra`.
 
 | Host | User | Role | Deploy | Key modules |
 |------|------|------|--------|-------------|
-| `maliwan` | kari | AMD laptop, docked at the desk, Hyprland | refind | gaming-amd, pipewire, podman, runtime-modules |
+| `maliwan` | kari | AMD laptop, docked at the desk, Hyprland | netboot (home), refind (on the go) | gaming-amd, pipewire, podman, runtime-modules |
 | `vladof` | kari (minimal-gui) | Home server + big screen (Hyprland) | netboot | gaming-amd, nixie, molesk, sftp-server, services/* |
 | `hyperion` | core (minimal) | Nixie router | refind | nixie, dns, firewall, wireguard |
 | `bandit` | core (minimal) | Headless minimal | netboot | (bare minimum) |
