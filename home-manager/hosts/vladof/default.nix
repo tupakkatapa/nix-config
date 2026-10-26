@@ -23,6 +23,7 @@ in
       keybindings = {
         "Mod4+b" = "exec ${BROWSER}";
         "Mod4+r" = "exec ${launch "retroarch"}";
+        "Mod4+s" = "exec ${launch "steam"}";
         "Mod1+Return" = "exec ${TERMINAL}";
         "Mod1+q" = "kill";
         "Mod1+Tab" = "focus next";

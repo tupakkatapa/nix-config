@@ -1,41 +1,50 @@
-{ dataDir, lib, ... }:
+{ dataDir, lib, pkgs, ... }:
 let
-  device = "/dev/disk/by-uuid/a11f36c2-e601-4e6c-b8c2-136c4b07203e";
-  # Auxiliary subvols: nofail (boot continues if missing). degraded allows missing RAID1 disk.
-  aux = lib.mapAttrs (_: subvol: {
-    inherit device;
+  # RAID1 pool: degraded keeps it mountable with one disk missing
+  pool = subvol: {
+    device = "/dev/disk/by-uuid/a11f36c2-e601-4e6c-b8c2-136c4b07203e";
     fsType = "btrfs";
     options = [ "compress=zstd:2" "noatime" "nofail" "degraded" "subvol=${subvol}" ];
-  });
-  # Boot-critical subvols: mounted in initrd, override kexec-tree defaults
-  boot = lib.mapAttrs (_: subvol: lib.mkForce {
-    inherit device;
+  };
+
+  nvme = subvol: {
+    device = "/dev/disk/by-label/nvme";
     fsType = "btrfs";
+    options = [ "compress=zstd:2" "noatime" "nofail" "subvol=${subvol}" ];
+  };
+
+  # Overrides kexec-tree.nix's tmpfs defaults
+  neededForBoot = fs: lib.mkForce (fs // {
     neededForBoot = true;
-    options = [ "compress=zstd:2" "noatime" "degraded" "subvol=${subvol}" ];
+    options = lib.remove "nofail" fs.options;
   });
 in
 {
-  fileSystems = aux
-    {
-      # User data
-      "/home/kari/.config/mozilla" = "@kari-mozilla";
-      "/home/kari/.local/share/atuin" = "@kari-atuin";
-      "/home/kari/.local/share/zoxide" = "@kari-zoxide";
-      "/home/kari/.config/gh" = "@kari-gh";
-      "/home/kari/.claude/projects" = "@kari-claude-projects"; # mv to ssd
+  fileSystems = {
+    "/home/kari/.config/mozilla" = pool "@kari-mozilla";
+    "/home/kari/.config/gh" = pool "@kari-gh";
+    "/home/kari/.local/share/atuin" = pool "@kari-atuin";
+    "/home/kari/.local/share/zoxide" = pool "@kari-zoxide";
+    "/home/kari/.local/share/Steam" = nvme "@kari-steam";
+    "/home/kari/.claude/projects" = nvme "@kari-claude-projects";
+    "${dataDir}/sftp/code/workspace" = nvme "@kari-workspace";
 
-      # System state
-      "/var/log/journal" = "@var-log-journal";
-      "/var/lib/acme" = "@acme";
-      "/var/lib/prometheus" = "@prometheus"; # mv to ssd
-      "/var/lib/loki" = "@loki"; # mv to ssd
-    } // boot {
-    # dataDir: agenix reads SSH host key from here in stage-2
-    "${dataDir}" = "@main";
-    # Persistent nix rw-store (overrides kexec-tree.nix tmpfs).
-    # Subvol must contain `store/` and `work/` subdirs (create on disk).
-    "/nix/.rw-store" = "@nix-rw-store"; # mv to ssd
+    "/var/log/journal" = pool "@var-log-journal";
+    "/var/lib/acme" = pool "@acme";
+    "/var/lib/prometheus" = pool "@prometheus";
+    "/var/lib/loki" = pool "@loki";
+
+    # agenix reads the SSH host key from here in stage 2
+    "${dataDir}" = neededForBoot (pool "@main");
+    # The subvolume must contain `store/` and `work/`
+    "/nix/.rw-store" = neededForBoot (nvme "@nix-rw-store");
+
+    # The NVMe's top level, where btrbk keeps its snapshots
+    "/mnt/nvme" = {
+      device = "/dev/disk/by-label/nvme";
+      fsType = "btrfs";
+      options = [ "noatime" "nofail" "subvolid=5" ];
+    };
   };
 
   # SSH host keys on disk
@@ -74,6 +83,28 @@ in
     };
   };
 
+  systemd.services.btrbk-nvme = {
+    unitConfig.RequiresMountsFor = [ "/mnt/nvme" "${dataDir}/.btrbk/nvme" ];
+    serviceConfig.ExecStartPre = "+${lib.getExe' pkgs.coreutils "mkdir"} -p /mnt/nvme/.btrbk";
+  };
+  services.btrbk.instances.nvme = {
+    onCalendar = "hourly";
+    settings = {
+      snapshot_preserve_min = "2d";
+      snapshot_preserve = "24h 7d";
+      target_preserve_min = "no";
+      target_preserve = "7d 4w";
+      volume."/mnt/nvme" = {
+        snapshot_dir = ".btrbk";
+        target = "${dataDir}/.btrbk/nvme";
+        subvolume = {
+          "@kari-claude-projects" = { };
+          "@kari-workspace" = { };
+        };
+      };
+    };
+  };
+
   # systembus-notify must match earlyoom's (both mkDefault)
   services.smartd = {
     enable = true;
@@ -96,6 +127,7 @@ in
     "d ${dataDir}/home/root/logs/audit           750 root root                                     -"
 
     "v ${dataDir}/.snapshots                     750 root root                                     -"
+    "d ${dataDir}/.btrbk/nvme                    700 root root                                     -"
 
     # SFTP subdir ownership enforcement (container writes target these paths)
     "Z ${dataDir}/sftp/appdata                   -   sftp sftp                                     -"
@@ -119,5 +151,6 @@ in
     "Z /home/kari/.local/share/zoxide   - kari kari -"
     "Z /home/kari/.config/gh            0700 kari kari -"
     "Z /home/kari/.claude/projects      - kari kari -"
+    "d /home/kari/.local/share/Steam    755 kari kari -"
   ];
 }

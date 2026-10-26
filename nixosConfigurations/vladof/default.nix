@@ -60,11 +60,18 @@ in
     enable = true;
     flakeUrl = "path:${dataDir}/sftp/code/workspace/tupakkatapa/nix-config";
     builtinModules.enable = true;
-    modules = [{
-      name = "retroarch";
-      imports = [ (import ../.config/retroarch.nix (extendedArgs // { share = "${dataDir}/sftp/appdata/retroarch"; })) ];
-      postEnable = "retroarch";
-    }];
+    modules = [
+      {
+        name = "retroarch";
+        imports = [ (import ../.config/retroarch.nix (extendedArgs // { share = "${dataDir}/sftp/appdata/retroarch"; })) ];
+        postEnable = "retroarch";
+      }
+      {
+        name = "steam";
+        imports = [ "${inputs.runtime-modules}/nixosModules/rt-modules/steam.nix" ];
+        postEnable = "steam -bigpicture";
+      }
+    ];
   };
 
   # Overrides the graphical-desktop default set (CJK, unifont, emoji)
