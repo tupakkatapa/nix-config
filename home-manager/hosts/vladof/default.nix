@@ -36,6 +36,13 @@ in
     };
   };
 
+  # Frecency-based dir jumping
+  programs.zoxide = {
+    enable = true;
+    enableFishIntegration = true;
+    options = [ "--cmd cd" ];
+  };
+
   xdg.userDirs = {
     enable = true;
     createDirectories = false;

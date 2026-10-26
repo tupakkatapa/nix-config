@@ -121,13 +121,6 @@ in
     '';
   };
 
-  # Frecency-based dir jumping
-  programs.zoxide = {
-    enable = true;
-    enableFishIntegration = true;
-    options = [ "--cmd cd" ];
-  };
-
   # SQLite-backed shell history with rich metadata (cwd, exit code, duration, hostname).
   # ctrl+r → atuin fuzzy search; up-arrow stays on fish builtin.
   programs.atuin = {
