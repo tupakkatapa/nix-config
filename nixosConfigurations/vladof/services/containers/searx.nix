@@ -9,7 +9,7 @@
   # (engines block VPN exits). Inserted before module's masquerade rule.
   networking.nat.extraCommands = ''
     iptables -w -t nat -I nixos-nat-post 1 \
-      -s ${containerConfig.searx.localAddress} -o enp3s0 \
+      -s ${containerConfig.searx.localAddress} -o enp4s0 \
       -j SNAT --to-source 10.42.0.28
   '';
 

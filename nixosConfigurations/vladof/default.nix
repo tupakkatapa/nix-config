@@ -204,7 +204,7 @@ in
     networks = {
       "10-wan" = {
         linkConfig.RequiredForOnline = "routable";
-        matchConfig.Name = [ "enp3s0" ];
+        matchConfig.Name = [ "enp4s0" ];
         # SNAT source for searx container, below DHCP pool (see containers/searx.nix).
         # /32 so it adds no prefix route; host LAN traffic keeps sourcing from the lease.
         address = [ "10.42.0.28/32" ];

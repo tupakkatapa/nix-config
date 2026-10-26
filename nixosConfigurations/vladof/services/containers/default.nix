@@ -115,7 +115,7 @@ in
     nat = {
       enable = true;
       internalInterfaces = [ "ve-+" ];
-      externalInterface = "enp3s0";
+      externalInterface = "enp4s0";
     };
     firewall = {
       # Own chains so rules can be flushed on reload instead of accumulating
