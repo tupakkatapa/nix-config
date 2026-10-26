@@ -41,6 +41,7 @@
     { name = "Spaceship"; url = "https://www.spaceship.com/"; }
     { name = "Domaincompare"; url = "https://www.domaincompare.io/"; }
     { name = "GoDaddy"; url = "https://www.godaddy.com/"; }
+    { name = "Stripe"; url = "https://dashboard.stripe.com/"; }
 
     # Google
     { name = "Drive"; url = "https://drive.google.com/"; }

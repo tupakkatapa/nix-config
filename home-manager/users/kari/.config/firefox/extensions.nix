@@ -18,7 +18,7 @@ addons: with addons; [
   torrent-control
 
   # Appearance
-  dark-background-light-text
+  darkreader
   (buildFirefoxXpiAddon {
     pname = "gruvbox-medium-dark";
     version = "2.0";

@@ -6,8 +6,7 @@
 , ...
 }:
 let
-  inherit (config.home.sessionVariables) FONT THEME;
-  colors = customLib.colors.${THEME};
+  inherit (config.home.sessionVariables) FONT;
 
   # Convert about:config prefs to policy format
   lockPrefs = builtins.mapAttrs (_: value: { Value = value; Status = "locked"; });
@@ -20,16 +19,9 @@ let
   localSettings = {
     # Skips the install-time help tab
     ${firefox-addons.sponsorblock.addonId} = { alreadyInstalled = true; };
-    ${firefox-addons.dark-background-light-text.addonId} = {
-      default_foreground_color = "#${colors.base05}";
-      default_background_color = "#${colors.base00}";
-      default_link_color = "#${colors.base0D}";
-      default_visited_color = "#${colors.base0E}";
-      default_active_color = "#${colors.base08}";
-      default_selection_color = "#${colors.base02}";
-    };
   };
   syncSettings = {
+    ${firefox-addons.darkreader.addonId} = { detectDarkTheme = true; };
     ${firefox-addons.vimium.addonId} = lib.importJSON ./extension-settings/vimium.json;
     ${firefox-addons.sponsorblock.addonId} = lib.importJSON ./extension-settings/sponsorblock.json;
   };
@@ -151,6 +143,7 @@ in
           "browser.tabs.firefox-view" = false;
           "browser.tabs.hoverPreview.enabled" = false;
           "identity.fxaccounts.enabled" = false;
+          "identity.fxaccounts.toolbar.enabled" = false;
           "layout.spellcheckDefault" = 2;
           "media.webspeech.synth.enabled" = false;
           "ui.key.menuAccessKeyFocuses" = false;
