@@ -21,18 +21,17 @@ services.tpmHostKey.enable = true;
 Learn the public key on the host:
 
 ```bash
-nix build .#tpm-host-key -o /tmp/bm
-sudo /tmp/bm/bin/tpm-host-key /tmp/k && cat /tmp/k.pub
+sudo nix run github:tupakkatapa/nix-config#tpm-host-key -- /tmp/k && cat /tmp/k.pub && sudo rm /tmp/k /tmp/k.pub
 ```
 
 Put it in `age.rekey.hostPubkey` and the host's `knownHosts` entry, `agenix rekey -a`, rebuild. Check:
 
 ```bash
-cat /run/host-key-source                          # derived
+cat /run/tpm-host-key.status                      # derived
 sudo ssh-keygen -lf /run/tpm-host-key/ssh_host_ed25519_key.pub
 ```
 
-Without a working TPM the marker reads `none`, sshd starts without a host key and secrets stay sealed. Nothing is generated in its place.
+Without a working TPM the status reads `failed`, followed by the exit code and the script's output, and `tpm-host-key-status.service` repeats it in the journal. sshd exits with `no hostkeys available` and secrets stay sealed. Nothing is generated in its place.
 
 ## Rotation and loss
 

@@ -1,8 +1,11 @@
-# tpm-host-key: one ed25519 host key derived at boot, sshd host key and agenix identity.
-# Nothing secret is stored; the public key is committed as `age.rekey.hostPubkey`.
+# tpm-host-key: one ed25519 key derived from the TPM at every boot, serving as
+# the sshd host key, the agenix identity and the remote-builder key. Nothing
+# secret is stored; the public key is committed as `age.rekey.hostPubkey`.
 { config, lib, pkgs, ... }:
 let
   cfg = config.services.tpmHostKey;
+  key = lib.escapeShellArg cfg.keyPath;
+  status = "/run/tpm-host-key.status";
 in
 {
   options.services.tpmHostKey = {
@@ -11,31 +14,43 @@ in
     keyPath = lib.mkOption {
       type = lib.types.str;
       default = "/run/tpm-host-key/ssh_host_ed25519_key";
-      description = "Where the derived private key is written at activation.";
+      description = "Where the private key is written at activation; the public key goes next to it with a .pub suffix.";
     };
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [ cfg.package ];
-
+    # Before agenix, which decrypts with this key
     system.activationScripts.tpmHostKey = {
       deps = [ "specialfs" ];
       text = ''
-        if [ ! -e ${cfg.keyPath} ]; then
-          install -d -m 700 ${dirOf cfg.keyPath}
-          if (umask 077; ${lib.getExe cfg.package} ${cfg.keyPath}); then
-            echo derived > /run/host-key-source
+        if [[ ! -e ${key} ]]; then
+          install -d -m 700 "$(dirname ${key})"
+          # Runs before systemd; a wedged TPM must not hold the boot
+          if output=$( (umask 077 && timeout 60 ${lib.getExe cfg.package} --verbose ${key}) 2>&1); then
+            echo derived >${status}
           else
-            rm -f ${cfg.keyPath} ${cfg.keyPath}.pub
-            echo "host key: derivation failed" >&2
-            echo none > /run/host-key-source
+            printf 'failed, exit %s\n%s\n' "$?" "$output" >${status}
+            rm -f ${key} ${key}.pub
           fi
         fi
       '';
     };
     system.activationScripts.agenixInstall.deps = [ "tpmHostKey" ];
 
-    # Not in hostKeys: sshd's pre-start would generate a random key when derivation failed
+    # Activation runs in the initrd, whose journal does not always survive
+    # switch-root; /run does, so the outcome is replayed into the journal
+    systemd.services.tpm-host-key-status = {
+      description = "Report the TPM host key derivation";
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "${lib.getExe' pkgs.coreutils "cat"} ${status}";
+      };
+    };
+
+    # Not in hostKeys: sshd's pre-start would generate a random key in place of
+    # a failed derivation
     services.openssh = {
       hostKeys = [ ];
       extraConfig = "HostKey ${cfg.keyPath}";

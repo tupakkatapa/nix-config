@@ -2,26 +2,27 @@
 , lib
 }:
 pkgs.stdenv.mkDerivation (finalAttrs: {
-  name = "tpm-host-key";
+  pname = "tpm-host-key";
+  version = "0.1";
   src = ./.;
 
   buildInputs = with pkgs; [
     coreutils
     tpm2-tools
     unixtools.xxd
-    (python3.withPackages (p: [ p.cryptography ]))
+    openssl
   ];
 
   nativeBuildInputs = [ pkgs.makeWrapper ];
   installPhase = ''
     mkdir -p $out/bin
-    cp $src/${finalAttrs.name}.sh $out/bin/${finalAttrs.name}
-    chmod +x $out/bin/${finalAttrs.name}
+    cp $src/${finalAttrs.pname}.sh $out/bin/${finalAttrs.pname}
+    chmod +x $out/bin/${finalAttrs.pname}
 
-    wrapProgram $out/bin/${finalAttrs.name} \
+    wrapProgram $out/bin/${finalAttrs.pname} \
       --prefix PATH : ${lib.makeBinPath finalAttrs.buildInputs}
   '';
 
   passthru.tests.derive = pkgs.callPackage ./test.nix { tpm-host-key = finalAttrs.finalPackage; };
-  meta.mainProgram = finalAttrs.name;
+  meta.mainProgram = finalAttrs.pname;
 })
