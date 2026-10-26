@@ -13,6 +13,7 @@ pkgs.stdenv.mkDerivation rec {
     jq # float-on-title (monitor geometry)
     socat # float-on-title (socket2)
     systemd # lock-countdown (loginctl)
+    util-linux # float-on-title (logger)
   ];
   nativeBuildInputs = [ pkgs.makeWrapper ];
 

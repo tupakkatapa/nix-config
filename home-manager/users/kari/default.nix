@@ -1,6 +1,7 @@
 { pkgs
 , unstable
 , config
+, lib
 , ...
 }:
 let
@@ -187,11 +188,14 @@ in
         # User-level variable, cannot use $BROWSER as might not be set yet
         browser = config.home-manager.users."${user}".home.sessionVariables.BROWSER;
         browserFlags = profile: if browser == "firefox" then "--new-instance -P ${profile}" else "";
+        # GTK crashes if an output goes away while it opens the display
+        awaitOutputs = lib.optionalString config.home-manager.users."${user}".services.kanshi.enable
+          "timeout 10 sh -c 'until kanshictl status | grep -q current_profile; do sleep 0.2; done'; ";
       in
       [
         # Open programs on specific workspaces
-        "[workspace 4 silent] ${browser} ${browserFlags "personal"} https://web.whatsapp.com https://web.telegram.org/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
-        "[workspace 5 silent] ${browser} ${browserFlags "work"} https://app.slack.com/client https://mail.google.com/mail https://calendar.google.com/calendar https://drive.google.com/drive/home https://linear.app/inform-re/inbox"
+        "[workspace 4 silent] ${awaitOutputs}${browser} ${browserFlags "personal"} https://web.whatsapp.com https://web.telegram.org/ https://discord.com/channels/@me https://outlook.live.com/mail/0/"
+        "[workspace 5 silent] ${awaitOutputs}${browser} ${browserFlags "work"} https://app.slack.com/client https://mail.google.com/mail https://calendar.google.com/calendar https://drive.google.com/drive/home https://linear.app/inform-re/inbox"
 
         # Open terminal with SFTP mount on login
         "foot -e $SHELL -c 'echo \"\\$ sudo mount /mnt/sftp\" && sudo mount /mnt/sftp && sleep 1 || read -p \"Press enter to continue..\"'"

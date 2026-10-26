@@ -75,6 +75,10 @@ let
   };
 in
 {
+  # Its restart after a crash inherits blocked crash signals, so every wasm
+  # trap kills the process (bugzilla.mozilla.org/2075885)
+  home.sessionVariables.MOZ_CRASHREPORTER_DISABLE = "1";
+
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = customLib.xdg.createMimes {
     browser = [ "firefox.desktop" ];

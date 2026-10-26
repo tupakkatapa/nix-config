@@ -22,6 +22,7 @@ socat -u "UNIX-CONNECT:$sock" - | while IFS= read -r line; do
   title=${rest#*,}
   [[ -z ${seen[$addr]:-} && $title =~ $regex ]] || continue
   seen[$addr]=1
+  logger -t float-on-title "0x$addr: $title"
   # centerwindow needs focus, which may not have moved yet; place it by hand
   read -r mx my mw mh < <(hyprctl monitors -j | jq -r '.[] | select(.focused) | "\(.x) \(.y) \(.width / .scale | floor) \(.height / .scale | floor)"') || continue
   x=$((mx + (mw - width) / 2))

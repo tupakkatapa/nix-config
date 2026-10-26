@@ -55,8 +55,6 @@
   services.tlp = {
     enable = true;
     settings = {
-      CPU_SCALING_GOVERNOR_ON_AC = "schedutil";
-      CPU_SCALING_GOVERNOR_ON_BAT = "schedutil";
       CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
       CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
       CPU_BOOST_ON_BAT = 1;
@@ -66,6 +64,10 @@
       WIFI_PWR_ON_BAT = "on";
     };
   };
+
+  # Lid closed on external power means docked; logind's own dock check
+  # counts external displays, which vanish when the monitor sleeps
+  services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
 
   # Firmware updates (BIOS, EC, dock) via LVFS
   services.fwupd.enable = true;
@@ -100,7 +102,8 @@
     networks = {
       "10-wan" = {
         linkConfig.RequiredForOnline = "routable";
-        matchConfig.Name = [ "enp195s0f0" "enp198s0f4u1u2" "wlan0" ];
+        # Any wired NIC; a dock's name follows the USB-C port it hangs off
+        matchConfig.Name = [ "en*" "wlan0" ];
         networkConfig = {
           DHCP = "yes";
           IPv6AcceptRA = true;
