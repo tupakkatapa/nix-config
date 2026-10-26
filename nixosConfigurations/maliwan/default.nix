@@ -12,6 +12,16 @@
     path = "/var/lib/bluetooth/48:45:E6:14:DB:E2/78:C1:1D:EA:46:EF/info";
     symlink = false;
   };
+  age.secrets.bt-corsair-virtuoso-xt = {
+    rekeyFile = ./secrets/bt-corsair-virtuoso-xt.age;
+    path = "/var/lib/bluetooth/48:45:E6:14:DB:E2/80:7B:1E:02:53:95/info";
+    symlink = false;
+  };
+  age.secrets.bt-mx-master-2s = {
+    rekeyFile = ./secrets/bt-mx-master-2s.age;
+    path = "/var/lib/bluetooth/48:45:E6:14:DB:E2/CC:47:F4:B7:4B:B1/info";
+    symlink = false;
+  };
 
   imports = [
     ../.config/hw/bluetooth.nix
