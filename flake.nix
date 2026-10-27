@@ -28,6 +28,8 @@
     nixie.url = "github:majbacka-labs/nixie/jesse/dev050"; # https, private
     runtime-modules.inputs.nixpkgs.follows = "nixpkgs";
     runtime-modules.url = "github:tupakkatapa/nixos-runtime-modules";
+    tpm-host-key.inputs.nixpkgs.follows = "nixpkgs";
+    tpm-host-key.url = "github:tupakkatapa/nixos-tpm-host-key";
 
     # Other
     anytui.inputs.nixpkgs.follows = "nixpkgs";
@@ -131,12 +133,9 @@
             shellHook = config.pre-commit.installationScript;
           };
 
-          checks.tpm-host-key = config.packages.tpm-host-key.tests.derive;
-
           # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
           packages = {
             "2mp3" = pkgs.callPackage ./packages/2mp3 { };
-            "tpm-host-key" = pkgs.callPackage ./packages/tpm-host-key { };
             "fat-nix-deps" = pkgs.callPackage ./packages/fat-nix-deps { };
             "kb-shortcuts" = pkgs.callPackage ./packages/kb-shortcuts { };
             "monitor-adjust" = pkgs.callPackage ./packages/monitor-adjust { };
@@ -145,6 +144,7 @@
             "wm-helpers" = pkgs.callPackage ./packages/wm-helpers { };
             # Inputs
             inherit (inputs'.nixie.packages) lkddb-filter;
+            inherit (inputs'.tpm-host-key.packages) tpm-host-key;
             inherit (inputs'.nixie.packages) pxe-generate;
             inherit (inputs'.nixie.packages) refind-generate;
             inherit (inputs'.ping-sweep.packages) ping-sweep;
@@ -209,7 +209,7 @@
               inputs.nix-extras.nixosModules.common
               inputs.nixie.nixosModules.refindGenerate
               inputs.runtime-modules.nixosModules.runtimeModules
-              self.nixosModules.tpmHostKey
+              inputs.tpm-host-key.nixosModules.default
               self.nixosModules.monitoring
               self.nixosModules.openrgb
               ({ config, ... }: {
@@ -299,7 +299,7 @@
           # NixOS modules
           nixosModules = {
             autoScrcpy.imports = [ ./nixosModules/auto-scrcpy.nix ];
-            tpmHostKey.imports = [ ./nixosModules/tpm-host-key ];
+            inherit (inputs.tpm-host-key.nixosModules) tpmHostKey;
             monitoring.imports = [ ./nixosModules/monitoring ];
             openrgb.imports = [ ./nixosModules/openrgb ];
           };

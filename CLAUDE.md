@@ -61,7 +61,7 @@ home-manager/
     .config/base01/                # Shared graphical "rice" (hyprland, waybar, wofi, mako, gtk, foot theme, nixvim theme)
       rice01/                      # Current rice variant (colors, wallpaper, animations)
 packages/                          # Custom packages (kb-shortcuts, monitor-adjust, pinit, 2mp3, claude-plugins, fat-nix-deps, webp-convert)
-docs/                              # Guides (new host, yubikey, agent forwarding, fido2-luks, CA cert, bluetooth devices, derived host key)
+docs/                              # Guides (new host, yubikey, agent forwarding, fido2-luks, CA cert, bluetooth devices)
 ```
 
 ### User config layering
@@ -110,6 +110,7 @@ docs/                              # Guides (new host, yubikey, agent forwarding
 - **Nixie** (closed-source): `github:majbacka-labs/nixie` — DHCP/PXE netboot module. Local: `~/Workspace/{local,remote}/nixie`.
 - **nixos.fi** (informational): `github:majbacka-labs/nixos.fi` — Public docs about the Nixie netboot approach.
 - **nixos-runtime-modules**: `github:tupakkatapa/nixos-runtime-modules` — Toggle NixOS module configurations at runtime.
+- **nixos-tpm-host-key**: `github:tupakkatapa/nixos-tpm-host-key` — Host SSH key derived from the TPM at boot (`services.tpmHostKey`, used by maliwan).
 - **nixos-sftp-mount**: `github:tupakkatapa/nixos-sftp-mount` — NixOS module for SFTP server/client mounting.
 - **mozid**: `github:tupakkatapa/mozid` — Firefox extension ID resolver; used here only as the `mozid` fish abbreviation.
 
