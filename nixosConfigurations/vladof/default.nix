@@ -114,6 +114,12 @@ in
     };
   };
 
+  # The TV hangs off the GPU's HDMI; the onboard S/PDIF would otherwise win
+  services.pipewire.wireplumber.extraConfig."51-hdmi-default"."monitor.alsa.rules" = [{
+    matches = [{ "node.name" = "~alsa_output.*hdmi.*"; }];
+    actions.update-props."priority.session" = 2000;
+  }];
+
   services.hardware.openrgb = {
     enable = true;
     motherboard = "amd";
