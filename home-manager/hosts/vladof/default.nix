@@ -10,24 +10,25 @@ let
 
   icons = pkgs.runCommand "couch-menu-icons" { nativeBuildInputs = [ pkgs.librsvg ]; } ''
     mkdir $out
-    for icon in plex youtube firefox retroarch steam; do
+    for icon in firefox retroarch steam; do
       rsvg-convert -w 192 -h 192 ${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/$icon.svg -o $out/$icon.png
     done
   '';
+
+  # Shows the module build in a terminal; on failure it stays open until Enter
+  enable = module: ''${TERMINAL} sh -c 'sudo -n runtime-modules enable ${module} || { read -r -p "Failed, press Enter"; exit 1; }' '';
 
   # Couch home screen: one app at a time, back to the menu when it closes
   couchMenu = pkgs.writeShellApplication {
     name = "couch-menu";
     text = ''
       while true; do
-        choice=$(printf 'img:${icons}/%s.png:text:%s\n' plex Plex youtube YouTube firefox Firefox retroarch RetroArch steam Steam |
+        choice=$(printf 'img:${icons}/%s.png:text:%s\n' firefox Firefox retroarch RetroArch steam Steam |
           wofi --dmenu) || continue
         case ''${choice##*:} in
-        Plex) firefox --kiosk https://plex.coditon.com/web ;;
-        YouTube) firefox --kiosk https://www.youtube.com/feed/subscriptions ;;
-        Firefox) firefox ;;
-        RetroArch) sudo -n runtime-modules enable retroarch && retroarch ;;
-        Steam) sudo -n runtime-modules enable steam && steam -bigpicture ;;
+        Firefox) firefox https://plex.coditon.com/web https://www.youtube.com/feed/subscriptions ;;
+        RetroArch) ${enable "retroarch"} && retroarch ;;
+        Steam) ${enable "steam"} && steam -bigpicture ;;
         esac || true
       done
     '';
@@ -45,8 +46,8 @@ in
     config = {
       modifier = "Mod1";
       bars = [ ];
-      # 1920x1080 lays out as 1280x720, readable from the couch
-      output."*".scale = "1.5";
+      # 1920x1080 lays out as 1371x771, readable from the couch
+      output."*".scale = "1.4";
       startup = [{ command = lib.getExe couchMenu; }];
       input."type:keyboard" = {
         xkb_layout = "fi";
@@ -68,42 +69,44 @@ in
     };
   };
 
-  # The couch menu: large rows readable from the couch, one column, no search
+  # The couch menu: one compact column, no search
   programs.wofi = {
     enable = true;
     settings = {
       allow_images = true;
-      image_size = 96;
+      image_size = 48;
       hide_search = true;
       hide_scroll = true;
-      lines = 5;
-      width = "40%";
+      lines = 3;
+      width = "20%";
       cache_file = "/dev/null";
     };
     style = ''
       * {
         font-family: "${FONT}";
-        font-size: 32px;
+        font-size: 20px;
       }
       #window {
         background-color: #${colors.base00};
         color: #${colors.base05};
-        border: 2px solid #${colors.base01};
+        border: 1px solid #${colors.base02};
+        border-radius: 12px;
       }
       #outer-box {
-        padding: 24px;
+        padding: 12px;
       }
       #img {
-        padding-right: 24px;
+        padding-right: 16px;
       }
       #entry {
-        padding: 16px;
+        padding: 8px 12px;
+        border-radius: 8px;
       }
       #entry:selected {
-        background-color: #${colors.base0A};
+        background-color: #${colors.base02};
       }
       #text:selected {
-        color: #${colors.base00};
+        color: #${colors.base0A};
       }
     '';
   };
