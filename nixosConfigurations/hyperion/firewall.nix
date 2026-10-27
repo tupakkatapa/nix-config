@@ -66,7 +66,7 @@ _:
     interfaces = {
       "br-lan" = {
         allowedTCPPorts = [ 22 53 52080 ]; # SSH, DNS, Nixie HTTP
-        allowedUDPPorts = [ 53 67 69 123 547 51820 ]; # DNS, DHCP, TFTP, NTP, DHCPv6, WireGuard
+        allowedUDPPorts = [ 53 67 69 123 514 547 51820 ]; # DNS, DHCP, TFTP, NTP, iPXE syslog, DHCPv6, WireGuard
       };
 
       "wg0" = {
