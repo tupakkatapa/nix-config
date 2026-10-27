@@ -53,7 +53,12 @@ in
   # This file should be imported under 'home-manager.users.<username>'
   # See 'home-manager/users/kari/minimal.nix' for an example how to do this conditionally
 
-  imports = [ ../.config/base01/rice01/nixvim.nix ];
+  imports = [
+    ../.config/base01/rice01/cursor.nix
+    ../.config/base01/rice01/nixvim.nix
+  ];
+
+  home.pointerCursor.size = 32;
 
   # Couch launcher on the TV: bare compositor, every window fullscreen
   wayland.windowManager.sway = {
@@ -71,9 +76,9 @@ in
         };
         statusCommand = lib.getExe couchStatus;
         colors = {
-          background = "#000000";
+          background = "#1d2021";
           statusline = "#${colors.base01}";
-          separator = "#000000";
+          separator = "#1d2021";
         };
       }];
       # A window that loses fullscreen to another (only one per workspace)
@@ -86,9 +91,13 @@ in
         border = 0;
         titlebar = false;
       };
-      # 1920x1080 lays out as 1371x771, readable from the couch
-      output."*".scale = "1.4";
+      output."*" = {
+        # 1920x1080 lays out as 1371x771, readable from the couch
+        scale = "1.4";
+        bg = "#1d2021 solid_color";
+      };
       startup = [{ command = lib.getExe couchMenu; }];
+      seat."*".xcursor_theme = "\"${config.home.pointerCursor.name}\" ${toString config.home.pointerCursor.size}";
       input."type:keyboard" = {
         xkb_layout = "fi";
         xkb_numlock = "enabled";
@@ -124,21 +133,23 @@ in
         lines = 4;
         width = 18;
         line-height = 56;
-        horizontal-pad = 16;
-        vertical-pad = 16;
+        horizontal-pad = 13;
+        vertical-pad = 13;
         inner-pad = 0;
       };
       colors = {
         background = "${colors.base00}ff";
         text = "${colors.base05}ff";
-        selection = "${colors.base02}ff";
-        selection-text = "${colors.base0A}ff";
-        border = "${colors.base02}ff";
+        selection = "${colors.base0A}ff";
+        selection-text = "${colors.base00}ff";
+        match = "${colors.base0A}ff";
+        selection-match = "${colors.base00}ff";
+        border = "${colors.base01}ff";
       };
       border = {
         width = 1;
-        radius = 12;
-        selection-radius = 8;
+        radius = 13;
+        selection-radius = 13;
       };
     };
   };

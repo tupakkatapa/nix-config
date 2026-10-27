@@ -3,6 +3,7 @@ _:
   imports = [
     ../default.nix
 
+    ./cursor.nix
     ./gtk.nix
     ./hyprland.nix
     ./hyprlock.nix

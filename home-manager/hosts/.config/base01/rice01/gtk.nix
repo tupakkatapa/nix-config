@@ -22,17 +22,6 @@ in
     gtk4.theme = config.gtk.theme;
   };
 
-  home.pointerCursor = {
-    name = "Capitaine Cursors (Gruvbox)";
-    # The package ships eight colour variants; only this one is used
-    package = pkgs.runCommand "capitaine-cursors-gruvbox" { } ''
-      mkdir -p $out/share/icons
-      cp -r "${pkgs.capitaine-cursors-themed}/share/icons/${config.home.pointerCursor.name}" $out/share/icons/
-    '';
-    size = 24;
-    gtk.enable = true;
-    x11.enable = true;
-  };
   wayland.windowManager.hyprland.settings = {
     exec-once = [
       # Fixes cursor themes in gnome apps under hyprland
