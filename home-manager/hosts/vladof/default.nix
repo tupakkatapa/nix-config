@@ -75,6 +75,7 @@ in
           size = 9.0;
         };
         statusCommand = lib.getExe couchStatus;
+        extraConfig = "gaps 0 24 12 24";
         colors = {
           background = "#1d2021";
           statusline = "#${colors.base01}";
