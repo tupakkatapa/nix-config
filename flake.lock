@@ -1070,11 +1070,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1792748354,
-        "narHash": "sha256-a73Sl3zxsAcrXGZiw/Mm11k2iCmefYPNzhTgdLazv+Q=",
+        "lastModified": 1793129588,
+        "narHash": "sha256-shA3z5f2YF6WK75oaWy0mMhe6YCFuSqmikmuvD4vzEY=",
         "owner": "tupakkatapa",
         "repo": "kaloriina",
-        "rev": "72c8ea0ee4f5403b5a3749d9aa28402133b12443",
+        "rev": "cd54840463293e2d2d67d2949d842c34e922a242",
         "type": "github"
       },
       "original": {
