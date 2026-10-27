@@ -58,21 +58,29 @@ in
 
   services.runtimeModules = {
     enable = true;
-    flakeUrl = "path:${dataDir}/sftp/code/workspace/tupakkatapa/nix-config";
+    # Only pushed commits; the workspace is writable by everything in the sftp group
+    flakeUrl = "github:tupakkatapa/nix-config";
     builtinModules.enable = true;
     modules = [
       {
         name = "retroarch";
         imports = [ (import ../.config/retroarch.nix (extendedArgs // { share = "${dataDir}/sftp/appdata/retroarch"; })) ];
-        postEnable = "retroarch";
       }
       {
         name = "steam";
         imports = [ "${inputs.runtime-modules}/nixosModules/rt-modules/steam.nix" ];
-        postEnable = "steam -bigpicture";
       }
     ];
   };
+
+  # The couch session enables these without a password. Hooks would run as
+  # root under sudo, so the session starts the apps itself afterwards.
+  security.sudo.extraRules = [{
+    users = [ "kari" ];
+    commands = map
+      (module: { command = "/run/current-system/sw/bin/runtime-modules enable ${module}"; options = [ "NOPASSWD" ]; })
+      [ "retroarch" "steam" ];
+  }];
 
   # Overrides the graphical-desktop default set (CJK, unifont, emoji)
   fonts.enableDefaultPackages = false;
