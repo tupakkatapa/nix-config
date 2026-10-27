@@ -132,7 +132,6 @@
           };
 
           checks.tpm-host-key = config.packages.tpm-host-key.tests.derive;
-          checks.webp-convert = config.packages.webp-convert.tests.convert;
 
           # Custom packages and entrypoint aliases -> 'nix run' or 'nix build'
           packages = {

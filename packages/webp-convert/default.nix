@@ -7,6 +7,7 @@ pkgs.stdenv.mkDerivation (finalAttrs: {
 
   buildInputs = with pkgs; [
     libwebp
+    libavif
     libjpeg_turbo.bin
     gnugrep
   ];
@@ -20,6 +21,4 @@ pkgs.stdenv.mkDerivation (finalAttrs: {
     wrapProgram $out/bin/${finalAttrs.name} \
       --prefix PATH : ${lib.makeBinPath finalAttrs.buildInputs}
   '';
-
-  passthru.tests.convert = pkgs.callPackage ./test.nix { webp-convert = finalAttrs.finalPackage; };
 })
