@@ -9,6 +9,12 @@ in
   # Required for home-manager GTK apps
   programs.dconf.enable = true;
 
+  # The login email Bitwarden prefills, seeded by firefox/site-data.nix
+  age.secrets."bitwarden-email" = {
+    rekeyFile = ./secrets/bitwarden-email.age;
+    owner = user;
+  };
+
   # Home-manager config
   home-manager.users."${user}" = {
     imports = [

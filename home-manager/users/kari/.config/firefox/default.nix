@@ -105,6 +105,10 @@ in
           "browser.urlbar.suggest.engines" = false;
           "browser.urlbar.suggest.recentsearches" = false;
 
+          # DRM: Firefox fetches Widevine on first use
+          "media.eme.enabled" = true;
+          "media.gmp-widevinecdm.enabled" = true;
+
           # Disable useless bloat
           "browser.tabs.firefox-view" = false;
           "browser.tabs.hoverPreview.enabled" = false;

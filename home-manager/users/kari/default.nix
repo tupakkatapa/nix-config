@@ -62,10 +62,6 @@ in
       rekeyFile = ../../../nixosConfigurations/vladof/secrets/transmission-creds.age;
       owner = user;
     };
-    "bitwarden-email" = {
-      rekeyFile = ./secrets/bitwarden-email.age;
-      owner = user;
-    };
   };
 
   # agenix drops the key files here
