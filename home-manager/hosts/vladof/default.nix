@@ -15,7 +15,7 @@ in
     config = {
       modifier = "Mod1";
       bars = [ ];
-      startup = [{ command = "${BROWSER} https://plex.coditon.com https://www.youtube.com/feed/subscriptions"; }];
+      startup = [{ command = "${BROWSER} https://plex.coditon.com/web https://www.youtube.com/feed/subscriptions"; }];
       input."type:keyboard" = {
         xkb_layout = "fi";
         xkb_numlock = "enabled";
