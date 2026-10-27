@@ -70,6 +70,10 @@ in
         name = "steam";
         imports = [ "${inputs.runtime-modules}/nixosModules/rt-modules/steam.nix" ];
       }
+      {
+        name = "plexamp";
+        imports = [{ environment.systemPackages = [ pkgs.plexamp ]; }];
+      }
     ];
   };
 
@@ -78,8 +82,8 @@ in
   security.sudo.extraRules = [{
     users = [ "kari" ];
     commands = map
-      (module: { command = "/run/current-system/sw/bin/runtime-modules enable ${module}"; options = [ "NOPASSWD" ]; })
-      [ "retroarch" "steam" ];
+      (module: { command = "/run/current-system/sw/bin/runtime-modules -f enable ${module}"; options = [ "NOPASSWD" ]; })
+      [ "retroarch" "steam" "plexamp" ];
   }];
 
   # Overrides the graphical-desktop default set (CJK, unifont, emoji)
