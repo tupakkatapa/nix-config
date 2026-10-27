@@ -67,10 +67,6 @@ in
         imports = [ (import ../.config/retroarch.nix (extendedArgs // { share = "${dataDir}/sftp/appdata/retroarch"; })) ];
       }
       {
-        name = "steam";
-        imports = [ "${inputs.runtime-modules}/nixosModules/rt-modules/steam.nix" ];
-      }
-      {
         name = "plexamp";
         imports = [{ environment.systemPackages = [ pkgs.plexamp ]; }];
       }
@@ -83,7 +79,7 @@ in
     users = [ "kari" ];
     commands = map
       (module: { command = "/run/current-system/sw/bin/runtime-modules -f enable ${module}"; options = [ "NOPASSWD" ]; })
-      [ "retroarch" "steam" "plexamp" ];
+      [ "retroarch" "rt.steam" "plexamp" ];
   }];
 
   # Overrides the graphical-desktop default set (CJK, unifont, emoji)

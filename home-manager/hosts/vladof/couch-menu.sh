@@ -122,11 +122,11 @@ launch() {
 
 icon() {
   if running "$1"; then
-    echo "$ICONS/$1-busy.png"
+    echo "$ICONS/$2-busy.png"
   elif installed "$2"; then
-    echo "$ICONS/$1-on.png"
+    echo "$ICONS/$2-on.png"
   else
-    echo "$ICONS/$1-off.png"
+    echo "$ICONS/$2-off.png"
   fi
 }
 
@@ -162,7 +162,7 @@ while true; do
   choice=$({
     entry Firefox "$ICONS/firefox.png"
     entry RetroArch "$(icon retroarch retroarch)"
-    entry Steam "$(icon steam steam)"
+    entry Steam "$(icon rt.steam steam)"
     entry Plexamp "$(icon plexamp plexamp)"
   } | fuzzel --dmenu --select="$selected") || {
     sleep 0.5
@@ -172,7 +172,7 @@ while true; do
   case $choice in
   Firefox) show firefox "${firefox[@]}" ;;
   RetroArch) launch retroarch retroarch ;;
-  Steam) launch steam steam -bigpicture ;;
+  Steam) launch rt.steam steam -bigpicture ;;
   Plexamp) launch plexamp plexamp ;;
   esac || true
 done
