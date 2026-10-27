@@ -37,7 +37,7 @@ in
     # agenix reads the SSH host key from here in stage 2
     "${dataDir}" = neededForBoot (pool "@main");
     # The subvolume must contain `store/` and `work/`
-    "/nix/.rw-store" = neededForBoot (nvme "@nix-rw-store");
+    "/nix/.rw-store" = neededForBoot (pool "@nix-rw-store");
 
     # The NVMe's top level, where btrbk keeps its snapshots
     "/mnt/nvme" = {
