@@ -97,7 +97,7 @@ docs/                              # Guides (new host, yubikey, agent forwarding
 
 **Tmux**: Prefix `C-Space`, vi mode, mouse on. Splits: `v` (horizontal), `g` (vertical). Minimal status bar.
 
-**File manager**: Yazi with fish integration, smart-enter plugin, jump-to-char. Also zathura for PDFs.
+**File manager**: Yazi with fish integration, smart-enter plugin, jump-to-char. PDFs open in zathura on maliwan, Firefox on vladof.
 
 **Secrets**: agenix-rekey. Hardware keys: YubiKey (ed25519-sk), Trezor (ed25519-sk, GPG). SSH agent with fish integration.
 
@@ -130,6 +130,7 @@ docs/                              # Guides (new host, yubikey, agent forwarding
 - `nixpkgs.config.allowUnfree = true` is set globally.
 - `pure-eval = false` and `accept-flake-config = true` — impure evaluation is intentional for development workflow.
 - `nix-access-tokens` secret provides GitHub API tokens to avoid rate limits.
+- The `nixpkgs` registry and `NIX_PATH` point at the locked revision on GitHub, not a store path, to keep nixpkgs' source out of the images: `nix-shell -p`, `,` and `nix run nixpkgs#` fetch it on first use after each boot.
 - Blog content under `nixosConfigurations/vladof/services/containers/molesk/contents` is all rights reserved (rest is GPL-3.0).
 - `.gitignore` ignores `.claude` and `**/CLAUDE.md` except root and kari's claude config CLAUDE.md.
 - The `claude` fish abbreviation wraps claude-code in a tmux session: `tmux new-session 'claude -c'`.

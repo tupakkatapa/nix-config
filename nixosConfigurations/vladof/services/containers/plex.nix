@@ -12,7 +12,7 @@ in
     privateNetwork = true;
     inherit (containerConfig.plex) hostAddress localAddress;
 
-    # GPU access for QuickSync hardware transcoding
+    # GPU access for hardware transcoding
     allowedDevices = [
       { modifier = "rw"; node = "/dev/dri/renderD128"; }
     ];
@@ -46,21 +46,31 @@ in
       };
     };
 
-    config = { pkgs, ... }: {
+    config = { config, pkgs, ... }: {
       imports = [ (globalContainerConfig "plex") ];
 
       services.plex = {
         enable = true;
+        # buildFHSEnv bundles every glibc locale; only the container's are needed
+        package = pkgs.plex.override {
+          buildFHSEnv = pkgs.buildFHSEnv.override {
+            callPackage = fn: args: pkgs.callPackage fn (args // {
+              pkgs = pkgs // {
+                glibcLocales = pkgs.glibcLocales.override {
+                  allLocales = false;
+                  locales = config.i18n.supportedLocales;
+                };
+              };
+            });
+          };
+        };
         dataDir = "/var/lib/plex";
         user = "plex";
         group = "plex";
       };
 
-      # QuickSync for hardware transcoding
-      hardware.graphics = {
-        enable = true;
-        extraPackages = with pkgs; [ intel-media-driver ];
-      };
+      # Mesa's VA-API driver for the Radeon
+      hardware.graphics.enable = true;
 
       # Render node is root:render 0660 on the host; gid is static across NixOS
       users.users.plex.extraGroups = [ "render" "video" ];

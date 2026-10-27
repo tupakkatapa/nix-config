@@ -6,6 +6,8 @@
   programs.nixvim = {
     enable = true;
     nixpkgs.source = pkgs.path;
+    withPython3 = false;
+    withRuby = false;
 
     # Telescope deps
     extraPackages = with pkgs; [ fd ripgrep ];

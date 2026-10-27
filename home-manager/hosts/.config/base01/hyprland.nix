@@ -145,7 +145,6 @@ in
         "${mod}, Return, exec, [tile]${TERMINAL}"
 
         # Programs
-        "SUPER, O, togglespecialworkspace, oterm"
         "SUPER, N, togglespecialworkspace, notepad"
         "SUPER, B, exec, ${BROWSER}"
         "SUPER, F, exec, ${FILEMANAGER} ~"
@@ -243,11 +242,6 @@ in
         "match:class tui-suite, center on"
         "match:class tui-suite, float on"
         "match:class tui-suite, size 1400 800"
-
-        "match:class oterm, workspace special:oterm silent"
-        "match:class oterm, float on"
-        "match:class oterm, size 1400 800"
-        "match:class oterm, center on"
 
         "match:class notepad, workspace special:notepad silent"
         "match:class notepad, float on"

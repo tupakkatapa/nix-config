@@ -8,14 +8,6 @@
     exiftool
   ];
 
-  programs.zathura = {
-    enable = true;
-    options = {
-      adjust-open = "width";
-      smooth-scroll = true;
-    };
-  };
-
   programs.yazi = {
     enable = true;
     enableFishIntegration = true;

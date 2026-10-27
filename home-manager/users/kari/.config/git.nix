@@ -1,8 +1,7 @@
-{ pkgs, ... }:
+_:
 {
   programs.git = {
     enable = true;
-    package = pkgs.gitFull;
     lfs.enable = true;
 
     ignores = [

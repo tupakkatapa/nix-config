@@ -22,7 +22,7 @@ in
     # Default apps by user
     home.sessionVariables = {
       BROWSER = "firefox";
-      FONT = "JetBrainsMono Nerd Font";
+      FONT = "JetBrains Mono";
       TERMINAL = "foot";
     };
   };

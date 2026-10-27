@@ -1,5 +1,4 @@
 { pkgs
-, unstable
 , config
 , lib
 , ...
@@ -158,34 +157,6 @@ in
     programs.msmtp.enable = true;
     programs.git.settings.sendemail.smtpserver = "${pkgs.msmtp}/bin/msmtp";
 
-    # oterm
-    xdg.dataFile."oterm/config.json".text = builtins.toJSON {
-      mcpServers = {
-        searxng = {
-          command = "npx";
-          args = [ "-y" "mcp-searxng" ];
-          env = {
-            SEARXNG_URL = "https://search.coditon.com";
-            NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-bundle.crt";
-          };
-        };
-        filesystem = {
-          command = "npx";
-          args = [ "-y" "@modelcontextprotocol/server-filesystem" "/home/${user}" ];
-        };
-        fetch = {
-          command = "npx";
-          args = [ "-y" "@modelcontextprotocol/server-fetch" ];
-        };
-        git = {
-          command = "npx";
-          args = [ "-y" "@modelcontextprotocol/server-git" ];
-        };
-      };
-      theme = "gruvbox";
-      splash-screen = false;
-    };
-
     # Use specific startup
     wayland.windowManager.hyprland.settings.exec-once =
       let
@@ -203,7 +174,7 @@ in
         "foot -e $SHELL -c 'echo \"\\$ sudo mount /mnt/sftp\" && sudo mount /mnt/sftp && sleep 1 || read -p \"Press enter to continue..\"'"
       ];
 
-    home.packages = (with pkgs; [
+    home.packages = with pkgs; [
       android-tools
       monitor-adjust
       crosspipe
@@ -212,7 +183,7 @@ in
       lxqt.lxqt-openssh-askpass
 
       # Desktop fonts
-      nerd-fonts.jetbrains-mono
+      jetbrains-mono
       nerd-fonts.symbols-only
 
       # Trezor (override: keyring 25.7.0 not yet in nixpkgs)
@@ -220,10 +191,7 @@ in
         pythonRelaxDeps = (old.pythonRelaxDeps or [ ]) ++ [ "keyring" ];
       }))
 
-    ]) ++
-    (with unstable; [
-      oterm
-    ]);
+    ];
   };
 
   # networkd resolves Endpoint once; the uplink's DNS answers vpn.coditon.com

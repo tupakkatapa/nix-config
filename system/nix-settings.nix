@@ -7,14 +7,20 @@ let
   builds = config.networking.hostName == "maliwan";
 in
 {
-  nix = {
-    # This will add each flake input as a registry
-    # To make nix3 commands consistent with your flake
-    registry = lib.mkDefault (lib.mapAttrs (_: value: { flake = value; }) inputs);
+  # Keeps nixpkgs' source out of every image; fetched on first use
+  nixpkgs.flake = {
+    setFlakeRegistry = false;
+    setNixPath = false;
+  };
 
-    # This will additionally add your inputs to the system's legacy channels
-    # Making legacy nix commands consistent as well, awesome!
-    nixPath = lib.mkDefault (lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry);
+  nix = {
+    registry.nixpkgs.to = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
+      inherit (inputs.nixpkgs) rev narHash;
+    };
+    nixPath = [ "nixpkgs=flake:nixpkgs" ];
 
     # Disable nix channels. Use flakes instead.
     channel.enable = false;

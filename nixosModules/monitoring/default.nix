@@ -131,6 +131,18 @@ in
     {
       services.vector = {
         enable = true;
+        # The bundled OpenSSL's version string names the compiler, which would
+        # otherwise pull gcc into the closure
+        package = lib.mkDefault (pkgs.runCommand pkgs.vector.name
+          {
+            nativeBuildInputs = [ pkgs.removeReferencesTo ];
+            disallowedReferences = [ pkgs.stdenv.cc ];
+            inherit (pkgs.vector) meta;
+          } ''
+          cp -r ${pkgs.vector} $out
+          chmod -R u+w $out
+          remove-references-to -t ${pkgs.stdenv.cc} $out/bin/vector
+        '');
         journaldAccess = true;
         settings = {
           sources = {

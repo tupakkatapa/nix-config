@@ -24,7 +24,11 @@ in
 
   home.pointerCursor = {
     name = "Capitaine Cursors (Gruvbox)";
-    package = pkgs.capitaine-cursors-themed;
+    # The package ships eight colour variants; only this one is used
+    package = pkgs.runCommand "capitaine-cursors-gruvbox" { } ''
+      mkdir -p $out/share/icons
+      cp -r "${pkgs.capitaine-cursors-themed}/share/icons/${config.home.pointerCursor.name}" $out/share/icons/
+    '';
     size = 24;
     gtk.enable = true;
     x11.enable = true;

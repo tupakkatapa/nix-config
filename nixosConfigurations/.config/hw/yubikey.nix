@@ -4,7 +4,6 @@
   environment.systemPackages = with pkgs; [
     pinentry-curses
     age-plugin-fido2-hmac
-    yubikey-manager
   ];
   programs.yubikey-touch-detector.enable = true;
 
