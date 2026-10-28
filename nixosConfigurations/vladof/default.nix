@@ -58,7 +58,7 @@ in
 
   services.runtimeModules = {
     enable = true;
-    # Only pushed commits; the workspace is writable by everything in the sftp group
+    # Only pushed commits
     flakeUrl = "github:tupakkatapa/nix-config";
     builtinModules.enable = true;
     modules = [

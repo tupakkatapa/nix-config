@@ -38,7 +38,7 @@
 
   services.runtimeModules = {
     enable = true;
-    flakeUrl = "path:/mnt/sftp/code/workspace/tupakkatapa/nix-config";
+    flakeUrl = "path:/home/kari/Workspace/tupakkatapa/nix-config";
     builtinModules.enable = true;
     modules = [
       {

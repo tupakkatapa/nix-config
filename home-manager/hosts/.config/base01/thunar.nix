@@ -82,7 +82,7 @@ in
 
   # Sidebar bookmarks
   xdg.configFile."gtk-3.0/bookmarks".text = ''
-    file:///mnt/sftp/code/workspace Workspace
+    file:///home/kari/Workspace Workspace
     file://${config.xdg.userDirs.download} Downloads
     file:///mnt/sftp SFTP
   '';

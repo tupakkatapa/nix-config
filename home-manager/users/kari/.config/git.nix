@@ -44,6 +44,7 @@ _:
       };
       safe.directory = [ "*" ];
       tag.sort = "version:refname";
+      worktree.useRelativePaths = true;
     };
   };
 }

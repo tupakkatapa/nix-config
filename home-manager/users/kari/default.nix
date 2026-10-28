@@ -75,12 +75,14 @@ in
   # Trezor hardware wallet
   services.trezord.enable = true;
 
-  # Passwordless on-demand SFTP mount at login (sshfs auth still needs a YubiKey touch)
+  # Passwordless on-demand mounts at login (sshfs auth still needs a YubiKey touch)
   security.sudo.extraRules = [{
     users = [ user ];
     commands = [
       { command = "/run/wrappers/bin/mount /mnt/sftp"; options = [ "NOPASSWD" ]; }
       { command = "/run/wrappers/bin/umount /mnt/sftp"; options = [ "NOPASSWD" ]; }
+      { command = "/run/wrappers/bin/mount /home/kari/Workspace"; options = [ "NOPASSWD" ]; }
+      { command = "/run/wrappers/bin/umount /home/kari/Workspace"; options = [ "NOPASSWD" ]; }
     ];
   }];
 
@@ -162,8 +164,8 @@ in
         # Open programs on specific workspaces
         "[workspace 4 silent] ${browser} https://slack.com/signin https://linear.app/inform-re/inbox https://element.coditon.com/ https://mail.google.com/mail"
 
-        # Open terminal with SFTP mount on login
-        "foot -e $SHELL -c 'echo \"\\$ sudo mount /mnt/sftp\" && sudo mount /mnt/sftp && sleep 1 || read -p \"Press enter to continue..\"'"
+        # Open terminal with the vladof mounts on login
+        "foot -e $SHELL -c 'echo \"\\$ sudo mount /mnt/sftp /home/kari/Workspace\" && sudo mount /mnt/sftp && sudo mount /home/kari/Workspace && sleep 1 || read -p \"Press enter to continue..\"'"
       ];
 
     home.packages = with pkgs; [

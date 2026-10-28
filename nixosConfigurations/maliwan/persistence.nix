@@ -1,8 +1,8 @@
 { pkgs, ... }:
-{
-  # On-demand SFTP mount from vladof (YubiKey-resident key, requires touch)
-  fileSystems."/mnt/sftp" = {
-    device = "sftp@10.42.0.8:/";
+let
+  # On-demand mounts from vladof (YubiKey-resident key, requires touch)
+  sshfs = device: {
+    inherit device;
     fsType = "sshfs";
     options = [
       "nodev"
@@ -26,14 +26,22 @@
       "IdentityFile=/home/kari/.ssh/id_ed25519_sk_trezor"
     ];
   };
+in
+{
+  fileSystems = {
+    "/mnt/sftp" = sshfs "sftp@10.42.0.8:/";
+    # As kari, at vladof's own path
+    "/home/kari/Workspace" = sshfs "kari@10.42.0.8:/home/kari/Workspace";
+  };
 
-  # SSHFS support for /mnt/sftp
+  # SSHFS support
   system.fsPackages = [ pkgs.sshfs ];
   programs.fuse.userAllowOther = true;
 
-  # SFTP mountpoint; home parents owned by kari, else nested tmpfiles and agenix paths create them as root
+  # Mountpoints; home parents owned by kari, else nested tmpfiles and agenix paths create them as root
   systemd.tmpfiles.rules = [
     "d /mnt/sftp                755 root root -"
+    "d /home/kari/Workspace     755 kari kari -"
     "d /home/kari/.config       755 kari kari -"
     "d /home/kari/.local        755 kari kari -"
     "d /home/kari/.local/share  755 kari kari -"

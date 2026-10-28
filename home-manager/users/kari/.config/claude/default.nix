@@ -47,7 +47,7 @@ in
       permissions = {
         defaultMode = "auto";
         inherit (permissions) allow deny;
-        additionalDirectories = [ "/mnt/sftp/code/workspace" "/mnt/wd-red/sftp/code/workspace" "/tmp" ];
+        additionalDirectories = [ "/home/kari/Workspace" "/tmp" ];
       };
       hooks = {
         SessionStart = [{

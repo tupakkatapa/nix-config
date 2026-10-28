@@ -26,7 +26,7 @@ in
     "/home/kari/.local/share/zoxide" = pool "@kari-zoxide";
     "/home/kari/.local/share/Steam" = nvme "@kari-steam";
     "/home/kari/.claude/projects" = nvme "@kari-claude-projects";
-    "${dataDir}/sftp/code/workspace" = nvme "@kari-workspace";
+    "/home/kari/Workspace" = nvme "@kari-workspace";
 
     "/var/log/journal" = pool "@var-log-journal";
     "/var/lib/acme" = pool "@acme";
@@ -131,7 +131,6 @@ in
     # SFTP subdir ownership enforcement (container writes target these paths)
     "Z ${dataDir}/sftp/appdata                   -   sftp sftp                                     -"
     "Z ${dataDir}/sftp/code                      -   sftp sftp                                     -"
-    "d ${dataDir}/sftp/code/workspace            2775 sftp sftp                                     -"
     "Z ${dataDir}/sftp/docs                      -   sftp sftp                                     -"
     "Z ${dataDir}/sftp/games                     -   sftp sftp                                     -"
     "Z ${dataDir}/sftp/media                     -   sftp sftp                                     -"
@@ -150,5 +149,6 @@ in
     "Z /home/kari/.config/gh            0700 kari kari -"
     "Z /home/kari/.claude/projects      - kari kari -"
     "d /home/kari/.local/share/Steam    755 kari kari -"
+    "d /home/kari/Workspace             755 kari kari -"
   ];
 }
