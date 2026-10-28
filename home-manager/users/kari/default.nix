@@ -164,7 +164,7 @@ in
       in
       [
         # Open programs on specific workspaces
-        "[workspace 4 silent] ${awaitOutputs}${browser} https://slack.com/signin https://linear.app/inform-re/inbox https://web.telegram.org/ https://mail.google.com/mail"
+        "[workspace 4 silent] ${awaitOutputs}${browser} https://slack.com/signin https://linear.app/inform-re/inbox https://element.coditon.com/ https://mail.google.com/mail"
 
         # Open terminal with SFTP mount on login
         "foot -e $SHELL -c 'echo \"\\$ sudo mount /mnt/sftp\" && sudo mount /mnt/sftp && sleep 1 || read -p \"Press enter to continue..\"'"

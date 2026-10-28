@@ -79,7 +79,7 @@ let
         lastOctet = 19;
         uid = 10010;
       };
-      conduit = {
+      matrix = {
         addr = "matrix.${domain}";
         port = 6167;
         private = false;
