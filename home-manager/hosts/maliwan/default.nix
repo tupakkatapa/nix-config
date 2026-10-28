@@ -1,28 +1,20 @@
 { pkgs
 , ...
-}: {
+}:
+let
+  dock = "Lenovo Group Limited P34w-20 VVE53307";
+in
+{
   # This file should be imported under 'home-manager.users.<username>'
   # See 'home-manager/users/kari/minimal.nix' for an example how to do this conditionally
 
   imports = [ ../.config/base01/rice01 ];
 
-  # One display at a time: the dock when connected, the panel otherwise
-  services.kanshi = {
-    enable = true;
-    settings = [
-      {
-        profile.name = "docked";
-        profile.outputs = [
-          { criteria = "eDP-1"; status = "disable"; }
-          { criteria = "Lenovo Group Limited P34w-20 VVE53307"; mode = "3440x1440@59.973"; position = "0,0"; }
-        ];
-      }
-      {
-        profile.name = "undocked";
-        profile.outputs = [{ criteria = "eDP-1"; status = "enable"; }];
-      }
-    ];
-  };
+  # Docked, the panel mirrors; undocked, Hyprland drops the mirror
+  wayland.windowManager.hyprland.settings.monitor = [
+    "desc:${dock}, 3440x1440@59.97, 0x0, 1"
+    "eDP-1, preferred, 3440x0, 1, mirror, desc:${dock}"
+  ];
 
   xdg.configFile."pipewire-out-switcher/devices.json".text = builtins.toJSON {
     speakers = "alsa_output.pci-*.HiFi__HDMI*__sink";

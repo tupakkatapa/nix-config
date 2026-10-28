@@ -1,6 +1,5 @@
 { pkgs
 , config
-, lib
 , ...
 }:
 let
@@ -158,13 +157,10 @@ in
       let
         # User-level variable, cannot use $BROWSER as might not be set yet
         browser = config.home-manager.users."${user}".home.sessionVariables.BROWSER;
-        # GTK crashes if an output goes away while it opens the display
-        awaitOutputs = lib.optionalString config.home-manager.users."${user}".services.kanshi.enable
-          "timeout 10 sh -c 'until kanshictl status | grep -q current_profile; do sleep 0.2; done'; ";
       in
       [
         # Open programs on specific workspaces
-        "[workspace 4 silent] ${awaitOutputs}${browser} https://slack.com/signin https://linear.app/inform-re/inbox https://element.coditon.com/ https://mail.google.com/mail"
+        "[workspace 4 silent] ${browser} https://slack.com/signin https://linear.app/inform-re/inbox https://element.coditon.com/ https://mail.google.com/mail"
 
         # Open terminal with SFTP mount on login
         "foot -e $SHELL -c 'echo \"\\$ sudo mount /mnt/sftp\" && sudo mount /mnt/sftp && sleep 1 || read -p \"Press enter to continue..\"'"

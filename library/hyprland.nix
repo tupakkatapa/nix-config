@@ -87,9 +87,10 @@ rec {
           let
             isPrimary = pair.monitor.primary or false;
             wsNum = toString pair.wsNum;
+            monitor = lib.optionalString (pair.monitor.name != "") ", monitor:${pair.monitor.name}";
             extras = if (isPrimary && pair.wsNum == 1) then ", persistent:true, default:true" else "";
           in
-          "${wsNum}, monitor:${pair.monitor.name}${extras}"
+          "${wsNum}${monitor}${extras}"
         )
         monitorWorkspacePairs;
     in
