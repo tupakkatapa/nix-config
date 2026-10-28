@@ -2,7 +2,6 @@
   Services = [
     # Self-Hosted
     { name = "Netboot"; url = "http://10.42.0.1:52080/"; }
-    { name = "Grafana"; url = "https://grafana.coditon.com"; }
     { name = "Home Assistant"; url = "https://home.coditon.com/nixos-lovelace/0"; }
     { name = "Radicale"; url = "https://dav.coditon.com/"; }
     { name = "Plex"; url = "https://plex.coditon.com"; }
@@ -16,7 +15,6 @@
     { name = "Search"; url = "https://search.coditon.com"; }
     { name = "ntfy"; url = "https://ntfy.coditon.com"; }
     { name = "Cert"; url = "https://cert.coditon.com"; }
-    { name = "Claude-Mem"; url = "http://127.0.0.1:37777/"; }
 
     # Email
     { name = "Outlook"; url = "https://outlook.live.com/mail"; }
@@ -27,7 +25,7 @@
     { name = "WhatsApp"; url = "https://web.whatsapp.com/"; }
     { name = "Discord"; url = "https://discord.com/app"; }
     { name = "Telegram"; url = "https://web.telegram.org/"; }
-    { name = "Element"; url = "https://app.element.io/"; }
+    { name = "Element"; url = "https://element.coditon.com/"; }
     { name = "Slack"; url = "https://app.slack.com/"; }
 
     # Social

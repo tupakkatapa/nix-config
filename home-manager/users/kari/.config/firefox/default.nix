@@ -59,6 +59,7 @@ in
             "https://mail.google.com"
             "https://discord.com"
             "https://linear.app"
+            "https://element.coditon.com"
           ];
           Camera.Allow = [ "https://meet.google.com" ];
           Microphone.Allow = [ "https://meet.google.com" ];

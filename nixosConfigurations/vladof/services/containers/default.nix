@@ -73,7 +73,7 @@ in
     (import ./plex.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
     (import ./radicale.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
     (import ./ntfy.nix { inherit lib domain dataDir containerConfig globalContainerConfig; })
-    (import ./conduit.nix { inherit lib domain dataDir containerConfig globalContainerConfig; })
+    (import ./conduit.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
     (import ./kaloriina.nix { inherit dataDir containerConfig inputs globalContainerConfig; })
     (import ./atuin.nix { inherit dataDir containerConfig globalContainerConfig; })
     (import ./molesk { inherit config lib pkgs domain dataDir containerConfig inputs globalContainerConfig; })
@@ -83,6 +83,8 @@ in
   # Container secrets
   age.secrets = {
     "vaultwarden-env".rekeyFile = ../../secrets/vaultwarden-env.age;
+    "conduit-env".rekeyFile = ../../secrets/conduit-env.age;
+    "mautrix-env".rekeyFile = ../../secrets/mautrix-env.age;
     "kavita-token".rekeyFile = ../../secrets/kavita-token.age;
     "searx-env".rekeyFile = ../../secrets/searx-env.age;
     "transmission-creds" = {
@@ -100,9 +102,13 @@ in
   # Bind mounts pin the inode at start, agenix drops the old generation on switch
   systemd.services = lib.mapAttrs'
     (name: secretFile: lib.nameValuePair "container@${name}" {
-      restartTriggers = [ secretFile ];
+      restartTriggers = lib.toList secretFile;
     })
     {
+      conduit = [
+        config.age.secrets.conduit-env.file
+        config.age.secrets.mautrix-env.file
+      ];
       kavita = config.age.secrets.kavita-token.file;
       radicale = config.age.secrets.radicale-admin-pass.file;
       searx = config.age.secrets.searx-env.file;
