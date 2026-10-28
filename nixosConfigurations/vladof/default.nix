@@ -41,6 +41,16 @@ in
     path = "/var/lib/bluetooth/BC:09:1B:26:19:8D/CC:47:F4:B7:4B:AF/info";
     symlink = false;
   };
+  age.secrets.bt-xbox-turquoise = {
+    rekeyFile = ./secrets/bt-xbox-turquoise.age;
+    path = "/var/lib/bluetooth/BC:09:1B:26:19:8D/EC:83:50:CA:1A:CA/info";
+    symlink = false;
+  };
+  age.secrets.bt-xbox-elite-2 = {
+    rekeyFile = ./secrets/bt-xbox-elite-2.age;
+    path = "/var/lib/bluetooth/BC:09:1B:26:19:8D/44:16:22:07:02:10/info";
+    symlink = false;
+  };
 
   imports = [
     (import ./services extendedArgs)

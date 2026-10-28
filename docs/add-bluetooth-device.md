@@ -14,10 +14,15 @@ On the host, as usual:
 
 ```bash
 bluetoothctl
+[bluetooth]# agent on
+[bluetooth]# default-agent
+[bluetooth]# pairable on
 [bluetooth]# scan on
 [bluetooth]# pair <device MAC>
 [bluetooth]# trust <device MAC>
 ```
+
+Stay inside the interactive session. A one-shot `bluetoothctl -- pair` has no agent and the adapter is not pairable, so a device that asks for confirmation (Xbox controllers do) fails with `AuthenticationFailed`, or ends up `Paired: yes` but `Bonded: no`, which stores no link key. `bluetoothctl info <MAC>` must show `Bonded: yes` before the export.
 
 ## 2) Export
 
