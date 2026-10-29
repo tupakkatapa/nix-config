@@ -50,8 +50,6 @@
     nixvim.url = "github:nix-community/nixvim/nixos-26.05";
     ping-sweep.inputs.nixpkgs.follows = "nixpkgs";
     ping-sweep.url = "github:tupakkatapa/ping-sweep";
-    wl-harmonograph.inputs.nixpkgs.follows = "nixpkgs";
-    wl-harmonograph.url = "github:pinpox/wl-harmonograph";
   };
 
   outputs = { self, ... }@inputs:
@@ -95,8 +93,6 @@
               ping-sweep
               herdr
               ;
-            # Inputs
-            wl-harmonograph = inputs'.wl-harmonograph.packages.default;
             # Not a single derivation
             claude-plugins = pkgs.callPackage ./packages/claude-plugins { };
           };

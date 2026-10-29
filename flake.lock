@@ -1641,8 +1641,7 @@
         "ping-sweep": "ping-sweep",
         "runtime-modules": "runtime-modules",
         "tpm-host-key": "tpm-host-key",
-        "treefmt-nix": "treefmt-nix_10",
-        "wl-harmonograph": "wl-harmonograph"
+        "treefmt-nix": "treefmt-nix_10"
       }
     },
     "runtime-modules": {
@@ -2016,26 +2015,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "wl-harmonograph": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1773875843,
-        "narHash": "sha256-8C8vLBZrFcvf22D+kmR6nvsoS9AByFeCtcQkuvSDKJQ=",
-        "owner": "pinpox",
-        "repo": "wl-harmonograph",
-        "rev": "a86c07a479b6ce257e08e40a4e0a77840b9c252c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "pinpox",
-        "repo": "wl-harmonograph",
         "type": "github"
       }
     }

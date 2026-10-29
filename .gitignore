@@ -19,5 +19,5 @@ tmp
 *-key.pem
 ca-key.pem
 
-# Working plans
-docs/plans/
+# Working notes
+docs/*/

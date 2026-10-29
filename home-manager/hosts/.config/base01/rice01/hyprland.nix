@@ -1,5 +1,4 @@
-{ pkgs
-, lib
+{ lib
 , config
 , customLib
 , ...
@@ -8,7 +7,6 @@ let
   inherit (config.home.sessionVariables) THEME;
   colors = customLib.colors.${THEME};
   rice = import ./config.nix { inherit customLib config; };
-  harmonograph = "${pkgs.wl-harmonograph}/bin/wl-harmonograph";
 in
 {
   home.file = {
@@ -67,10 +65,7 @@ in
       groupbar.font_size = 13;
     };
 
-    # Startup
-    exec-once = [
-      "HARMONOGRAPH_BG=1d2021 HARMONOGRAPH_FG=${colors.base08},${colors.base0A},${colors.base0B} ${harmonograph}"
-    ];
+    misc.background_color = "rgb(1d2021)";
 
     # Window behavior
     windowrule = [
