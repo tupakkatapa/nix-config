@@ -18,7 +18,8 @@ in
 
     settings = {
       # Model & reasoning
-      model = "opus";
+      model = "opus[1m]";
+      effortLevel = "xhigh";
       alwaysThinkingEnabled = true;
       showThinkingSummaries = true;
 
