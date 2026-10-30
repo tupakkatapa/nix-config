@@ -234,6 +234,7 @@ in
         "match:title ^(OpenSSH Authentication).*, center on"
         "match:title ^(OpenSSH Authentication).*, float on"
         "match:title ^(OpenSSH Authentication).*, size 480 200"
+        "match:title ^(OpenSSH Authentication).*, pin on"
 
         "match:class foot, center on"
         "match:class foot, float on"
