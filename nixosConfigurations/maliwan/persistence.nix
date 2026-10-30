@@ -32,6 +32,7 @@ in
     "/mnt/sftp" = sshfs "sftp@10.42.0.8:/";
     # As kari, at vladof's own path
     "/home/kari/Workspace" = sshfs "kari@10.42.0.8:/home/kari/Workspace";
+    "/home/kari/.BitwigStudio" = sshfs "kari@10.42.0.8:/home/kari/.BitwigStudio";
   };
 
   # SSHFS support
@@ -42,6 +43,7 @@ in
   systemd.tmpfiles.rules = [
     "d /mnt/sftp                755 root root -"
     "d /home/kari/Workspace     755 kari kari -"
+    "d /home/kari/.BitwigStudio 755 kari kari -"
     "d /home/kari/.config       755 kari kari -"
     "d /home/kari/.local        755 kari kari -"
     "d /home/kari/.local/share  755 kari kari -"

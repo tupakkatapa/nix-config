@@ -21,6 +21,7 @@ let
 in
 {
   fileSystems = {
+    "/home/kari/.BitwigStudio" = pool "@kari-bitwig";
     "/home/kari/.config/gh" = pool "@kari-gh";
     "/home/kari/.local/share/atuin" = pool "@kari-atuin";
     "/home/kari/.local/share/zoxide" = pool "@kari-zoxide";
@@ -144,6 +145,7 @@ in
     "d /home/kari/.claude       755 kari kari -"
 
     # Enforce ownership on subvol mountpoints
+    "Z /home/kari/.BitwigStudio         - kari kari -"
     "Z /home/kari/.local/share/atuin    - kari kari -"
     "Z /home/kari/.local/share/zoxide   - kari kari -"
     "Z /home/kari/.config/gh            0700 kari kari -"
