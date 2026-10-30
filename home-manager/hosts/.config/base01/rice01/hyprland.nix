@@ -1,4 +1,5 @@
 { lib
+, pkgs
 , config
 , customLib
 , ...
@@ -7,9 +8,11 @@ let
   inherit (config.home.sessionVariables) THEME;
   colors = customLib.colors.${THEME};
   rice = import ./config.nix { inherit customLib config; };
+  swaybg = "${pkgs.swaybg}/bin/swaybg";
 in
 {
   home.file = {
+    "wallpaper".source = ./wallpaper.png;
     "hypr_binds.txt".text = lib.concatStringsSep "\n" config.wayland.windowManager.hyprland.settings.bind;
   };
 
@@ -66,6 +69,9 @@ in
     };
 
     misc.background_color = "rgb(1d2021)";
+
+    # Startup
+    exec-once = [ "${swaybg} -i ~/wallpaper --mode center" ];
 
     # Window behavior
     windowrule = [
