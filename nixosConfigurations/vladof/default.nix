@@ -126,6 +126,12 @@ in
     actions.update-props."priority.session" = 2000;
   }];
 
+  # Core 3 (CPUs 3 and 11) corrupts scheduler state and crashes the host
+  systemd.tmpfiles.rules = [
+    "w /sys/devices/system/cpu/cpu3/online - - - - 0"
+    "w /sys/devices/system/cpu/cpu11/online - - - - 0"
+  ];
+
   services.hardware.openrgb = {
     enable = true;
     motherboard = "amd";
