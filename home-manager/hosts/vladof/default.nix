@@ -22,26 +22,9 @@ let
     done
   '';
 
-  couchStatus = pkgs.writeShellApplication {
-    name = "couch-status";
-    runtimeInputs = [ pkgs.coreutils ];
-    text = ''
-      while true; do
-        up=$(cut -d. -f1 /proc/uptime)
-        if [ "$up" -ge 86400 ]; then
-          uptime="$((up / 86400))d $((up % 86400 / 3600))h"
-        else
-          uptime="$((up / 3600))h $((up % 3600 / 60))m"
-        fi
-        echo "$(uname -n)  ·  up $uptime  ·  $(date +'%d.%m.%Y  %H:%M')"
-        sleep 10
-      done
-    '';
-  };
-
   couchMenu = pkgs.writeShellApplication {
     name = "couch-menu";
-    runtimeInputs = [ pkgs.util-linux pkgs.jq config.wayland.windowManager.sway.package config.programs.fuzzel.package ];
+    runtimeInputs = [ pkgs.coreutils pkgs.util-linux pkgs.jq pkgs.evsieve config.wayland.windowManager.sway.package config.programs.fuzzel.package ];
     runtimeEnv = {
       ICONS = icons;
       inherit TERMINAL;
@@ -74,7 +57,7 @@ in
           names = [ FONT ];
           size = 9.0;
         };
-        statusCommand = lib.getExe couchStatus;
+        statusCommand = "${lib.getExe couchMenu} --status";
         extraConfig = "gaps 0 24 12 24";
         colors = {
           background = "#1d2021";
@@ -104,8 +87,9 @@ in
         xkb_numlock = "enabled";
       };
       keybindings = {
-        "Mod1+Return" = "exec ${TERMINAL}";
+        "Mod1+Return" = "exec ${lib.getExe couchMenu} --terminal";
         "Mod1+q" = "exec ${lib.getExe couchMenu} --close";
+        "Mod1+Shift+q" = "kill";
         # Home key: back to the menu, which shows once no app is visible
         "--release Super_L" = "exec ${lib.getExe couchMenu} --close";
       };
@@ -114,6 +98,14 @@ in
         { criteria.class = ".*"; command = "fullscreen enable"; }
       ];
     };
+  };
+
+  # Each pad's Xbox button is the home key, through a virtual keyboard. Udev
+  # starts one instance per pad, as evsieve needs the device at startup, and
+  # the instance ends when the pad disconnects
+  systemd.user.services."couch-pad@" = {
+    Unit.Description = "Xbox button of %i returns to the couch menu";
+    Service.ExecStart = "${pkgs.evsieve}/bin/evsieve --input /dev/input/couch-pad-%i persist=exit --map btn:mode key:leftmeta --output";
   };
 
   # The TV's physical DPI is low; size by the output scale instead

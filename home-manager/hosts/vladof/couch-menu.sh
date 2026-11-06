@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 # Couch home screen: one app on screen at a time, the others running hidden.
-# Runtime-module apps build detached and one at a time, so closing a window
-# never interrupts a build.
+# An app owns the windows of the processes in its systemd scope, so a stray
+# window is never mistaken for it. Runtime-module apps build detached and one
+# at a time, so closing a window never interrupts a build.
 set -euo pipefail
 
 : "${ICONS:?}" "${TERMINAL:?}"
-jobs=$XDG_RUNTIME_DIR/couch-menu
-mkdir -p "$jobs"
+dir=$XDG_RUNTIME_DIR/couch-menu
+mkdir -p "$dir"
 
 running() {
   local pid
-  pid=$(cat "$jobs/$1.pid" 2>/dev/null) || return 1
+  pid=$(cat "$dir/$1.pid" 2>/dev/null) || return 1
   [[ "$(tr '\0' ' ' <"/proc/$pid/cmdline" 2>/dev/null)" == *"/couch-menu --build $1 " ]]
 }
 
@@ -18,31 +19,38 @@ installed() { [ -x "/run/current-system/sw/bin/$1" ]; }
 
 # -f: a rebuild interrupted earlier may have left the module recorded as enabled
 build() {
-  echo $$ >"$jobs/$1.pid"
-  rm -f "$jobs/$1.failed"
+  echo $$ >"$dir/$1.pid"
+  rm -f "$dir/$1.failed"
   {
     flock -n 9 || {
       echo "Waiting for the previous build..."
       flock 9
     }
-    sudo -n runtime-modules -f enable "$1" || touch "$jobs/$1.failed"
-  } 9>"$jobs/lock" >"$jobs/$1.log" 2>&1
-  rm -f "$jobs/$1.pid"
+    sudo -n runtime-modules -f enable "$1" || touch "$dir/$1.failed"
+  } 9>"$dir/lock" >"$dir/$1.log" 2>&1
+  rm -f "$dir/$1.pid"
 }
 
 # Shows the build log until the build ends; succeeds only when a retry is wanted
 follow() {
-  tail -n +1 -F "$jobs/$1.log" 2>/dev/null &
+  tail -n +1 -F "$dir/$1.log" 2>/dev/null &
   local tailpid=$!
   while running "$1"; do sleep 1; done
   sleep 1
   kill "$tailpid"
-  if [ -e "$jobs/$1.failed" ]; then
+  if [ -e "$dir/$1.failed" ]; then
     read -r -p $'\nBuild failed. Enter retries, Alt+Q closes. '
     return 0
   fi
   sleep 1
   return 1
+}
+
+# Shows why an app gave no window; succeeds only when a retry is wanted
+log() {
+  tail -n 40 "$dir/$1.log" 2>/dev/null || true
+  systemctl --user status "couch-$1.scope" --no-pager 2>/dev/null | tail -n 5 || true
+  read -r -p $'\n'"$2 gave no window. Enter retries, Alt+Q closes. "
 }
 
 queue() {
@@ -55,66 +63,97 @@ queue() {
 
 tree() { swaymsg -t get_tree; }
 
-# The menu is a layer surface, so every window in the tree belongs to an app;
-# the scratchpad lives under the "__i3" output and holds the hidden ones
+# "id pid visible" per window; the menu is a layer surface, so every window in
+# the tree belongs to an app or a terminal, and the hidden ones sit in the
+# scratchpad
+windows() {
+  tree | jq -r '.. | objects | select(.pid != null) | "\(.id) \(.pid) \(.visible)"'
+}
+
+# The app's windows, the one on screen first
+windows_of() {
+  local id pid vis
+  while read -r id pid vis; do
+    grep -qF -- "/couch-$1.scope" "/proc/$pid/cgroup" 2>/dev/null && echo "$id $pid $vis"
+  done < <(windows) | sort -k3 -r
+}
+
+# Succeeds while something is on screen. A sway that is gone ends the menu; a
+# hiccup counts as "on screen" so the menu never pops over an app
 visible() {
-  [ "$(tree | jq '[.nodes[] | select(.name != "__i3") | recurse(.nodes[]?, .floating_nodes[]?) | select(.pid?)] | length')" -gt 0 ]
+  local n
+  n=$(tree | jq '[.. | objects | select(.pid != null and .visible == true)] | length') || {
+    swaymsg -t get_version >/dev/null 2>&1 || exit 0
+    return 0
+  }
+  [ "$n" -gt 0 ]
 }
 
-has_mark() {
-  tree | jq -e --arg mark "$1" 'any(recurse(.nodes[]?, .floating_nodes[]?); (.marks? // []) | index($mark))' >/dev/null
-}
-
-# A launcher that exits early has handed off to a running instance, whose
-# window still has to appear
+# Starts the app in its own scope and waits for its first window; fails when
+# the launcher dies without one or nothing shows up in two minutes
 start() {
-  local mark=$1 before id pid ticks=0
-  shift
-  before=$(tree | jq -c '[recurse(.nodes[]?, .floating_nodes[]?) | select(.pid?) | .id]')
+  local app=$1 name=$2 pid ticks=0
+  shift 2
   # A scope still alive here has lost its window, like Steam left in the background
-  systemctl --user stop "couch-$mark.scope" 2>/dev/null || true
-  systemd-run --user --scope --quiet --unit="couch-$mark" -- "$@" &
+  systemctl --user stop "couch-$app.scope" 2>/dev/null || true
+  echo "Starting $name..." >"$dir/status"
+  systemd-run --user --scope --quiet --unit="couch-$app" -p TimeoutStopSec=5 -- "$@" >"$dir/$app.log" 2>&1 &
   pid=$!
-  until id=$(tree | jq -e --argjson before "$before" \
-    'first(recurse(.nodes[]?, .floating_nodes[]?) | select(.pid? and (.id as $id | $before | index($id) | not)) | .id)'); do
+  while [ -z "$(windows_of "$app")" ]; do
     if kill -0 "$pid" 2>/dev/null; then
-      [ "$ticks" -lt 240 ] || return 1
+      [ "$ticks" -lt 240 ] || break
     else
-      [ "$ticks" -lt 10 ] || return 1
+      [ "$ticks" -lt 10 ] || break
     fi
     ticks=$((ticks + 1))
     sleep 0.5
   done
-  swaymsg "[con_id=$id] mark --add $mark" >/dev/null
+  rm -f "$dir/status"
+  [ -n "$(windows_of "$app")" ]
 }
 
-# Returns once nothing is on screen
-show() {
-  local mark=$1
-  if has_mark "$mark"; then
-    swaymsg "[con_mark=\"$mark\"] scratchpad show, floating disable, fullscreen enable" >/dev/null
+# Puts the app on screen, starting it when it has no window. A visible window
+# only gets focus: "scratchpad show" would toggle it away
+raise() {
+  local app=$1 name=$2 id='' vis=''
+  shift 2
+  read -r id _ vis < <(windows_of "$app") || true
+  if [ -z "$id" ]; then
+    start "$app" "$name" "$@"
+  elif [ "$vis" = true ]; then
+    swaymsg "[con_id=$id] focus, fullscreen enable" >/dev/null
   else
-    start "$@" || return 0
+    swaymsg "[con_id=$id] scratchpad show, floating disable, fullscreen enable" >/dev/null
   fi
+}
+
+# Returns once nothing is on screen; a failed start shows its log and retries
+show() {
+  while ! raise "$@"; do
+    "$TERMINAL" "$0" --log "$1" "$2" || return 0
+  done
   while visible; do sleep 0.5; done
 }
 
-# Terminals close; apps only hide and keep running
+# Apps and the terminal only hide and keep running; anything else closes
 close() {
-  if tree | jq -e 'any(..; .focused? == true and .app_id? == "foot")' >/dev/null; then
-    swaymsg kill >/dev/null
+  local id='' pid=''
+  read -r id pid < <(tree | jq -r '.. | objects | select(.pid != null and .focused == true) | "\(.id) \(.pid)"') || true
+  [ -n "$id" ] || return 0
+  if grep -qE '/couch-[^/]+\.scope$' "/proc/$pid/cgroup" 2>/dev/null; then
+    swaymsg "[con_id=$id] move scratchpad" >/dev/null
   else
-    swaymsg move scratchpad >/dev/null
+    swaymsg "[con_id=$id] kill" >/dev/null
   fi
 }
 
 launch() {
-  local module=$1
-  shift
-  if running "$module" || { ! installed "$1" && [ -e "$jobs/$module.failed" ]; }; then
+  local module=$1 name=$2
+  shift 2
+  if running "$module" || { ! installed "$1" && [ -e "$dir/$module.failed" ]; }; then
     ! "$TERMINAL" "$0" --follow "$module" || queue "$module"
   elif installed "$1"; then
-    show "$module" "$@"
+    show "$module" "$name" "$@"
   else
     queue "$module"
   fi
@@ -132,6 +171,48 @@ icon() {
 
 entry() { printf '%s\0icon\x1f%s\n' "$1" "$2"; }
 
+# Sets $choice. The pad drives the menu while it is open, and the menu closes
+# by itself as soon as something is on screen
+menu() {
+  local fuzzel dog pad
+  evsieve --input /dev/input/couch-pad-* grab \
+    --map abs:hat0y:-1 key:up:1 --map abs:hat0y:1 key:down:1 --map abs:hat0y:0 key:up:0 key:down:0 \
+    --map btn:dpad_up key:up --map btn:dpad_down key:down --map btn:south key:enter \
+    --output >/dev/null 2>&1 &
+  pad=$!
+  {
+    entry Firefox "$ICONS/firefox.png"
+    entry RetroArch "$(icon retroarch retroarch)"
+    entry Steam "$(icon rt.steam steam)"
+    entry Plexamp "$(icon plexamp plexamp)"
+  } | fuzzel --dmenu --select="$selected" >"$dir/choice" &
+  fuzzel=$!
+  (while sleep 1; do visible && kill "$fuzzel" 2>/dev/null; done) &
+  dog=$!
+  wait "$fuzzel" && choice=$(<"$dir/choice") || choice=
+  kill "$dog" "$pad" 2>/dev/null || true
+  [ -n "$choice" ]
+}
+
+# The bar's status line; the bar shows only while nothing is on screen
+bar() {
+  local up uptime
+  while true; do
+    if [ -e "$dir/status" ]; then
+      cat "$dir/status"
+    else
+      up=$(cut -d. -f1 /proc/uptime)
+      if [ "$up" -ge 86400 ]; then
+        uptime="$((up / 86400))d $((up % 86400 / 3600))h"
+      else
+        uptime="$((up / 3600))h $((up % 3600 / 60))m"
+      fi
+      echo "$(uname -n)  ·  up $uptime  ·  $(date +'%d.%m.%Y  %H:%M')"
+    fi
+    sleep 2
+  done
+}
+
 case ${1:-} in
 --build)
   build "$2"
@@ -141,38 +222,51 @@ case ${1:-} in
   follow "$2"
   exit
   ;;
+--log)
+  log "$2" "$3"
+  exit
+  ;;
 --close)
   close
   exit
   ;;
+--terminal)
+  raise terminal Terminal "$TERMINAL"
+  exit
+  ;;
+--status)
+  bar
+  exit
+  ;;
 esac
+
+trap 'rm -f "$dir/status"; jobs -p | xargs -r kill 2>/dev/null' EXIT
 
 # Apps outlive the session that started them, and a stale Firefox holds the
 # profile the new one needs
 systemctl --user stop 'couch-*.scope' 2>/dev/null || true
 
 firefox=(firefox --kiosk https://plex.coditon.com/web https://www.youtube.com/feed/subscriptions)
-! start firefox "${firefox[@]}" || swaymsg '[con_mark="firefox"] move scratchpad' >/dev/null
+if start firefox Firefox "${firefox[@]}"; then
+  read -r id _ < <(windows_of firefox)
+  swaymsg "[con_id=$id] move scratchpad" >/dev/null
+fi
 
 selected=Firefox
 while true; do
   # Outlives a restarted session otherwise, and would draw on the next one
   swaymsg -t get_version >/dev/null 2>&1 || exit 0
+  while visible; do sleep 0.5; done
 
-  choice=$({
-    entry Firefox "$ICONS/firefox.png"
-    entry RetroArch "$(icon retroarch retroarch)"
-    entry Steam "$(icon rt.steam steam)"
-    entry Plexamp "$(icon plexamp plexamp)"
-  } | fuzzel --dmenu --select="$selected") || {
+  menu || {
     sleep 0.5
     continue
   }
   selected=$choice
   case $choice in
-  Firefox) show firefox "${firefox[@]}" ;;
-  RetroArch) launch retroarch retroarch ;;
-  Steam) launch rt.steam steam -bigpicture ;;
-  Plexamp) launch plexamp plexamp ;;
+  Firefox) show firefox Firefox "${firefox[@]}" ;;
+  RetroArch) launch retroarch RetroArch retroarch ;;
+  Steam) launch rt.steam Steam steam -bigpicture ;;
+  Plexamp) launch plexamp Plexamp plexamp ;;
   esac || true
 done

@@ -120,9 +120,13 @@ in
     };
   };
 
+  # The couch menu turns the Xbox pad into keyboard events through uinput
+  hardware.uinput.enable = true;
+  users.users.${user}.extraGroups = [ "uinput" ];
   services.udev.extraRules = ''
     # The keyboard dongle's power-key node counts as a joypad and takes RetroArch's port 1
     SUBSYSTEM=="input", ATTRS{name}=="*Nano Transceiver*System Control", ENV{ID_INPUT_JOYSTICK}=""
+    SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_INPUT_JOYSTICK}=="1", ATTRS{id/vendor}=="045e", SYMLINK+="input/couch-pad-%k", TAG+="systemd", ENV{SYSTEMD_USER_WANTS}="couch-pad@%k.service"
   '';
 
   # The TV hangs off the GPU's HDMI; the onboard S/PDIF would otherwise win
