@@ -120,6 +120,11 @@ in
     };
   };
 
+  services.udev.extraRules = ''
+    # The keyboard dongle's power-key node counts as a joypad and takes RetroArch's port 1
+    SUBSYSTEM=="input", ATTRS{name}=="*Nano Transceiver*System Control", ENV{ID_INPUT_JOYSTICK}=""
+  '';
+
   # The TV hangs off the GPU's HDMI; the onboard S/PDIF would otherwise win
   services.pipewire.wireplumber.extraConfig."51-hdmi-default"."monitor.alsa.rules" = [{
     matches = [{ "node.name" = "~alsa_output.*hdmi.*"; }];
