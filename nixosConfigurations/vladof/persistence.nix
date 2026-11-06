@@ -38,6 +38,8 @@ in
     "${dataDir}" = neededForBoot (pool "@main");
     # The subvolume must contain `store/` and `work/`
     "/nix/.rw-store" = neededForBoot (pool "@nix-rw-store");
+    # Nix DB and GC roots; without them the persisted store paths are invalid after reboot
+    "/nix/var/nix" = neededForBoot (pool "@nix-var");
 
     # The NVMe's top level, where btrbk keeps its snapshots
     "/mnt/nvme" = {
