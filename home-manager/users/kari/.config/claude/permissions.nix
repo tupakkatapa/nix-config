@@ -1,12 +1,12 @@
 {
   allow = [
     # Core tools
-    "Glob(*)"
-    "Grep(*)"
+    "Glob"
+    "Grep"
     "LS(*)"
-    "Read(*)"
-    "Write(*)"
-    "Edit(*)"
+    "Read"
+    "Write"
+    "Edit"
     "Search(*)"
     "Task(*)"
     "TodoWrite(*)"
