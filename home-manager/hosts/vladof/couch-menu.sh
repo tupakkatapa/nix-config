@@ -78,15 +78,16 @@ windows_of() {
   done < <(windows) | sort -k3 -r
 }
 
-# Succeeds while something is on screen. A sway that is gone ends the menu; a
-# hiccup counts as "on screen" so the menu never pops over an app
+# Succeeds while something is on screen, or while the TV is off, as its windows
+# leave the tree until it is back. A sway that is gone ends the menu; a hiccup
+# counts as "on screen" so the menu never pops over an app
 visible() {
   local n
   n=$(tree | jq '[.. | objects | select(.pid != null and .visible == true)] | length') || {
     swaymsg -t get_version >/dev/null 2>&1 || exit 0
     return 0
   }
-  [ "$n" -gt 0 ]
+  [ "$n" -gt 0 ] || ! swaymsg -t get_outputs | jq -e 'any(.[]; .active)' >/dev/null
 }
 
 # Starts the app in its own scope and waits for its first window; fails when
