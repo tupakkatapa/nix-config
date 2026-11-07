@@ -83,6 +83,8 @@ in
       { command = "/run/wrappers/bin/umount /mnt/sftp"; options = [ "NOPASSWD" ]; }
       { command = "/run/wrappers/bin/mount /home/kari/Workspace"; options = [ "NOPASSWD" ]; }
       { command = "/run/wrappers/bin/umount /home/kari/Workspace"; options = [ "NOPASSWD" ]; }
+      { command = "/run/wrappers/bin/mount /home/kari/.BitwigStudio"; options = [ "NOPASSWD" ]; }
+      { command = "/run/wrappers/bin/umount /home/kari/.BitwigStudio"; options = [ "NOPASSWD" ]; }
     ];
   }];
 
@@ -165,7 +167,7 @@ in
         "[workspace 4 silent] ${browser} https://slack.com/signin https://linear.app/inform-re/inbox https://element.coditon.com/ https://mail.google.com/mail"
 
         # Open terminal with the vladof mounts on login
-        "foot -e $SHELL -c 'echo \"\\$ sudo mount /mnt/sftp /home/kari/Workspace\" && sudo mount /mnt/sftp && sudo mount /home/kari/Workspace && sleep 1 || read -p \"Press enter to continue..\"'"
+        "foot -e $SHELL -c 'echo \"\\$ sudo mount /mnt/sftp /home/kari/Workspace /home/kari/.BitwigStudio\" && sudo mount /mnt/sftp && sudo mount /home/kari/Workspace && sudo mount /home/kari/.BitwigStudio && sleep 1 || read -p \"Press enter to continue..\"'"
       ];
 
     home.packages = with pkgs; [

@@ -103,7 +103,7 @@ docs/                              # Guides (new host, yubikey, agent forwarding
 
 **Networking**: systemd-networkd everywhere, iwd for WiFi. WireGuard tunnels (`home`, `dinar`) for VPN to `hyperion` (router at coditon.com). Internal network `10.42.0.0/24`.
 
-**SFTP**: vladof serves SFTP from `/mnt/wd-red/sftp` (chrooted `sftp` user). maliwan mounts it on demand over sshfs: `/mnt/sftp` as `sftp` (docs, media, downloads), and the code workspace as `kari` at `/home/kari/Workspace` (vladof's NVMe subvolume `@kari-workspace`), the same path as on vladof, so one owner and one path on both hosts.
+**SFTP**: vladof serves SFTP from `/mnt/wd-red/sftp` (chrooted `sftp` user). maliwan mounts it on demand over sshfs: `/mnt/sftp` as `sftp` (docs, media, downloads), and the code workspace as `kari` at `/home/kari/Workspace` (vladof's NVMe subvolume `@kari-workspace`) and Bitwig's `/home/kari/.BitwigStudio`, the same paths as on vladof, so one owner and one path on both hosts. The login terminal mounts all three (one YubiKey touch each).
 
 ## Related repositories
 
