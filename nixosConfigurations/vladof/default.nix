@@ -83,13 +83,14 @@ in
     ];
   };
 
-  # The couch session enables these without a password. Hooks would run as
-  # root under sudo, so the session starts the apps itself afterwards.
+  # The couch session enables these without a password, any of them at once and
+  # sorted. Hooks would run as root under sudo, so the session starts the apps
+  # itself afterwards.
   security.sudo.extraRules = [{
     users = [ "kari" ];
     commands = map
-      (module: { command = "/run/current-system/sw/bin/runtime-modules -f enable ${module}"; options = [ "NOPASSWD" ]; })
-      [ "retroarch" "rt.steam" "plexamp" ];
+      (modules: { command = "/run/current-system/sw/bin/runtime-modules -f enable ${lib.concatStringsSep " " modules}"; options = [ "NOPASSWD" ]; })
+      (lib.remove [ ] (lib.foldr (m: subsets: subsets ++ map (s: [ m ] ++ s) subsets) [ [ ] ] (lib.sort lib.lessThan [ "retroarch" "rt.steam" "plexamp" ])));
   }];
 
   # Overrides the graphical-desktop default set (CJK, unifont, emoji)

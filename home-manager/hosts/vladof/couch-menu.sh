@@ -1,39 +1,65 @@
 #!/usr/bin/env bash
 # Couch home screen: one app on screen at a time, the others running hidden.
 # An app owns the windows of the processes in its systemd scope, so a stray
-# window is never mistaken for it. Runtime-module apps build detached and one
-# at a time, so closing a window never interrupts a build.
+# window is never mistaken for it. Runtime-module apps build detached, so
+# closing a window never interrupts a build, and picks close together share one
+# rebuild.
 set -euo pipefail
 
 : "${ICONS:?}" "${TERMINAL:?}"
 dir=$XDG_RUNTIME_DIR/couch-menu
 mkdir -p "$dir"
 
+# Runtime-module apps: menu entry, module and command, whose name the icons share
+apps=(
+  "RetroArch retroarch retroarch"
+  "Steam rt.steam steam -bigpicture"
+  "Plexamp plexamp plexamp"
+)
+
 running() {
   local pid
   pid=$(cat "$dir/$1.pid" 2>/dev/null) || return 1
-  [[ "$(tr '\0' ' ' <"/proc/$pid/cmdline" 2>/dev/null)" == *"/couch-menu --build $1 " ]]
+  [[ "$(tr '\0' ' ' 2>/dev/null <"/proc/$pid/cmdline")" == *"/couch-menu --build $1 " ]]
 }
 
 installed() { [ -x "/run/current-system/sw/bin/$1" ]; }
 
-# -f: a rebuild interrupted earlier may have left the module recorded as enabled
+# Builds queue up and take turns; a turn enables every module queued by then in
+# one rebuild, so a module whose turn comes after its rebuild just ends. -f: a
+# rebuild interrupted earlier may have left the module recorded as enabled
 build() {
+  local batch m
   echo $$ >"$dir/$1.pid"
   rm -f "$dir/$1.failed"
+  {
+    flock 8
+    echo "$1" >>"$dir/pending"
+  } 8>"$dir/pending.lock"
   {
     flock -n 9 || {
       echo "Waiting for the previous build..."
       flock 9
     }
-    sudo -n runtime-modules -f enable "$1" || touch "$dir/$1.failed"
-  } 9>"$dir/lock" >"$dir/$1.log" 2>&1
+    if grep -qxF -- "$1" "$dir/pending" 2>/dev/null; then
+      # Picks made right after this one join the same rebuild
+      sleep 10
+      {
+        flock 8
+        mapfile -t batch < <(LC_ALL=C sort -u "$dir/pending")
+        rm "$dir/pending"
+      } 8>"$dir/pending.lock"
+      : >"$dir/build.log"
+      echo "Enabling ${batch[*]}..."
+      sudo -n runtime-modules -f enable "${batch[@]}" || for m in "${batch[@]}"; do touch "$dir/$m.failed"; done
+    fi
+  } 9>"$dir/lock" >>"$dir/build.log" 2>&1
   rm -f "$dir/$1.pid"
 }
 
 # Shows the build log until the build ends; succeeds only when a retry is wanted
 follow() {
-  tail -n +1 -F "$dir/$1.log" 2>/dev/null &
+  tail -n +1 -F "$dir/build.log" 2>/dev/null &
   local tailpid=$!
   while running "$1"; do sleep 1; done
   sleep 1
@@ -172,23 +198,53 @@ icon() {
 
 entry() { printf '%s\0icon\x1f%s\n' "$1" "$2"; }
 
+entries() {
+  local app name module cmd
+  entry Firefox "$ICONS/firefox.png"
+  for app in "${apps[@]}"; do
+    read -r name module cmd <<<"$app"
+    entry "$name" "$(icon "$module" "${cmd%% *}")"
+  done
+}
+
+# What builds, else what failed to; nothing when neither
+builds() {
+  local app name module cmd busy=() failed=()
+  for app in "${apps[@]}"; do
+    read -r name module cmd <<<"$app"
+    if running "$module"; then
+      busy+=("$name")
+    elif [ -e "$dir/$module.failed" ] && ! installed "${cmd%% *}"; then
+      failed+=("$name")
+    fi
+  done
+  if [ "${#busy[@]}" -gt 0 ]; then
+    echo "Building $(join "${busy[@]}")…"
+  elif [ "${#failed[@]}" -gt 0 ]; then
+    echo "$(join "${failed[@]}") failed to build"
+  fi
+}
+
+join() {
+  local list
+  list=$(printf ', %s' "$@")
+  echo "${list:2}"
+}
+
 # Sets $choice. The pad drives the menu while it is open, and the menu closes
-# by itself as soon as something is on screen
+# by itself as soon as something is on screen, or reopens when its icons go
+# stale, like after a build or a rebuild of the host
 menu() {
-  local fuzzel dog pad
+  local fuzzel dog pad shown
   evsieve --input /dev/input/couch-pad-* grab \
     --map abs:hat0y:-1 key:up:1 --map abs:hat0y:1 key:down:1 --map abs:hat0y:0 key:up:0 key:down:0 \
     --map btn:dpad_up key:up --map btn:dpad_down key:down --map btn:south key:enter \
     --output >/dev/null 2>&1 &
   pad=$!
-  {
-    entry Firefox "$ICONS/firefox.png"
-    entry RetroArch "$(icon retroarch retroarch)"
-    entry Steam "$(icon rt.steam steam)"
-    entry Plexamp "$(icon plexamp plexamp)"
-  } | fuzzel --dmenu --select="$selected" >"$dir/choice" &
+  shown=$(entries | cksum)
+  entries | fuzzel --dmenu --select="$selected" >"$dir/choice" &
   fuzzel=$!
-  (while sleep 1; do visible && kill "$fuzzel" 2>/dev/null; done) &
+  (while sleep 1; do { visible || [ "$(entries | cksum)" != "$shown" ]; } && kill "$fuzzel" 2>/dev/null; done) &
   dog=$!
   wait "$fuzzel" && choice=$(<"$dir/choice") || choice=
   kill "$dog" "$pad" 2>/dev/null || true
@@ -197,7 +253,7 @@ menu() {
 
 # The bar's status line; the bar shows only while nothing is on screen
 bar() {
-  local up uptime
+  local up uptime build
   while true; do
     if [ -e "$dir/status" ]; then
       cat "$dir/status"
@@ -208,7 +264,8 @@ bar() {
       else
         uptime="$((up / 3600))h $((up % 3600 / 60))m"
       fi
-      echo "$(uname -n)  ·  up $uptime  ·  $(date +'%d.%m.%Y  %H:%M')"
+      build=$(builds)
+      echo "${build:+$build  ·  }$(uname -n)  ·  up $uptime  ·  $(date +'%d.%m.%Y  %H:%M')"
     fi
     sleep 2
   done
@@ -264,10 +321,14 @@ while true; do
     continue
   }
   selected=$choice
-  case $choice in
-  Firefox) show firefox Firefox "${firefox[@]}" ;;
-  RetroArch) launch retroarch RetroArch retroarch ;;
-  Steam) launch rt.steam Steam steam -bigpicture ;;
-  Plexamp) launch plexamp Plexamp plexamp ;;
-  esac || true
+  if [ "$choice" = Firefox ]; then
+    show firefox Firefox "${firefox[@]}" || true
+  else
+    for app in "${apps[@]}"; do
+      read -r name module cmd <<<"$app"
+      [ "$name" = "$choice" ] || continue
+      read -ra command <<<"$cmd"
+      launch "$module" "$name" "${command[@]}" || true
+    done
+  fi
 done
