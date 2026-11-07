@@ -7,6 +7,8 @@
 let
   inherit (config.home.sessionVariables) FONT TERMINAL THEME;
   colors = customLib.colors.${THEME};
+  swayosd = "${config.services.swayosd.package}/bin/swayosd-client";
+  playerctl = "${pkgs.playerctl}/bin/playerctl";
 
   # Runtime-module apps get installed (green), building (yellow) and missing (red) variants
   icons = pkgs.runCommand "couch-menu-icons" { nativeBuildInputs = [ pkgs.librsvg pkgs.imagemagick ]; } ''
@@ -92,6 +94,13 @@ in
         "Mod1+Shift+q" = "kill";
         # Home key: back to the menu, which shows once no app is visible
         "--release Super_L" = "exec ${lib.getExe couchMenu} --close";
+        "XF86HomePage" = "exec ${lib.getExe couchMenu} --close";
+        "XF86AudioRaiseVolume" = "exec ${swayosd} --output-volume raise";
+        "XF86AudioLowerVolume" = "exec ${swayosd} --output-volume lower";
+        "XF86AudioMute" = "exec ${swayosd} --output-volume mute-toggle";
+        "XF86AudioPlay" = "exec ${playerctl} play-pause";
+        "XF86AudioNext" = "exec ${playerctl} next";
+        "XF86AudioPrev" = "exec ${playerctl} previous";
       };
       window.commands = [
         { criteria.app_id = ".*"; command = "fullscreen enable"; }
@@ -107,6 +116,10 @@ in
     Unit.Description = "Xbox button of %i returns to the couch menu";
     Service.ExecStart = "${pkgs.evsieve}/bin/evsieve --input /dev/input/couch-pad-%i persist=exit --map btn:mode key:leftmeta --output";
   };
+
+  # On-screen output volume for the volume keys; the TV's own volume is out of
+  # reach over HDMI, and Plexamp ignores MPRIS volume
+  services.swayosd.enable = true;
 
   # The TV's physical DPI is low; size by the output scale instead
   programs.foot.settings.main = {
