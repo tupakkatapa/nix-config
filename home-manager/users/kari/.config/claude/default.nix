@@ -3,7 +3,13 @@ let
   git = "${pkgs.git}/bin/git";
   permissions = import ./permissions.nix;
 
-  notify = message: "${pkgs.libnotify}/bin/notify-send -u normal 'Claude Code' '${message}' || true";
+  curl = "${pkgs.curl}/bin/curl -s -m 5";
+
+  # Phone push while the latest message on the claude-afk topic is "on" (toggled from maliwan's waybar)
+  notify = message: ''
+    ${pkgs.libnotify}/bin/notify-send -u normal 'Claude Code' '${message}' 2>/dev/null || true
+    ${curl} 'https://ntfy.coditon.com/claude-afk/json?poll=1&since=latest' | grep -q '"message":"on"' && ${curl} -H "Title: Claude Code: ''${PWD##*/}" -H 'Tags: robot' -H 'Icon: https://www.anthropic.com/favicon.ico' -d '${message}' https://ntfy.coditon.com/claude >/dev/null || true
+  '';
 in
 {
   # Cleanup orphaned Claude subagents and MCP servers which clog RAM

@@ -32,6 +32,7 @@ in
           base-url = "https://${containerConfig.ntfy.addr}";
           listen-http = "0.0.0.0:${builtins.toString containerConfig.ntfy.port}";
           behind-proxy = true;
+          cache-duration = "720h";
         };
       };
 
