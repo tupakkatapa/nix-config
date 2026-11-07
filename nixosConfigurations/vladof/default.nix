@@ -62,6 +62,7 @@ in
     ../.config/motd.nix
     ../.config/hw/pipewire.nix
     ../.config/hw/yubikey.nix
+    ../.config/keyd.nix
     ../.config/nix-ld.nix
     ../.config/podman.nix
   ];
