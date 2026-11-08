@@ -231,23 +231,18 @@ join() {
   echo "${list:2}"
 }
 
-# Sets $choice. The pad drives the menu while it is open, and the menu closes
-# by itself as soon as something is on screen, or reopens when its icons go
-# stale, like after a build or a rebuild of the host
+# Sets $choice. The menu closes by itself as soon as something is on screen,
+# or reopens when its icons go stale, like after a build or a rebuild of the
+# host
 menu() {
-  local fuzzel dog pad shown
-  evsieve --input /dev/input/couch-pad-* grab \
-    --map abs:hat0y:-1 key:up:1 --map abs:hat0y:1 key:down:1 --map abs:hat0y:0 key:up:0 key:down:0 \
-    --map btn:dpad_up key:up --map btn:dpad_down key:down --map btn:south key:enter \
-    --output >/dev/null 2>&1 &
-  pad=$!
+  local fuzzel dog shown
   shown=$(entries | cksum)
   entries | fuzzel --dmenu --select="$selected" >"$dir/choice" &
   fuzzel=$!
   (while sleep 1; do { visible || [ "$(entries | cksum)" != "$shown" ]; } && kill "$fuzzel" 2>/dev/null; done) &
   dog=$!
   wait "$fuzzel" && choice=$(<"$dir/choice") || choice=
-  kill "$dog" "$pad" 2>/dev/null || true
+  kill "$dog" 2>/dev/null || true
   [ -n "$choice" ]
 }
 

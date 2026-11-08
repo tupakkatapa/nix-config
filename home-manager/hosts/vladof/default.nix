@@ -24,9 +24,31 @@ let
     done
   '';
 
+  couchPad = pkgs.writers.writePython3 "couch-pad"
+    { libraries = [ pkgs.python3Packages.evdev pkgs.python3Packages.i3ipc ]; }
+    (builtins.readFile ./couch-pad.py);
+
+  # GtkLayerShell comes through GObject introspection, which the Python
+  # wrapper leaves out
+  couchOsk = pkgs.writers.writePython3 "couch-osk"
+    {
+      libraries = [ pkgs.python3Packages.pygobject3 ];
+      makeWrapperArgs = [ "--prefix" "GI_TYPELIB_PATH" ":" (lib.makeSearchPathOutput "out" "lib/girepository-1.0" [ pkgs.gtk3 pkgs.gtk-layer-shell pkgs.pango pkgs.gdk-pixbuf pkgs.harfbuzz pkgs.at-spi2-core pkgs.glib pkgs.gobject-introspection ]) ];
+    }
+    (builtins.readFile ./couch-osk.py);
+  # Styled like the menu
+  oskStyle = pkgs.writeText "couch-osk.css" ''
+    window { background: transparent; }
+    .panel { background: #${colors.base00}; border: 1px solid #${colors.base01}; border-radius: 13px; padding: 8px 8px 4px; }
+    .key { font: 16pt "${FONT}"; color: #${colors.base05}; background: #${colors.base01}; border-radius: 8px; margin: 3px; padding: 10px 14px; }
+    .key.shift { color: #${colors.base0A}; }
+    .key.selected { color: #${colors.base00}; background: #${colors.base0A}; }
+    .hint { font: 9pt "${FONT}"; color: #${colors.base03}; margin-top: 6px; }
+  '';
+
   couchMenu = pkgs.writeShellApplication {
     name = "couch-menu";
-    runtimeInputs = [ pkgs.coreutils pkgs.util-linux pkgs.jq pkgs.evsieve config.wayland.windowManager.sway.package config.programs.fuzzel.package ];
+    runtimeInputs = [ pkgs.coreutils pkgs.util-linux pkgs.jq config.wayland.windowManager.sway.package config.programs.fuzzel.package ];
     runtimeEnv = {
       ICONS = icons;
       inherit TERMINAL;
@@ -88,6 +110,8 @@ in
         xkb_layout = "fi";
         xkb_numlock = "enabled";
       };
+      # The pad's stick has its own speed curve
+      input."3084:1:Couch_pad".accel_profile = "flat";
       keybindings = {
         "Mod1+Return" = "exec ${lib.getExe couchMenu} --terminal";
         "Mod1+q" = "exec ${lib.getExe couchMenu} --close";
@@ -109,17 +133,38 @@ in
     };
   };
 
-  # Each pad's Xbox button is the home key, through a virtual keyboard. Udev
-  # starts one instance per pad, as evsieve needs the device at startup, and
-  # the instance ends when the pad disconnects
+  # One instance per pad, started by udev as the pad connects, ending as it
+  # disconnects
   systemd.user.services."couch-pad@" = {
-    Unit.Description = "Xbox button of %i returns to the couch menu";
-    Service.ExecStart = "${pkgs.evsieve}/bin/evsieve --input /dev/input/couch-pad-%i persist=exit --map btn:mode key:leftmeta --output";
+    Unit.Description = "Couch controls of the pad %i";
+    Service = {
+      ExecStart = "${couchPad} /dev/input/couch-pad-%i ${couchOsk} ${oskStyle}";
+      Restart = "on-failure";
+    };
+  };
+
+  # Udev starts couch-pad@ only as a pad connects, not for one already there
+  # when the user manager starts
+  systemd.user.services.couch-pads = {
+    Unit.Description = "Couch controls of the pads connected before login";
+    Install.WantedBy = [ "default.target" ];
+    Service = {
+      Type = "oneshot";
+      ExecStart = toString (pkgs.writeShellScript "couch-pads" ''
+        shopt -s nullglob
+        for pad in /dev/input/couch-pad-*; do
+          ${pkgs.systemd}/bin/systemctl --user start --no-block "couch-pad@''${pad#/dev/input/couch-pad-}.service"
+        done
+      '');
+    };
   };
 
   # On-screen output volume for the volume keys; the TV's own volume is out of
   # reach over HDMI, and Plexamp ignores MPRIS volume
   services.swayosd.enable = true;
+
+  # The pad's B is Backspace: a page back, unless typing
+  programs.firefox.profiles.personal.settings."browser.backspace_action" = 0;
 
   # The TV's physical DPI is low; size by the output scale instead
   programs.foot.settings.main = {

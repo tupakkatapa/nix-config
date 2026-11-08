@@ -122,7 +122,7 @@ in
     };
   };
 
-  # The couch menu turns the Xbox pad into keyboard events through uinput
+  # The couch session turns the pad into a keyboard and mouse through uinput
   hardware.uinput.enable = true;
   users.users.${user}.extraGroups = [ "uinput" ];
   services.udev.extraRules = ''
@@ -130,6 +130,13 @@ in
     SUBSYSTEM=="input", ATTRS{name}=="*Nano Transceiver*System Control", ENV{ID_INPUT_JOYSTICK}=""
     SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_INPUT_JOYSTICK}=="1", ATTRS{id/vendor}=="045e", SYMLINK+="input/couch-pad-%k", TAG+="systemd", ENV{SYSTEMD_USER_WANTS}="couch-pad@%k.service"
   '';
+
+  # The couch session makes the pad a mouse itself, outside the games, and
+  # wants the Xbox button as it is pressed, not held for a combo
+  boot.extraModprobeConfig = "options hid_xpadneo disable_mouse=1 disable_shift_mode=1";
+
+  # Sway reads the couch pad's virtual keyboard itself
+  services.keyd.keyboards.default.ids = [ "-0c0c:0001" ];
 
   # The TV hangs off the GPU's HDMI; the onboard S/PDIF would otherwise win
   services.pipewire.wireplumber.extraConfig."51-hdmi-default"."monitor.alsa.rules" = [{
