@@ -94,9 +94,10 @@ in
       (lib.remove [ ] (lib.foldr (m: subsets: subsets ++ map (s: [ m ] ++ s) subsets) [ [ ] ] (lib.sort lib.lessThan [ "retroarch" "rt.steam" "plexamp" ])));
   }];
 
-  # Overrides the graphical-desktop default set (CJK, unifont, emoji)
+  # Overrides the graphical-desktop default set (unifont, emoji); Japanese for
+  # the videos' titles
   fonts.enableDefaultPackages = false;
-  fonts.packages = [ pkgs.dejavu_fonts pkgs.liberation_ttf ];
+  fonts.packages = [ pkgs.dejavu_fonts pkgs.liberation_ttf pkgs.noto-fonts-cjk-sans ];
 
   # Disk-aware garbage collection
   sys2x.gc.useDiskAware = true;
