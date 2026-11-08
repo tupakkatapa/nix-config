@@ -46,19 +46,22 @@ let
     .hint { font: 9pt "${FONT}"; color: #${colors.base03}; margin-top: 6px; }
   '';
 
-  # Hand-picked sites for the pad's Y, as tiles; the site's own icon unless
-  # given
+  # Hand-picked sites for the pad's Y, as tiles with their logos (Simple
+  # Icons) in brand colour
   sites = [
-    { name = "Plex"; url = "https://plex.coditon.com/web"; }
-    { name = "YouTube"; url = "https://www.youtube.com/feed/subscriptions"; }
-    { name = "Netflix"; url = "https://www.netflix.com"; }
-    { name = "Kick"; url = "https://kick.com"; }
-    { name = "Twitch"; url = "https://www.twitch.tv"; }
-    { name = "Home Assistant"; url = "https://home.coditon.com"; icon = "https://home.coditon.com/static/icons/favicon-192x192.png"; }
+    { name = "Plex"; url = "https://plex.coditon.com/web"; logo = "plex"; color = "EBAF00"; hash = "sha256-EpUAwr2iF1yVQC0S4KlmQt5holYdRaTZcZ7cir1DyOo="; }
+    { name = "YouTube"; url = "https://www.youtube.com/feed/subscriptions"; logo = "youtube"; color = "FF0000"; hash = "sha256-UDiAisu8Tm7doWy+scxt7IDk5O5OIn4DnEEin6Iiqow="; }
+    { name = "Netflix"; url = "https://www.netflix.com"; logo = "netflix"; color = "E50914"; hash = "sha256-Z9vElZiL1WZ6Ce1PVuFNtAcKRMenTil7FGwin3D9b24="; }
+    { name = "Kick"; url = "https://kick.com"; logo = "kick"; color = "53FC18"; hash = "sha256-72AC4u7a62haI8yryvqXDwS1PxCb+THWxkX8GVeg0TU="; }
+    { name = "Twitch"; url = "https://www.twitch.tv"; logo = "twitch"; color = "9146FF"; hash = "sha256-2+J7wCoBuNibYlnKzvMoyfpwuxPCnzjDbrFCGGP28LY="; }
+    { name = "Home Assistant"; url = "https://home.coditon.com"; logo = "homeassistant"; color = "18BCF2"; hash = "sha256-/tKUu6KJrWBc1Mqy35jdI59S1A5cuOA8lIfGSaamKVc="; }
   ];
-  icon = site: site.icon or "${builtins.head (builtins.match "(https?://[^/]+).*" site.url)}/favicon.ico";
-  tile = site: ''<a href="${site.url}"><img src="${icon site}" alt="" onerror="this.remove()">${site.name}</a>'';
-  startPage = pkgs.writeText "start-page.html" ''
+  logo = site: pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/simple-icons/simple-icons/16.37.0/icons/${site.logo}.svg";
+    inherit (site) hash;
+  };
+  tile = site: ''<a href="${site.url}" style="--color: #${site.color}">@${site.logo}@${site.name}</a>'';
+  page = pkgs.writeText "start-page.html" ''
     <!doctype html>
     <meta charset="utf-8">
     <title>Start</title>
@@ -67,10 +70,48 @@ let
       body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
       main { display: grid; grid-template-columns: repeat(3, 240px); gap: 24px; }
       a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; height: 180px; background: #${colors.base01}; border: 1px solid #${colors.base02}; border-radius: 13px; color: inherit; text-decoration: none; }
-      a:hover, a:focus { background: #${colors.base0A}; color: #${colors.base00}; outline: none; }
-      img { width: 64px; height: 64px; }
+      a:focus, body:not(.walking) a:hover { background: #${colors.base0A}; color: #${colors.base00}; outline: none; }
+      svg { width: 64px; height: 64px; fill: var(--color); }
+      a:focus svg, body:not(.walking) a:hover svg { fill: #${colors.base00}; }
     </style>
     <main>${lib.concatMapStrings tile sites}</main>
+    <script>
+      // The last input chooses. After the d-pad, A (a click wherever the
+      // pointer rests) opens the walked-to tile; after the pointer moves, the
+      // tile under it. A click may not take the focus off the chosen tile
+      const tiles = [...document.querySelectorAll("a")];
+      const steps = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -3, ArrowDown: 3 };
+      let at = 0, pointer = null;
+      const walk = () => { document.body.classList.add("walking"); tiles[at].focus(); };
+      walk();
+      addEventListener("keydown", event => {
+        if (!(event.key in steps)) return;
+        at = (at + steps[event.key] + tiles.length) % tiles.length;
+        walk();
+        event.preventDefault();
+      });
+      addEventListener("mousemove", event => {
+        const now = [event.clientX, event.clientY].join();
+        const moved = pointer !== null && pointer !== now;
+        pointer = now;
+        if (!moved) return;
+        document.body.classList.remove("walking");
+        tiles[at].blur();
+      });
+      addEventListener("mousedown", event => event.preventDefault());
+      addEventListener("click", event => {
+        if (!document.body.classList.contains("walking") || event.target.closest("a") === tiles[at]) return;
+        event.preventDefault();
+        tiles[at].click();
+      });
+    </script>
+  '';
+  # The logos go in as inline SVG, for the CSS to colour them
+  startPage = pkgs.runCommand "start-page.html" { } ''
+    cp ${page} $out
+    ${lib.concatMapStrings (site: ''
+      substituteInPlace $out --replace-fail '@${site.logo}@' "$(cat ${logo site})"
+    '') sites}
   '';
 
   couchMenu = pkgs.writeShellApplication {
