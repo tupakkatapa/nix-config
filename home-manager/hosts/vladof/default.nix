@@ -46,6 +46,33 @@ let
     .hint { font: 9pt "${FONT}"; color: #${colors.base03}; margin-top: 6px; }
   '';
 
+  # Hand-picked sites for the pad's Y, as tiles; the site's own icon unless
+  # given
+  sites = [
+    { name = "Plex"; url = "https://plex.coditon.com/web"; }
+    { name = "YouTube"; url = "https://www.youtube.com/feed/subscriptions"; }
+    { name = "Netflix"; url = "https://www.netflix.com"; }
+    { name = "Kick"; url = "https://kick.com"; }
+    { name = "Twitch"; url = "https://www.twitch.tv"; }
+    { name = "Home Assistant"; url = "https://home.coditon.com"; icon = "https://home.coditon.com/static/icons/favicon-192x192.png"; }
+  ];
+  icon = site: site.icon or "${builtins.head (builtins.match "(https?://[^/]+).*" site.url)}/favicon.ico";
+  tile = site: ''<a href="${site.url}"><img src="${icon site}" alt="" onerror="this.remove()">${site.name}</a>'';
+  startPage = pkgs.writeText "start-page.html" ''
+    <!doctype html>
+    <meta charset="utf-8">
+    <title>Start</title>
+    <style>
+      html { background: #${colors.base00}; color: #${colors.base05}; font: 22px "${FONT}"; }
+      body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+      main { display: grid; grid-template-columns: repeat(3, 240px); gap: 24px; }
+      a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; height: 180px; background: #${colors.base01}; border: 1px solid #${colors.base02}; border-radius: 13px; color: inherit; text-decoration: none; }
+      a:hover, a:focus { background: #${colors.base0A}; color: #${colors.base00}; outline: none; }
+      img { width: 64px; height: 64px; }
+    </style>
+    <main>${lib.concatMapStrings tile sites}</main>
+  '';
+
   couchMenu = pkgs.writeShellApplication {
     name = "couch-menu";
     runtimeInputs = [ pkgs.coreutils pkgs.util-linux pkgs.jq config.wayland.windowManager.sway.package config.programs.fuzzel.package ];
@@ -138,7 +165,12 @@ in
   systemd.user.services."couch-pad@" = {
     Unit.Description = "Couch controls of the pad %i";
     Service = {
-      ExecStart = "${couchPad} /dev/input/couch-pad-%i ${couchOsk} ${oskStyle}";
+      ExecStart = "${couchPad} /dev/input/couch-pad-%i";
+      # Quoted: systemd reads an unquoted value's words as further assignments
+      Environment = [
+        "\"COUCH_KEYBOARD=${couchOsk} ${oskStyle}\""
+        "\"COUCH_HOME=${lib.getExe config.programs.firefox.finalPackage} --new-tab file://${startPage}\""
+      ];
       Restart = "on-failure";
     };
   };

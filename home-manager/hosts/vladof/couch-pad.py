@@ -31,7 +31,9 @@ HATS = {
     e.ABS_HAT0Y: (e.KEY_UP, e.KEY_DOWN),
 }
 
-# Buttons that act as a key while held, and ones that tap a chord
+# Buttons that act as a key while held, and ones that tap a chord: the
+# bumpers for the next and the previous tab. Y runs the home command, and
+# Menu the keyboard, both given in the environment
 MENU_KEYS = {e.BTN_A: e.KEY_ENTER}
 APP_KEYS = {
     e.BTN_A: e.BTN_LEFT,
@@ -40,7 +42,6 @@ APP_KEYS = {
     e.BTN_SELECT: e.KEY_ESC,
 }
 APP_CHORDS = {
-    e.BTN_Y: (e.KEY_LEFTCTRL, e.KEY_T),
     e.BTN_TR: (e.KEY_LEFTCTRL, e.KEY_TAB),
     e.BTN_TL: (e.KEY_LEFTCTRL, e.KEY_LEFTSHIFT, e.KEY_TAB),
 }
@@ -113,9 +114,10 @@ class Smooth:
 
 
 class Couch:
-    def __init__(self, path, keyboard):
+    def __init__(self, path):
         self.pad = evdev.InputDevice(path)
-        self.keyboard = keyboard
+        self.keyboard = os.environ["COUCH_KEYBOARD"].split()
+        self.home = os.environ["COUCH_HOME"].split()
         self.out = evdev.UInput(
             {
                 e.EV_KEY: OUTPUT_KEYS,
@@ -276,6 +278,8 @@ class Couch:
             elif event.type == e.EV_KEY and value == 1:
                 if code in APP_CHORDS:
                     self.tap(APP_CHORDS[code])
+                elif code == e.BTN_Y:
+                    subprocess.Popen(self.home)
                 elif code == e.BTN_START:
                     self.open_osk()
 
@@ -345,9 +349,9 @@ class Couch:
 
 
 if __name__ == "__main__":
-    # The on-screen keyboard needs the display, which a pad connected early
-    # does not know yet
+    # The keyboard and the home command need the display, which a pad
+    # connected early does not know yet
     displays = glob.glob(f"{os.environ['XDG_RUNTIME_DIR']}/wayland-[0-9]")
     for display in displays[:1]:
         os.environ.setdefault("WAYLAND_DISPLAY", os.path.basename(display))
-    Couch(sys.argv[1], sys.argv[2:]).run()
+    Couch(sys.argv[1]).run()

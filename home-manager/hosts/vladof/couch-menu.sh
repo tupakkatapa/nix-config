@@ -299,7 +299,7 @@ trap 'rm -f "$dir/status"; jobs -p | xargs -r kill 2>/dev/null' EXIT
 # profile the new one needs
 systemctl --user stop 'couch-*.scope' 2>/dev/null || true
 
-firefox=(firefox --kiosk https://plex.coditon.com/web https://www.youtube.com/feed/subscriptions)
+firefox=(firefox https://plex.coditon.com/web https://www.youtube.com/feed/subscriptions)
 if start firefox Firefox "${firefox[@]}"; then
   read -r id _ < <(windows_of firefox)
   swaymsg "[con_id=$id] move scratchpad" >/dev/null
