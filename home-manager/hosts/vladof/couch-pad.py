@@ -31,17 +31,30 @@ HATS = {
     e.ABS_HAT0Y: (e.KEY_UP, e.KEY_DOWN),
 }
 
+# With a paddle held the pad is a remote, in a game too: the d-pad turns the
+# volume and skips tracks, A plays and pauses, B mutes
+REMOTE = e.BTN_GRIPR
+REMOTE_HATS = {
+    e.ABS_HAT0X: (e.KEY_PREVIOUSSONG, e.KEY_NEXTSONG),
+    e.ABS_HAT0Y: (e.KEY_VOLUMEUP, e.KEY_VOLUMEDOWN),
+}
+REMOTE_KEYS = {e.BTN_A: e.KEY_PLAYPAUSE, e.BTN_B: e.KEY_MUTE}
+REMOTE_OUT = {
+    *REMOTE_KEYS.values(),
+    *(key for pair in REMOTE_HATS.values() for key in pair),
+}
 # Buttons that act as a key while held, and ones that tap a chord: the
-# bumpers for the next and the previous tab. Y runs the home command, and
-# Menu the keyboard, both given in the environment
+# bumpers for the next and the previous tab, X to close the tab. Y runs the
+# home command, and Menu the keyboard, both given in the environment
 MENU_KEYS = {e.BTN_A: e.KEY_ENTER}
 APP_KEYS = {
     e.BTN_A: e.BTN_LEFT,
-    e.BTN_X: e.BTN_RIGHT,
+    e.BTN_THUMBR: e.BTN_RIGHT,
     e.BTN_B: e.KEY_BACKSPACE,
     e.BTN_SELECT: e.KEY_ESC,
 }
 APP_CHORDS = {
+    e.BTN_X: (e.KEY_LEFTCTRL, e.KEY_W),
     e.BTN_TR: (e.KEY_LEFTCTRL, e.KEY_TAB),
     e.BTN_TL: (e.KEY_LEFTCTRL, e.KEY_LEFTSHIFT, e.KEY_TAB),
 }
@@ -58,6 +71,7 @@ OSK_MOVES = {e.ABS_HAT0X: (b"left", b"right"), e.ABS_HAT0Y: (b"up", b"down")}
 OUTPUT_KEYS = list(range(e.KEY_ESC, e.KEY_KPDOT + 1)) + [
     e.KEY_RIGHTALT,
     e.KEY_LEFTMETA,
+    *REMOTE_OUT,
     *(key for pair in HATS.values() for key in pair),
     e.BTN_LEFT,
     e.BTN_RIGHT,
@@ -138,6 +152,7 @@ class Couch:
         self.seen = MENU
         self.held = set()
         self.grabbed = False
+        self.remote = False
         self.osk = None
         self.osk_buffer = b""
         self.repeats = {}
@@ -181,15 +196,18 @@ class Couch:
             self.key(code, 0)
         self.repeats.clear()
         self.close_osk()
+        self.grab(mode != GAME or self.remote)
+
+    # A game has the pad to itself, except while the remote is held
+    def grab(self, want):
         try:
-            if mode == GAME and self.grabbed:
-                self.pad.ungrab()
-                self.grabbed = False
-            elif mode != GAME and not self.grabbed:
+            if want and not self.grabbed:
                 self.pad.grab()
-                self.grabbed = True
+            elif not want and self.grabbed:
+                self.pad.ungrab()
         except OSError:
-            pass
+            return
+        self.grabbed = want
 
     def key(self, code, value):
         self.out.write(e.EV_KEY, code, value)
@@ -247,6 +265,16 @@ class Couch:
             self.sticks[code] = (value - low - half) / half
         elif event.type == e.EV_KEY and code == e.BTN_MODE:
             self.key(e.KEY_LEFTMETA, value)
+        elif event.type == e.EV_KEY and code == REMOTE:
+            self.remote = bool(value)
+            for key in self.held & REMOTE_OUT:
+                self.key(key, 0)
+            self.grab(self.seen != GAME or self.remote)
+        elif self.remote:
+            if event.type == e.EV_ABS and code in REMOTE_HATS:
+                self.hat(code, value, REMOTE_HATS)
+            elif event.type == e.EV_KEY and code in REMOTE_KEYS:
+                self.key(REMOTE_KEYS[code], value)
         elif self.seen == GAME:
             pass
         elif self.seen == MENU:
@@ -283,8 +311,8 @@ class Couch:
                 elif code == e.BTN_START:
                     self.open_osk()
 
-    def hat(self, code, value):
-        low, high = HATS[code]
+    def hat(self, code, value, pairs=HATS):
+        low, high = pairs[code]
         self.key(low, int(value < 0))
         self.key(high, int(value > 0))
 
