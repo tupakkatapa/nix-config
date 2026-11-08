@@ -1,7 +1,9 @@
 # https://archive.org/details/retro-roms-best-set
 # https://myrient.erista.me/files/No-Intro/
-{ pkgs, share, ... }:
+{ pkgs, dataDir, ... }:
 let
+  appdata = "${dataDir}/home/kari/appdata/retroarch";
+
   cores = with pkgs.libretro; [
     mame # Arcade
     stella # Atari 2600
@@ -35,16 +37,10 @@ let
 
     # Paths
     assets_directory = "${pkgs.retroarch-assets}/share/retroarch/assets";
-    rgui_browser_directory = "${share}/roms";
-    rgui_config_directory = "${share}/config";
-    input_remapping_directory = "${share}/config/remaps";
-    system_directory = "${share}/bios";
-    savefile_directory = "${share}/saves";
-    savestate_directory = "${share}/states";
-    screenshot_directory = "${share}/screenshots";
-    playlist_directory = "${share}/playlists";
-    thumbnails_directory = "${share}/thumbnails";
-    cheat_database_path = "${share}/cheats";
+    rgui_browser_directory = "${dataDir}/sftp/games/roms";
+    system_directory = "${dataDir}/sftp/games/bios";
+    savefile_directory = "${appdata}/saves";
+    savestate_directory = "${appdata}/states";
     # SRAM is otherwise written on a clean exit only
     autosave_interval = "30";
 

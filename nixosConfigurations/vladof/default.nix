@@ -75,7 +75,7 @@ in
     modules = [
       {
         name = "retroarch";
-        imports = [ (import ../.config/retroarch.nix (extendedArgs // { share = "${dataDir}/sftp/appdata/retroarch"; })) ];
+        imports = [ (import ./retroarch.nix extendedArgs) ];
       }
       {
         name = "plexamp";
