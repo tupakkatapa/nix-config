@@ -45,7 +45,22 @@ STARTS = [[sum(spans[:i]) for i in range(len(spans))] for spans in SPANS]
 # The middle of the letters, fewest moves to any of them
 START = (2, 4)
 OFF, ONCE, LOCKED = range(3)
-HINT = "A type · B delete · X shift · Y space · LB RB cursor · Menu close"
+# The pad's buttons, in their colours, on the keys they press and in the hint
+GLYPHS = {
+    "shift": ("Ⓧ", "3B7BD6"),
+    "KEY_SPACE": ("Ⓨ", "F2C94C"),
+    "KEY_BACKSPACE": ("Ⓑ", "E04A3A"),
+}
+HINT = (
+    "<span foreground='#6DBF2E'>Ⓐ</span> type  ·  LB RB cursor  ·  ☰ close"
+)
+
+
+def glyph(key):
+    if key not in GLYPHS:
+        return ""
+    mark, colour = GLYPHS[key]
+    return f"  <span foreground='#{colour}'>{mark}</span>"
 
 
 class Keyboard(Gtk.Window):
@@ -54,7 +69,6 @@ class Keyboard(Gtk.Window):
         GtkLayerShell.init_for_window(self)
         GtkLayerShell.set_layer(self, GtkLayerShell.Layer.OVERLAY)
         GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, True)
-        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.BOTTOM, 24)
         # Rounded corners need a see-through window
         self.set_visual(self.get_screen().get_rgba_visual())
         style = Gtk.CssProvider()
@@ -64,10 +78,13 @@ class Keyboard(Gtk.Window):
         )
         panel = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         panel.get_style_context().add_class("panel")
+        # Room around the panel for its shadow
+        panel.props.margin = 32
         self.add(panel)
         grid = Gtk.Grid(column_homogeneous=True, row_homogeneous=True)
         panel.add(grid)
-        hint = Gtk.Label(label=HINT)
+        hint = Gtk.Label()
+        hint.set_markup(HINT)
         hint.get_style_context().add_class("hint")
         panel.add(hint)
         self.labels = []
@@ -90,12 +107,13 @@ class Keyboard(Gtk.Window):
                 label = self.labels[y][x]
                 context = label.get_style_context()
                 if key == "shift":
-                    label.set_text("⇪" if self.shift == LOCKED else plain)
+                    text = "⇪" if self.shift == LOCKED else plain
                     context.remove_class("shift")
                     if self.shift:
                         context.add_class("shift")
                 else:
-                    label.set_text(shifted if self.shift else plain)
+                    text = shifted if self.shift else plain
+                label.set_markup(GLib.markup_escape_text(text) + glyph(key))
                 context.remove_class("selected")
                 if (y, x) == (self.row, self.col):
                     context.add_class("selected")

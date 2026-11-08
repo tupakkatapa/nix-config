@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-# Couch home screen: one app on screen at a time, the others running hidden.
+# Couch launcher: Firefox from the start, one app on screen at a time, the
+# others running hidden. The menu opens on demand over whatever is on screen,
+# and by itself while nothing is; a pick takes the place of what was there.
 # An app owns the windows of the processes in its systemd scope, so a stray
 # window is never mistaken for it. Runtime-module apps build detached, so
-# closing a window never interrupts a build, and picks close together share one
-# rebuild.
+# closing a window never interrupts a build, and picks close together share
+# one rebuild.
 set -euo pipefail
 
 : "${ICONS:?}" "${TERMINAL:?}"
@@ -16,6 +18,7 @@ apps=(
   "Steam rt.steam steam -bigpicture"
   "Plexamp plexamp plexamp"
 )
+firefox=(firefox https://plex.coditon.com/web https://www.youtube.com/feed/subscriptions)
 
 running() {
   local pid
@@ -65,7 +68,7 @@ follow() {
   sleep 1
   kill "$tailpid"
   if [ -e "$dir/$1.failed" ]; then
-    read -r -p $'\nBuild failed. Enter retries, Alt+Q closes. '
+    read -r -p $'\nBuild failed. Enter retries, Alt+Shift+Q closes.'
     return 0
   fi
   sleep 1
@@ -76,7 +79,7 @@ follow() {
 log() {
   tail -n 40 "$dir/$1.log" 2>/dev/null || true
   systemctl --user status "couch-$1.scope" --no-pager 2>/dev/null | tail -n 5 || true
-  read -r -p $'\n'"$2 gave no window. Enter retries, Alt+Q closes. "
+  read -r -p $'\n'"$2 gave no window. Enter retries, Alt+Shift+Q closes."
 }
 
 queue() {
@@ -121,9 +124,11 @@ visible() {
 start() {
   local app=$1 name=$2 pid ticks=0
   shift 2
-  # A scope still alive here has lost its window, like Steam left in the background
+  # A scope still alive here has lost its window, like Steam left in the
+  # background; one that failed, like a stop that had to kill, stays loaded
+  # and would block the name
   systemctl --user stop "couch-$app.scope" 2>/dev/null || true
-  echo "Starting $name..." >"$dir/status"
+  systemctl --user reset-failed "couch-$app.scope" 2>/dev/null || true
   systemd-run --user --scope --quiet --unit="couch-$app" -p TimeoutStopSec=5 -- "$@" >"$dir/$app.log" 2>&1 &
   pid=$!
   while [ -z "$(windows_of "$app")" ]; do
@@ -135,7 +140,6 @@ start() {
     ticks=$((ticks + 1))
     sleep 0.5
   done
-  rm -f "$dir/status"
   [ -n "$(windows_of "$app")" ]
 }
 
@@ -154,24 +158,45 @@ raise() {
   fi
 }
 
-# Returns once nothing is on screen; a failed start shows its log and retries
+# Puts the app on screen; a failed start shows its log and retries
 show() {
   while ! raise "$@"; do
     "$TERMINAL" "$0" --log "$1" "$2" || return 0
   done
-  while visible; do sleep 0.5; done
 }
 
 # Apps and the terminal only hide and keep running; anything else closes
-close() {
-  local id='' pid=''
-  read -r id pid < <(tree | jq -r '.. | objects | select(.pid != null and .focused == true) | "\(.id) \(.pid)"') || true
-  [ -n "$id" ] || return 0
-  if grep -qE '/couch-[^/]+\.scope$' "/proc/$pid/cgroup" 2>/dev/null; then
-    swaymsg "[con_id=$id] move scratchpad" >/dev/null
+hide() {
+  if grep -qE '/couch-[^/]+\.scope$' "/proc/$2/cgroup" 2>/dev/null; then
+    swaymsg "[con_id=$1] move scratchpad" >/dev/null
   else
-    swaymsg "[con_id=$id] kill" >/dev/null
+    swaymsg "[con_id=$1] kill" >/dev/null
   fi
+}
+
+# The window on screen (focused when the pick is done), as "id pid"
+onscreen() {
+  tree | jq -r ".. | objects | select(.pid != null and .$1 == true) | \"\(.id) \(.pid)\"" | head -n 1
+}
+
+# $choice on screen, in place of what was there: that goes only once the pick
+# is up, so the home screen never shows in between
+pick() {
+  local was='' pid='' app name module cmd
+  read -r was pid < <(onscreen visible) || true
+  echo "$choice" >"$dir/last"
+  if [ "$choice" = Firefox ]; then
+    show firefox Firefox "${firefox[@]}" || true
+  else
+    for app in "${apps[@]}"; do
+      read -r name module cmd <<<"$app"
+      [ "$name" = "$choice" ] || continue
+      read -ra command <<<"$cmd"
+      launch "$module" "$name" "${command[@]}" || true
+    done
+  fi
+  [ -n "$was" ] && [ "$was" != "$(onscreen focused | cut -d' ' -f1)" ] && hide "$was" "$pid"
+  return 0
 }
 
 launch() {
@@ -207,30 +232,6 @@ entries() {
   done
 }
 
-# What builds, else what failed to; nothing when neither
-builds() {
-  local app name module cmd busy=() failed=()
-  for app in "${apps[@]}"; do
-    read -r name module cmd <<<"$app"
-    if running "$module"; then
-      busy+=("$name")
-    elif [ -e "$dir/$module.failed" ] && ! installed "${cmd%% *}"; then
-      failed+=("$name")
-    fi
-  done
-  if [ "${#busy[@]}" -gt 0 ]; then
-    echo "Building $(join "${busy[@]}")…"
-  elif [ "${#failed[@]}" -gt 0 ]; then
-    echo "$(join "${failed[@]}") failed to build"
-  fi
-}
-
-join() {
-  local list
-  list=$(printf ', %s' "$@")
-  echo "${list:2}"
-}
-
 # Sets $choice. The menu closes by itself as soon as something is on screen,
 # or reopens when its icons go stale, like after a build or a rebuild of the
 # host
@@ -246,25 +247,29 @@ menu() {
   [ -n "$choice" ]
 }
 
-# The bar's status line; the bar shows only while nothing is on screen
-bar() {
-  local up uptime build
-  while true; do
-    if [ -e "$dir/status" ]; then
-      cat "$dir/status"
-    else
-      up=$(cut -d. -f1 /proc/uptime)
-      if [ "$up" -ge 86400 ]; then
-        uptime="$((up / 86400))d $((up % 86400 / 3600))h"
-      else
-        uptime="$((up / 3600))h $((up % 3600 / 60))m"
-      fi
-      build=$(builds)
-      echo "${build:+$build  ·  }$(uname -n)  ·  up $uptime  ·  $(date +'%d.%m.%Y  %H:%M')"
-    fi
-    sleep 2
-  done
+# The menu over what is on screen; a call while it is up closes it instead.
+# The pad holds the menu's controls meanwhile, told by signal
+overlay() {
+  local fuzzel
+  visible || return 0
+  exec 9>"$dir/menu.lock"
+  flock -n 9 || {
+    kill "$(cat "$dir/menu.pid" 2>/dev/null)" 2>/dev/null || true
+    return 0
+  }
+  trap 'pad USR2' EXIT
+  pad USR1
+  selected=$(cat "$dir/last" 2>/dev/null || true)
+  entries | fuzzel --dmenu --select="${selected:-Firefox}" >"$dir/choice" &
+  fuzzel=$!
+  echo "$fuzzel" >"$dir/menu.pid"
+  wait "$fuzzel" && choice=$(<"$dir/choice") || choice=
+  pad USR2
+  exec 9>&-
+  [ -z "$choice" ] || pick
 }
+
+pad() { systemctl --user kill -s "$1" 'couch-pad@*' 2>/dev/null || true; }
 
 case ${1:-} in
 --build)
@@ -279,31 +284,23 @@ case ${1:-} in
   log "$2" "$3"
   exit
   ;;
---close)
-  close
+--menu)
+  overlay
   exit
   ;;
 --terminal)
   raise terminal Terminal "$TERMINAL"
   exit
   ;;
---status)
-  bar
-  exit
-  ;;
 esac
 
-trap 'rm -f "$dir/status"; jobs -p | xargs -r kill 2>/dev/null' EXIT
+trap 'jobs -p | xargs -r kill 2>/dev/null' EXIT
 
 # Apps outlive the session that started them, and a stale Firefox holds the
 # profile the new one needs
 systemctl --user stop 'couch-*.scope' 2>/dev/null || true
-
-firefox=(firefox https://plex.coditon.com/web https://www.youtube.com/feed/subscriptions)
-if start firefox Firefox "${firefox[@]}"; then
-  read -r id _ < <(windows_of firefox)
-  swaymsg "[con_id=$id] move scratchpad" >/dev/null
-fi
+systemctl --user reset-failed 'couch-*.scope' 2>/dev/null || true
+start firefox Firefox "${firefox[@]}" || true
 
 selected=Firefox
 while true; do
@@ -316,14 +313,5 @@ while true; do
     continue
   }
   selected=$choice
-  if [ "$choice" = Firefox ]; then
-    show firefox Firefox "${firefox[@]}" || true
-  else
-    for app in "${apps[@]}"; do
-      read -r name module cmd <<<"$app"
-      [ "$name" = "$choice" ] || continue
-      read -ra command <<<"$cmd"
-      launch "$module" "$name" "${command[@]}" || true
-    done
-  fi
+  pick
 done

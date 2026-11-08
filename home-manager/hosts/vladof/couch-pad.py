@@ -6,6 +6,7 @@ stays quiet; the game on screen gets the pad to itself."""
 import glob
 import os
 import select
+import signal
 import subprocess
 import sys
 import threading
@@ -43,10 +44,11 @@ REMOTE_OUT = {
     *REMOTE_KEYS.values(),
     *(key for pair in REMOTE_HATS.values() for key in pair),
 }
-# Buttons that act as a key while held, and ones that tap a chord: the
-# bumpers for the next and the previous tab, X to close the tab. Y runs the
-# home command, and Menu the keyboard, both given in the environment
-MENU_KEYS = {e.BTN_A: e.KEY_ENTER}
+# On the menu A picks and B closes. In an app, buttons that act as a key
+# while held, and ones that tap a chord: the bumpers for the next and the
+# previous tab, X to close the tab. In Firefox Y runs the home command, and
+# Menu the keyboard, both given in the environment
+MENU_KEYS = {e.BTN_A: e.KEY_ENTER, e.BTN_B: e.KEY_ESC}
 APP_KEYS = {
     e.BTN_A: e.BTN_LEFT,
     e.BTN_THUMBR: e.BTN_RIGHT,
@@ -91,17 +93,18 @@ def connect():
 
 
 def mode_of(sway):
-    """What is on screen: nothing but the menu, a game, or another app."""
+    """What is on screen: nothing but the menu, a game, or another app, and
+    the app's id."""
     focused = sway.get_tree().find_focused()
     if focused is None or focused.pid is None:
-        return MENU
+        return MENU, None
     try:
         with open(f"/proc/{focused.pid}/cgroup") as cgroup:
             if any(scope in cgroup.read() for scope in GAMES):
-                return GAME
+                return GAME, focused.app_id
     except OSError:
         pass
-    return APP
+    return APP, focused.app_id
 
 
 def curve(value):
@@ -149,10 +152,12 @@ class Couch:
             product=0x0001,
         )
         self.mode = MENU
+        self.app = None
         self.seen = MENU
         self.held = set()
         self.grabbed = False
         self.remote = False
+        self.overlay = False
         self.osk = None
         self.osk_buffer = b""
         self.repeats = {}
@@ -172,11 +177,11 @@ class Couch:
         while True:
             try:
                 sway = connect()
-                self.set_mode(mode_of(sway))
+                self.set_mode(*mode_of(sway))
                 for event in ("WINDOW", "WORKSPACE", "OUTPUT"):
                     sway.on(
                         i3ipc.Event[event],
-                        lambda sway, _: self.set_mode(mode_of(sway)),
+                        lambda sway, _: self.set_mode(*mode_of(sway)),
                     )
                 sway.main()
             except (OSError, ConnectionError):
@@ -184,8 +189,14 @@ class Couch:
             self.set_mode(MENU)
             time.sleep(1)
 
-    def set_mode(self, mode):
-        self.mode = mode
+    def set_mode(self, mode, app=None):
+        self.mode, self.app = mode, app
+        os.write(self.wake_write, b"\0")
+
+    # The menu over an app is the pad's too; the menu tells when it opens and
+    # closes
+    def set_overlay(self, on):
+        self.overlay = on
         os.write(self.wake_write, b"\0")
 
     # A mode change releases what is held: a key pressed in one mode would
@@ -306,7 +317,7 @@ class Couch:
             elif event.type == e.EV_KEY and value == 1:
                 if code in APP_CHORDS:
                     self.tap(APP_CHORDS[code])
-                elif code == e.BTN_Y:
+                elif code == e.BTN_Y and self.app == "firefox":
                     subprocess.Popen(self.home)
                 elif code == e.BTN_START:
                     self.open_osk()
@@ -352,7 +363,7 @@ class Couch:
 
     def run(self):
         """Ends when the pad is gone."""
-        self.enter(self.mode)
+        self.enter(MENU if self.overlay else self.mode)
         while True:
             watched = [self.pad, self.wake_read]
             if self.osk:
@@ -361,8 +372,9 @@ class Couch:
             ready, _, _ = select.select(watched, [], [], timeout)
             if self.wake_read in ready:
                 os.read(self.wake_read, 64)
-            if self.mode != self.seen:
-                self.enter(self.mode)
+            wanted = MENU if self.overlay else self.mode
+            if wanted != self.seen:
+                self.enter(wanted)
             if self.osk and self.osk.stdout in ready:
                 self.hear()
             if self.pad in ready:
@@ -382,4 +394,7 @@ if __name__ == "__main__":
     displays = glob.glob(f"{os.environ['XDG_RUNTIME_DIR']}/wayland-[0-9]")
     for display in displays[:1]:
         os.environ.setdefault("WAYLAND_DISPLAY", os.path.basename(display))
-    Couch(sys.argv[1]).run()
+    couch = Couch(sys.argv[1])
+    signal.signal(signal.SIGUSR1, lambda *_: couch.set_overlay(True))
+    signal.signal(signal.SIGUSR2, lambda *_: couch.set_overlay(False))
+    couch.run()

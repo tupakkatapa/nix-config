@@ -39,11 +39,11 @@ let
   # Styled like the menu
   oskStyle = pkgs.writeText "couch-osk.css" ''
     window { background: transparent; }
-    .panel { background: #${colors.base00}; border: 1px solid #${colors.base01}; border-radius: 13px; padding: 8px 8px 4px; }
-    .key { font: 16pt "${FONT}"; color: #${colors.base05}; background: #${colors.base01}; border-radius: 8px; margin: 3px; padding: 10px 14px; }
+    .panel { background: #${colors.base00}; border: 1px solid #${colors.base02}; border-radius: 16px; padding: 12px 12px 8px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6); }
+    .key { font: 18pt "${FONT}"; color: #${colors.base05}; background: #${colors.base01}; border-radius: 10px; margin: 4px; padding: 10px 16px; }
     .key.shift { color: #${colors.base0A}; }
     .key.selected { color: #${colors.base00}; background: #${colors.base0A}; }
-    .hint { font: 9pt "${FONT}"; color: #${colors.base03}; margin-top: 6px; }
+    .hint { font: 11pt "${FONT}"; color: #${colors.base04}; margin-top: 8px; }
   '';
 
   # Hand-picked sites for the pad's Y, as tiles with their logos (Simple
@@ -140,23 +140,7 @@ in
     enable = true;
     config = {
       modifier = "Mod1";
-      # Full-screen apps cover it, so it only shows with the menu
-      bars = [{
-        position = "bottom";
-        workspaceButtons = false;
-        trayOutput = "none";
-        fonts = {
-          names = [ FONT ];
-          size = 9.0;
-        };
-        statusCommand = "${lib.getExe couchMenu} --status";
-        extraConfig = "gaps 0 24 12 24";
-        colors = {
-          background = "#1d2021";
-          statusline = "#${colors.base01}";
-          separator = "#1d2021";
-        };
-      }];
+      bars = [ ];
       # A window that loses fullscreen to another (only one per workspace)
       # still fills the screen as the only tile
       window = {
@@ -182,11 +166,11 @@ in
       input."3084:1:Couch_pad".accel_profile = "flat";
       keybindings = {
         "Mod1+Return" = "exec ${lib.getExe couchMenu} --terminal";
-        "Mod1+q" = "exec ${lib.getExe couchMenu} --close";
+        "Mod1+q" = "exec ${lib.getExe couchMenu} --menu";
         "Mod1+Shift+q" = "kill";
-        # Home key: back to the menu, which shows once no app is visible
-        "--release Super_L" = "exec ${lib.getExe couchMenu} --close";
-        "XF86HomePage" = "exec ${lib.getExe couchMenu} --close";
+        # The menu over whatever is on screen; the pad's Xbox button is Super
+        "--release Super_L" = "exec ${lib.getExe couchMenu} --menu";
+        "XF86HomePage" = "exec ${lib.getExe couchMenu} --menu";
         "XF86AudioRaiseVolume" = "exec ${swayosd} --output-volume raise";
         "XF86AudioLowerVolume" = "exec ${swayosd} --output-volume lower";
         "XF86AudioMute" = "exec ${swayosd} --output-volume mute-toggle";
@@ -253,6 +237,8 @@ in
         font = "${FONT}:size=16";
         # The TV's physical DPI is low; size by the output scale instead
         dpi-aware = "no";
+        # Over a full-screen app too
+        layer = "overlay";
         hide-prompt = "yes";
         lines = 4;
         width = 18;
