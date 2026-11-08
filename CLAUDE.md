@@ -134,3 +134,4 @@ docs/                              # Guides (new host, yubikey, agent forwarding
 - Blog content under `nixosConfigurations/vladof/services/containers/molesk/contents` is all rights reserved (rest is GPL-3.0).
 - `.gitignore` ignores `.claude` and `**/CLAUDE.md` except root and kari's claude config CLAUDE.md.
 - The `claude` fish abbreviation wraps claude-code in a tmux session: `tmux new-session 'claude -c'`.
+- Restarting `user@<uid>` under a running session kills its `graphical-session.target` services (swayosd, yubikey-touch-detector, …) and the compositor's startup hook does not run again. Log out and in instead, or `systemctl --user start sway-session.target` (`hyprland-session.target`) from within the session.
