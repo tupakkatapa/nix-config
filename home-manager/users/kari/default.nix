@@ -179,7 +179,6 @@ in
       lxqt.lxqt-openssh-askpass
 
       # Desktop fonts
-      jetbrains-mono
       nerd-fonts.symbols-only
 
       # Trezor (override: keyring 25.7.0 not yet in nixpkgs)

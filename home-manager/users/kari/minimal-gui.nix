@@ -16,7 +16,7 @@ in
   };
 
   # Home-manager config
-  home-manager.users."${user}" = {
+  home-manager.users."${user}" = { pkgs, ... }: {
     imports = [
       ./.config/foot.nix
       ./.config/firefox
@@ -24,6 +24,7 @@ in
 
     # Allow fonts trough home.packages
     fonts.fontconfig.enable = true;
+    home.packages = [ pkgs.jetbrains-mono ];
 
     # Default apps by user
     home.sessionVariables = {
