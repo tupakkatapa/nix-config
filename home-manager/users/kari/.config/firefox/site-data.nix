@@ -60,10 +60,6 @@ let
   # Site settings kept in cookies or localStorage. uBlock Origin writes them
   # on every page load, so a change made in-page lasts until the next load.
   ublockFilters = [
-    # YouTube: ambient mode and subtitles off
-    "www.youtube.com##+js(trusted-set-cookie, PREF, f6=40000000&f5=30000&f7=100&tz=Europe.Helsinki, 1year, /, domain, youtube.com)"
-    ''www.youtube.com##+js(trusted-set-local-storage-item, yt-player-caption-persistence, {"data":"true"\,"expiration":4915180762515\,"creation":1793116762515})''
-
     # Slack: dark theme
     "app.slack.com##+js(trusted-set-local-storage-item, slack-client-theme, dark)"
   ];
