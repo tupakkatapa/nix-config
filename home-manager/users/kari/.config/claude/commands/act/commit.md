@@ -1,21 +1,18 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- **Do not push anything unless explicitly told to do so.**
-
+---
+description: "Commit the current changes: amend when the last commit is unpushed and yours, else a new commit. Never pushes."
 ---
 
-You are preparing a commit for the current changes.
+You are preparing a commit for the current changes. If the tree is clean, say so and stop.
 
-If automated checks have not been run recently, run `/tt:act:check` first.
+If the project's pre-commit hooks have not run on this diff in this session, run them first and fix what they report.
 
 ## 1. Review Diff
 - Read the diff to understand what was changed
 - Identify the feature, fix, or refactor being committed
+- If the diff mixes structural change (renames, moves, tidying) with behavioural change, or holds unrelated changes, split it into one commit per kind, structural first
 
 ## 2. Determine Commit Strategy
-- Check whether the most recent commit is unpushed (`git log @{upstream}..HEAD 2>/dev/null` returns it; no upstream set → every local commit counts as unpushed).
+- Check whether the most recent commit is unpushed: `git log -1 HEAD --not --remotes` returns it only when no remote branch contains it. A commit that any remote branch contains is pushed, whatever the current branch's upstream.
 - **Authorship check before amending** — `git log -1 --format='%ae'` must equal `git config user.email`. Amending someone else's commit silently rewrites authorship and can break signing. If they differ → create a new commit instead.
 - If unpushed AND authored by current user AND current diff is cumulative to that commit → `git commit --amend`.
 - Otherwise → create a new commit.

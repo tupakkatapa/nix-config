@@ -1,12 +1,9 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
-
+---
+description: "Heavy review: every lens in its own subagent, mandatory schema, blocks on Blocker or High. Use before a release, or for security-sensitive, architectural or third-party-facing changes."
+argument-hint: "[diff | commits | module | plan file]"
 ---
 
-You are conducting a **strict, comprehensive** code review across the full `/tt:pov:*` panel via mandatory subagent dispatch. This agenda is the heavyweight counterpart to `/tt:review` — slower, more expensive in tokens, with no shortcuts.
+You are conducting a **strict, comprehensive** code review across the full lens panel via mandatory subagent dispatch. This agenda is the heavyweight counterpart to `/tt:review` — slower, more expensive in tokens, with no shortcuts.
 
 **When to use:**
 - Pre-release reviews (any version bump that ships to consumers).
@@ -22,12 +19,12 @@ You are conducting a **strict, comprehensive** code review across the full `/tt:
 1. **Every lens runs.** No skipping. A lens with no findings reports "no findings: <one-line reason>" — that statement is itself a deliverable, proving the dimension was inspected.
 2. **Subagent dispatch is mandatory.** Each lens runs in its own subagent with isolated context, reading its own lens file in full (not lazily — strict mode loads the principles and dimensions). The orchestrator (you) only sees consolidated findings.
 3. **Output Schema is mandatory per finding.** No prose summaries. Each finding has all schema fields populated.
-4. **Citations are mandatory.** Every finding cites the lens principle or symptom it derives from (e.g. "violates `architecture` principle 5: Pull complexity downwards" or "matches `security` symptom: errors leak stack traces to unauthenticated callers"). Anchors the judgment in canon.
+4. **Citations are mandatory.** Every finding cites the lens principle or symptom it derives from (e.g. "violates `arch` principle 5: Pull complexity downwards" or "matches `sec` symptom: errors leak stack traces to unauthenticated callers"). Anchors the judgment in canon.
 5. **Block-on-Blocker / High.** Review cannot close while any Blocker or High remains unresolved or explicitly acknowledged with rationale.
 6. **Two-hats disposition is mandatory.** Each finding tagged with its next-step owner.
 
 ## 1. Clarify Scope
-Determine the review subject. If unclear, ask the user (via `AskUserQuestion`) to choose:
+Determine the review subject. Default: the current branch against its base. Only if genuinely underivable, ask the user to choose:
 - [ ] Current uncommitted diff
 - [ ] Recent unpushed commits
 - [ ] A specific fix/feature (ask which)
@@ -41,31 +38,34 @@ Pass the chosen scope verbatim to every lens subagent below, along with `mode = 
 
 Each subagent prompt includes:
 - The artefact under review (paths, diff, plan file — whatever scope was chosen).
-- The full text of the corresponding `commands/pov/<name>.md` file.
+- The full text of the corresponding `~/.claude/tt/pov/<name>.md` file.
 - This contract: "Read your lens file in full. Apply every dimension. Report findings using the Output Schema verbatim. Cite the principle/symptom each finding derives from. If your lens has no surface in this artefact, return one explicit 'no findings: <one-line reason>' statement — the *reason* must reference what you inspected to reach that conclusion."
 
 ### Stage 1 — Sequential (each filters the next)
 
 These two run first, in order. The second receives the first's findings to avoid re-inspecting code that scope already culled.
 
-1. **`/tt:pov:scope`** — essential vs accidental complexity; cull gold-plating, premature abstraction, dead code, speculative configurability before deeper inspection.
-2. **`/tt:pov:arch`** — module boundaries, dependency direction, data flow, layering, distributed shape.
+1. **`scope`** — essential vs accidental complexity; cull gold-plating, premature abstraction, dead code, speculative configurability before deeper inspection.
+2. **`arch`** — module boundaries, dependency direction, data flow, layering, distributed shape.
 
 ### Stage 2 — Parallel (independent dimensions)
 
-Dispatch all six in a single message via the Task tool — independent facets, no inter-blocking. Each subagent receives the artefact as shaped by Stage 1's findings:
+Dispatch all of these in a single message — independent facets, no inter-blocking. Each subagent receives the artefact as shaped by Stage 1's findings:
 
-- **`/tt:pov:ux`** — surfaces (GUI / TUI / CLI / API / library / config schema).
-- **`/tt:pov:sec`** — threat model, authn/authz, secrets, crypto, trust boundaries.
-- **`/tt:pov:perf`** — algorithmic complexity, IO patterns, contention, tail latency; with measurements where claims are made.
-- **`/tt:pov:reliability`** — failure modes, SLIs/SLOs, observability, deployability, recoverability.
-- **`/tt:pov:quality`** — duplication, naming, idiom, separation of concerns inside module boundaries.
-- **`/tt:pov:testing`** — coverage of critical paths, edge cases, testability, suite health.
+- **`compat`** — public surfaces and stored data: what existing callers, clients and data stop working.
+- **`ux`** — surfaces (GUI / TUI / CLI / API / library / config schema).
+- **`ui`** — visual design of graphical surfaces.
+- **`sec`** — threat model, authn/authz, secrets, crypto, trust boundaries.
+- **`perf`** — algorithmic complexity, IO patterns, contention, tail latency; with measurements where claims are made.
+- **`reliability`** — failure modes, SLIs/SLOs, observability, deployability, recoverability.
+- **`quality`** — duplication, naming, idiom, separation of concerns inside module boundaries.
+- **`testing`** — coverage of critical paths, edge cases, testability, suite health.
 
 ### Stage 3 — Final pass (form, after everything else has stabilised)
 
-- **`/tt:pov:docs`** — README, tutorials, how-tos, reference, changelog, runbooks, ADRs (Diátaxis-aware).
-- **`/tt:pov:style`** — formatting, naming consistency, comment discipline, ordering. **Runs last.**
+- **`docs`** — README, tutorials, how-tos, reference, changelog, runbooks, ADRs (Diátaxis-aware).
+- **`prose`** — sentence-level clarity of every human-facing text in the artefact.
+- **`style`** — formatting, naming consistency, comment discipline, ordering. **Runs last.**
 
 ## 3. Consolidate
 
@@ -80,7 +80,7 @@ Merge specialist reports into a single findings list. For each finding, the cons
 - **Confidence** — High / Medium / Low.
 - **Disposition** — tidying (inline) / behavioural (`/tt:impl` or `/tt:debug`) / structural (`/tt:refactor`) / docs (inline) / deferred-with-rationale.
 
-Resolve conflicting findings by the conflict-resolution order: scope → architecture → security → reliability → performance → quality → testing → ux → docs → aesthetics. Removing something supersedes restructuring it; restructuring supersedes polishing it.
+Resolve conflicting findings by the conflict-resolution order: scope → arch → compat → sec → reliability → perf → quality → testing → ux → ui → docs → prose → style. Removing something supersedes restructuring it; restructuring supersedes polishing it.
 
 ## 4. Block-on-Blocker / High Gate
 
@@ -92,19 +92,19 @@ A strict review does not close while a Blocker or High is in limbo.
 
 ## 5. Apply Inline Disposition
 
-Apply findings whose disposition is "tidying" or "docs" inline now — these are form-only, behaviour-preserving, do not invite scope creep. One tidying commit per coherent group (per Beck's two-hats rule). Surface behavioural / structural findings as handoffs; do not change behaviour from a review session.
+Apply findings whose disposition is "tidying" or "docs" inline now — these are form-only and behaviour-preserving. Do not commit; `/tt:act:commit` splits them from behavioural work. Surface behavioural / structural findings as handoffs; do not change behaviour from a strict review.
 
 ## 6. Run Automated Checks
 Skip only if subject is an implementation plan.
 
-Run pre-commit hooks (if configured), linters, and the project's tests. Fix failures introduced by this session's tidying/docs commits; pre-existing failures are findings — route them through their §3 disposition, don't fix them here.
+Run pre-commit hooks (if configured), linters, and the tests that cover the changed code; the full suite is CI's. Fix failures introduced by this session's tidying/docs changes; pre-existing failures are findings — route them through their §3 disposition, don't fix them here.
 
 ## 7. Summary
 
 Produce a structured summary:
 
 - **Counts** — by specialist and severity (e.g. "scope: 1 High / 2 Medium; security: 0; reliability: 1 Blocker addressed").
-- **Findings fixed** — list, with the commit (or pending commit) that addressed each.
+- **Findings fixed** — list.
 - **Findings handed off** — list, with the slash command that owns each.
 - **Findings deferred** — list, with rationale and the follow-up where they're tracked.
 - **Block-on-Blocker gate** — confirmed clean, or list the acknowledged-with-rationale Blockers.
@@ -115,4 +115,4 @@ Produce a structured summary:
 Suggest the next slash command per dominant disposition:
 - Behavioural fixes pending → `/tt:impl` (or `/tt:debug` if findings are diagnoses).
 - Structural moves pending → `/tt:refactor`.
-- Otherwise → `/tt:act:commit` for the tidying / docs commit applied in §5.
+- Otherwise → `/tt:finish`, then `/tt:act:commit`.

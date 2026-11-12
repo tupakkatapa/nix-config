@@ -1,47 +1,40 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-
+---
+description: "Open a draft pull request for the current, already pushed branch."
+argument-hint: "[base branch]"
 ---
 
-Open a pull request for the current branch, **draft by default** (PR-first workflow: the PR is opened before the work is complete and gates CI feedback during development).
+Open a draft pull request for the current branch.
 
 ## 1. Detect Branch State
 
-- `git branch --show-current` — current branch; abort if on the integration branch.
-- `git rev-parse --abbrev-ref @{upstream} 2>/dev/null` — must be set and have at least one commit ahead. If not pushed, suggest `/tt:act:push` first.
-- `gh pr view --json url,state 2>/dev/null` — does a PR already exist? If yes, report its URL and stop.
+- `git branch --show-current` — abort if on the integration branch.
+- The branch must be on the remote with nothing local left to push: `git rev-parse --abbrev-ref @{upstream}` resolves and `git log @{upstream}..HEAD` is empty. Otherwise print the push command for the user (`git -C <repo> push -u origin <branch>`) and stop.
+- The branch must be ahead of its base: `git log <base>..HEAD` is not empty.
+- `gh pr view --json url,state 2>/dev/null` — if a PR already exists, report its URL and stop.
 
 ## 2. Generate PR Body
 
-Compose the PR body from available sources, in this order:
+Sources:
+1. **Plan file**, only when its slug matches the branch (`feat/2026-05-16-add-foo` → `docs/plans/2026-05-16-add-foo.md`): Goal and a link.
+2. **Commits on the branch** (`git log --oneline <base>..HEAD`).
 
-1. **Plan file** (`docs/plans/<branch-name minus type prefix>.md` — branch `feat/2026-05-16-add-foo` → plan `2026-05-16-add-foo.md`; else most recent in the directory) — Goal, Success criteria, Approach summary.
-2. **Commits on the branch** (`git log --oneline <upstream>..HEAD`) — list, grouped if many.
-3. **Open questions / known TODOs** — anything explicitly marked in the plan as deferred.
-
-Structure:
+Structure, when the repository has no `.github/PULL_REQUEST_TEMPLATE.md` (else follow the template):
 ```markdown
 ## Goal
-<one sentence from plan Goal>
+<one sentence: what this changes for a user or caller>
+
+## Changes
+<a handful of bullets, by capability, not by commit>
 
 ## Plan
-See [docs/plans/<filename>.md](<relative-link>).
-
-## Status
-- [ ] Implementation complete
-- [ ] Tests passing locally
-- [ ] CI green
-- [ ] Reviewed
+See [docs/plans/<filename>.md](<relative-link>).   <!-- only when a plan exists -->
 ```
-
-Adapt the structure to the repo's existing PR template if `.github/PULL_REQUEST_TEMPLATE.md` exists.
 
 ## 3. Title
 
 - If the branch name follows `<type>/<date>-<slug>`, derive a title like `<Type>: <slug humanised>` (e.g. `feat/2026-05-16-add-foo` → `feat: add foo`).
 - If the plan's Goal line is concise, use it.
-- Otherwise ask the user for the title.
+- Otherwise write a short title from the commits, in the style of the repository's recent PR titles.
 
 ## 4. Open the PR
 
@@ -53,12 +46,9 @@ body_file=/tmp/pr-body.md
 gh pr create --draft --title "<title>" --body-file "$body_file"
 ```
 
-Pass `--base "$integration"` if the integration branch is not the repo default (see `/tt:act:branch` §3 for how to detect it).
+Pass `--base "$integration"` if the integration branch is not the repo default (the project `./CLAUDE.md` names it; else see `/tt:act:branch` §3).
 
 If `gh` is unavailable, print the title, body, and the URL that would open the web form (`https://github.com/<owner>/<repo>/compare/<branch>?expand=1`), and ask the user to open it manually.
 
-## 5. Handoff
-
-Report the PR URL. Suggest (do not invoke):
-- `/tt:impl` — when the user is ready to begin executing the plan.
-- `gh pr ready` (user runs it themselves) — when the work is ready for review.
+## 5. Report
+The PR URL. The user marks it ready (`gh pr ready`) when the work is done.

@@ -1,12 +1,12 @@
 # nix-config
 
-Tupakkatapa's NixOS flake. Five ephemeral netboot hosts, two users, Hyprland desktop, nixvim, fish shell, foot terminal. All hosts are truly declarative — they boot from network images built by Nixie (closed-source DHCP/PXE at `github:majbacka-labs/nixie`), making them stateless except for explicitly persisted paths.
+Tupakkatapa's NixOS flake. Four hosts, two users, Hyprland desktop, nixvim, fish shell, foot terminal. Every host runs an ephemeral image built by Nixie (closed-source DHCP/PXE at `github:majbacka-labs/nixie`), booted from the network or from rEFInd, and is stateless except for explicitly persisted paths.
 
 ## Commands
 
 ```bash
 # Build and test locally (does NOT persist across reboot on ephemeral hosts)
-sudo nixos-rebuild test --impure --flake path:~/nix-config#$(hostname) --accept-flake-config
+sudo nixos-rebuild test --impure --flake path:.#$(hostname) --accept-flake-config
 
 # Format all nix/shell files
 nix fmt
@@ -25,6 +25,10 @@ nixos-rebuild test --impure --ask-sudo-password --sudo --flake .#<hostname> --ta
 
 # Garbage collect (local)
 nix-collect-garbage --delete-older-than 7d
+
+# List hosts, and a host's packages
+nix eval --json .#nixosConfigurations --apply builtins.attrNames
+nix eval --json .#nixosConfigurations.<hostname>.config.environment.systemPackages --apply 'builtins.map (p: p.name)'
 ```
 
 ## Architecture
@@ -41,7 +45,7 @@ All hosts get `withDefaults`. Desktop/server hosts additionally get `withExtra`.
 |------|------|------|--------|-------------|
 | `maliwan` | kari | AMD laptop, docked at the desk, Hyprland | netboot (home), refind (on the go) | gaming-amd, pipewire, podman, runtime-modules |
 | `vladof` | kari (minimal-gui) | Home server + big screen (sway couch menu) | netboot | gaming-amd, nixie, molesk, sftp-server, services/* |
-| `hyperion` | core (minimal) | Nixie router | refind | nixie, dns, firewall, wireguard |
+| `hyperion` | core (minimal-passwd) | Nixie router | refind | nixie, dns, firewall, wireguard |
 | `bandit` | core (minimal) | Headless minimal | netboot | (bare minimum) |
 
 ### Directory structure
@@ -52,7 +56,7 @@ system/                            # Shared NixOS base configs (base.nix, openss
 library/                           # customLib: hyprland helpers, xdg mime helpers, base16 color schemes
 nixosConfigurations/<host>/        # Host-specific: hardware, networking, persistence, services
   .config/                         # Shared NixOS modules (gaming-amd, pipewire, podman, keyd, yubikey, tuigreet-hypr)
-nixosModules/                      # Reusable NixOS modules (monitoring, state-saver, auto-scrcpy)
+nixosModules/                      # Reusable NixOS modules (monitoring, openrgb, auto-scrcpy)
 homeModules/                       # Reusable HM modules (claude-code plugin system, herdr)
 home-manager/
   users/<user>/                    # User configs, layered: minimal → minimal-passwd → minimal-gui → default
@@ -60,8 +64,8 @@ home-manager/
   hosts/<host>/                    # Host-specific HM (conditionally imported if path exists)
     .config/base01/                # Shared graphical "rice" (hyprland, waybar, wofi, mako, gtk, foot theme, nixvim theme)
       rice01/                      # Current rice variant (colors, wallpaper, animations)
-packages/                          # Custom packages (kb-shortcuts, monitor-adjust, pinit, 2mp3, claude-plugins, fat-nix-deps, webp-convert)
-docs/                              # Guides (new host, yubikey, agent forwarding, fido2-luks, CA cert, bluetooth devices)
+packages/                          # Custom packages (kb-shortcuts, monitor-adjust, pinit, 2mp3, claude-plugins, fat-nix-deps, webp-convert, wm-helpers)
+docs/                              # Guides (new host, yubikey, agent forwarding, fido2-luks, CA cert, bluetooth devices, couch menu), plans/, research/
 ```
 
 ### User config layering
@@ -81,9 +85,9 @@ docs/                              # Guides (new host, yubikey, agent forwarding
 - **Conditional host HM import**: `optionalPaths [ ../../hosts/${config.networking.hostName}/default.nix ]` — only imports if the path exists.
 - **kexecTree**: All hosts build a kexec-bootable squashfs image via `system/kexec-tree.nix` with overlay root filesystem.
 - **Runtime modules**: `maliwan` (auto-scrcpy, plexamp) and `vladof` (retroarch, rt.steam, plexamp) use `services.runtimeModules` to toggle configs at runtime without rebuild. vladof builds them from GitHub, and `kari` may run `runtime-modules -f enable` for its three without a password.
-- **Couch menu**: vladof's TV session is `couchMenu` in `home-manager/hosts/vladof/default.nix` and `couch-menu.sh`, a fuzzel menu (Firefox with Plex and YouTube, RetroArch, Steam, Plexamp) that shows one app at a time, full screen. Apps keep running hidden in the scratchpad once started (Firefox starts with the session, on screen); an app owns the windows of its `couch-<app>.scope`. `Super`, `Alt+Q`, the Home key and the pad's Xbox button open the menu over whatever is on screen (again, Esc or the pad's B closes it) and a pick takes the place of what was there; the menu opens by itself while nothing is on screen. `Alt+Shift+Q` closes a window; `Alt+Return` brings back the one terminal. The pad (`couch-pad.py`, one `couch-pad@` service per pad) follows what is on screen: a game (RetroArch, Steam) gets the pad to itself; otherwise the service holds it and turns it into keys and a mouse, so a hidden game stays quiet. With a paddle held the pad is a remote, in a game too: the d-pad turns the volume (up/down) and skips tracks (left/right), A plays/pauses, B mutes. On the menu, the d-pad and A choose. In an app the left stick points, the right one scrolls, A clicks, the right stick's click right-clicks, X closes the tab, B is Backspace (a page back in Firefox), in Firefox Y opens a new tab with the start page (`startPage` in `default.nix`: hand-picked sites as tiles, walked with the d-pad), LB/RB switch tabs, View is Esc, the d-pad sends arrows, and Menu opens the on-screen keyboard (`couch-osk.py`): the d-pad moves, A types, X shifts (twice locks), B and Y delete and space, LB/RB move the cursor, ⏎ or Menu close it. An app without a window gets its log in a terminal with retry. Runtime-module apps show a dot (green installed, yellow building, red missing) and build detached; picks within 10 s of each other share one rebuild.
+- **Couch menu**: vladof's TV session is `couchMenu` in `home-manager/hosts/vladof/default.nix` with `couch-menu.sh`, a fuzzel menu (Firefox with Plex and YouTube, RetroArch, Steam, Plexamp) that shows one app at a time, full screen. Apps keep running hidden in the scratchpad once started; an app owns the windows of its `couch-<app>.scope`. `couch-pad.py` (one `couch-pad@` service per pad) gives a game the pad to itself and otherwise turns it into keys and a mouse; `couch-osk.py` is the on-screen keyboard. Runtime-module apps build detached and show their state as a dot. Keys, pad mapping and behaviour: `docs/couch-menu.md`; keep it current when the session changes.
 - **Agents**: herdr (`programs.herdr` from `homeModules/herdr.nix`, set in `home-manager/users/kari/.config/claude/herdr.nix`) runs claude. On vladof a user service runs its server from boot, and its session in `~/.config/herdr` survives reboots and resumes the claudes; maliwan's `herdr` lists vladof as a saved machine beside its own workspaces. After the prefix `Ctrl+b`, `h`/`l` switch tabs, `j`/`k` workspaces and the arrows panes.
-- **Persistence**: Ephemeral hosts use `state-saver` module + host-specific `persistence.nix` to bind-mount persistent data from attached drives.
+- **Persistence**: each host's `persistence.nix` mounts its persistent subvolumes from attached drives over the ephemeral root.
 - **Secrets**: agenix + agenix-rekey with FIDO2 HMAC age plugins. Master identity keys are `master.hmac` and `master-2.hmac` in repo root.
 
 ## Stack specifics
@@ -122,7 +126,7 @@ docs/                              # Guides (new host, yubikey, agent forwarding
 - Nix files: 2-space indent, nixpkgs-fmt style. Use `let/in` blocks, avoid `with pkgs;` in most places (explicit `pkgs.` preferred except `home.packages`).
 - New packages go in `packages/`, new NixOS modules in `nixosModules/`, new HM modules in `homeModules/`.
 - Host naming: Borderlands gun manufacturers (maliwan, vladof, hyperion, bandit).
-- NEVER suggest `apt install`, `brew install`, or `pip install`. Use `nix-shell -p` for temporary, add to config for permanent.
+- Integration branch: `main`.
 
 ## Gotchas
 

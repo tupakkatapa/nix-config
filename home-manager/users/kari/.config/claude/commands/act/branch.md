@@ -1,8 +1,6 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
-
+---
+description: "Create a branch for upcoming work, or move existing uncommitted or committed work onto a new branch."
+argument-hint: "[name | plan file]"
 ---
 
 Create a new branch. Handles two scenarios:
@@ -29,16 +27,16 @@ If the scenario is ambiguous (mix of states, unusual setup), state what was dete
 
 If the user named the branch, use that verbatim.
 
-Otherwise derive from the most recent plan in `docs/plans/`:
+Otherwise derive from the plan in `docs/plans/` that covers this work (the one just written or named):
 - Strip the `docs/plans/` prefix and `.md` suffix.
-- Prepend a type prefix matching repo convention (`feat/`, `fix/`, `refactor/`, `docs/`, `chore/`). Infer the type from the plan's Goal line; if ambiguous, ask the user.
+- Prepend a type prefix matching repo convention (`feat/`, `fix/`, `refactor/`, `docs/`, `chore/`). Infer the type from the plan's Goal line; when unclear use `feat/`.
 - Example: `docs/plans/2026-05-16-add-foo.md` → `feat/2026-05-16-add-foo`.
 
-If no plan exists, ask the user for a short kebab-case title plus a type.
+If no plan exists, derive a short kebab-case title and a type from the work under discussion or the diff.
 
 ## 3. Create the Branch
 
-Determine the integration branch dynamically (don't hardcode `main`):
+Determine the integration branch: the one the project `./CLAUDE.md` names, else detect it (don't hardcode `main`):
 ```bash
 integration=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||')
 integration=${integration:-$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name 2>/dev/null)}
@@ -95,7 +93,4 @@ Report:
 - Scenario detected.
 - Commits/changes now on the new branch.
 
-Suggest next steps based on scenario:
-- **Upcoming work** — `/tt:act:commit` (for the plan file), then `/tt:act:push` + `/tt:act:pr`.
-- **Work in progress** — `/tt:act:commit` (for the staged changes), then `/tt:act:push` + `/tt:act:pr`.
-- **Work already committed** — `/tt:act:push` + `/tt:act:pr`; the commits are now on the feature branch.
+End with the push command for the user (`git -C <repo> push -u origin <branch>`) when the branch holds commits. Next: `/tt:act:commit` for uncommitted work, then `/tt:monitor` after the push.

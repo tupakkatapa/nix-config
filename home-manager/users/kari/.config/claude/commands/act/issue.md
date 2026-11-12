@@ -1,9 +1,6 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- Requires the Linear MCP (`mcp__claude_ai_Linear__*`). If it is unavailable, stop and tell the user to connect it.
-- **A Linear issue must fit in one cycle.** If the work spans multiple cycles it is a Project; multiple quarters, an Initiative. Surface that — do not file an oversized issue.
-
+---
+description: "Create a Linear issue from a request: priority, estimate, hierarchy, short fact-checked description."
+argument-hint: "[request]"
 ---
 
 You are creating a Linear issue from a request, applying the conventions below. The request may be a sentence, a code reference, a bug, or a plan. Distil it into one well-scoped issue with priority, estimate, and a brief, fact-checked description.
@@ -31,8 +28,8 @@ Map intent to Linear priority (the `priority` number):
 
 | Word | `priority` | Meaning |
 |---|---|---|
-| Urgent | `1` | Hotfix — straight to staging/prod |
-| High | `2` | Should be committed to dev this cycle |
+| Urgent | `1` | Hotfix — ships outside the normal cycle |
+| High | `2` | Should land this cycle |
 | Medium | `3` | Pick up when no High items, or at discretion |
 | Low | `4` | Do when convenient |
 
@@ -67,11 +64,12 @@ For `8`, recommend a split. For `16`, **do not file as one issue** — propose t
 The description is for **lazy human reading**. Discipline:
 
 - **Brief and very easily digestible.** Fragments and bullets over prose. No preamble, no restating the title.
+- **One issue per coherent change.** Keep closely related work in the same issue; split only where pieces ship independently, and mark blockers between the pieces.
 - **Fact-checked against the codebase** (step 1) — every concrete claim (file path, symbol, current behaviour) must be verified, not assumed.
 - Lead with the *what* and *why*, then the *where* (`file_path:line`), then acceptance check if non-obvious.
 - Skip anything a reader can infer. If it adds no signal, cut it.
 
-Keep it short enough that a reader skims it in seconds and knows what to do.
+Keep it short enough that a reader skims it in seconds and knows what to do. Apply the `prose` lens to the title and description, and the `evidence` lens to every concrete claim.
 
 ## 7. Place & Relate
 
@@ -81,7 +79,7 @@ Keep it short enough that a reader skims it in seconds and knows what to do.
 - **Assignee.** Default to the requester (`assignee: "me"`) unless the request names someone else. Don't file unassigned.
 - **Release & cycle.** If the work is committed to an upcoming release, attach it (`addReleases`) **and** set the matching cycle — release and cycle move together (an issue rides the cycle its release ships in). Uncommitted work gets neither.
 - **Customer.** If the request originates from a customer (support thread, partner ask), attach a customer need (`save_customer_need`) to the **existing** customer record — search first (`list_customers`); never create a duplicate record for a name variant.
-- **Source.** Attach the originating Slack/Notion/PR/doc link via `links` so provenance survives.
+- **Source.** Attach the originating chat/doc/PR link via `links` so provenance survives.
 
 ## 8. File the Issue
 

@@ -1,8 +1,6 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
-
+---
+description: "Bump the version and cut the release heading in the changelog."
+argument-hint: "[major | minor | patch | version]"
 ---
 
 You are bumping the version for a release and cutting its changelog heading. For changelog *content* (consolidating, wording, what to include), this delegates to `/tt:act:changelog` — do not restate those rules here. If the intent is only to tidy/update the changelog **without** a version bump, use `/tt:act:changelog` instead.
@@ -11,7 +9,7 @@ You are bumping the version for a release and cutting its changelog heading. For
 
 Find the current version in the codebase (`pyproject.toml`, `Cargo.toml`, `package.json`, `flake.nix`, or `__version__`).
 
-- If the version was **already bumped** for this release cycle, **do not bump again** — just ensure the changelog heading + date are correct (§3).
+- The version was **already bumped** when it is ahead of the latest release tag (`git describe --tags --abbrev=0`), or when no tag exists and a commit since the last release heading in the changelog changed the version string. In that case **do not bump again** — just ensure the changelog heading + date are correct (§3).
 - Only bump when actually cutting a new release.
 
 ## 2. Choose the Increment

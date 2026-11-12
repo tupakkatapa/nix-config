@@ -1,9 +1,6 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
-
+---
+description: "Read-only brief of what a branch changed: endpoints, fields, client-visible behaviour, key implementation notes."
+argument-hint: "[branch | range]"
 ---
 
 You produce a **high-level brief of what a branch changed** — the things a reviewer or client should know before reading the diff. Read-only: this analyses, it does not judge, gate, or modify. Answer "what's new and what behaves differently", not "is it good" (that's `/tt:review`) or "is it safe to merge" (that's `/tt:finish`).
@@ -19,7 +16,7 @@ You produce a **high-level brief of what a branch changed** — the things a rev
 4. **No verdicts.** Don't rate or flag risk — just report. (Breaking changes may be *noted* factually under their own heading.)
 
 ## 1. Scope
-Determine the branch and its base (via `AskUserQuestion` if unclear): current branch vs base (default), or a given range. Derive the diff and the commit log over that range.
+The current branch against its base, or the range given. Ask only if the base is genuinely underivable. Derive the diff and the commit log over that range.
 
 ## 2. Gather
 From the diff + commit messages, identify:
@@ -40,4 +37,4 @@ Keep the whole brief skimmable. Prefer bullets and short tables over prose.
 
 ## 4. Handoff
 - The brief is the deliverable — present it inline. Offer to save it (e.g. PR description, `docs/`, the ticket) if the user wants it persisted.
-- Natural next steps: `/tt:finish` (merge sign-off) or `/tt:review` (defect pass).
+- Next: `/tt:ship`, or `/tt:review` for a defect pass alone.

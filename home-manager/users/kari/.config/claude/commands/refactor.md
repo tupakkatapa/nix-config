@@ -1,12 +1,9 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
-
+---
+description: "Behaviour-preserving structural change in small verified steps. No behaviour change allowed."
+argument-hint: "[module | smell]"
 ---
 
-You are performing a **structural change that preserves behaviour**. This agenda is bound by Kent Beck's *two hats* rule: while wearing the structural hat, you do not change what the code does — only how it is arranged. Distinct from `/tt:impl` (adds capability) and `/tt:debug` (changes behaviour to fix a defect). The substantive judgement comes from the `/tt:pov:*` panel applied in **restructure** mode — "what is the smallest behaviour-preserving change that reduces complexity here?"
+You are performing a **structural change that preserves behaviour**. This agenda is bound by Kent Beck's *two hats* rule: while wearing the structural hat, you do not change what the code does — only how it is arranged. Distinct from `/tt:impl` (adds capability) and `/tt:debug` (changes behaviour to fix a defect). The substantive judgement comes from the lens panel applied in **restructure** mode — "what is the smallest behaviour-preserving change that reduces complexity here?"
 
 ## 1. Clarify Scope
 Default: the module/code under discussion. Only if genuinely underivable, ask the user to choose:
@@ -26,7 +23,7 @@ Before restructuring, ensure current behaviour is locked down:
 - If coverage is thin, add **characterisation tests** first (Feathers): tests that pin down what the code currently does, regardless of whether that is correct. The structural commit is then provably behaviour-preserving.
 - Characterisation tests are a separate commit from the refactor itself.
 
-If pinning behaviour is impossible (no seams, no test infrastructure), break dependencies first using Feathers' techniques (see `/tt:pov:testing`). Treat that as its own structural step.
+If pinning behaviour is impossible (no seams, no test infrastructure), break dependencies first using Feathers' techniques (see the `testing` lens). Treat that as its own structural step.
 
 ## 3. Apply the Lens Panel (mode = restructure)
 
@@ -34,11 +31,11 @@ Read lens files lazily — pull the dimensions you need, skip lenses with no str
 
 Typically relevant for refactor:
 
-- **`/tt:pov:quality`** — Fowler's catalogue. Identify smells: duplicated code, long function, large class, long parameter list, feature envy, primitive obsession, switch statements, divergent change, shotgun surgery. For each, name the canonical refactoring (Extract Function, Replace Magic Literal, Replace Conditional with Polymorphism, Move Function, etc.).
-- **`/tt:pov:scope`** — accidental complexity to remove outright: dead code, unused abstractions, single-call helpers, configuration knobs no caller overrides, premature generics with one instantiation. Deletion is the cheapest refactoring.
-- **`/tt:pov:arch`** — module boundaries to redraw: a function reaching past its layer, a circular import, a class with two reasons to change. Apply Parnas info-hiding and Ousterhout deep modules: the change makes the interface smaller relative to the implementation.
-- **`/tt:pov:testing`** — testability as a structural concern: break dependencies (Feathers seams), inject collaborators, expose pure cores from impure shells.
-- **`/tt:pov:style`** — formatting, naming, ordering, comment discipline. Often the cheapest first pass; runs last so it doesn't conflict with bigger structural moves.
+- **`quality`** — Fowler's catalogue. Identify smells: duplicated code, long function, large class, long parameter list, feature envy, primitive obsession, switch statements, divergent change, shotgun surgery. For each, name the canonical refactoring (Extract Function, Replace Magic Literal, Replace Conditional with Polymorphism, Move Function, etc.).
+- **`scope`** — accidental complexity to remove outright: dead code, unused abstractions, single-call helpers, configuration knobs no caller overrides, premature generics with one instantiation. Deletion is the cheapest refactoring.
+- **`arch`** — module boundaries to redraw: a function reaching past its layer, a circular import, a class with two reasons to change. Apply Parnas info-hiding and Ousterhout deep modules: the change makes the interface smaller relative to the implementation.
+- **`testing`** — testability as a structural concern: break dependencies (Feathers seams), inject collaborators, expose pure cores from impure shells.
+- **`style`** — formatting, naming, ordering, comment discipline. Often the cheapest first pass; runs last so it doesn't conflict with bigger structural moves.
 
 ## 4. Plan the Sequence
 Order refactorings smallest-first, each independently verifiable:
@@ -59,7 +56,7 @@ Order refactorings smallest-first, each independently verifiable:
 - If you discover a missing feature need, do not add it inside the refactor commit. Note it for `/tt:impl`.
 
 ## 7. Run Automated Checks
-Run pre-commit hooks (if configured), linters, and the project's tests. Fix failures before continuing — but failures in a refactor session almost always mean the last step changed behaviour, not that tests are wrong.
+Run pre-commit hooks (if configured) and the tests that cover the touched surface; the full suite is CI's. Fix failures before continuing — but failures in a refactor session almost always mean the last step changed behaviour, not that tests are wrong.
 
 ## 8. Summary
 - Refactorings applied, in order, by name.
@@ -69,4 +66,4 @@ Run pre-commit hooks (if configured), linters, and the project's tests. Fix fail
 - Bugs/features discovered along the way (handed off to `/tt:debug` / `/tt:impl`).
 
 ## 9. Handoff
-When refactoring is complete, suggest running `/tt:review` to validate the structural change, then `/tt:act:commit`.
+Next: `/tt:ship`.

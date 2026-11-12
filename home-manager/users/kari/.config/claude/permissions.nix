@@ -32,8 +32,16 @@
 
     # GitHub CLI
     "Bash(gh run list:*)"
-    "Bash(gh pr:*)"
-    "Bash(gh issue:*)"
+    "Bash(gh run view:*)"
+    "Bash(gh run watch:*)"
+    "Bash(gh pr view:*)"
+    "Bash(gh pr list:*)"
+    "Bash(gh pr checks:*)"
+    "Bash(gh pr diff:*)"
+    "Bash(gh pr status:*)"
+    "Bash(gh pr create:*)"
+    "Bash(gh issue view:*)"
+    "Bash(gh issue list:*)"
 
     # Nix
     "Bash(nix:*)"
@@ -92,11 +100,11 @@
 
     # Skills & MCP
     "Skill(*)"
-    "mcp__nixos__*"
-    "mcp__context7__*"
-    "mcp__searxng__*"
-    "mcp__playwright__*"
-    "mcp__houtini-lm__*"
+    "mcp__plugin_claude-code-home-manager_nixos__*"
+    "mcp__plugin_claude-code-home-manager_context7__*"
+    "mcp__plugin_claude-code-home-manager_searxng__*"
+    "mcp__plugin_claude-code-home-manager_playwright__*"
+    "mcp__plugin_claude-code-home-manager_houtini-lm__*"
 
     # Vision (Wayland screenshots)
     "Bash(grim:*)"
@@ -120,6 +128,15 @@
     "Bash(herdr:*)"
   ];
 
+  # Prompt every time, in auto mode too
+  ask = [
+    "Bash(rm:*)"
+    "Bash(git push:*)"
+    "Bash(git reset --hard:*)"
+    "Bash(git clean:*)"
+    "Bash(gh pr merge:*)"
+  ];
+
   deny = [
     # Secrets - always block
     "Read(**/.env)"
@@ -128,12 +145,8 @@
     "Read(**/.gnupg/*)"
     "Read(**/*secret*)"
     "Read(**/*credential*)"
+    "Bash(cat *.env*)"
 
-    # Destructive operations
     "Bash(sudo rm:*)"
-    "Bash(rm -rf:*)"
-    "Bash(rm -fr:*)"
-    "Bash(git push --force:*)"
-    "Bash(git push -f:*)"
   ];
 }

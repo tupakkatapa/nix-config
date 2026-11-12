@@ -1,12 +1,9 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
-
+---
+description: "Write a plan file for new work, a rework, a migration or an architectural change. Ends with an approved plan, no code."
+argument-hint: "[what to plan | issue id]"
 ---
 
-You are writing a plan for a piece of work. **Planning ends with an approved plan, not with code.** Execution is `/tt:impl`'s job; this agenda stops at the handoff. If a `writing-plans` skill is available, invoke it for the procedure.
+You are writing a plan for a piece of work. **Planning ends with an approved plan, not with code.** Execution is `/tt:impl`'s job; this agenda stops at the handoff. This file owns the plan's path, structure and ending; a planning skill, if loaded, contributes technique only.
 
 Distinct from:
 - `/tt:impl` — executes an approved plan (or a small task that needs none).
@@ -20,7 +17,9 @@ Derive the subject from context — default: the work under discussion. Only if 
 - [ ] A migration or breaking change (ask source/target, callers affected)
 - [ ] An architectural change without a specific feature (ask what problem motivates it)
 
-Capture: success criteria, constraints, non-goals, deadlines, stakeholders. A plan without success criteria is wishful thinking.
+Capture: success criteria, constraints, non-goals, deadlines, stakeholders. A plan without success criteria is wishful thinking. For each criterion name what, other than you or the user, shows it is met: a test, a reproduction, a measurement, a reviewer.
+
+**Open decisions do not stall the plan.** List every question whose answer changes the plan in one table, each with the default you chose and why, then proceed on the defaults. The user changes the ones they disagree with.
 
 ## 2. Investigate
 - Analyse the existing codebase: architecture, patterns, conventions, dependencies.
@@ -32,35 +31,38 @@ Capture: success criteria, constraints, non-goals, deadlines, stakeholders. A pl
 
 Detect the project's primary language(s) and pull the matching context file(s) — these capture house-style preferences (linters, formatters, packaging idiom, idiom expectations) the plan must honour:
 
-- Nix-only or Nix as substrate → `/tt:mod:nix`.
-- Rust → `/tt:mod:rs` (assumes the Nix layer).
-- JavaScript / TypeScript → `/tt:mod:js` (assumes the Nix layer).
-- Shell scripts → `/tt:mod:sh`.
+- Nix-only or Nix as substrate → `~/.claude/tt/mod/nix.md`.
+- Rust → `~/.claude/tt/mod/rs.md` (assumes the Nix layer).
+- JavaScript / TypeScript → `~/.claude/tt/mod/js.md` (assumes the Nix layer).
+- Shell scripts → `~/.claude/tt/mod/sh.md`.
 
 Per-project `./CLAUDE.md` overrides anything in a context file; honour the override.
 
 ## 4. Apply the Lens Panel (mode = planning)
 
-For each relevant lens, frame its dimensions as **commitments the proposed design must honour**, not retrospective audit. **Read lens files lazily** — pull only the section (Identity / Symptoms / Dimensions) you need for each lens as you reach it; skip lenses with no planning surface for this work. Pull guidance from `commands/pov/<name>.md`.
+For each relevant lens, frame its dimensions as **commitments the proposed design must honour**, not retrospective audit. **Read lens files lazily** — pull only the section (Identity / Symptoms / Dimensions) you need for each lens as you reach it; skip lenses with no planning surface for this work. Pull guidance from `~/.claude/tt/pov/<name>.md`.
 
 Typically relevant:
 
-- **`/tt:pov:scope`** — what is essential vs accidental in this work. Reject premature abstraction, speculative configurability, dead-code-on-arrival. Smallest thing that delivers the value.
-- **`/tt:pov:arch`** — module boundaries, dependency direction, data flow. Where does the work slot in, what does it depend on, what depends on it. Hidden coupling to break.
-- **`/tt:pov:sec`** — trust boundaries the change crosses; authn/authz, secrets, input validation at those boundaries.
-- **`/tt:pov:reliability`** — failure modes the design must tolerate; idempotency, retries, observability hooks, deployability.
-- **`/tt:pov:perf`** — only if a measurable concern exists (data volume, hot path, contention). Otherwise defer.
-- **`/tt:pov:testing`** — how the work will be tested; seams, doubles, characterisation needs.
-- **`/tt:pov:quality`** — duplication, naming, separation within the module being touched.
-- **`/tt:pov:ux`** — only if the change has a surface (CLI flag, API field, config knob, GUI control).
-- **`/tt:pov:docs`** — what tutorials/how-tos/reference/explanation or changelog/ADR entries this implies.
+- **`scope`** — what is essential vs accidental in this work. Reject premature abstraction, speculative configurability, dead-code-on-arrival. Smallest thing that delivers the value.
+- **`arch`** — module boundaries, dependency direction, data flow. Where does the work slot in, what does it depend on, what depends on it. Hidden coupling to break.
+- **`sec`** — trust boundaries the change crosses; authn/authz, secrets, input validation at those boundaries.
+- **`reliability`** — failure modes the design must tolerate; idempotency, retries, observability hooks, deployability.
+- **`perf`** — only if a measurable concern exists (data volume, hot path, contention). Otherwise defer.
+- **`testing`** — how the work will be tested; seams, doubles, characterisation needs.
+- **`quality`** — duplication, naming, separation within the module being touched.
+- **`compat`** — when the work touches a public surface or stored data: what existing callers, clients and data must keep working, and the migration shape.
+- **`ux`** — only if the change has a surface (CLI flag, API field, config knob, GUI control).
+- **`ui`** — only if the change has a graphical surface.
+- **`docs`** — what tutorials/how-tos/reference/explanation or changelog/ADR entries this implies.
 
 ## 5. Write the Plan
 Always produce the plan as a markdown file. Default path: `docs/plans/YYYY-MM-DD-<short-kebab-title>.md` (use today's date; create the directory if it does not exist). If the project has an existing convention for design docs (a different directory, a ticket system, an ADR layout), use that — the per-project `./CLAUDE.md` is the source of truth. Never plan in-conversation only — a file gives the plan a stable identity for review, edge-case analysis, and later execution. Structure:
 
 - **Goal** — one sentence, user-facing.
 - **Success criteria** — verifiable conditions that signal "done".
-- **Non-goals** — explicitly excluded scope.
+- **Non-goals** — explicitly excluded scope, one complete rule per line: what was decided against, what is tempting, what would quietly undo an earlier decision. `/tt:impl` and `/tt:ship` check the diff against this list.
+- **Open decisions** — the table from §1: question, chosen default, rationale.
 - **Approach** — sections per relevant lens, capturing commitments concretely (not checklists).
 - **Steps** — incremental, each independently verifiable, with file/module targets and dependencies between steps.
 - **Test strategy** — positive and negative cases, characterisation if touching legacy.
@@ -72,19 +74,6 @@ If Plan Mode is already active in the conversation, exit it with the plan summar
 
 On change requests, revise the file and re-present. Do not begin implementation from this agenda.
 
-## 7. Handoff
-When the plan is approved, **suggest** these next steps for the user to run (this agenda does not invoke them):
-
-**Plan validation (the user runs these against the plan file):**
-- **`/tt:review`** — scope = "an implementation plan"; lens panel applies to a plan as readily as to code.
-- **`/tt:edge-cases`** — surface hypothetical risks before they harden into bugs.
-
-**Git workflow (optional; PR-first style):**
-- **`/tt:act:branch`** — create a branch named after the plan.
-- **`/tt:act:commit`** — commit the plan file as the initial commit on the branch.
-- **`/tt:act:push`** + **`/tt:act:pr`** — open a draft PR so CI runs alongside development.
-
-**Execution:**
-- **`/tt:impl`** — with the plan file as the input artefact.
-
-If validation steps surface revisions, return to step 5 and update the plan file before continuing.
+## 7. Next
+- Design-sensitive plan → `/tt:review` with the plan file as the artefact, and `/tt:edge-cases`; fold the findings into the plan file.
+- Approved → `/tt:impl` with the plan file. For work that needs its own branch first: `/tt:start`.

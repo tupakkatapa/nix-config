@@ -33,12 +33,11 @@ Strip tracking params, keep the video ID (`v=...`) and timestamp (`t=...` if pre
 nix run nixpkgs#yt-dlp -- \
   --write-auto-subs --skip-download \
   --sub-format vtt --sub-langs en \
-  --cookies-from-browser firefox \
   -o "/tmp/%(id)s.%(ext)s" \
   "<URL>"
 ```
 
-The output is `/tmp/<video-id>.en.vtt`. Skip `--cookies-from-browser` first; add it on retry only if YouTube refuses.
+The output is `/tmp/<video-id>.en.vtt`. If YouTube refuses with a bot check, retry once with `--cookies-from-browser firefox` (here and in step 6); if that fails too, report the failure.
 
 If only non-English subtitles are available, fall back to whatever language ships — the user can usually still recognise the quote if they know the language.
 
@@ -54,6 +53,8 @@ If only non-English subtitles are available, fall back to whatever language ship
 
 **If both:**
 - Search the ±2 min window around the hinted timestamp for the quote first; only widen to the whole video if the local window doesn't match. The hint *narrows*; it doesn't *commit*.
+
+Auto-captions repeat the same text in overlapping cues with sub-second deltas; count each line once when reasoning about timing. They skip music and other non-speech segments, and some live-streams and unlisted videos have none: then ask for a timestamp range.
 
 **No match anywhere:**
 - Tell the user the quote isn't in the auto-subs. Possible causes: paraphrase too loose, captions missing for that segment, wrong video. Ask for a tighter quote or a timestamp.
@@ -79,7 +80,6 @@ cd "$XDG_DOWNLOAD_DIR" && \
 nix run nixpkgs#yt-dlp -- \
   --download-sections "*MM:SS-MM:SS" \
   --force-keyframes-at-cuts \
-  --cookies-from-browser firefox \
   -o "<slug>.%(ext)s" \
   --force-overwrites \
   "<URL>"
@@ -117,12 +117,3 @@ Skip the `rm` of the download if the user opted out of transcode (step 7) — th
 ### 9. Report
 
 Confirm output path, duration, size. If the user might want a different range or format, say so explicitly so they know they can ask.
-
-## Common pitfalls
-
-- **Trusting the URL's `t=` parameter.** Users often link a video at the spot they're currently watching, not the spot the quote is at. Always verify against subtitle text.
-- **Trusting the user's quote verbatim.** "I don't care if you are a dog" might literally read "Like maybe you're a dog" in the captions. Fuzzy match on the most-distinctive word.
-- **Bot detection.** First `yt-dlp` call without cookies often fails. Don't loop forever — retry once with `--cookies-from-browser firefox`, then surface the failure to the user.
-- **VTT cue overlap.** Auto-captions emit overlapping cues for animation. The same text appears on consecutive lines with sub-second deltas. Don't double-count when reasoning about timing.
-- **Music / non-speech segments.** Auto-subs skip those. If the quote falls in a gap, captions won't help; the user must give the timestamp.
-- **Long videos / cookies missing.** Live-streams and unlisted videos sometimes don't have auto-subs. Fall back to asking the user for a specific timestamp range.

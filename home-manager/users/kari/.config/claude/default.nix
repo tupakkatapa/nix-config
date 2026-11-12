@@ -5,6 +5,27 @@ let
 
   curl = "${pkgs.curl}/bin/curl -s -m 5";
 
+  # Starts an npm-published MCP server from a per-version cache. The install lands in a
+  # temporary directory and is renamed into place, so an interrupted or concurrent first
+  # start cannot leave a half-installed server behind.
+  mcpNpm = pkgs.writeShellScript "mcp-npm" ''
+    set -euo pipefail
+    export PATH=${pkgs.lib.makeBinPath [ pkgs.nodejs pkgs.coreutils ]}:$PATH
+    pkg=$1 ver=$2
+    shift 2
+    dir="''${XDG_CACHE_HOME:-$HOME/.cache}/claude-mcp/$pkg@$ver"
+    if [ ! -e "$dir/.ok" ]; then
+      mkdir -p "$(dirname "$dir")"
+      tmp=$(mktemp -d "$dir.XXXXXX")
+      npm install --silent --no-audit --no-fund --prefix "$tmp" "$pkg@$ver" >&2
+      touch "$tmp/.ok"
+      mv -T "$tmp" "$dir" 2>/dev/null || rm -r "$tmp"
+    fi
+    root="$dir/node_modules/$pkg"
+    bin=$(node -p 'const b=require(process.argv[1]+"/package.json").bin; typeof b==="string"?b:Object.values(b)[0]' "$root")
+    exec node "$root/$bin" "$@"
+  '';
+
   # Phone push while the latest message on the claude-afk topic is "on" (toggled from maliwan's waybar)
   notify = message: ''
     ${pkgs.libnotify}/bin/notify-send -u normal 'Claude Code' '${message}' 2>/dev/null || true
@@ -25,10 +46,14 @@ in
     # Mounted under `/tt:*` below.
     commands = { };
 
-    settings = {
-      # Model & reasoning
+    # Defaults that /model and /effort may change; the change survives a rebuild
+    mutableSettings = {
       model = "opus[1m]";
       effortLevel = "xhigh";
+    };
+
+    settings = {
+      # Reasoning
       alwaysThinkingEnabled = true;
       showThinkingSummaries = true;
 
@@ -56,7 +81,7 @@ in
       };
       permissions = {
         defaultMode = "auto";
-        inherit (permissions) allow deny;
+        inherit (permissions) allow ask deny;
         additionalDirectories = [ "/home/kari/Workspace" "/tmp" ];
       };
       hooks = {
@@ -71,6 +96,7 @@ in
         Stop = [{
           hooks = [{
             type = "command";
+            timeout = 12;
             command = notify "Stopped - needs attention";
           }];
         }];
@@ -78,6 +104,7 @@ in
           matcher = "AskUserQuestion";
           hooks = [{
             type = "command";
+            timeout = 12;
             command = notify "Question - needs input";
           }];
         }];
@@ -91,24 +118,24 @@ in
         args = [ "run" "github:utensils/mcp-nixos/6a517811658c21f97bd7703b35546085117fc310" "--" ];
       };
       context7 = {
-        command = "npx";
-        args = [ "-y" "@upstash/context7-mcp@4.4.4" ];
+        command = "${mcpNpm}";
+        args = [ "@upstash/context7-mcp" "4.4.4" ];
       };
       searxng = {
-        command = "npx";
-        args = [ "-y" "mcp-searxng@2.7.0" ];
+        command = "${mcpNpm}";
+        args = [ "mcp-searxng" "2.7.0" ];
         env = {
           SEARXNG_URL = "https://search.coditon.com";
           NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-bundle.crt";
         };
       };
       playwright = {
-        command = "npx";
-        args = [ "-y" "@playwright/mcp@0.0.83" ];
+        command = "${mcpNpm}";
+        args = [ "@playwright/mcp" "0.0.83" ];
       };
       houtini-lm = {
-        command = "npx";
-        args = [ "-y" "@houtini/lm@3.3.4" ];
+        command = "${mcpNpm}";
+        args = [ "@houtini/lm" "3.3.4" ];
         env = {
           HOUTINI_LM_ENDPOINT_URL = "http://localhost:11434";
           HOUTINI_LM_MODEL = "qwen3.5:9b";
@@ -137,6 +164,8 @@ in
     gh
   ];
 
-  # Slash commands
+  # Slash commands, and the lenses and language contexts they read
   home.file.".claude/commands/tt".source = ./commands;
+  home.file.".claude/tt/pov".source = ./pov;
+  home.file.".claude/tt/mod".source = ./mod;
 }

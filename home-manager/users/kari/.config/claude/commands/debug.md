@@ -1,15 +1,15 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
-
+---
+description: "Root-cause a failure (failing test, bug report, incident, unexpected behaviour): reproduce, diagnose, write the regression test, then fix."
+argument-hint: "[symptom | failing test | link]"
 ---
 
-You are diagnosing a failure: a failing test, a reported bug, an incident, or unexpected behaviour. This is **root-cause discovery**, distinct from `/tt:edge-cases` (hypothetical risk) and `/tt:review` (defect-finding pass). The substantive judgement comes from the `/tt:pov:*` panel applied in **diagnosis** mode — "what assumption broke, and where?" If a `systematic-debugging` skill is available, invoke it for the procedure.
+You are diagnosing a failure: a failing test, a reported bug, an incident, or unexpected behaviour. This is **root-cause discovery**, distinct from `/tt:edge-cases` (hypothetical risk) and `/tt:review` (defect-finding pass). The substantive judgement comes from the lens panel applied in **diagnosis** mode — "what assumption broke, and where?" If a `systematic-debugging` skill is available, invoke it for the procedure.
+
+Method: observe the failure, state a hypothesis, predict, experiment, observe; refine or replace the hypothesis until it explains the failure (Zeller, *Why Programs Fail*, 2nd ed., §6.2). A defect infects program state, and the infection causes the failure: reason backward from the failure (§1.2). Simplify the failing input first (ch. 5). Agans' rules apply throughout (*Debugging*, chs. 3–11): understand the system; make it fail; quit thinking and look; divide and conquer; change one thing at a time; keep an audit trail; check the plug; get a fresh view; if you didn't fix it, it ain't fixed.
 
 ## 1. Reproduce
 A bug you cannot reliably trigger is a bug you cannot fix. Before anything else:
+- Start from the rawest material available: logs, traces, the failing input, the code. A report or a summary of the failure is a lead, not evidence.
 - Capture the exact symptom: error message, stack trace, observed vs expected output, environment.
 - Build a minimal reliable repro: smallest input, fewest steps, deterministic outcome.
 - If the symptom is flaky, treat the flake itself as the bug — a non-deterministic test masks real failures.
@@ -28,12 +28,13 @@ Read each relevant lens file lazily — only the section you need (Symptoms / Di
 
 Typically relevant for diagnosis:
 
-- **`/tt:pov:reliability`** — failure modes that match the symptom: partial failure, retry semantics, observability gaps that hid the root cause earlier, state left after error paths.
-- **`/tt:pov:testing`** — which test *should* have caught this and didn't? Implicit assumptions about non-null fields, "impossible" states, or relationship invariants that turned out to be false.
-- **`/tt:pov:scope`** — accidental complexity hiding the bug. State space too large to reason about, dead branches still reachable, premature abstractions obscuring control flow.
-- **`/tt:pov:arch`** — boundary violations: function reaching past its layer, hidden coupling, dependency direction wrong, invariant that should live at a boundary leaking inside.
-- **`/tt:pov:perf`** — only when the symptom is latency, throughput, resource exhaustion, or a concurrency race. Apply USE method, identify saturation, measure before guessing.
-- **`/tt:pov:sec`** — only when the symptom involves trust boundary crossing (auth bypass, injection, privilege escalation, data leak).
+- **`reliability`** — failure modes that match the symptom: partial failure, retry semantics, observability gaps that hid the root cause earlier, state left after error paths.
+- **`testing`** — which test *should* have caught this and didn't? Implicit assumptions about non-null fields, "impossible" states, or relationship invariants that turned out to be false.
+- **`scope`** — accidental complexity hiding the bug. State space too large to reason about, dead branches still reachable, premature abstractions obscuring control flow.
+- **`arch`** — boundary violations: function reaching past its layer, hidden coupling, dependency direction wrong, invariant that should live at a boundary leaking inside.
+- **`perf`** — only when the symptom is latency, throughput, resource exhaustion, or a concurrency race. Apply USE method, identify saturation, measure before guessing.
+- **`sec`** — only when the symptom involves trust boundary crossing (auth bypass, injection, privilege escalation, data leak).
+- **`evidence`** — every step of the diagnosis: observed versus inferred, and what observation would refute the hypothesis.
 
 ## 4. Hypothesise
 State the root cause as a falsifiable claim:
@@ -58,12 +59,12 @@ Write the §7 regression test **before** the fix (repro-test rule: it must fail 
 Never bundle unrelated cleanup with the fix. Surface unrelated tidying as deferred items in the summary.
 
 ## 7. Regression Test
-- Add a test that would have caught this bug. If the bug was untestable, fix the testability first as a structural commit (see step 6.1; refer to `/tt:pov:testing` for seam techniques).
+- Add a test that would have caught this bug. If the bug was untestable, fix the testability first as a structural commit (see step 6.1; refer to the `testing` lens for seam techniques).
 - Verify the test fails against the unfixed code, then passes against the fix. If the test passes both before and after, the fix is at the wrong layer or the test asserts the wrong thing.
 - If the bug was a missing assumption check, ask: are there sibling assumptions equally undefended? Add tests for those too.
 
 ## 8. Run Automated Checks
-Run pre-commit hooks (if configured), linters, and the project's tests. Fix all failures before continuing.
+Run pre-commit hooks (if configured) and the tests that cover the changed code; the full suite is CI's. Fix failures this session caused; report failures that were already there.
 
 ## 9. Summary
 - Root cause in one sentence.
@@ -73,4 +74,4 @@ Run pre-commit hooks (if configured), linters, and the project's tests. Fix all 
 - Sibling risks discovered along the way (defer to `/tt:edge-cases` or a follow-up commit if substantial).
 
 ## 10. Handoff
-When the fix is verified, suggest running `/tt:review` to validate the patch, then `/tt:act:commit`.
+Next: `/tt:ship`.

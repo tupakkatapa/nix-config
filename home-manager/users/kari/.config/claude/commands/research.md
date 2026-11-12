@@ -1,12 +1,9 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
-
+---
+description: "Investigate an unfamiliar codebase, remote repository or topic and write a cited research brief. No plan, no code."
+argument-hint: "[path | repo | question]"
 ---
 
-You are conducting **research**: building durable knowledge about an unfamiliar subject before any work commits to a direction. Research ends with a written brief, not a plan, fix, or refactor — discovery, not commitment. The substantive judgement comes from the `/tt:pov:*` panel applied in **research** mode — "what do I need to understand here, where are the gaps, what would a future implementer wish I had captured?"
+You are conducting **research**: building durable knowledge about an unfamiliar subject before any work commits to a direction. Research ends with a written brief, not a plan, fix, or refactor — discovery, not commitment. The substantive judgement comes from the lens panel applied in **research** mode — "what do I need to understand here, where are the gaps, what would a future implementer wish I had captured?"
 
 Distinct from:
 - `/tt:plan` — research ends with a brief; planning ends with an approved approach. A plan presupposes that the relevant facts are already known.
@@ -40,7 +37,7 @@ A research session without a question wanders. Capture explicitly:
 
 ## 3. Investigate by Target Type
 
-Cite as you go — URL, `file:line`, commit SHA. A brief without citations is a hallucination risk.
+Cite as you go — URL, `file:line`, commit SHA. A brief without citations is a hallucination risk. Start from the rawest material (the code, the spec, the data), not from a digest of it, and apply the `evidence` lens (`~/.claude/tt/pov/evidence.md`) to every claim the brief keeps.
 
 **Local codebase.**
 - Map directory shape (`tree`, `ls -R`) before opening files. Shape constrains everything that follows.
@@ -65,10 +62,10 @@ Cite as you go — URL, `file:line`, commit SHA. A brief without citations is a 
 
 If the research feeds work in a known language, pull the matching context file so the brief surfaces relevant idiomatic constraints up front (linters, packaging idiom, house-style expectations a future implementer must honour):
 
-- Nix → `/tt:mod:nix`.
-- Rust → `/tt:mod:rs`.
-- JavaScript / TypeScript → `/tt:mod:js`.
-- Shell → `/tt:mod:sh`.
+- Nix → `~/.claude/tt/mod/nix.md`.
+- Rust → `~/.claude/tt/mod/rs.md`.
+- JavaScript / TypeScript → `~/.claude/tt/mod/js.md`.
+- Shell → `~/.claude/tt/mod/sh.md`.
 
 Skip for pure topic research with no downstream codebase. The per-project `./CLAUDE.md` overrides anything in a context file.
 
@@ -78,14 +75,14 @@ Frame each relevant lens's dimensions as **questions the brief must answer**, no
 
 Typically relevant:
 
-- **`/tt:pov:scope`** — what is essential to the question vs interesting-but-tangential. A brief's value is in what it leaves out as much as in what it includes.
-- **`/tt:pov:arch`** — for codebase/repo: shape, module boundaries, the design decision each module hides. For topic: design space, alternatives, where the subject sits in the wider stack.
-- **`/tt:pov:sec`** — trust model, threat surface, known CVEs (for libraries), authn/authz primitives offered, secrets handling expectations.
-- **`/tt:pov:reliability`** — documented (and undocumented) failure modes, project maturity signal: release cadence, issue burndown, last-commit recency, bus factor.
-- **`/tt:pov:perf`** — only when the question has a measurable performance angle; otherwise defer.
-- **`/tt:pov:testing`** — test posture: how the project verifies itself, what would need pinning down before changes.
-- **`/tt:pov:ux`** — for libraries/services: the API / CLI / config / TUI surface a future caller would touch, and how stable that surface is across versions.
-- **`/tt:pov:docs`** — which Diátaxis quadrants the project covers (tutorials / how-tos / reference / explanation). Gaps signal where downstream work will struggle.
+- **`scope`** — what is essential to the question vs interesting-but-tangential. A brief's value is in what it leaves out as much as in what it includes.
+- **`arch`** — for codebase/repo: shape, module boundaries, the design decision each module hides. For topic: design space, alternatives, where the subject sits in the wider stack.
+- **`sec`** — trust model, threat surface, known CVEs (for libraries), authn/authz primitives offered, secrets handling expectations.
+- **`reliability`** — documented (and undocumented) failure modes, project maturity signal: release cadence, issue burndown, last-commit recency, bus factor.
+- **`perf`** — only when the question has a measurable performance angle; otherwise defer.
+- **`testing`** — test posture: how the project verifies itself, what would need pinning down before changes.
+- **`ux`** — for libraries/services: the API / CLI / config / TUI surface a future caller would touch, and how stable that surface is across versions.
+- **`docs`** — which Diátaxis quadrants the project covers (tutorials / how-tos / reference / explanation). Gaps signal where downstream work will struggle.
 
 ## 6. Write the Brief
 

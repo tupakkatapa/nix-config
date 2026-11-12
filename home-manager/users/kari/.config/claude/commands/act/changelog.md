@@ -1,8 +1,6 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
-
+---
+description: "Update or clean up the changelog without bumping the version."
+argument-hint: "[range]"
 ---
 
 You are updating the changelog (Keep a Changelog + Semantic Versioning) **without bumping the version**. Use this to clean up, consolidate, or add entries for in-flight work. To also bump the version and cut a release heading, use `/tt:act:bump` (it calls this procedure for the changelog part).

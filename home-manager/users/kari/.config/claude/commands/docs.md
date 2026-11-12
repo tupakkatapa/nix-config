@@ -1,15 +1,12 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
-
+---
+description: "Write or restructure documentation as the main task: README, tutorial, how-to, reference, explanation, runbook, ADR."
+argument-hint: "[what to document]"
 ---
 
-You are writing documentation as the primary task — a new tutorial, how-to, reference page, explanation, runbook, ADR, or changelog entry — rather than auditing docs as a side-effect of review. Substantive guidance comes from the `/tt:pov:docs` lens applied in **authoring** mode, anchored by the Diátaxis framework (Procida).
+You are writing documentation as the primary task — a new tutorial, how-to, reference page, explanation, runbook, ADR, or changelog entry — rather than auditing docs as a side-effect of review. Substantive guidance comes from the `docs` lens applied in **authoring** mode, anchored by the Diátaxis framework (Procida).
 
 Distinct from:
-- `/tt:pov:docs` — dimensional viewpoint, applied *during* review/planning/diagnosis. This agenda is what you reach for when docs are the deliverable.
+- the `docs` lens — dimensional viewpoint, applied *during* review/planning/diagnosis. This agenda is what you reach for when docs are the deliverable.
 - an inline explanation — answered in-conversation, evaporates with it. This agenda produces durable files in the repo.
 
 ## 1. Clarify Subject and Audience
@@ -52,12 +49,12 @@ A single document should serve **one** mode. If the subject needs more than one,
 
 ## 4. Apply the Lens Panel (mode = authoring)
 
-Read lens files lazily — `commands/pov/docs.md` Dimensions section for the primary lens; supporting lenses only when their surface applies. Consult:
+Read lens files lazily — `~/.claude/tt/pov/docs.md` Dimensions section for the primary lens; supporting lenses only when their surface applies. Consult:
 
-- **`/tt:pov:docs`** — Diátaxis discipline, fact-check against implementation, audience fit, completeness for the chosen mode.
-- **`/tt:pov:scope`** — does this doc say only what is essential to the reader? Cut paragraphs that gold-plate, repeat code comments, or document obvious behaviour.
-- **`/tt:pov:ux`** — the doc is a surface. Apply Nielsen heuristics to it: status visibility (TOC, breadcrumbs), error recovery (troubleshooting), consistency, minimalism.
-- **`/tt:pov:style`** — prose discipline. Short sentences. Active voice. One idea per paragraph. No filler. No throat-clearing introductions ("In this document we will discuss…").
+- **`docs`** — Diátaxis discipline, fact-check against implementation, audience fit, completeness for the chosen mode.
+- **`scope`** — does this doc say only what is essential to the reader? Cut paragraphs that gold-plate, repeat code comments, or document obvious behaviour.
+- **`ux`** — the doc is a surface. Apply Nielsen heuristics to it: status visibility (TOC, breadcrumbs), error recovery (troubleshooting), consistency, minimalism.
+- **`prose`** — sentence discipline. Conclusion first. Short sentences, active voice, one idea each, one word for one meaning. No filler, no throat-clearing introductions ("In this document we will discuss…"). Current state only, never the history of how it was reached.
 
 ## 5. Draft
 
@@ -86,11 +83,8 @@ For explanation:
 
 - Re-run any commands or code blocks in the doc against a clean environment.
 - Fact-check claims about behaviour against current code (`grep`, run tests).
-- Ask a fresh reader (or simulate one): can they follow it without your help?
+- Cold-reader check: give the document, and nothing else, to a subagent with fresh context and ask what it understood and what it could not do. Fix what it got wrong.
 - Check links resolve. Check anchors. Check code blocks parse.
 
-## 8. Handoff
-
-Suggest:
-- **`/tt:review`** against the new docs (scope = "the new/changed documentation files"). The lens panel — especially `docs`, `scope`, `ux`, `aesthetics` — applies cleanly to prose.
-- **`/tt:act:commit`** when the review is clean.
+## 8. Next
+`/tt:ship` when the docs ride with code; `/tt:act:commit` for a docs-only change.

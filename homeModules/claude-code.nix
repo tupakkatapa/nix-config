@@ -104,40 +104,83 @@ in
     description = "List of claude plugin packages (built with mkClaudePlugin)";
   };
 
-  config = lib.mkIf (cfg.enable && allPlugins != [ ]) {
-    # Collect runtime inputs from all plugins
-    home.packages = allRuntimeInputs;
-
-    programs.claude-code.settings = lib.mkMerge [{
-      enabledPlugins = lib.listToAttrs (
-        map (p: lib.nameValuePair p.id true) allPlugins
-      );
-    }];
-
-    # Copy plugin files to writable locations (not symlinks)
-    # Some plugins need to write to their own directories at runtime
-    home.activation.claudePlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      # Remove old symlinks if they exist
-      [ -L "${homeDir}/.claude/plugins/cache" ] && rm "${homeDir}/.claude/plugins/cache"
-      [ -L "${homeDir}/.claude/plugins/marketplaces" ] && rm "${homeDir}/.claude/plugins/marketplaces"
-      [ -L "${homeDir}/.claude/plugins/installed_plugins.json" ] && rm "${homeDir}/.claude/plugins/installed_plugins.json"
-      [ -L "${homeDir}/.claude/plugins/known_marketplaces.json" ] && rm "${homeDir}/.claude/plugins/known_marketplaces.json"
-
-      # Create plugins directory
-      mkdir -p "${homeDir}/.claude/plugins"
-
-      # Copy with write permissions (rsync preserves structure, --chmod adds write)
-      ${pkgs.rsync}/bin/rsync -a --chmod=u+w "${pluginsDir}/cache" "${homeDir}/.claude/plugins/"
-      ${pkgs.rsync}/bin/rsync -a --chmod=u+w "${pluginsDir}/marketplaces" "${homeDir}/.claude/plugins/"
-
-      # Copy JSON files (writable so Claude Code can update them)
-      cp -f "${pluginsDir}/installed_plugins.json" "${homeDir}/.claude/plugins/"
-      cp -f "${pluginsDir}/known_marketplaces.json" "${homeDir}/.claude/plugins/"
-      chmod u+w "${homeDir}/.claude/plugins/installed_plugins.json"
-      chmod u+w "${homeDir}/.claude/plugins/known_marketplaces.json"
-
-      # Run plugin-specific activation scripts
-      ${allActivationScripts}
+  options.programs.claude-code.mutableSettings = lib.mkOption {
+    type = lib.types.attrsOf lib.types.anything;
+    default = { };
+    example = { model = "opus"; };
+    description = ''
+      Settings Claude Code may change at runtime (`/model`, `/effort`), with their
+      defaults. `settings.json` becomes a regular file, rewritten on activation from
+      `settings`; the keys named here keep the value found in the existing file.
     '';
   };
+
+  config = lib.mkMerge [
+    (lib.mkIf (cfg.enable && cfg.settings != { }) (
+      let
+        settingsFile = "${cfg.configDir}/settings.json";
+        managed = config.home.file.${settingsFile}.source;
+        mutableKeys = builtins.attrNames cfg.mutableSettings;
+        jq = "${pkgs.jq}/bin/jq";
+      in
+      {
+        assertions = [{
+          assertion = lib.all (k: !(cfg.settings ? ${k})) mutableKeys;
+          message = "programs.claude-code: a key in mutableSettings is also set in settings, which would override it on every activation";
+        }];
+
+        home.file.${settingsFile}.enable = false;
+
+        home.activation.claudeSettings = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+          [ -L "${settingsFile}" ] && rm "${settingsFile}"
+          mkdir -p "$(dirname "${settingsFile}")"
+          kept='{}'
+          if [ -f "${settingsFile}" ]; then
+            kept=$(${jq} -c --argjson keys ${lib.escapeShellArg (builtins.toJSON mutableKeys)} \
+              'with_entries(select(.key as $k | $keys | index($k)))' "${settingsFile}" 2>/dev/null) || kept='{}'
+          fi
+          ${jq} -n --argjson defaults ${lib.escapeShellArg (builtins.toJSON cfg.mutableSettings)} \
+            --argjson kept "$kept" --slurpfile managed ${managed} \
+            '$defaults + $kept + $managed[0]' > "${settingsFile}.tmp"
+          mv "${settingsFile}.tmp" "${settingsFile}"
+        '';
+      }
+    ))
+    (lib.mkIf (cfg.enable && allPlugins != [ ]) {
+      # Collect runtime inputs from all plugins
+      home.packages = allRuntimeInputs;
+
+      programs.claude-code.settings = lib.mkMerge [{
+        enabledPlugins = lib.listToAttrs (
+          map (p: lib.nameValuePair p.id true) allPlugins
+        );
+      }];
+
+      # Copy plugin files to writable locations (not symlinks)
+      # Some plugins need to write to their own directories at runtime
+      home.activation.claudePlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        # Remove old symlinks if they exist
+        [ -L "${homeDir}/.claude/plugins/cache" ] && rm "${homeDir}/.claude/plugins/cache"
+        [ -L "${homeDir}/.claude/plugins/marketplaces" ] && rm "${homeDir}/.claude/plugins/marketplaces"
+        [ -L "${homeDir}/.claude/plugins/installed_plugins.json" ] && rm "${homeDir}/.claude/plugins/installed_plugins.json"
+        [ -L "${homeDir}/.claude/plugins/known_marketplaces.json" ] && rm "${homeDir}/.claude/plugins/known_marketplaces.json"
+
+        # Create plugins directory
+        mkdir -p "${homeDir}/.claude/plugins"
+
+        # Copy with write permissions (rsync preserves structure, --chmod adds write)
+        ${pkgs.rsync}/bin/rsync -a --chmod=u+w "${pluginsDir}/cache" "${homeDir}/.claude/plugins/"
+        ${pkgs.rsync}/bin/rsync -a --chmod=u+w "${pluginsDir}/marketplaces" "${homeDir}/.claude/plugins/"
+
+        # Copy JSON files (writable so Claude Code can update them)
+        cp -f "${pluginsDir}/installed_plugins.json" "${homeDir}/.claude/plugins/"
+        cp -f "${pluginsDir}/known_marketplaces.json" "${homeDir}/.claude/plugins/"
+        chmod u+w "${homeDir}/.claude/plugins/installed_plugins.json"
+        chmod u+w "${homeDir}/.claude/plugins/known_marketplaces.json"
+
+        # Run plugin-specific activation scripts
+        ${allActivationScripts}
+      '';
+    })
+  ];
 }

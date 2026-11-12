@@ -1,12 +1,9 @@
-
-## Preamble
-- Read `~/.claude/CLAUDE.md` (global) and `./CLAUDE.md` (project) for guidelines and context, if not already.
-- Detect available tooling by checking for: `shell.nix`, `flake.nix`, `Makefile`, `Justfile`, or similar.
-- **Never push unless explicitly told to. Commit only where this command's own discipline mandates it (checkpoint, tidying, docs-only commits); otherwise leave committing to `/tt:act:commit`.**
-
+---
+description: "Probe a plan or diff for edge cases and implicit assumptions the happy path hides."
+argument-hint: "[plan file | diff | component]"
 ---
 
-You are probing the artefact for edge cases, implicit assumptions, and architectural gaps that normal review misses. The substantive lenses are the `/tt:pov:*` specialists applied in **risk-discovery** mode — "what could go wrong here that the happy path hides?" — rather than review or planning.
+You are probing the artefact for edge cases, implicit assumptions, and architectural gaps that normal review misses. The substantive lenses are the lens specialists applied in **risk-discovery** mode — "what could go wrong here that the happy path hides?" — rather than review or planning.
 
 ## 1. Clarify Scope
 Default: the artefact under discussion (latest plan file or current diff). Only if genuinely underivable, ask the user to choose:
@@ -25,12 +22,12 @@ Read lens files lazily — only the Symptoms / Dimensions sections for lenses wi
 
 Typically relevant for edge-case work:
 
-- **`/tt:pov:reliability`** — failure modes, partial failures, recoverability, observability gaps. State lifecycle: transitional states, post-failure residue, cascading effects (constraints, hooks, events). Data consistency: orphaning, broken cleanup, circular dependencies, batch atomicity. External system interactions: secondary call failures, idempotency under retry, internal-vs-external state divergence.
-- **`/tt:pov:sec`** — authorisation boundaries: every role/privilege level, indirect access paths, consistency of checks across cleanup and error paths, least-privilege scope, policies evaluated against stale vs current state.
-- **`/tt:pov:perf`** — concurrency and timing: simultaneous conflicting operations, check-then-act races, async arrivals (webhooks, queues, event handlers) after the entity is mutated/deleted, transaction scope (too broad or too narrow).
-- **`/tt:pov:testing`** — implicit assumptions about non-null fields, required relationships, "impossible" states; schema/API evolution; error messages leaking internals; gaps where no test would catch a regression.
-- **`/tt:pov:scope`** — undocumented assumptions about the data model or environment; complexity hiding edge cases by making the reachable state space too large to reason about.
-- **`/tt:pov:arch`** — only when an edge case is a structural defect (cross-module invariant broken, dependency-direction inversion enabling the bug).
+- **`reliability`** — failure modes, partial failures, recoverability, observability gaps. State lifecycle: transitional states, post-failure residue, cascading effects (constraints, hooks, events). Data consistency: orphaning, broken cleanup, circular dependencies, batch atomicity. External system interactions: secondary call failures, idempotency under retry, internal-vs-external state divergence.
+- **`sec`** — authorisation boundaries: every role/privilege level, indirect access paths, consistency of checks across cleanup and error paths, least-privilege scope, policies evaluated against stale vs current state.
+- **`perf`** — concurrency and timing: simultaneous conflicting operations, check-then-act races, async arrivals (webhooks, queues, event handlers) after the entity is mutated/deleted, transaction scope (too broad or too narrow).
+- **`testing`** — implicit assumptions about non-null fields, required relationships, "impossible" states; schema/API evolution; error messages leaking internals; gaps where no test would catch a regression.
+- **`scope`** — undocumented assumptions about the data model or environment; complexity hiding edge cases by making the reachable state space too large to reason about.
+- **`arch`** — only when an edge case is a structural defect (cross-module invariant broken, dependency-direction inversion enabling the bug).
 
 Skip lenses that have no risk surface for this artefact.
 
