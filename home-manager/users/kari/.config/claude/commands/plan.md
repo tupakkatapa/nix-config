@@ -31,30 +31,30 @@ Capture: success criteria, constraints, non-goals, deadlines, stakeholders. A pl
 
 Detect the project's primary language(s) and pull the matching context file(s) — these capture house-style preferences (linters, formatters, packaging idiom, idiom expectations) the plan must honour:
 
-- Nix-only or Nix as substrate → `~/.claude/tt/mod/nix.md`.
-- Rust → `~/.claude/tt/mod/rs.md` (assumes the Nix layer).
-- JavaScript / TypeScript → `~/.claude/tt/mod/js.md` (assumes the Nix layer).
-- Shell scripts → `~/.claude/tt/mod/sh.md`.
+- Nix-only or Nix as substrate → `~/.claude/tt/languages/nix.md`.
+- Rust → `~/.claude/tt/languages/rust.md` (assumes the Nix layer).
+- JavaScript / TypeScript → `~/.claude/tt/languages/javascript.md` (assumes the Nix layer).
+- Shell scripts → `~/.claude/tt/languages/shell.md`.
 
 Per-project `./CLAUDE.md` overrides anything in a context file; honour the override.
 
 ## 4. Apply the Lens Panel (mode = planning)
 
-For each relevant lens, frame its dimensions as **commitments the proposed design must honour**, not retrospective audit. **Read lens files lazily** — pull only the section (Identity / Symptoms / Dimensions) you need for each lens as you reach it; skip lenses with no planning surface for this work. Pull guidance from `~/.claude/tt/pov/<name>.md`.
+For each relevant lens, frame its dimensions as **commitments the proposed design must honour**, not retrospective audit. **Read lens files lazily** — pull only the section (Identity / Symptoms / Dimensions) you need for each lens as you reach it; skip lenses with no planning surface for this work. Pull guidance from `~/.claude/tt/lenses/<name>.md`.
 
 Typically relevant:
 
 - **`scope`** — what is essential vs accidental in this work. Reject premature abstraction, speculative configurability, dead-code-on-arrival. Smallest thing that delivers the value.
-- **`arch`** — module boundaries, dependency direction, data flow. Where does the work slot in, what does it depend on, what depends on it. Hidden coupling to break.
-- **`sec`** — trust boundaries the change crosses; authn/authz, secrets, input validation at those boundaries.
+- **`architecture`** — module boundaries, dependency direction, data flow. Where does the work slot in, what does it depend on, what depends on it. Hidden coupling to break.
+- **`security`** — trust boundaries the change crosses; authn/authz, secrets, input validation at those boundaries.
 - **`reliability`** — failure modes the design must tolerate; idempotency, retries, observability hooks, deployability.
-- **`perf`** — only if a measurable concern exists (data volume, hot path, contention). Otherwise defer.
+- **`performance`** — only if a measurable concern exists (data volume, hot path, contention). Otherwise defer.
 - **`testing`** — how the work will be tested; seams, doubles, characterisation needs.
 - **`quality`** — duplication, naming, separation within the module being touched.
-- **`compat`** — when the work touches a public surface or stored data: what existing callers, clients and data must keep working, and the migration shape.
+- **`compatibility`** — when the work touches a public surface or stored data: what existing callers, clients and data must keep working, and the migration shape.
 - **`ux`** — only if the change has a surface (CLI flag, API field, config knob, GUI control).
 - **`ui`** — only if the change has a graphical surface.
-- **`docs`** — what tutorials/how-tos/reference/explanation or changelog/ADR entries this implies.
+- **`documentation`** — what tutorials/how-tos/reference/explanation or changelog/ADR entries this implies.
 
 ## 5. Write the Plan
 Always produce the plan as a markdown file. Default path: `docs/plans/YYYY-MM-DD-<short-kebab-title>.md` (use today's date; create the directory if it does not exist). If the project has an existing convention for design docs (a different directory, a ticket system, an ADR layout), use that — the per-project `./CLAUDE.md` is the source of truth. Never plan in-conversation only — a file gives the plan a stable identity for review, edge-case analysis, and later execution. Structure:

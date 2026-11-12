@@ -18,10 +18,10 @@ Distinct from:
 ## 2. Consult Language Context
 Detect the project's primary language(s) and pull the matching context file(s) so house-style preferences (linters, formatters, packaging idiom, idiom expectations) are honoured throughout execution:
 
-- Nix-only or Nix as substrate → `~/.claude/tt/mod/nix.md`.
-- Rust → `~/.claude/tt/mod/rs.md`.
-- JavaScript / TypeScript → `~/.claude/tt/mod/js.md`.
-- Shell scripts → `~/.claude/tt/mod/sh.md`.
+- Nix-only or Nix as substrate → `~/.claude/tt/languages/nix.md`.
+- Rust → `~/.claude/tt/languages/rust.md`.
+- JavaScript / TypeScript → `~/.claude/tt/languages/javascript.md`.
+- Shell scripts → `~/.claude/tt/languages/shell.md`.
 
 Per-project `./CLAUDE.md` overrides anything in a context file; honour the override.
 

@@ -125,4 +125,4 @@ This role describes a lens. The orchestrating agenda decides the mode. See `~/.c
 Default when invoked solo: produce a findings list classifying each touched surface as growth or breakage, with evidence; do not apply changes that alter a public surface without confirmation.
 
 ## Handoff
-Return findings. Coordinate with `ux` on the shape of the replacement surface, `arch` on where the boundary sits, `reliability` on deploy order and rollback, `testing` on compatibility tests per surface, `docs` on changelog and migration notes.
+Return findings. Coordinate with `ux` on the shape of the replacement surface, `architecture` on where the boundary sits, `reliability` on deploy order and rollback, `testing` on compatibility tests per surface, `documentation` on changelog and migration notes.

@@ -44,7 +44,7 @@ You are a correctness engineer. You concern yourself with how a future change to
 - A test that has to be rerun a few times to pass.
 - A test whose setup is so long the assertion is hard to find.
 - A test that mocks five collaborators and verifies their calls (and effectively re-encodes the implementation).
-- A behaviour you can think of but cannot easily write a test for — testability defect, refer to `arch`/`quality`.
+- A behaviour you can think of but cannot easily write a test for — testability defect, refer to `architecture`/`quality`.
 - A `skip` with no comment, ticket, or expiry.
 - A line in production that crashes only under inputs no test exercises.
 
@@ -99,7 +99,7 @@ For each finding:
 - **Location** — `file:line`, module name, or test name.
 - **Evidence** — coverage gap, weak assertion, mocking pattern, flake rate.
 - **Test plan** — exact test(s) to add or rewrite: name, arrange / act / assert.
-- **Refactor needed?** — flag if testability requires structural change; refer to `arch` or `quality`.
+- **Refactor needed?** — flag if testability requires structural change; refer to `architecture` or `quality`.
 - **Confidence** — High / Medium / Low.
 
 ## Mode Awareness
@@ -108,4 +108,4 @@ This role describes a lens. The orchestrating agenda decides the mode. See `~/.c
 Default when invoked solo: produce a prioritised findings list and write tests for Blocker / High gaps if the test framework and seams permit it without modifying production code beyond minimal injection seams.
 
 ## Handoff
-Return findings, new tests, and any testability concerns that require structural change. Coordinate with `arch` / `quality` on refactors, with `reliability` on production observability and failure-mode coverage, with `perf` on regression benchmarks for hot paths, with `sec` on adversarial cases, with `compat` on compatibility tests per surface.
+Return findings, new tests, and any testability concerns that require structural change. Coordinate with `architecture` / `quality` on refactors, with `reliability` on production observability and failure-mode coverage, with `performance` on regression benchmarks for hot paths, with `security` on adversarial cases, with `compatibility` on compatibility tests per surface.

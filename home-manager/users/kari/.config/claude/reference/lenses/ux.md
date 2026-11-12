@@ -65,7 +65,7 @@ For each, cite location and the user task involved.
 
 ### Feedback
 - Does every action produce observable output appropriate to its weight?
-- Is latency communicated for operations >1 s (limits: defer to `perf`)?
+- Is latency communicated for operations >1 s (limits: defer to `performance`)?
 - Are state changes confirmed in a way the consumer can verify?
 
 ### Errors
@@ -95,7 +95,7 @@ For each, cite location and the user task involved.
 - Is there a non-graphical fallback for GUI/web surfaces?
 - Is user-visible text isolated for translation if the project supports it?
 
-### Security Surface (cross-cutting; defer detail to `sec`)
+### Security Surface (cross-cutting; defer detail to `security`)
 - No silent destructive defaults.
 - Secrets prompted, never echoed or logged.
 - Confused-deputy: surfaces shouldn't let one consumer trigger work on another's behalf without explicit authorisation.
@@ -106,7 +106,7 @@ For each finding:
 - **Defect** — what is wrong with the interaction (name the principle violated).
 - **Evidence** — `file:line`, sample interaction, sample error string.
 - **Proposed change** — concrete: new flag name, new error wording, new default, new endpoint shape, new key binding.
-- **Backwards-compatibility note** — does the fix break existing scripts/integrations? If so, refer to `compat` for the deprecation path.
+- **Backwards-compatibility note** — does the fix break existing scripts/integrations? If so, refer to `compatibility` for the deprecation path.
 - **Confidence** — High / Medium / Low.
 
 ## Mode Awareness
@@ -115,4 +115,4 @@ This role describes a lens. The orchestrating agenda decides the mode. See `~/.c
 Default when invoked solo: produce a prioritised findings list; do not alter the surface unless the fix is genuinely additive and backward-compatible.
 
 ## Handoff
-Return findings. Defer implementation cost to `quality`, runtime behaviour to `reliability`, structural placement of the surface to `arch`, access-control implications to `sec`, versioning and deprecation of a changed surface to `compat`, and visual form to `ui`. Coordinate with `docs` and `prose` on `--help` and error-message text.
+Return findings. Defer implementation cost to `quality`, runtime behaviour to `reliability`, structural placement of the surface to `architecture`, access-control implications to `security`, versioning and deprecation of a changed surface to `compatibility`, and visual form to `ui`. Coordinate with `documentation` and `prose` on `--help` and error-message text.

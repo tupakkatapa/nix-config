@@ -1,13 +1,13 @@
 # Claude config
 
-`/tt:*` slash commands live in `commands/`; the lenses and language contexts they draw on live in `pov/` and `mod/`. Four tiers:
+`/tt:*` slash commands live in `commands/`; the lenses and language contexts they draw on live in `reference/lenses/` and `reference/languages/`. Four tiers:
 
 | Tier | What it is | Location | Reached as | Examples |
 |------|-----------|----------|------------|----------|
 | **agenda** | multi-step workflow over an artefact | `commands/*.md` | `/tt:<name>` | `start`, `plan`, `review`, `ship`, `monitor`, `debug`, `finish` |
 | **action** | a single operation | `commands/act/*.md` | `/tt:act:<name>` | `commit`, `branch`, `pr`, `check-draft`, `release-chores` |
-| **lens** | a way of thinking — a mode-agnostic dimension | `pov/*.md` | file `~/.claude/tt/pov/<name>.md` | `scope`, `arch`, `compat`, `sec`, `testing` |
-| **context** | a domain of knowledge — per-language house style | `mod/*.md` | file `~/.claude/tt/mod/<name>.md` | `nix`, `rs`, `js`, `sh` |
+| **lens** | a way of thinking — a mode-agnostic dimension | `reference/lenses/*.md` | file `~/.claude/tt/lenses/<name>.md` | `scope`, `architecture`, `compatibility`, `security`, `testing` |
+| **context** | a domain of knowledge — per-language house style | `reference/languages/*.md` | file `~/.claude/tt/languages/<name>.md` | `nix`, `rust`, `javascript`, `shell` |
 
 Agendas and actions are slash commands. Lenses and contexts are plain reference files that agendas (and their subagents) read by path, a section at a time; they sit outside `commands/` so they stay out of the command listing. This README sits outside `commands/` for the same reason: every `.md` inside `commands/` becomes a command.
 
@@ -25,7 +25,7 @@ agenda  ──uses──▶  lens     (which dimensions to inspect, framed per t
 
 Governing principle: **the upstream (agenda) structure stays stable; its output changes when a downstream tier changes.** Improve a lens, refine a context file, or fix an action — and every agenda that pulls it in produces better output automatically, with no edit to the agenda itself. The agenda says *which* lenses/context/actions apply and in what order; the *content* of each lives in one place, downstream, and propagates upward.
 
-Example: `/tt:review` names the lens panel and order; the actual inspection criteria live in `pov/*.md`. Sharpen `pov/sec.md` and every agenda that runs the security lens (`review`, `review-strict`, `plan`) tightens — no agenda file touched.
+Example: `/tt:review` names the lens panel and order; the actual inspection criteria live in `reference/lenses/*.md`. Sharpen `reference/lenses/security.md` and every agenda that runs the security lens (`review`, `review-strict`, `plan`) tightens — no agenda file touched.
 
 ## Modes
 

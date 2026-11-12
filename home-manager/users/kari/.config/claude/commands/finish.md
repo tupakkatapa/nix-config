@@ -35,7 +35,7 @@ For every behavioural change, a test exists that exercises it and **would fail i
 - **Evidence:** test names mapped to the behaviours they pin + the targeted run output (or, if the tests can't be run in isolation cheaply, an inspection argument that they hold).
 
 ## 4. Gate — No breaking changes, no regressions
-Analyse, do not run the suite. Apply the `compat` lens (`~/.claude/tt/pov/compat.md`): diff public surfaces against base — endpoints, request/response fields, CLI flags, config/module options, exported functions — and reason about existing callers.
+Analyse, do not run the suite. Apply the `compatibility` lens (`~/.claude/tt/lenses/compatibility.md`): diff public surfaces against base — endpoints, request/response fields, CLI flags, config/module options, exported functions — and reason about existing callers.
 - **Block** on any removal/rename/semantic shift in a public surface that the user has not explicitly accepted, with migration notes written, or any plausible regression the change introduces.
 - **Evidence:** the public-surface diff verdict (breaking / non-breaking, with the compared symbols) + the regression reasoning.
 

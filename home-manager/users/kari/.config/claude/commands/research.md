@@ -37,7 +37,7 @@ A research session without a question wanders. Capture explicitly:
 
 ## 3. Investigate by Target Type
 
-Cite as you go — URL, `file:line`, commit SHA. A brief without citations is a hallucination risk. Start from the rawest material (the code, the spec, the data), not from a digest of it, and apply the `evidence` lens (`~/.claude/tt/pov/evidence.md`) to every claim the brief keeps.
+Cite as you go — URL, `file:line`, commit SHA. A brief without citations is a hallucination risk. Start from the rawest material (the code, the spec, the data), not from a digest of it, and apply the `evidence` lens (`~/.claude/tt/lenses/evidence.md`) to every claim the brief keeps.
 
 **Local codebase.**
 - Map directory shape (`tree`, `ls -R`) before opening files. Shape constrains everything that follows.
@@ -62,10 +62,10 @@ Cite as you go — URL, `file:line`, commit SHA. A brief without citations is a 
 
 If the research feeds work in a known language, pull the matching context file so the brief surfaces relevant idiomatic constraints up front (linters, packaging idiom, house-style expectations a future implementer must honour):
 
-- Nix → `~/.claude/tt/mod/nix.md`.
-- Rust → `~/.claude/tt/mod/rs.md`.
-- JavaScript / TypeScript → `~/.claude/tt/mod/js.md`.
-- Shell → `~/.claude/tt/mod/sh.md`.
+- Nix → `~/.claude/tt/languages/nix.md`.
+- Rust → `~/.claude/tt/languages/rust.md`.
+- JavaScript / TypeScript → `~/.claude/tt/languages/javascript.md`.
+- Shell → `~/.claude/tt/languages/shell.md`.
 
 Skip for pure topic research with no downstream codebase. The per-project `./CLAUDE.md` overrides anything in a context file.
 
@@ -76,13 +76,13 @@ Frame each relevant lens's dimensions as **questions the brief must answer**, no
 Typically relevant:
 
 - **`scope`** — what is essential to the question vs interesting-but-tangential. A brief's value is in what it leaves out as much as in what it includes.
-- **`arch`** — for codebase/repo: shape, module boundaries, the design decision each module hides. For topic: design space, alternatives, where the subject sits in the wider stack.
-- **`sec`** — trust model, threat surface, known CVEs (for libraries), authn/authz primitives offered, secrets handling expectations.
+- **`architecture`** — for codebase/repo: shape, module boundaries, the design decision each module hides. For topic: design space, alternatives, where the subject sits in the wider stack.
+- **`security`** — trust model, threat surface, known CVEs (for libraries), authn/authz primitives offered, secrets handling expectations.
 - **`reliability`** — documented (and undocumented) failure modes, project maturity signal: release cadence, issue burndown, last-commit recency, bus factor.
-- **`perf`** — only when the question has a measurable performance angle; otherwise defer.
+- **`performance`** — only when the question has a measurable performance angle; otherwise defer.
 - **`testing`** — test posture: how the project verifies itself, what would need pinning down before changes.
 - **`ux`** — for libraries/services: the API / CLI / config / TUI surface a future caller would touch, and how stable that surface is across versions.
-- **`docs`** — which Diátaxis quadrants the project covers (tutorials / how-tos / reference / explanation). Gaps signal where downstream work will struggle.
+- **`documentation`** — which Diátaxis quadrants the project covers (tutorials / how-tos / reference / explanation). Gaps signal where downstream work will struggle.
 
 ## 6. Write the Brief
 

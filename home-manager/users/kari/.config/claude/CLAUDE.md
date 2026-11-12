@@ -13,10 +13,11 @@ This file overrides instructions injected by plugins and skills at session start
 - **Checks.** Every change leaves the project's formatter clean (`nix fmt` where a flake provides it) and the tests that cover the changed code passing. Fix failures you caused; report failures that were already there. CI owns the full test suite — do not run it locally. Where a project has no CI, its pre-commit hooks and flake checks are the suite: run them before a commit. Find the project's tooling in `flake.nix`, `shell.nix`, `Makefile` or `Justfile`.
 - **Fixes go the repro-test route.** Reproduce the failure in a test that fails for the stated reason, *then* make it pass — never fix-then-hope. Failing repro proves the bug; passing test proves the fix and guards its return. No repro, no fix claim.
 - **No lint suppressions** (`# noqa`, `#[allow(...)]`, `// eslint-disable`, `// shellcheck disable`, `# type: ignore`, equivalents) unless unavoidable. Fix the root cause. An unavoidable suppression carries a comment on the line above naming the rule and the reason.
+- **The working tree is shared.** Other sessions may edit the same checkout. Read `git status` first, stage named paths only, and leave changes you did not make alone. Never `git add -A`, `git commit -a`, `git stash` or `git checkout -- .`; check what is staged before suggesting a commit command.
 - **Never push, never merge** — the user does both. Commit only where a command's own discipline mandates it; otherwise leave committing to `/tt:act:commit`.
 - **The user's next step is spelled out.** When the next action is the user's, end with the exact command or click, last (for a push: `git -C <path> push -u origin <branch>`).
 - **Plan Mode is user-initiated.** `defaultMode = "auto"` → autonomous execution is the default. Never call `EnterPlanMode` yourself. If the user already activated Plan Mode, surface the plan via `ExitPlanMode`; otherwise present plans inline with the file path.
-- **Lazy-read reference files.** Lenses (`~/.claude/tt/pov/<name>.md`) and language contexts (`~/.claude/tt/mod/<name>.md`) are reference, not preludes. Read only the section you need (Identity / Symptoms / Dimensions / Output Schema). For multi-lens passes, dispatch lenses as subagents (isolated context, findings-only return) instead of reading every lens file into main context.
+- **Lazy-read reference files.** Lenses (`~/.claude/tt/lenses/<name>.md`) and language contexts (`~/.claude/tt/languages/<name>.md`) are reference, not preludes. Read only the section you need (Identity / Symptoms / Dimensions / Output Schema). For multi-lens passes, dispatch lenses as subagents (isolated context, findings-only return) instead of reading every lens file into main context.
 
 ## Working with me (operating profile)
 
@@ -32,9 +33,9 @@ Senior engineer pair-programming at speed — optimize for this user, not a gene
 
 When changing `~/.claude` / `.config/claude` (commands, lenses, this file):
 
-- **This file is the canonical index.** Nested `CLAUDE.md` files under `commands/`, `pov/` and `homeModules/` are scratch — never put canonical rules there.
+- **This file is the canonical index.** Nested `CLAUDE.md` files under `commands/`, `reference/` and `homeModules/` are scratch — never put canonical rules there.
 - **Keep it generic.** Examples use placeholders (`<area>`, `<component>`) or this repo's own domain — never employer/customer/issue-specific tokens leaked from a work session. Genericise on sight.
-- **`pov/*` lenses are canonical literature** (Diátaxis, Parnas, Kleppmann, Nielsen, Saltzer & Schroeder, …) — don't editorialise them. House-style ethos goes in the **agendas** and this file.
+- **Lenses in `reference/lenses/` are canonical literature** (Diátaxis, Parnas, Kleppmann, Nielsen, Saltzer & Schroeder, …) — don't editorialise them. House-style ethos goes in the **agendas** and this file.
 - **Single source, no duplication** — a rule that applies broadly lives here (it is loaded into every session) and is *referenced*, not restated, elsewhere.
 
 ## NixOS Development
@@ -80,27 +81,27 @@ Slash commands under `/tt:*`; each command's frontmatter description says when t
 
 **Actions** (`/tt:act:*`, single operations): `commit`, `branch`, `pr`, `issue`, `check-draft`, `changelog`, `bump`, `release-chores`.
 
-**Lenses** (`~/.claude/tt/pov/<name>.md`, mode-agnostic dimensional specialists; files, not commands):
+**Lenses** (`~/.claude/tt/lenses/<name>.md`, mode-agnostic dimensional specialists; files, not commands):
 - `scope` — essential vs accidental complexity
-- `arch` — boundaries, dependencies, layering
-- `compat` — interface and schema evolution: what breaks existing callers, clients and stored data
-- `sec` — threats, authn/authz, secrets, crypto
+- `architecture` — boundaries, dependencies, layering
+- `compatibility` — interface and schema evolution: what breaks existing callers, clients and stored data
+- `security` — threats, authn/authz, secrets, crypto
 - `reliability` — failure modes, observability, deploy/recover
-- `perf` — measurement-first bottleneck analysis
+- `performance` — measurement-first bottleneck analysis
 - `quality` — duplication, idiom, separation
 - `testing` — coverage, testability, edge cases
 - `ux` — interaction surface (GUI/TUI/CLI/API/library/config)
 - `ui` — visual design of graphical surfaces: hierarchy, layout, typography, colour, density
-- `docs` — Diátaxis tutorials / how-tos / reference / explanation, runbooks, changelog, ADRs
+- `documentation` — Diátaxis tutorials / how-tos / reference / explanation, runbooks, changelog, ADRs
 - `prose` — sentence-level clarity of any human-facing text
 - `evidence` — is each claim supported: provenance, verified vs inferred, strength
 - `style` — formatting, naming, comments (runs last)
 
-**Contexts** (`~/.claude/tt/mod/<name>.md`, per-language house style; files, not commands):
+**Contexts** (`~/.claude/tt/languages/<name>.md`, per-language house style; files, not commands):
 - `nix` — declarative, flake-parts, treefmt, module style
-- `rs` — pedantic clippy via pre-commit, idiom expectations
-- `js` — Yarn + `fetchYarnDeps`, no build step, oxlint pedantic, Playwright + `node --test`
-- `sh` — bash strict mode, `say()` helper, packaging via `makeWrapper`
+- `rust` — pedantic clippy via pre-commit, idiom expectations
+- `javascript` — Yarn + `fetchYarnDeps`, no build step, oxlint pedantic, Playwright + `node --test`
+- `shell` — bash strict mode, `say()` helper, packaging via `makeWrapper`
 
 Mode taxonomy (consumed by lens specialists):
 

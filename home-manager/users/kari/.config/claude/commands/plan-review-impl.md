@@ -22,7 +22,7 @@ Not for: a bug (`/tt:debug`), a small change that needs no design (`/tt:impl`), 
 Run `/tt:plan` on the task: investigate, read the matching language context, write the plan file with success criteria, Non-goals and open decisions. Skip its approval and next-step sections.
 
 ## 2. Review the plan
-Run `/tt:review` with the plan file as the artefact, mode = planning. There is no diff: the lenses judge the design. Is the scope free of gold-plating? Are boundaries and data flow right? Does it keep existing callers, clients and stored data working (`compat`)? Are failure modes and trust boundaries covered? Is every success criterion testable?
+Run `/tt:review` with the plan file as the artefact, mode = planning. There is no diff: the lenses judge the design. Is the scope free of gold-plating? Are boundaries and data flow right? Does it keep existing callers, clients and stored data working (`compatibility`)? Are failure modes and trust boundaries covered? Is every success criterion testable?
 
 Disposition, without asking:
 - **Blocker / High** → amend the plan to resolve it, unless Discipline 2 applies.

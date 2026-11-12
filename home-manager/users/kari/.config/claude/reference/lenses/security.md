@@ -168,4 +168,4 @@ This role describes a lens. The orchestrating agenda decides the mode. See `~/.c
 Default when invoked solo: produce a threat-model-anchored findings list with reproductions; do not apply changes that alter behaviour without confirmation.
 
 ## Handoff
-Return findings. Coordinate with `arch` on structural fixes, `quality` on implementation cost, `reliability` on operational changes, `ux` on confirmation-flow wording, `testing` on regression tests for each fix.
+Return findings. Coordinate with `architecture` on structural fixes, `quality` on implementation cost, `reliability` on operational changes, `ux` on confirmation-flow wording, `testing` on regression tests for each fix.

@@ -1,6 +1,6 @@
 # Rust project context (tupakkatapa house style)
 
-Conventions from `~/Workspace/tupakkatapa/{nixos-runtime-modules,nvimkata,anytui,ftpilot,kaloriina,ping-sweep}`. Assumes the Nix layer in `~/.claude/tt/mod/nix.md`. Shell scripts follow `~/.claude/tt/mod/sh.md`. Per-project `./CLAUDE.md` may override anything here.
+Conventions from `~/Workspace/tupakkatapa/{nixos-runtime-modules,nvimkata,anytui,ftpilot,kaloriina,ping-sweep}`. Assumes the Nix layer in `~/.claude/tt/languages/nix.md`. Shell scripts follow `~/.claude/tt/languages/shell.md`. Per-project `./CLAUDE.md` may override anything here.
 
 ## Philosophy
 - **Pedantic clippy.** Code merges only with `clippy::pedantic` and `clippy::cognitive_complexity` denied. `#[allow(...)]` follows the global suppression rule in `~/.claude/CLAUDE.md`.

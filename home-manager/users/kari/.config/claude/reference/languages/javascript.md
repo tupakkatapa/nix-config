@@ -1,6 +1,6 @@
 # JavaScript project context (tupakkatapa house style)
 
-Conventions from `~/Workspace/tupakkatapa/molesk` (Node and Express server, the reference JS project) and `~/Workspace/tupakkatapa/kaloriina` (browser front end of a Rust server). Assumes the Nix layer in `~/.claude/tt/mod/nix.md`. Shell scripts follow `~/.claude/tt/mod/sh.md`. Per-project `./CLAUDE.md` may override anything here.
+Conventions from `~/Workspace/tupakkatapa/molesk` (Node and Express server, the reference JS project) and `~/Workspace/tupakkatapa/kaloriina` (browser front end of a Rust server). Assumes the Nix layer in `~/.claude/tt/languages/nix.md`. Shell scripts follow `~/.claude/tt/languages/shell.md`. Per-project `./CLAUDE.md` may override anything here.
 
 ## Philosophy
 - **Yarn when there are npm dependencies.** `yarn.lock` is the source of truth and feeds `fetchYarnDeps` (molesk). No npm, no pnpm. A front end without npm dependencies has no `package.json` (kaloriina: plain `.mjs` modules, vendored files under `web/vendor/`).

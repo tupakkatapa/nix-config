@@ -8,7 +8,7 @@ Conventions from `~/Workspace/tupakkatapa/{nixos-runtime-modules,nixos-tpm-host-
 - **One devshell, one source of truth.** The devshell defines the build/test/format toolchain; pre-commit runs the same tools.
 - **No CI workflows; `nix flake check` and the pre-commit hooks are the gate.** No project has GitHub Actions. If CI is added, it runs `nix flake check`.
 
-Other contexts: shell `~/.claude/tt/mod/sh.md`, Rust `~/.claude/tt/mod/rs.md`, JS `~/.claude/tt/mod/js.md`. Lint suppressions (`# statix:ignore`, `# deadnix: skip`) follow the global rule in `~/.claude/CLAUDE.md`.
+Other contexts: shell `~/.claude/tt/languages/shell.md`, Rust `~/.claude/tt/languages/rust.md`, JS `~/.claude/tt/languages/javascript.md`. Lint suppressions (`# statix:ignore`, `# deadnix: skip`) follow the global rule in `~/.claude/CLAUDE.md`.
 
 ## Flake shape (flake-parts)
 

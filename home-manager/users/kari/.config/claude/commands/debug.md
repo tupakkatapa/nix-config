@@ -31,9 +31,9 @@ Typically relevant for diagnosis:
 - **`reliability`** — failure modes that match the symptom: partial failure, retry semantics, observability gaps that hid the root cause earlier, state left after error paths.
 - **`testing`** — which test *should* have caught this and didn't? Implicit assumptions about non-null fields, "impossible" states, or relationship invariants that turned out to be false.
 - **`scope`** — accidental complexity hiding the bug. State space too large to reason about, dead branches still reachable, premature abstractions obscuring control flow.
-- **`arch`** — boundary violations: function reaching past its layer, hidden coupling, dependency direction wrong, invariant that should live at a boundary leaking inside.
-- **`perf`** — only when the symptom is latency, throughput, resource exhaustion, or a concurrency race. Apply USE method, identify saturation, measure before guessing.
-- **`sec`** — only when the symptom involves trust boundary crossing (auth bypass, injection, privilege escalation, data leak).
+- **`architecture`** — boundary violations: function reaching past its layer, hidden coupling, dependency direction wrong, invariant that should live at a boundary leaking inside.
+- **`performance`** — only when the symptom is latency, throughput, resource exhaustion, or a concurrency race. Apply USE method, identify saturation, measure before guessing.
+- **`security`** — only when the symptom involves trust boundary crossing (auth bypass, injection, privilege escalation, data leak).
 - **`evidence`** — every step of the diagnosis: observed versus inferred, and what observation would refute the hypothesis.
 
 ## 4. Hypothesise

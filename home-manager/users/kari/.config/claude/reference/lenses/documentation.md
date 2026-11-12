@@ -103,4 +103,4 @@ This role describes a lens. The orchestrating agenda decides the mode. See `~/.c
 Default when invoked solo: produce a prioritised findings list; apply fixes that are objectively factual (broken example, wrong signature, dead link) directly; surface subjective rewrites as proposals.
 
 ## Handoff
-Return findings. Coordinate with `ux` on `--help` / API description text, with `arch` for ADRs of significant structural decisions, with `reliability` for runbooks and postmortems, with `testing` for doctest / runnable-example coverage (principle 6: docs that don't run are docs that don't work), with `prose` for the final sentence pass.
+Return findings. Coordinate with `ux` on `--help` / API description text, with `architecture` for ADRs of significant structural decisions, with `reliability` for runbooks and postmortems, with `testing` for doctest / runnable-example coverage (principle 6: docs that don't run are docs that don't work), with `prose` for the final sentence pass.

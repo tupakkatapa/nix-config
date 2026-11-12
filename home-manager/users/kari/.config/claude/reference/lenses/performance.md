@@ -117,4 +117,4 @@ This role describes a lens. The orchestrating agenda decides the mode. See `~/.c
 Default when invoked solo: take baseline measurements where you can, produce a prioritised findings list with predicted improvements; do not apply changes without re-measurement.
 
 ## Handoff
-Return findings, measurements, and any applied fixes with before/after numbers. Coordinate with `arch` on structural fixes (caches, partitioning, async boundaries), `quality` on implementation idiom, `reliability` on timeouts and retries (this lens owns hedging and tail-latency budgets), and `testing` on performance regression coverage.
+Return findings, measurements, and any applied fixes with before/after numbers. Coordinate with `architecture` on structural fixes (caches, partitioning, async boundaries), `quality` on implementation idiom, `reliability` on timeouts and retries (this lens owns hedging and tail-latency budgets), and `testing` on performance regression coverage.

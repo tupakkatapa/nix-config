@@ -19,7 +19,7 @@ You are conducting a **strict, comprehensive** code review across the full lens 
 1. **Every lens runs.** No skipping. A lens with no findings reports "no findings: <one-line reason>" — that statement is itself a deliverable, proving the dimension was inspected.
 2. **Subagent dispatch is mandatory.** Each lens runs in its own subagent with isolated context, reading its own lens file in full (not lazily — strict mode loads the principles and dimensions). The orchestrator (you) only sees consolidated findings.
 3. **Output Schema is mandatory per finding.** No prose summaries. Each finding has all schema fields populated.
-4. **Citations are mandatory.** Every finding cites the lens principle or symptom it derives from (e.g. "violates `arch` principle 5: Pull complexity downwards" or "matches `sec` symptom: errors leak stack traces to unauthenticated callers"). Anchors the judgment in canon.
+4. **Citations are mandatory.** Every finding cites the lens principle or symptom it derives from (e.g. "violates `architecture` principle 5: Pull complexity downwards" or "matches `security` symptom: errors leak stack traces to unauthenticated callers"). Anchors the judgment in canon.
 5. **Block-on-Blocker / High.** Review cannot close while any Blocker or High remains unresolved or explicitly acknowledged with rationale.
 6. **Two-hats disposition is mandatory.** Each finding tagged with its next-step owner.
 
@@ -38,7 +38,7 @@ Pass the chosen scope verbatim to every lens subagent below, along with `mode = 
 
 Each subagent prompt includes:
 - The artefact under review (paths, diff, plan file — whatever scope was chosen).
-- The full text of the corresponding `~/.claude/tt/pov/<name>.md` file.
+- The full text of the corresponding `~/.claude/tt/lenses/<name>.md` file.
 - This contract: "Read your lens file in full. Apply every dimension. Report findings using the Output Schema verbatim. Cite the principle/symptom each finding derives from. If your lens has no surface in this artefact, return one explicit 'no findings: <one-line reason>' statement — the *reason* must reference what you inspected to reach that conclusion."
 
 ### Stage 1 — Sequential (each filters the next)
@@ -46,24 +46,24 @@ Each subagent prompt includes:
 These two run first, in order. The second receives the first's findings to avoid re-inspecting code that scope already culled.
 
 1. **`scope`** — essential vs accidental complexity; cull gold-plating, premature abstraction, dead code, speculative configurability before deeper inspection.
-2. **`arch`** — module boundaries, dependency direction, data flow, layering, distributed shape.
+2. **`architecture`** — module boundaries, dependency direction, data flow, layering, distributed shape.
 
 ### Stage 2 — Parallel (independent dimensions)
 
 Dispatch all of these in a single message — independent facets, no inter-blocking. Each subagent receives the artefact as shaped by Stage 1's findings:
 
-- **`compat`** — public surfaces and stored data: what existing callers, clients and data stop working.
+- **`compatibility`** — public surfaces and stored data: what existing callers, clients and data stop working.
 - **`ux`** — surfaces (GUI / TUI / CLI / API / library / config schema).
 - **`ui`** — visual design of graphical surfaces.
-- **`sec`** — threat model, authn/authz, secrets, crypto, trust boundaries.
-- **`perf`** — algorithmic complexity, IO patterns, contention, tail latency; with measurements where claims are made.
+- **`security`** — threat model, authn/authz, secrets, crypto, trust boundaries.
+- **`performance`** — algorithmic complexity, IO patterns, contention, tail latency; with measurements where claims are made.
 - **`reliability`** — failure modes, SLIs/SLOs, observability, deployability, recoverability.
 - **`quality`** — duplication, naming, idiom, separation of concerns inside module boundaries.
 - **`testing`** — coverage of critical paths, edge cases, testability, suite health.
 
 ### Stage 3 — Final pass (form, after everything else has stabilised)
 
-- **`docs`** — README, tutorials, how-tos, reference, changelog, runbooks, ADRs (Diátaxis-aware).
+- **`documentation`** — README, tutorials, how-tos, reference, changelog, runbooks, ADRs (Diátaxis-aware).
 - **`prose`** — sentence-level clarity of every human-facing text in the artefact.
 - **`style`** — formatting, naming consistency, comment discipline, ordering. **Runs last.**
 
@@ -80,7 +80,7 @@ Merge specialist reports into a single findings list. For each finding, the cons
 - **Confidence** — High / Medium / Low.
 - **Disposition** — tidying (inline) / behavioural (`/tt:impl` or `/tt:debug`) / structural (`/tt:refactor`) / docs (inline) / deferred-with-rationale.
 
-Resolve conflicting findings by the conflict-resolution order: scope → arch → compat → sec → reliability → perf → quality → testing → ux → ui → docs → prose → style. Removing something supersedes restructuring it; restructuring supersedes polishing it.
+Resolve conflicting findings by the conflict-resolution order: scope → architecture → compatibility → security → reliability → performance → quality → testing → ux → ui → documentation → prose → style. Removing something supersedes restructuring it; restructuring supersedes polishing it.
 
 ## 4. Block-on-Blocker / High Gate
 

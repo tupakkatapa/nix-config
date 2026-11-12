@@ -166,6 +166,5 @@ in
 
   # Slash commands, and the lenses and language contexts they read
   home.file.".claude/commands/tt".source = ./commands;
-  home.file.".claude/tt/pov".source = ./pov;
-  home.file.".claude/tt/mod".source = ./mod;
+  home.file.".claude/tt".source = ./reference;
 }

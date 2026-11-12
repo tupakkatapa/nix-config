@@ -7,7 +7,7 @@ You are conducting a code review across the lens dimensions inline (single agent
 
 **Read lens files lazily.** Don't load the whole panel into main context upfront — each lens file is a reference. When you reach a lens in §2, read the section you need (Identity → Symptoms → Dimensions → Output Schema), apply, move on. Skip lenses with no surface in this artefact entirely.
 
-**Escalate to subagent dispatch when:** (a) the diff is too large for one context, or (b) the artefact triggers most of the panel and reading every lens file inline would pollute the main context. In that case dispatch subagents in three stages: sequential `scope` → `arch`; parallel `compat`/`sec`/`reliability`/`perf`/`quality`/`testing`/`ux`/`ui`; final `docs` → `prose` → `style` (names = lens file names under `~/.claude/tt/pov/`). Each subagent reads only its own lens file; main context only sees the consolidated findings. Default to inline for small-to-medium diffs — cross-lens synthesis (scope cuts removing downstream concerns) is the value, and panel dispatch sacrifices it.
+**Escalate to subagent dispatch when:** (a) the diff is too large for one context, or (b) the artefact triggers most of the panel and reading every lens file inline would pollute the main context. In that case dispatch subagents in three stages: sequential `scope` → `architecture`; parallel `compatibility`/`security`/`reliability`/`performance`/`quality`/`testing`/`ux`/`ui`; final `documentation` → `prose` → `style` (names = lens file names under `~/.claude/tt/lenses/`). Each subagent reads only its own lens file; main context only sees the consolidated findings. Default to inline for small-to-medium diffs — cross-lens synthesis (scope cuts removing downstream concerns) is the value, and panel dispatch sacrifices it.
 
 ## 1. Clarify Scope
 Default: the current uncommitted diff; if the tree is clean, the unpushed commits. Only if neither applies or intent is ambiguous, ask the user to choose:
@@ -18,19 +18,19 @@ Default: the current uncommitted diff; if the tree is clean, the unpushed commit
 
 ## 2. Apply the Lens Panel (mode = review)
 
-Read each lens file (`~/.claude/tt/pov/<name>.md`) for the dimensions it owns, then apply them in this order. Each lens filters what the next inspects.
+Read each lens file (`~/.claude/tt/lenses/<name>.md`) for the dimensions it owns, then apply them in this order. Each lens filters what the next inspects.
 
 1. **`scope`** — cull gold-plating, premature abstraction, dead code, speculative configurability first.
-2. **`arch`** — module boundaries, dependency direction, data flow, layering.
-3. **`compat`** — only if a public surface or stored data changes: endpoints, fields, flags, options, exported functions, wire and on-disk formats.
-4. **`sec`** — trust boundaries, authn/authz, secrets, input validation. *(Skip only if no boundary is crossed.)*
+2. **`architecture`** — module boundaries, dependency direction, data flow, layering.
+3. **`compatibility`** — only if a public surface or stored data changes: endpoints, fields, flags, options, exported functions, wire and on-disk formats.
+4. **`security`** — trust boundaries, authn/authz, secrets, input validation. *(Skip only if no boundary is crossed.)*
 5. **`reliability`** — failure modes, idempotency, observability, recoverability.
-6. **`perf`** — only when a measurable concern exists; otherwise defer.
+6. **`performance`** — only when a measurable concern exists; otherwise defer.
 7. **`quality`** — duplication, naming, idiom, separation of concerns within module boundaries.
 8. **`testing`** — coverage of critical paths, edge cases, testability.
 9. **`ux`** — only if the change has a surface (CLI / API / config / GUI / TUI / library).
 10. **`ui`** — only if the change has a graphical surface.
-11. **`docs`** — README, tutorials, how-tos, reference, changelog, runbooks, ADRs.
+11. **`documentation`** — README, tutorials, how-tos, reference, changelog, runbooks, ADRs.
 12. **`prose`** — only if human-facing text changes: docs, changelog, messages shown to users.
 13. **`style`** — formatting, naming consistency, comment discipline, ordering. *(Runs last; only one lens can be last.)*
 
@@ -41,7 +41,7 @@ For each finding, record:
 - **Recommended fix** — concrete.
 - **Confidence** — High / Medium / Low.
 
-Resolve conflicting findings by preferring the more fundamental concern: scope → arch → compat → sec → reliability → perf → quality → testing → ux → ui → docs → prose → style.
+Resolve conflicting findings by preferring the more fundamental concern: scope → architecture → compatibility → security → reliability → performance → quality → testing → ux → ui → documentation → prose → style.
 
 ## 3. Disposition
 

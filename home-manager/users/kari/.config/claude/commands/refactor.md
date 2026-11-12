@@ -33,7 +33,7 @@ Typically relevant for refactor:
 
 - **`quality`** — Fowler's catalogue. Identify smells: duplicated code, long function, large class, long parameter list, feature envy, primitive obsession, switch statements, divergent change, shotgun surgery. For each, name the canonical refactoring (Extract Function, Replace Magic Literal, Replace Conditional with Polymorphism, Move Function, etc.).
 - **`scope`** — accidental complexity to remove outright: dead code, unused abstractions, single-call helpers, configuration knobs no caller overrides, premature generics with one instantiation. Deletion is the cheapest refactoring.
-- **`arch`** — module boundaries to redraw: a function reaching past its layer, a circular import, a class with two reasons to change. Apply Parnas info-hiding and Ousterhout deep modules: the change makes the interface smaller relative to the implementation.
+- **`architecture`** — module boundaries to redraw: a function reaching past its layer, a circular import, a class with two reasons to change. Apply Parnas info-hiding and Ousterhout deep modules: the change makes the interface smaller relative to the implementation.
 - **`testing`** — testability as a structural concern: break dependencies (Feathers seams), inject collaborators, expose pure cores from impure shells.
 - **`style`** — formatting, naming, ordering, comment discipline. Often the cheapest first pass; runs last so it doesn't conflict with bigger structural moves.
 

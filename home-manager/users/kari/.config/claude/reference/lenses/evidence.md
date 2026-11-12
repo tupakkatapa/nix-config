@@ -96,4 +96,4 @@ This role describes a lens. The orchestrating agenda decides the mode. See `~/.c
 Default when invoked solo: produce a claim-by-claim findings list; run the checks that are cheap and read-only (open the cited file, rerun the command, fetch the URL) and report their output; list what could not be checked; do not rewrite the document's conclusions.
 
 ## Handoff
-Return findings and the checks run with their output. Coordinate with `testing` on repro tests that turn a claim into a check, with `reliability` and `perf` on measurements, with `docs` on how sources and qualifiers are presented.
+Return findings and the checks run with their output. Coordinate with `testing` on repro tests that turn a claim into a check, with `reliability` and `performance` on measurements, with `documentation` on how sources and qualifiers are presented.

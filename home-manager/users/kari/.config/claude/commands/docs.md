@@ -3,10 +3,10 @@ description: "Write or restructure documentation as the main task: README, tutor
 argument-hint: "[what to document]"
 ---
 
-You are writing documentation as the primary task — a new tutorial, how-to, reference page, explanation, runbook, ADR, or changelog entry — rather than auditing docs as a side-effect of review. Substantive guidance comes from the `docs` lens applied in **authoring** mode, anchored by the Diátaxis framework (Procida).
+You are writing documentation as the primary task — a new tutorial, how-to, reference page, explanation, runbook, ADR, or changelog entry — rather than auditing docs as a side-effect of review. Substantive guidance comes from the `documentation` lens applied in **authoring** mode, anchored by the Diátaxis framework (Procida).
 
 Distinct from:
-- the `docs` lens — dimensional viewpoint, applied *during* review/planning/diagnosis. This agenda is what you reach for when docs are the deliverable.
+- the `documentation` lens — dimensional viewpoint, applied *during* review/planning/diagnosis. This agenda is what you reach for when docs are the deliverable.
 - an inline explanation — answered in-conversation, evaporates with it. This agenda produces durable files in the repo.
 
 ## 1. Clarify Subject and Audience
@@ -49,9 +49,9 @@ A single document should serve **one** mode. If the subject needs more than one,
 
 ## 4. Apply the Lens Panel (mode = authoring)
 
-Read lens files lazily — `~/.claude/tt/pov/docs.md` Dimensions section for the primary lens; supporting lenses only when their surface applies. Consult:
+Read lens files lazily — `~/.claude/tt/lenses/documentation.md` Dimensions section for the primary lens; supporting lenses only when their surface applies. Consult:
 
-- **`docs`** — Diátaxis discipline, fact-check against implementation, audience fit, completeness for the chosen mode.
+- **`documentation`** — Diátaxis discipline, fact-check against implementation, audience fit, completeness for the chosen mode.
 - **`scope`** — does this doc say only what is essential to the reader? Cut paragraphs that gold-plate, repeat code comments, or document obvious behaviour.
 - **`ux`** — the doc is a surface. Apply Nielsen heuristics to it: status visibility (TOC, breadcrumbs), error recovery (troubleshooting), consistency, minimalism.
 - **`prose`** — sentence discipline. Conclusion first. Short sentences, active voice, one idea each, one word for one meaning. No filler, no throat-clearing introductions ("In this document we will discuss…"). Current state only, never the history of how it was reached.
