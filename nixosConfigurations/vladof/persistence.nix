@@ -23,6 +23,7 @@ in
   fileSystems = {
     "/home/kari/.BitwigStudio" = pool "@kari-bitwig";
     "/home/kari/.config/gh" = pool "@kari-gh";
+    "/home/kari/.config/herdr" = nvme "@kari-herdr";
     "/home/kari/.local/share/atuin" = pool "@kari-atuin";
     "/home/kari/.local/share/zoxide" = pool "@kari-zoxide";
     "/home/kari/.local/share/Steam" = nvme "@kari-steam";
@@ -151,6 +152,7 @@ in
     "Z /home/kari/.local/share/atuin    - kari kari -"
     "Z /home/kari/.local/share/zoxide   - kari kari -"
     "Z /home/kari/.config/gh            0700 kari kari -"
+    "Z /home/kari/.config/herdr         - kari kari -"
     "Z /home/kari/.claude/projects      - kari kari -"
     "d /home/kari/.local/share/Steam    755 kari kari -"
     "d /home/kari/Workspace             755 kari kari -"

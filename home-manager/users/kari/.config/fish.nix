@@ -9,7 +9,6 @@ let
   hasNeovim = config.programs.neovim.enable || config.programs.nixvim.enable;
   hasYazi = config.programs.yazi.enable;
   hasEza = hasPackage "eza";
-  hasTmux = config.programs.tmux.enable;
 in
 {
   programs.fish = {
@@ -84,7 +83,6 @@ in
       vim = mkIf hasNeovim "nvim";
       amimullvad = "curl https://am.i.mullvad.net/connected";
       kill-docker = "docker system reset --force";
-      claude = mkIf hasTmux "tmux new-session 'claude -c'";
     };
     functions = {
       fish_greeting = "";
@@ -93,9 +91,6 @@ in
       '';
       rbuidl = ''
         nixos-rebuild test --impure --ask-sudo-password --sudo --flake path:.#$argv[1] --target-host $argv[1]
-      '';
-      wrk = ''
-        ssh -t vladof exec fish -C (string escape -- "cd $argv")
       '';
     };
     interactiveShellInit =

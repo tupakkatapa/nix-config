@@ -12,8 +12,11 @@ let
   '';
 in
 {
-  # Cleanup orphaned Claude subagents and MCP servers which clog RAM
-  imports = [ (import ./cleanup.nix { inherit pkgs; }) ];
+  imports = [
+    # Cleanup orphaned Claude subagents and MCP servers which clog RAM
+    (import ./cleanup.nix { inherit pkgs; })
+    ./herdr.nix
+  ];
 
   programs.claude-code = {
     enable = true;
@@ -132,14 +135,7 @@ in
     grim
     slurp
     gh
-    herdr
   ];
-
-  # herdr agent multiplexer: gruvbox theme
-  xdg.configFile."herdr/config.toml".text = ''
-    [theme]
-    name = "gruvbox"
-  '';
 
   # Slash commands
   home.file.".claude/commands/tt".source = ./commands;

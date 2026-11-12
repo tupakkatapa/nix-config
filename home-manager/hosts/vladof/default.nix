@@ -135,6 +135,8 @@ in
 
   home.pointerCursor.size = 32;
 
+  programs.herdr.server.enable = true;
+
   # Couch launcher on the TV: bare compositor, every window fullscreen
   wayland.windowManager.sway = {
     enable = true;

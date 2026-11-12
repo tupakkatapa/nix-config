@@ -125,7 +125,11 @@ in
 
   # The couch session turns the pad into a keyboard and mouse through uinput
   hardware.uinput.enable = true;
-  users.users.${user}.extraGroups = [ "uinput" ];
+  users.users.${user} = {
+    extraGroups = [ "uinput" ];
+    # herdr's server outlives a restarted couch session
+    linger = true;
+  };
   services.udev.extraRules = ''
     # The keyboard dongle's power-key node counts as a joypad and takes RetroArch's port 1
     SUBSYSTEM=="input", ATTRS{name}=="*Nano Transceiver*System Control", ENV{ID_INPUT_JOYSTICK}=""

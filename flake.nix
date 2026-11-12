@@ -214,6 +214,7 @@
                     inputs.nixvim.homeModules.nixvim
                     inputs.nix-index-database.homeModules.nix-index
                     self.homeModules.claudeCode
+                    self.homeModules.herdr
                     {
                       programs.nix-index.enable = true;
                       programs.nix-index-database.comma.enable = true;
@@ -303,6 +304,7 @@
           # Home-manager modules
           homeModules = {
             claudeCode.imports = [ ./homeModules/claude-code.nix ];
+            herdr.imports = [ ./homeModules/herdr.nix ];
           };
         };
     };

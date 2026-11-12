@@ -26,7 +26,9 @@
     extraConfigLua = ''
       -- No WAYLAND_DISPLAY over SSH, so OSC 52 carries the yank up the
       -- terminal stream instead. tmux forwards SSH_CONNECTION, not SSH_TTY.
-      if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+      -- herdr hands OSC 52 to its attached client, but a server started by
+      -- systemd sees the host's WAYLAND_DISPLAY and no SSH variables.
+      if vim.env.SSH_TTY or vim.env.SSH_CONNECTION or vim.env.HERDR_ENV then
         local osc52 = require("vim.ui.clipboard.osc52")
         vim.g.clipboard = {
           name = "OSC 52",

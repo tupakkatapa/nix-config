@@ -16,6 +16,8 @@ in
     "eDP-1, preferred, 3440x0, 1, mirror, desc:${dock}"
   ];
 
+  programs.herdr.machines = [ "vladof" ];
+
   xdg.configFile."pipewire-out-switcher/devices.json".text = builtins.toJSON {
     speakers = "alsa_output.pci-*.HiFi__HDMI*__sink";
     headset = "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo";
