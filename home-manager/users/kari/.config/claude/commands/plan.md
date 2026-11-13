@@ -25,7 +25,7 @@ Capture: success criteria, constraints, non-goals, deadlines, stakeholders. A pl
 - Analyse the existing codebase: architecture, patterns, conventions, dependencies.
 - Identify where and how the proposed work integrates.
 - Note existing utilities, base classes, or patterns to reuse — and anti-patterns to avoid.
-- If the planning subject is unfamiliar territory, dispatch an Explore subagent before continuing.
+- If the planning subject is unfamiliar territory, dispatch a `scout` agent before continuing.
 
 ## 3. Consult Language Context
 

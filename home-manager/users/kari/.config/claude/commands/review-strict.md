@@ -36,9 +36,9 @@ Pass the chosen scope verbatim to every lens subagent below, along with `mode = 
 
 ## 2. Dispatch the Lens Panel
 
-Each subagent prompt includes:
+Dispatch each lens as a `lens` agent (`model: sonnet` for `style`, `prose` and `documentation`). Each subagent prompt includes:
 - The artefact under review (paths, diff, plan file — whatever scope was chosen).
-- The full text of the corresponding `~/.claude/tt/lenses/<name>.md` file.
+- The path of its lens file, `~/.claude/tt/lenses/<name>.md`; the agent reads it, the prompt does not carry its text.
 - This contract: "Read your lens file in full. Apply every dimension. Report findings using the Output Schema verbatim. Cite the principle/symptom each finding derives from. If your lens has no surface in this artefact, return one explicit 'no findings: <one-line reason>' statement — the *reason* must reference what you inspected to reach that conclusion."
 
 ### Stage 1 — Sequential (each filters the next)

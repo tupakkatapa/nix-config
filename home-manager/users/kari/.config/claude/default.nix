@@ -42,14 +42,15 @@ in
   programs.claude-code = {
     enable = true;
     skills = ./skills;
+    agentsDir = ./agents;
 
     # Mounted under `/tt:*` below.
     commands = { };
 
     # Defaults that /model and /effort may change; the change survives a rebuild
     mutableSettings = {
-      model = "opus[1m]";
-      effortLevel = "xhigh";
+      model = "fable";
+      effortLevel = "medium";
     };
 
     settings = {

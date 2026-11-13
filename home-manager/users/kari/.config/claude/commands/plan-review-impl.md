@@ -30,7 +30,7 @@ Disposition, without asking:
 - **Low / Nit** → note under "Deferred".
 
 ## 3. Implement
-Run `/tt:impl` on the amended plan. A minor deviation (same intent, different mechanics) gets a one-line amendment in the plan file and the work continues.
+Run `/tt:impl` on the amended plan; it hands the work to the `implementer` agent unless the change is small. A minor deviation (same intent, different mechanics) gets a one-line amendment in the plan file and the work continues.
 
 ## 4. Verify
 - Each success criterion is demonstrably met, by the means the plan named.

@@ -11,7 +11,19 @@
 
 Agendas and actions are slash commands. Lenses and contexts are plain reference files that agendas (and their subagents) read by path, a section at a time; they sit outside `commands/` so they stay out of the command listing. This README sits outside `commands/` for the same reason: every `.md` inside `commands/` becomes a command.
 
-Skills live in `skills/<name>/SKILL.md` (`gh-recipes`, `subagent-execution`, `yt-clip`) and are invoked through the `Skill` tool. `default.nix` installs all of it under `~/.claude`.
+Skills live in `skills/<name>/SKILL.md` (`gh-recipes`, `subagent-execution`, `yt-clip`) and are invoked through the `Skill` tool. Agents live in `agents/<name>.md` (`implementer`, `lens`, `scout`, `chore`); each names its own model and effort, and `CLAUDE.md` says which work goes to which. `default.nix` installs all of it under `~/.claude`.
+
+## Models and effort
+
+Each file says how it runs, in its own frontmatter; `CLAUDE.md` ("Who does what") says which work goes where.
+
+| Kind | Runs | Frontmatter |
+|------|------|-------------|
+| Agenda or action that needs the conversation | in the main session, on its model and effort | none; a step with no judgement in it (`commit`, `bump`) pins `effort: low` |
+| Command or skill that needs only its arguments and the repository | forked into a subagent; the summary comes back | `context: fork`, `model`, `effort` |
+| Agent | when an agenda or the main session dispatches it | `model`, `effort`, and `tools` when it is read-only |
+
+List the whole assignment: `grep -rH '^\(model\|effort\|context\|tools\):' agents commands skills/*/SKILL.md`.
 
 ## Composition
 

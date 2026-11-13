@@ -15,7 +15,7 @@ Distinct from:
 
 Read the user's brief and classify the research target. The target type drives investigation tooling; the lens panel is shared.
 
-- **Local codebase** — a path that resolves on disk (this repo, another local checkout, a subdirectory). Investigation via Read / Grep / Explore subagent and `git log` / `git blame`.
+- **Local codebase** — a path that resolves on disk (this repo, another local checkout, a subdirectory). Investigation via Read / Grep / `scout` subagent and `git log` / `git blame`.
 - **Remote git repository** — a forge URL (`https://github.com/...`) or `owner/repo` shorthand. Investigation via `gh repo view`, `gh api`, optional shallow clone into `/tmp/research/<slug>`.
 - **Topic / library / concept** — no concrete artefact: a question, a library name, a protocol, a comparative survey. Investigation via `context7` (library docs), `nixos` MCP (packages/options), `searxng` (general web / `web_url_read` for full pages), authoritative specs.
 
@@ -41,7 +41,7 @@ Cite as you go — URL, `file:line`, commit SHA. A brief without citations is a 
 
 **Local codebase.**
 - Map directory shape (`tree`, `ls -R`) before opening files. Shape constrains everything that follows.
-- Dispatch an `Explore` subagent for broad mapping; reserve the main context for synthesis.
+- Dispatch a `scout` agent for broad mapping; reserve the main context for synthesis.
 - Trace entry points and data flow; note conventions, key abstractions, integration seams.
 - Read commit history (`git log`, `git blame`) where the *why* behind a decision matters more than the *what*.
 

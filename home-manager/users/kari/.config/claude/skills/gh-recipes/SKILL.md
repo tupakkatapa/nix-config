@@ -1,6 +1,9 @@
 ---
 name: gh-recipes
 description: Find how other people have configured a thing on GitHub. Invoke when the user wants prior art for a NixOS service / module / flake input / language toolchain / dotfile pattern — anything where "show me a working example" beats reading docs. Searches code across public repos, filters for relevant files, surfaces 3-5 representative examples with patterns and gotchas distilled.
+model: sonnet
+effort: medium
+context: fork
 ---
 
 # GitHub Recipe Discovery

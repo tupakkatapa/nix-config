@@ -55,12 +55,31 @@ Capability → tool. Reach for these before improvising:
 | Library/framework docs | context7 MCP; web search when it is not connected |
 | NixOS packages/options | nixos MCP |
 | Web search | searxng MCP |
-| Deep codebase search | Explore subagent (read-only, fast) |
+| Deep codebase search | `scout` agent (read-only) |
 | 3+ independent tasks | parallel subagents, dispatched in one message |
+
+### Who does what
+
+Judgement stays in the main session; volume goes to the cheapest model that does it well. Every agent (`~/.claude/agents/`), command and skill names its own `model` and `effort` in its frontmatter, and nowhere else.
+
+| Work | Who |
+|---|---|
+| Conversation, plans, reviews, diagnosis, decisions, the final verdict | main session |
+| Implementing an approved plan or a complete brief | `implementer` |
+| One lens of a strict or large review | `lens` (pass `model: sonnet` for `style`, `prose`, `documentation`) |
+| Search, mapping, log and transcript mining | `scout` |
+| Mechanical edits stated in full: renames, doc and changelog sync | `chore` |
+| A command or skill that needs nothing from the conversation | itself, forked (`context: fork`) |
+
+- **Small work stays inline.** One file or about 50 lines: a handoff costs more than it saves.
+- **The brief carries the judgement.** Plan file path, constraints, how to verify, what to report. An agent knows nothing else.
+- **Review what comes back.** Read the diff of every delegated change before reporting it done; an agent's report is a claim, not evidence.
+- **Never delegate** a decision on an open question, a review verdict, or anything that needs this conversation's context.
+- **An inline command never sets `model`.** A model switch re-reads the whole conversation without its cache; a command that suits a cheaper model runs forked instead. The session's effort is the dial for judgement; only a command with no judgement in it pins `effort: low`.
 
 Subagents cannot ask questions, so give full context upfront:
 - Fan-out scale: simple 1–2, medium 3–4, complex 5–6.
-- Big-diff multi-lens review → one subagent per lens (saves main context).
+- Big-diff multi-lens review → one `lens` agent per lens (saves main context).
 - A blocked subagent returns: `Problem / Attempted / Solution / Alternative / Partial`.
 
 ## Skills (superpowers)

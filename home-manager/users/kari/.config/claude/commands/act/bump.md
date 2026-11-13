@@ -1,6 +1,7 @@
 ---
 description: "Bump the version and cut the release heading in the changelog."
 argument-hint: "[major | minor | patch | version]"
+effort: low
 ---
 
 You are bumping the version for a release and cutting its changelog heading. For changelog *content* (consolidating, wording, what to include), this delegates to `/tt:act:changelog` — do not restate those rules here. If the intent is only to tidy/update the changelog **without** a version bump, use `/tt:act:changelog` instead.

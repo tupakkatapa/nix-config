@@ -1,5 +1,6 @@
 ---
 description: "Commit the current changes: amend when the last commit is unpushed and yours, else a new commit. Never pushes."
+effort: low
 ---
 
 You are preparing a commit for the current changes. If the tree is clean, say so and stop.

@@ -6,7 +6,7 @@ argument-hint: "[days, default 30]"
 You are reviewing the working setup against real use and proposing changes to it. Read-only until the user accepts a proposal.
 
 ## 1. Gather
-Dispatch one subagent to mine `~/.claude/projects/*/*.jsonl` (main-thread sessions in the period; stream with `jq` or a script, never read transcripts whole). It returns numbers, not transcripts:
+Dispatch one `scout` agent to mine `~/.claude/projects/*/*.jsonl` (main-thread sessions in the period; stream with `jq` or a script, never read transcripts whole). It returns numbers, not transcripts:
 - Invocations per command and per skill; commands with zero use.
 - Chains: commands named together or back to back.
 - Free-text prompts typed again and again, clustered, with counts and two verbatim examples each.

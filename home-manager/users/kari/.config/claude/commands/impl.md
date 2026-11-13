@@ -15,7 +15,12 @@ Distinct from:
 - **If no plan exists and the work is non-trivial** (new feature, multi-file change, architectural decision, unclear requirements, anything that crosses module boundaries), **run `/tt:plan` first**, then continue here with its plan. Do not improvise a plan inside this agenda.
 - **If the work is trivial** (typo, single-line fix, mechanical change, user-supplied detailed specs that obviate planning), proceed without a plan — **state the trivial-work classification and what you will do in one line, then proceed without waiting for acknowledgement** (the user interrupts if wrong). If the scope grows mid-execution, stop and route to `/tt:plan`.
 
-## 2. Consult Language Context
+## 2. Who Executes
+- **Main session, work above the inline threshold of `~/.claude/CLAUDE.md`:** dispatch the `implementer` agent with the plan file path, the constraints the plan does not state (shared tree, what must not be touched) and the report you need. When it returns, read the diff, run the checks of section 6 yourself, then continue at section 7.
+- **Main session, small work:** execute it yourself from section 3.
+- **Subagent:** execute directly; do not dispatch.
+
+## 3. Consult Language Context
 Detect the project's primary language(s) and pull the matching context file(s) so house-style preferences (linters, formatters, packaging idiom, idiom expectations) are honoured throughout execution:
 
 - Nix-only or Nix as substrate → `~/.claude/tt/languages/nix.md`.
@@ -25,7 +30,7 @@ Detect the project's primary language(s) and pull the matching context file(s) s
 
 Per-project `./CLAUDE.md` overrides anything in a context file; honour the override.
 
-## 3. Implementation
+## 4. Implementation
 Execute step-by-step against the plan (or the task description, for trivial work):
 - Complete each step fully before moving to the next.
 - After each step, verify the result locally (compile, run, test the affected surface).
@@ -34,7 +39,7 @@ Execute step-by-step against the plan (or the task description, for trivial work
 
 If you discover the plan is wrong (assumption broken, blocked by missing context, surfaces a bug), stop and return to `/tt:plan` rather than patch over it.
 
-## 4. Testing
+## 5. Testing
 Implement tests covering:
 - **Positive cases** — correct behaviour with valid inputs and expected usage.
 - **Negative cases** — invalid inputs, edge cases, error conditions; what should fail, fails gracefully.
@@ -43,14 +48,14 @@ Adapt to the project's testing tools and conventions. If no test infrastructure 
 
 **Two hats for tests** (Beck): a new test file, fixture or harness is structural; cases added to an existing harness ride with the behaviour they cover. Do not commit here: `/tt:act:commit` splits structural from behavioural when it commits.
 
-## 5. Run Automated Checks
+## 6. Run Automated Checks
 Run pre-commit hooks (if configured) and the tests that cover the changed code; the full suite is CI's. Fix failures this session caused; report failures that were already there.
 
-## 6. Summary
+## 7. Summary
 - Steps completed against the plan.
 - Deviations and their rationale.
 - Tests added.
 - Follow-ups deferred (link to plan or open issues).
 
-## 7. Handoff
+## 8. Handoff
 Next: `/tt:ship`.

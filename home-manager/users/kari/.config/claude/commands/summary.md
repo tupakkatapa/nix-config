@@ -1,6 +1,9 @@
 ---
 description: "Read-only brief of what a branch changed: endpoints, fields, client-visible behaviour, key implementation notes."
 argument-hint: "[branch | range]"
+effort: medium
+model: sonnet
+context: fork
 ---
 
 You produce a **high-level brief of what a branch changed** — the things a reviewer or client should know before reading the diff. Read-only: this analyses, it does not judge, gate, or modify. Answer "what's new and what behaves differently", not "is it good" (that's `/tt:review`) or "is it safe to merge" (that's `/tt:finish`).

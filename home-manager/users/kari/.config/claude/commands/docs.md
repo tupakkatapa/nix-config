@@ -83,7 +83,7 @@ For explanation:
 
 - Re-run any commands or code blocks in the doc against a clean environment.
 - Fact-check claims about behaviour against current code (`grep`, run tests).
-- Cold-reader check: give the document, and nothing else, to a subagent with fresh context and ask what it understood and what it could not do. Fix what it got wrong.
+- Cold-reader check: give the document, and nothing else, to a `scout` agent and ask what it understood and what it could not do. Fix what it got wrong.
 - Check links resolve. Check anchors. Check code blocks parse.
 
 ## 8. Next
