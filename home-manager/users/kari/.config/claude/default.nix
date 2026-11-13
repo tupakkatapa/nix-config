@@ -3,8 +3,6 @@ let
   git = "${pkgs.git}/bin/git";
   permissions = import ./permissions.nix;
 
-  curl = "${pkgs.curl}/bin/curl -s -m 5";
-
   # Starts an npm-published MCP server from a per-version cache. The install lands in a
   # temporary directory and is renamed into place, so an interrupted or concurrent first
   # start cannot leave a half-installed server behind.
@@ -26,10 +24,9 @@ let
     exec node "$root/$bin" "$@"
   '';
 
-  # Phone push while the latest message on the claude-afk topic is "on" (toggled from maliwan's waybar)
+  # Inside herdr the popup would land on the server's display; the herdr Matrix bot reaches the owner instead
   notify = message: ''
-    ${pkgs.libnotify}/bin/notify-send -u normal 'Claude Code' '${message}' 2>/dev/null || true
-    ${curl} 'https://ntfy.coditon.com/claude-afk/json?poll=1&since=latest' | grep -q '"message":"on"' && ${curl} -H "Title: Claude Code: ''${PWD##*/}" -H 'Tags: robot' -H 'Icon: https://www.anthropic.com/favicon.ico' -d '${message}' https://ntfy.coditon.com/claude >/dev/null || true
+    [ -n "''${HERDR_ENV:-}" ] || ${pkgs.libnotify}/bin/notify-send -u normal 'Claude Code' '${message}' 2>/dev/null || true
   '';
 in
 {

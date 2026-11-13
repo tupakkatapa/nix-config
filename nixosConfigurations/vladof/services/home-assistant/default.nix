@@ -228,6 +228,7 @@ in
       "philips_js"
       "timer" # temporary-scene countdowns
       "scene" # snapshot + restore prior state
+      "mcp_server" # /api/mcp, for the assistant
     ];
 
     lovelaceConfig = dashboard;

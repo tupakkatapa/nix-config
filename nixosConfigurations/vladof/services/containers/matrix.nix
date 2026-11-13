@@ -37,6 +37,10 @@ in
         hostPath = config.age.secrets.matrix-env.path;
         isReadOnly = true;
       };
+      "/etc/herdr-matrix-env" = {
+        hostPath = config.age.secrets.herdr-matrix-env.path;
+        isReadOnly = true;
+      };
     }
     // lib.mapAttrs'
       (name: _: lib.nameValuePair "/var/lib/mautrix-${name}" {
@@ -56,12 +60,16 @@ in
           server_name = domain;
           address = [ "0.0.0.0" ];
           port = [ containerConfig.matrix.port ];
-          allow_registration = true;
           appservice_dir = "/run/tuwunel/appservices";
           # Tokens come from TUWUNEL_APPSERVICE__DOUBLEPUPPET__{AS,HS}_TOKEN
           appservice.doublepuppet = {
             sender_localpart = "doublepuppet";
             users = [{ regex = "@.*:${lib.escapeRegex domain}"; }];
+          };
+          # herdr's Matrix bot on the host; tokens from TUWUNEL_APPSERVICE__HERDR__{AS,HS}_TOKEN
+          appservice.herdr = {
+            sender_localpart = "herdr";
+            users = [{ regex = "@herdr(_[a-z0-9._=-]+)?:${lib.escapeRegex domain}"; exclusive = true; }];
           };
         };
       };
@@ -71,7 +79,7 @@ in
         serviceConfig = {
           # DynamicUser can't own the bind-mounted state dir
           DynamicUser = lib.mkForce false;
-          EnvironmentFile = "/etc/matrix-env";
+          EnvironmentFile = [ "/etc/matrix-env" "/etc/herdr-matrix-env" ];
           # Runs as root to read the bridges' registrations; `cp -P` keeps a
           # symlink a symlink, so a bridge can't make root read another file
           ExecStartPre = "+${pkgs.writeShellScript "tuwunel-appservices" ''

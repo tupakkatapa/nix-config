@@ -38,6 +38,8 @@
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     herdr.inputs.nixpkgs.follows = "nixpkgs";
     herdr.url = "github:ogulcancelik/herdr";
+    herdr-matrix.inputs.nixpkgs.follows = "nixpkgs";
+    herdr-matrix.url = "github:tupakkatapa/herdr-matrix";
     kaloriina.inputs.nixpkgs.follows = "nixpkgs";
     kaloriina.url = "github:tupakkatapa/kaloriina";
     llm-agents.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -92,6 +94,7 @@
               claude-code
               ping-sweep
               herdr
+              herdr-matrix
               ;
             # Not a single derivation
             claude-plugins = pkgs.callPackage ./packages/claude-plugins { };
@@ -145,6 +148,7 @@
             inherit (inputs'.nixie.packages) refind-generate;
             inherit (inputs'.ping-sweep.packages) ping-sweep;
             inherit (inputs'.herdr.packages) herdr;
+            inherit (inputs'.herdr-matrix.packages) herdr-matrix;
             inherit (inputs'.llm-agents.packages) claude-code codex;
           }
           // (with flake.nixosConfigurations; {
@@ -215,6 +219,7 @@
                     inputs.nix-index-database.homeModules.nix-index
                     self.homeModules.claudeCode
                     self.homeModules.herdr
+                    inputs.herdr-matrix.homeModules.default
                     {
                       programs.nix-index.enable = true;
                       programs.nix-index-database.comma.enable = true;

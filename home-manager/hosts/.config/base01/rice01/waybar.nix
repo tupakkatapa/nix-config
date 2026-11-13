@@ -15,22 +15,6 @@ let
   caltui = "${pkgs.caltui}/bin/caltui";
   ddc-brightness = "${pkgs.monitor-adjust}/bin/ddc-brightness";
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
-
-  # Latest message on the topic is the AFK state, read by Claude Code hooks on every host
-  curl = "${pkgs.curl}/bin/curl -s -m 5";
-  claudeAfkTopic = "https://ntfy.coditon.com/claude-afk";
-  claude-afk-status = pkgs.writeShellScript "claude-afk-status" ''
-    ${curl} '${claudeAfkTopic}/json?poll=1&since=latest' | grep -q '"message":"on"'
-  '';
-  claude-afk-toggle = pkgs.writeShellScript "claude-afk-toggle" ''
-    if ${claude-afk-status}; then
-      ${curl} -d off '${claudeAfkTopic}' >/dev/null
-    else
-      ${curl} -d on '${claudeAfkTopic}' >/dev/null
-      ${curl} -H 'Title: AFK Mode' -H 'Tags: robot' -H 'Icon: https://www.anthropic.com/favicon.ico' -d 'Notifications enabled' https://ntfy.coditon.com/claude >/dev/null
-    fi
-    ${pkgs.procps}/bin/pkill -RTMIN+9 waybar
-  '';
 in
 {
   programs.waybar = {
@@ -57,7 +41,6 @@ in
       modules-right = [
         "tray"
         "idle_inhibitor"
-        "custom/claude-afk"
         "custom/ping-sweep"
         "group/hardware"
         "group/connectivity"
@@ -250,14 +233,6 @@ in
         tooltip = false;
       };
 
-      "custom/claude-afk" = {
-        exec = "${claude-afk-status} && echo '󰂞 afk' || echo '󰂛 afk'";
-        interval = 30;
-        signal = 9;
-        on-click = "${claude-afk-toggle}";
-        tooltip = false;
-      };
-
       memory = {
         format = "󰍛 {used:0.0f}/{total:0.0f} GiB";
         tooltip-format = "{used:0.1f}/{total:0.1f} GiB used\nSwap: {swapUsed:0.1f}/{swapTotal:0.1f} GiB";
@@ -310,7 +285,6 @@ in
       #custom-hostname,
       #custom-ping-sweep,
       #idle_inhibitor,
-      #custom-claude-afk,
       #window,
       #hardware,
       #connectivity {

@@ -52,6 +52,12 @@ in
     symlink = false;
   };
 
+  # Home Assistant long-lived token for the assistant's MCP client
+  age.secrets.hass-mcp-token = {
+    rekeyFile = ./secrets/hass-mcp-token.age;
+    owner = "kari";
+  };
+
   imports = [
     (import ./services extendedArgs)
     (import ./persistence.nix extendedArgs)

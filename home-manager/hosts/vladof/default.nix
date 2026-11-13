@@ -1,4 +1,5 @@
 { config
+, osConfig
 , lib
 , pkgs
 , customLib
@@ -9,6 +10,10 @@ let
   colors = customLib.colors.${THEME};
   swayosd = "${config.services.swayosd.package}/bin/swayosd-client";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
+  mascot = name: colour: pkgs.runCommand name { nativeBuildInputs = [ pkgs.python3 ]; } ''
+    python3 ${./claude-mascot.py} $out ${colour}
+    python3 -c 'import struct, sys; d = open(sys.argv[1], "rb").read(24); assert d[:8] == b"\x89PNG\r\n\x1a\n" and struct.unpack(">II", d[16:24]) == (512, 512)' $out
+  '';
 
   # Runtime-module apps get installed (green), building (yellow) and missing (red) variants
   icons = pkgs.runCommand "couch-menu-icons" { nativeBuildInputs = [ pkgs.librsvg pkgs.imagemagick ]; } ''
@@ -135,7 +140,29 @@ in
 
   home.pointerCursor.size = 32;
 
-  programs.herdr.server.enable = true;
+  programs.herdr = {
+    server.enable = true;
+    matrix = {
+      enable = true;
+      homeserver = "https://matrix.coditon.com";
+      owner = "@tupakkatapa:coditon.com";
+      displayName = "Claude";
+      avatar = mascot "claude-mascot.png" "d77757";
+      spawnAvatar = mascot "claude-mascot-blue.png" "4a90d9";
+      environmentFile = osConfig.age.secrets.herdr-matrix-env.path;
+      transcribe = {
+        model = {
+          url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bin";
+          hash = "sha256-G+OpsgY4Z7k35k4ux0gzZKeZF+FX+pjF2UtcH//qmHs=";
+        };
+        # Detection mislabels accented English as Finnish
+        language = "en";
+      };
+    };
+  };
+
+  # The path of a decrypted secret stays the same; a new token must restart the bot
+  systemd.user.services.herdr-matrix.Unit.X-Restart-Triggers = [ (builtins.hashFile "sha256" osConfig.age.secrets.herdr-matrix-env.file) ];
 
   # Couch launcher on the TV: bare compositor, every window fullscreen
   wayland.windowManager.sway = {

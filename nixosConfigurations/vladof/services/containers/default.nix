@@ -84,6 +84,18 @@ in
   age.secrets = {
     "vaultwarden-env".rekeyFile = ../../secrets/vaultwarden-env.age;
     "matrix-env".rekeyFile = ../../secrets/matrix-env.age;
+    # The herdr bot is a Tuwunel appservice; its user service reads the same file
+    "herdr-matrix-env" = {
+      rekeyFile = ../../secrets/herdr-matrix-env.age;
+      owner = "kari";
+      mode = "0400";
+      generator.script = { pkgs, ... }: ''
+        token=$(${pkgs.openssl}/bin/openssl rand -hex 32)
+        echo "TUWUNEL_APPSERVICE__HERDR__AS_TOKEN=$token"
+        echo "TUWUNEL_APPSERVICE__HERDR__HS_TOKEN=$(${pkgs.openssl}/bin/openssl rand -hex 32)"
+        echo "HERDR_MATRIX_TOKEN=$token"
+      '';
+    };
     "kavita-token".rekeyFile = ../../secrets/kavita-token.age;
     "searx-env".rekeyFile = ../../secrets/searx-env.age;
     "transmission-creds" = {
@@ -100,16 +112,16 @@ in
 
   # Bind mounts pin the inode at start, agenix drops the old generation on switch
   systemd.services = lib.mapAttrs'
-    (name: secretFile: lib.nameValuePair "container@${name}" {
-      restartTriggers = [ secretFile ];
+    (name: secrets: lib.nameValuePair "container@${name}" {
+      restartTriggers = map (secret: config.age.secrets.${secret}.file) secrets;
     })
     {
-      matrix = config.age.secrets.matrix-env.file;
-      kavita = config.age.secrets.kavita-token.file;
-      radicale = config.age.secrets.radicale-admin-pass.file;
-      searx = config.age.secrets.searx-env.file;
-      transmission = config.age.secrets.transmission-creds.file;
-      vaultwarden = config.age.secrets.vaultwarden-env.file;
+      matrix = [ "matrix-env" "herdr-matrix-env" ];
+      kavita = [ "kavita-token" ];
+      radicale = [ "radicale-admin-pass" ];
+      searx = [ "searx-env" ];
+      transmission = [ "transmission-creds" ];
+      vaultwarden = [ "vaultwarden-env" ];
     };
 
   # Host networking for all containers
