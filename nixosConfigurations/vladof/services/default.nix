@@ -202,6 +202,7 @@ in
     (import ./containers { inherit pkgs lib config domain dataDir containerConfig containerSubnet inputs unstable; })
     (import ./home-assistant { inherit dataDir; haConfig = serviceConfig.home-assistant; })
     (import ./harmonia.nix { inherit config; })
+    ./music.nix
   ];
 
   services.monitoring = {

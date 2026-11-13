@@ -229,6 +229,8 @@ in
       "timer" # temporary-scene countdowns
       "scene" # snapshot + restore prior state
       "mcp_server" # /api/mcp, for the assistant
+      "mpd"
+      "snapcast"
     ];
 
     lovelaceConfig = dashboard;

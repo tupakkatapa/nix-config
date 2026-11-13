@@ -18,6 +18,20 @@ in
 
   programs.herdr.machines = [ "vladof" ];
 
+  # Plays vladof's MPD through the current output; reconnects by itself while away from home
+  systemd.user.services.snapclient = {
+    Unit = {
+      Description = "Snapcast client for vladof's MPD";
+      After = [ "pipewire.service" ];
+    };
+    Service = {
+      ExecStart = "${pkgs.snapcast}/bin/snapclient --host 10.42.0.8 --hostID maliwan --player pipewire";
+      Restart = "always";
+      RestartSec = 10;
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
+
   xdg.configFile."pipewire-out-switcher/devices.json".text = builtins.toJSON {
     speakers = "alsa_output.pci-*.HiFi__HDMI*__sink";
     headset = "alsa_output.usb-Corsair_CORSAIR_VIRTUOSO_XT_Wireless_Gaming_Receiver_16af0ba8000200da-00.analog-stereo";
