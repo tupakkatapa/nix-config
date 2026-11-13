@@ -130,7 +130,13 @@
 
   # Prompt every time, in auto mode too
   ask = [
-    "Bash(rm:*)"
+    "Bash(rm -r:*)"
+    "Bash(rm -R:*)"
+    "Bash(rm -f:*)"
+    "Bash(rm --recursive:*)"
+    "Bash(rm --force:*)"
+    "Bash(rm -v:*)"
+    "Bash(rm -d:*)"
     "Bash(git push:*)"
     "Bash(git reset --hard:*)"
     "Bash(git clean:*)"
