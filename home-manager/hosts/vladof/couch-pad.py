@@ -100,8 +100,9 @@ def mode_of(sway):
         return MENU, None
     try:
         with open(f"/proc/{focused.pid}/cgroup") as cgroup:
-            if any(scope in cgroup.read() for scope in GAMES):
-                return GAME, focused.app_id
+            scopes = cgroup.read()
+        if any(scope in scopes for scope in GAMES):
+            return GAME, focused.app_id
     except OSError:
         pass
     return APP, focused.app_id
