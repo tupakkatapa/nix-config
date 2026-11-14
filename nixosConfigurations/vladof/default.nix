@@ -140,6 +140,9 @@ in
     # The keyboard dongle's power-key node counts as a joypad and takes RetroArch's port 1
     SUBSYSTEM=="input", ATTRS{name}=="*Nano Transceiver*System Control", ENV{ID_INPUT_JOYSTICK}=""
     SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_INPUT_JOYSTICK}=="1", ATTRS{id/vendor}=="045e", SYMLINK+="input/couch-pad-%k", TAG+="systemd", ENV{SYSTEMD_USER_WANTS}="couch-pad@%k.service"
+    # Steam reads the Elite 2's hidraw node as an Xbox 360 pad and gets no input through xpadneo; without access it uses the evdev node.
+    # Steam's rules tag it uaccess, and a removed tag still counts; on a seat with no session, the node gets no ACL
+    KERNEL=="hidraw*", KERNELS=="*045E:0B22*", ENV{ID_SEAT}="seat-none"
   '';
 
   # The couch session makes the pad a mouse itself, outside the games, and

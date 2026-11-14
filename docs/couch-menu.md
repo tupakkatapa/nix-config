@@ -34,7 +34,8 @@ The pad follows what is on screen. A game (RetroArch, Steam) gets the pad to its
 
 | Where | Control | Action |
 |---|---|---|
-| Anywhere | Xbox button | Open the menu; again, or B, closes it |
+| Outside games | Xbox button | Open the menu; again, or B, closes it |
+| In a game | Right paddle + Xbox button | Open the menu; the Xbox button alone stays the game's (Steam's overlay) |
 | Menu | D-pad, A | Choose |
 | App | Left stick | Pointer |
 | App | Right stick | Scroll |

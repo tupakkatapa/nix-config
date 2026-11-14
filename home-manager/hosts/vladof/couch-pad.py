@@ -1,7 +1,8 @@
-"""Couch pad: the Xbox button is the home key, and outside the games the pad
-drives the menu, is a mouse and a keyboard, and opens an on-screen keyboard
-with Menu. Outside the games it holds the pad, so a game left running hidden
-stays quiet; the game on screen gets the pad to itself."""
+"""Couch pad: the Xbox button is the home key; in a game it is the game's
+own, and opens the menu only with the right paddle held. Outside the games
+the pad drives the menu, is a mouse and a keyboard, and opens an on-screen
+keyboard with Menu. Outside the games it holds the pad, so a game left
+running hidden stays quiet; the game on screen gets the pad to itself."""
 
 import glob
 import os
@@ -16,7 +17,7 @@ import evdev
 import i3ipc
 from evdev import ecodes as e
 
-GAMES = ("/couch-retroarch.scope", "/couch-rt.steam.scope")
+GAMES = ("/couch-retroarch.scope", "/couch-rt.steam.scope", "/app-steam-app")
 TICK = 0.01
 # At full deflection: pixels per tick, and wheel units per tick (120 a notch)
 POINTER = 8
@@ -276,7 +277,8 @@ class Couch:
             low, half = self.ranges[code]
             self.sticks[code] = (value - low - half) / half
         elif event.type == e.EV_KEY and code == e.BTN_MODE:
-            self.key(e.KEY_LEFTMETA, value)
+            if self.seen != GAME or self.remote:
+                self.key(e.KEY_LEFTMETA, value)
         elif event.type == e.EV_KEY and code == REMOTE:
             self.remote = bool(value)
             for key in self.held & REMOTE_OUT:
