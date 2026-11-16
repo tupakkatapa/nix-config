@@ -13,7 +13,7 @@ vladof's TV session: a fuzzel menu that shows one app at a time, full screen. Ap
 
 ## Behaviour
 
-- An app keeps running, hidden in the scratchpad, once started. Firefox starts with the session, on screen.
+- An app keeps running, hidden in the scratchpad, once started; so does a Steam game, and picking Steam brings the game back. Firefox starts with the session, on screen.
 - An app owns the windows of its `couch-<app>.scope`.
 - The menu opens over whatever is on screen. A pick takes the place of what was there.
 - The menu opens by itself while nothing is on screen.

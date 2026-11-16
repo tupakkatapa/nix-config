@@ -92,19 +92,24 @@ queue() {
 
 tree() { swaymsg -t get_tree; }
 
-# "id pid visible" per window; the menu is a layer surface, so every window in
-# the tree belongs to an app or a terminal, and the hidden ones sit in the
-# scratchpad
+# "id pid visible scratchpad" per window; the menu is a layer surface, so every
+# window in the tree belongs to an app or a terminal. Hidden ones sit in the
+# scratchpad, or behind a fullscreen window, like Steam behind its game
 windows() {
-  tree | jq -r '.. | objects | select(.pid != null) | "\(.id) \(.pid) \(.visible)"'
+  tree | jq -r '.. | objects | select(.pid != null) | "\(.id) \(.pid) \(.visible) \(.scratchpad_state)"'
 }
 
-# The app's windows, the one on screen first
+# The app's windows, the one on screen first, then Steam's games before Big
+# Picture, as Steam runs each game in a scope of its own
 windows_of() {
-  local id pid vis
-  while read -r id pid vis; do
-    grep -qF -- "/couch-$1.scope" "/proc/$pid/cgroup" 2>/dev/null && echo "$id $pid $vis"
-  done < <(windows) | sort -k3 -r
+  local id pid vis scratch cgroup
+  while read -r id pid vis scratch; do
+    cgroup=$(cat "/proc/$pid/cgroup" 2>/dev/null) || continue
+    case $cgroup in
+    */couch-"$1".scope*) echo "$id $pid $vis $scratch 1" ;;
+    */app-steam-app*) [ "$1" != rt.steam ] || echo "$id $pid $vis $scratch 0" ;;
+    esac
+  done < <(windows) | sort -k3,3r -k5,5n
 }
 
 # Succeeds while something is on screen, or while the TV is off, as its windows
@@ -143,15 +148,16 @@ start() {
   [ -n "$(windows_of "$app")" ]
 }
 
-# Puts the app on screen, starting it when it has no window. A visible window
-# only gets focus: "scratchpad show" would toggle it away
+# Puts the app on screen, starting it when it has no window. A visible window,
+# or one outside the scratchpad, only gets focus: "scratchpad show" would
+# toggle the one away and fails on the other
 raise() {
-  local app=$1 name=$2 id='' vis=''
+  local app=$1 name=$2 id='' vis='' scratch=''
   shift 2
-  read -r id _ vis < <(windows_of "$app") || true
+  read -r id _ vis scratch _ < <(windows_of "$app") || true
   if [ -z "$id" ]; then
     start "$app" "$name" "$@"
-  elif [ "$vis" = true ]; then
+  elif [ "$vis" = true ] || [ "$scratch" = none ]; then
     swaymsg "[con_id=$id] focus, fullscreen enable" >/dev/null
   else
     swaymsg "[con_id=$id] scratchpad show, floating disable, fullscreen enable" >/dev/null
@@ -165,9 +171,10 @@ show() {
   done
 }
 
-# Apps and the terminal only hide and keep running; anything else closes
+# Apps, Steam's games and the terminal only hide and keep running; anything
+# else closes
 hide() {
-  if grep -qE '/couch-[^/]+\.scope$' "/proc/$2/cgroup" 2>/dev/null; then
+  if grep -qE '/(couch-[^/]+|app-steam-app[^/]+)\.scope$' "/proc/$2/cgroup" 2>/dev/null; then
     swaymsg "[con_id=$1] move scratchpad" >/dev/null
   else
     swaymsg "[con_id=$1] kill" >/dev/null
