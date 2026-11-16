@@ -39,6 +39,17 @@ in
             htpasswd_encryption = "plain";
           };
         };
+        # The first section that matches decides, and the sections sort by name: the
+        # assistant writes in the owner's two collections and reads the rest, the
+        # others own their own. `w` also deletes a whole collection, which the
+        # hourly snapshots of the data cover
+        rights = {
+          assistant-1-items = { user = "assistant"; collection = "admin/(contacts|calendar)"; permissions = "rw"; };
+          assistant-2-rest = { user = "assistant"; collection = ".*"; permissions = "Rr"; };
+          collections = { user = ".+"; collection = "{user}/[^/]+"; permissions = "rw"; };
+          principal = { user = ".+"; collection = "{user}"; permissions = "RW"; };
+          root = { user = ".+"; collection = ""; permissions = "R"; };
+        };
       };
 
       networking.firewall = {

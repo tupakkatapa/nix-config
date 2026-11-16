@@ -74,7 +74,7 @@ in
     (import ./radicale.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
     (import ./ntfy.nix { inherit lib domain dataDir containerConfig globalContainerConfig; })
     (import ./matrix.nix { inherit config lib domain dataDir containerConfig globalContainerConfig; })
-    (import ./kaloriina.nix { inherit dataDir containerConfig inputs globalContainerConfig; })
+    (import ./kaloriina.nix { inherit pkgs dataDir containerConfig inputs globalContainerConfig; })
     (import ./atuin.nix { inherit dataDir containerConfig globalContainerConfig; })
     (import ./molesk { inherit config lib pkgs domain dataDir containerConfig inputs globalContainerConfig; })
   ];
@@ -106,6 +106,12 @@ in
     "radicale-admin-pass" = {
       rekeyFile = ../../secrets/radicale-admin-pass.age;
       owner = toString containerConfig.radicale.uid;
+      mode = "0400";
+    };
+    # `assistant:<password>` of Radicale's user for the assistant, as `curl -u` takes it; the same line is in `radicale-admin-pass`
+    "radicale-assistant" = {
+      rekeyFile = ../../secrets/radicale-assistant.age;
+      owner = "kari";
       mode = "0400";
     };
   };

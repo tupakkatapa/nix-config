@@ -150,6 +150,20 @@ in
       avatar = mascot "claude-mascot.png" "d77757";
       spawnAvatar = mascot "claude-mascot-blue.png" "4a90d9";
       environmentFile = osConfig.age.secrets.herdr-matrix-env.path;
+      # The agent that works here: a plain name in its chat, and `wake` on the hour, whose answer `NOOP` posts nothing
+      agents.assistant = {
+        cwd = "${config.home.homeDirectory}/Workspace/tupakkatapa/assistant";
+        prefix = false;
+        prompts.wake = {
+          text = "wake";
+          onCalendar = "hourly";
+        };
+      };
+      # Reads and sends in the owner's bridged chats for `herdr-matrix chats`, under its own user
+      gate = {
+        enable = true;
+        tokenFile = osConfig.age.secrets.matrix-gate-token.path;
+      };
       transcribe = {
         model = {
           url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bin";

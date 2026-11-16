@@ -1,4 +1,5 @@
-{ dataDir
+{ pkgs
+, dataDir
 , containerConfig
 , globalContainerConfig
 , inputs
@@ -39,6 +40,9 @@ in
       };
     };
   };
+
+  # The CLI on the host, whose `mcp` subcommand is the assistant's MCP server
+  environment.systemPackages = [ inputs.kaloriina.packages.${pkgs.stdenv.hostPlatform.system}.default ];
 
   systemd.tmpfiles.rules = [
     "d ${dataDir}/home/kaloriina/appdata 750 ${uid} ${uid} -"

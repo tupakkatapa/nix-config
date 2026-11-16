@@ -260,6 +260,7 @@
               ./home-manager/users/kari/minimal-gui.nix
               ./nixosConfigurations/vladof
               ./system/kexec-tree.nix
+              inputs.herdr-matrix.nixosModules.default
               inputs.molesk.nixosModules.default
               inputs.nixie.nixosModules.nixie
             ];

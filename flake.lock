@@ -1050,11 +1050,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1794573371,
-        "narHash": "sha256-zcLVu7cxgmeVs4nfqGul3a6Ox6OfYn0FsJlFcPtiVs0=",
+        "lastModified": 1794848218,
+        "narHash": "sha256-HLyC20/QnXvH1Rg6Ea0zDb0eLXjAeYSlE8jXjP2VoF4=",
         "owner": "tupakkatapa",
         "repo": "herdr-matrix",
-        "rev": "4fa2025016beaef4910d56e6558e1029eb3c5d00",
+        "rev": "0cff1777c3ba1a8e4735b30791327dff0d3f6725",
         "type": "github"
       },
       "original": {
@@ -1119,11 +1119,11 @@
         "treefmt-nix": "treefmt-nix_4"
       },
       "locked": {
-        "lastModified": 1794573024,
-        "narHash": "sha256-1gWgyK5dYrXWN/fz0GlJ3FFhihjTj6ZYg/7bURLBiGA=",
+        "lastModified": 1794825948,
+        "narHash": "sha256-R/QIabiLk+LJn4sMenObjWIAJ1P+iyOWWhJX7sbU0Nc=",
         "owner": "tupakkatapa",
         "repo": "kaloriina",
-        "rev": "9645f88c8b85f00cf91578bd5431c237518e0522",
+        "rev": "861ec3c3ca3dd0a888dd4679c9a9d84ad9d56ea9",
         "type": "github"
       },
       "original": {

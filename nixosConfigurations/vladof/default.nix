@@ -58,6 +58,9 @@ in
     owner = "kari";
   };
 
+  # The owner's Matrix token, which only the gate reads; the agents reach the bridged chats through `herdr-matrix chats`
+  age.secrets.matrix-gate-token.rekeyFile = ./secrets/matrix-gate-token.age;
+
   imports = [
     (import ./services extendedArgs)
     (import ./persistence.nix extendedArgs)

@@ -141,6 +141,7 @@
     "Bash(git reset --hard:*)"
     "Bash(git clean:*)"
     "Bash(gh pr merge:*)"
+    "Bash(herdr-matrix chats send:*)"
   ];
 
   deny = [
