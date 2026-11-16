@@ -2,7 +2,7 @@
 date: "2024-04-04"
 ---
 
-# Rafter Macaroni Box
+# Macaroni Casserole with Koskenlaskija
 
 **Original source:** [K-Ruoka - Makaronilaatikko Koskenlaskijalla](https://www.k-ruoka.fi/reseptit/makaronilaatikko-koskenlaskijalla)
 
@@ -10,7 +10,7 @@ date: "2024-04-04"
 
 *Serves 4-5, 60-90 min*
 
-This is a beloved macaroni casserole recipe in Finland, due to the "Koskenlaskija" (translates as Rafter, lol) processed cheese, known for its rich and strong taste.
+This is a beloved macaroni casserole recipe in Finland, due to the "Koskenlaskija" (translates as Rafter) processed cheese, known for its rich and strong taste.
 
 ## Ingredients
 - Ground beef: 400g

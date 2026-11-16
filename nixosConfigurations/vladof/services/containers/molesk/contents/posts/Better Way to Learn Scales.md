@@ -31,11 +31,11 @@ How does it work? Pick any one of the modes, represented by the rows of dots, an
 
 ### Beginner Info
 
-Scale and mode mean the same thing, and there are more than seven of them, but this method only works for those seven basic ones.
+A mode is a scale you get by starting another scale from a different note. The major scale has seven modes, and this method works for those seven.
 
 Moving two frets is often called a "whole step", and moving one fret a "half step". I won't be using this terminology here much, maybe twice, but it is important to know regardless since it is common practice. So, for example, the starting sequence for the Aeolian scale could be communicated as: whole step, half step, or even just W-H.
 
-If you have heard someone talking about **the** major scale or **the** minor scale, they are referring to the Ionian as major and Aeolian as minor, even though there are a number of different major and minor scales. Those are the defaults, though, for some historical reason, I guess.
+If you have heard someone talking about **the** major scale or **the** minor scale, they are referring to the Ionian as major and Aeolian as minor, even though there are a number of different major and minor scales. Those are the defaults, though.
 
 ### Example
 
@@ -53,7 +53,7 @@ First, we play the Dorian sequence starting from G, since we want to play the G 
 
 ## The Manhattan Movement
 
-With the MILLPAD method, you can potentially navigate the whole fretboard with any scale, moving three notes at a time in any direction. This is the part I've figured out myself and haven't seen anywhere else, which I am quite proud of, even though it is simple. This should be much easier for most people, since it uses logic, not memory. First, let's see how we can play a scale on one string using the chart.
+With the MILLPAD method, you can potentially navigate the whole fretboard with any scale, moving three notes at a time in any direction. This is the part I've figured out myself, and it is simple. This should be much easier for most people, since it uses logic, not memory. First, let's see how we can play a scale on one string using the chart.
 
 ### One String Scale
 
@@ -83,7 +83,7 @@ E  ———|———|———|———|———|———|———|——�
 
 ### Any Direction
 
-Now, we know how to move to upper strings and move down the neck using the one string method, and that's not all. We can use those in reverse and be able to navigate the whole fretboard with any scale in any of the four cardinal directions (up, down, left, right) in sequences of three notes. If you understand how the stuff above works, I am sure you can figure out how to reverse those, and this is where the money is at. It is an unbelievably powerful addition to the MILLPAD method, even if I do say so myself.
+Now, we know how to move to upper strings and move down the neck using the one string method, and that's not all. We can use those in reverse and be able to navigate the whole fretboard with any scale in any of the four cardinal directions (up, down, left, right) in sequences of three notes. If you understand how the stuff above works, I am sure you can figure out how to reverse those. It is a powerful addition to the MILLPAD method.
 
 ## How About Guitar?
 
@@ -91,5 +91,5 @@ I play bass, so I'm writing this from that perspective, but everything above wor
 
 ## Other Scales
 
-Of course, there are also other scales which are not part of the master scale. For example, pentatonic, harmonic, and I think even more for the guitar. There might be some similar tricks to these, but I haven't found any, and decided to learn them just the old regular way; through shapes. For harmonic minor, I came across [this Reddit post](https://www.reddit.com/r/guitars/comments/uozs96/an_easy_way_to_learn_scale_modes_for_ionian_and/). I haven't looked much into it, but it seems to work in the same way as the regular MILLPAD chart. By the way, I found an awesome set of tools that can be used, such as finding a scale for your spontaneously made riff. It's called [Musmath](https://www.musmath.com/) — check it out and see how you can use it when learning the scales.
+Of course, there are also other scales which are not part of the master scale. For example, the pentatonic and the harmonic minor. There might be some similar tricks to these, but I haven't found any, and decided to learn them just the old regular way; through shapes. For harmonic minor, I came across [this Reddit post](https://www.reddit.com/r/guitars/comments/uozs96/an_easy_way_to_learn_scale_modes_for_ionian_and/). I haven't looked much into it, but it seems to work in the same way as the regular MILLPAD chart. By the way, I found an awesome set of tools that can be used, such as finding a scale for your spontaneously made riff. It's called [Musmath](https://www.musmath.com/) — check it out and see how you can use it when learning the scales.
 

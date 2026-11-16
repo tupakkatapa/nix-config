@@ -2,7 +2,7 @@
 date: "2025-09-06"
 ---
 
-# Cabbage Box
+# Cabbage Casserole
 
 **Original source:** [Valio - kaalilaatikko](https://www.valio.fi/reseptit/kaalilaatikko/)
 

@@ -18,13 +18,11 @@ Also, starting up your everyday machines and servers via netbooting only starts 
 
 ## Booting Process
 
-Before trying to understand the netbooting from a NixOS point of view, we need to know about the outline of the booting process. Linux booting involves two primary stages, Stage 1 and Stage 2, orchestrated to transition the system from the bootloader to a fully operational state.
+Before trying to understand the netbooting from a NixOS point of view, we need to know about the outline of the booting process. NixOS splits its boot into two stages, Stage 1 and Stage 2, which take the system from the bootloader to a fully operational state.
 
 ### Stage N° 1
 
-The process starts with Stage 1, initiated directly by the bootloader. We are interested in what happens at the end of Stage 1; here is a quick rundown of what happens until then.
-
-The Linux kernel prepares the system for booting by:
+The bootloader loads the kernel and the initrd. Before Stage 1 starts, the Linux kernel prepares the system by:
 
   - Decompressing itself
   - Setting up the computer's memory and configuring hardware
@@ -32,27 +30,25 @@ The Linux kernel prepares the system for booting by:
   - Loading necessary drivers and virtual devices
   - Cleaning up and setting the stage for user space initiation
 
-At this point, the system is ready for the transition to user space, guided by the init process which we are interested in.
+At this point, the kernel runs the `/init` of the initrd, and Stage 1 begins.
 
 #### Init process
 
-This is basically just a shell script that is run by the kernel, the location of which should be specified with the `init` kernel parameter.
+Stage 1 is basically just a shell script. In the initrd, `/init` is a symlink to a derivation within the Nix store, `init -> /nix/store/wbp286g2jzflgarp6qrpd47grqv0gqfv-stage-1-init.sh`, and the kernel runs it as the first process. NixOS can also run systemd in Stage 1 (`boot.initrd.systemd.enable`), which replaces this script; this post covers the script.
 
-In the context of NixOS, it might look something like this:
+The `init` kernel parameter is not for Stage 1: it tells the script what to start as Stage 2. In the context of NixOS, it might look something like this:
 
 ```
 init=/nix/store/0d2hzxxclcg60gxwgph9sjl0wzy7l9ag-nixos-system-vladof-24.05.20240322.4f3bceb/init
 ```
 
-It points to an `init` symlink within the Nix store, that symlink points to another derivation within the Nix store `init -> /nix/store/wbp286g2jzflgarp6qrpd47grqv0gqfv-stage-1-init.sh`, containing the actual init script called `stage-1-init.sh`.
-
-This script performs various tasks to prepare the system for the transition from Stage 1 to Stage 2:
+The Stage 1 script performs various tasks to prepare the system for the transition from Stage 1 to Stage 2:
 
   - Setting essential environment variables and creating symbolic links for key binaries
   - Managing filesystems, including checks and "[neededForBoot](https://nixos.org/manual/nixos/stable/options#opt-fileSystems._name_.neededforboot)" mounts
   - Preparing the system for Stage 2, including device management and system cleanup
 
-Upon completion, Stage 1 effectively hands over control to Stage 2 which is also a script.
+Upon completion, Stage 1 hands over control to that `init`, Stage 2, which is also a script.
 
 ### Stage N° 2
 
@@ -65,7 +61,7 @@ Completely irrelevant here but for the sake of explaining the whole booting proc
 
 ## Netbooting
 
-If you don't know what netbooting is and how it works, honestly, I don't know what you are doing here, but [here](https://networkboot.org/fundamentals/) you go. Let's check out the requirements of hardware and configuration to enable booting of NixOS configurations.
+If you don't know what netbooting is and how it works, [here](https://networkboot.org/fundamentals/) is a good introduction. Let's check out the requirements of hardware and configuration to enable booting of NixOS configurations.
 
 ### Server Requirements
 
@@ -93,7 +89,7 @@ The requirements for the bootable client, regardless of whether we are talking a
         timeout 1
         default_selection 1
 
-        menuentry "Bandit" = {
+        menuentry "Bandit" {
           icon /EFI/BOOT/icons/os_linux.png
           volume "EFI system partition"
           loader images/bandit/bzImage
@@ -109,7 +105,7 @@ The requirements for the bootable client, regardless of whether we are talking a
 
     ```
     #!ipxe
-    kernel bzImage rootfs=squashfs.img init=/nix/store/0d2hzxxclcg60gxwgph9sjl0wzy7l9ag-nixos-system-vladof-24.05.20240322.4f3bceb/init initrd=initrd.zst ip=dhcp boot.shell_on_fail boot.shell_on_fail mitigations=off l1tf=off mds=off no_stf_barrier noibpb noibrs nopti nospec_store_bypass_disable nospectre_v1 nospectre_v2 tsx=on tsx_async_abort=off loglevel=4
+    kernel bzImage rootfs=squashfs.img init=/nix/store/0d2hzxxclcg60gxwgph9sjl0wzy7l9ag-nixos-system-vladof-24.05.20240322.4f3bceb/init initrd=initrd.zst ip=dhcp boot.shell_on_fail loglevel=4
     initrd initrd.zst
     boot
     ```
@@ -134,7 +130,7 @@ The requirements for the bootable client, regardless of whether we are talking a
     ];
     ```
 
-    Unlike the previous format, this cannot be used to kexec into another kernel because it does not support a separate squashfs image. I am currently attempting to make this format compatible with the rEFInd boot manager. Let's see how it progresses.
+    Unlike the previous format, this cannot be used to kexec into another kernel because it does not support a separate squashfs image. It does work with the rEFInd boot manager, which reads the squashfs image from the disk.
 
     We've successfully implemented this format as NixOS module; however, it's part of the Nixie project, which is closed-source, preventing me from sharing it.
 
@@ -149,7 +145,7 @@ If you decide to get your hands dirty regarding booting process, here are some t
 
 1. **Debug Mode**
 
-    To gain a shell at the Stage 1 aka. single-user mode, you have to enable debug mode like this:
+    To gain a shell at Stage 1, you have to enable debug mode like this:
 
     ```nix
     boot.kernelParams = [

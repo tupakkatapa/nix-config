@@ -4,7 +4,7 @@ date: "2025-05-04"
 
 # My First Upstream Kernel Patch
 
-Last week, I submitted my first patch to the Linux kernel, and it has already been queued in the **for-leds-next** branch. It's satisfying to see my name appear in the commit history of software I work with every day — software that runs on an absurd number of devices. That said, I'm still a bit concerned and wondering how a syntax error like this slipped through the usual layers of review and tooling.
+Last week, I submitted my first patch to the Linux kernel, and it has already been queued in the **for-leds-next** branch. It's satisfying to see my name appear in the commit history of software I work with every day — software that runs on an absurd number of devices. It is a tiny one: a typo that is valid C, which is how it got past the compiler.
 
 **Commit**: [[PATCH] leds: pca995x: fix typo](https://lore.kernel.org/linux-leds/20250426020454.47059-1-jesse@ponkila.com/T/#u)
 
@@ -39,7 +39,7 @@ error: builder for '/nix/store/a7r0c0ypz005r11y4cw8inz2ypvj32sd-lkddb-trunk.drv'
          nix log /nix/store/a7r0c0ypz005r11y4cw8inz2ypvj32sd-lkddb-trunk.drv
 ```
 
-The kernel turned out to have a simple typo that prevented the database from compiling.
+The kernel turned out to have a simple typo that the database's parser could not read.
 
 ## Sending a patch
 
@@ -89,7 +89,7 @@ Contributing to the Linux kernel isn't as daunting as it seems, once you underst
    Signed-off-by: Jesse Karjalainen <jesse@ponkila.com>'
    ```
 
-   The `-s` flag appends a *Developer Certificate of Origin* line to certify I wrote the patch. Ideally, you should also run style-check and test your changes. I skipped those because this one‑line fix is safe.
+   The `-s` flag appends a `Signed-off-by` line, which certifies the patch under the *Developer Certificate of Origin*. Before sending, run `scripts/checkpatch.pl` on the patch and build the file you changed.
 
 5. **Generate a mail‑ready patch**
 
@@ -97,7 +97,7 @@ Contributing to the Linux kernel isn't as daunting as it seems, once you underst
    git format-patch -1 --base=auto
    ```
 
-   This produces **0001-leds-pca995x-fix-spacing-typo.patch**.
+   This produces **0001-leds-pca995x-fix-typo.patch**.
 
 6. **Find the maintainers**
 
@@ -115,7 +115,7 @@ Contributing to the Linux kernel isn't as daunting as it seems, once you underst
 
 7. **Configure email**
 
-   I initially struggled with Outlook. Its mandatory OAuth authentication wouldn't cooperate with `git send-email`, so I switched to my company account hosted on Hetzner instead, which worked like a charm.
+   I initially struggled with Outlook. Its mandatory OAuth authentication wouldn't cooperate with `git send-email`, so I switched to a mailbox hosted on Hetzner instead, which worked like a charm.
 
    Here is the NixOS Home Manager setup I ended up with:
 
@@ -145,12 +145,10 @@ Contributing to the Linux kernel isn't as daunting as it seems, once you underst
    };
    programs.msmtp.enable = true;
 
-   programs.git = {
-     userName  = "Jesse Karjalainen";
-     userEmail = "jesse@ponkila.com";
-     extraConfig.sendemail = {
-       smtpserver = "${pkgs.msmtp}/bin/msmtp";
-     };
+   programs.git.settings = {
+     user.name = "Jesse Karjalainen";
+     user.email = "jesse@ponkila.com";
+     sendemail.smtpserver = "${pkgs.msmtp}/bin/msmtp";
    };
    ```
 
@@ -164,7 +162,7 @@ Contributing to the Linux kernel isn't as daunting as it seems, once you underst
      --cc "Lee Jones <lee@kernel.org>" \
      --cc "Pavel Machek <pavel@kernel.org>" \
      --cc "linux-kernel@vger.kernel.org" \
-     0001-leds-pca995x-fix-spacing-typo.patch
+     0001-leds-pca995x-fix-typo.patch
    ```
 
 ---

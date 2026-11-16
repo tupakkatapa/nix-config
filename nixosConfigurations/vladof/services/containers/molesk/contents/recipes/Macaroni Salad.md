@@ -2,7 +2,7 @@
 date: "2024-09-30"
 ---
 
-# Macaroni "Salad"
+# Macaroni Salad
 
 **Original source:** [K-ruoka - Makaronisalaatti](https://www.k-ruoka.fi/reseptit/makaronisalaatti)
 

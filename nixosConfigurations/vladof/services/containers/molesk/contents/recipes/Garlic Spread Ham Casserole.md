@@ -2,7 +2,7 @@
 date: "2025-10-12"
 ---
 
-# Garlic Spread Ham Box
+# Garlic Spread Ham Casserole
 
 *Serves 6, 1 hour*
 

@@ -6,7 +6,7 @@ date: "2024-04-04"
 
 *Serves 4-5, 30-40 min*
 
-A simple "mix everything" dish, perfect for those seeking something uncomplicated, quick, and tasty. This is nothing fancy, unhealthy, and great for a hangover. I would be careful about adding extra salt because of the sodium content of the bacon and ham. I prefer not to add salt in the cooking process at all. I think I got this recipe from one of my exes, which is probably the only good thing that came out of that relationship.
+A simple "mix everything" dish, perfect for those seeking something uncomplicated, quick, and tasty. This is nothing fancy, and not exactly healthy. I would be careful about adding extra salt because of the sodium content of the bacon and ham. I prefer not to add salt in the cooking process at all. I think I got this recipe from one of my exes, which is probably the only good thing that came out of that relationship.
 
 ## Ingredients
 - Fusilli pasta: 400g

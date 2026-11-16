@@ -2,7 +2,7 @@
 date: "2025-03-04"
 ---
 
-# Dat Pizza Dough Tho
+# New York-Style Pizza Dough
 
 **Original source:** [Adam Ragusea – How to Make New York–Style Pizza](https://www.youtube.com/watch?v=SDpCzJw2xm4)
 

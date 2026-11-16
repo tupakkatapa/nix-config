@@ -2,7 +2,7 @@
 date: "2026-09-30"
 ---
 
-# Banana Bread 2
+# Banana Bread 2.0
 
 **Original source:** [Banana Bread](./Banana%20Bread.md)
 
