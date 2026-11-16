@@ -32,6 +32,8 @@ in
     # Persistent nix rw-store (overrides kexec-tree.nix tmpfs).
     # Subvol must contain `store/` and `work/` subdirs (create on disk).
     "/nix/.rw-store" = "@nix-rw-store";
+    # Nix DB and GC roots; without them the persisted store paths are invalid after reboot
+    "/nix/var/nix" = "@nix-var";
   } // {
     "/mnt/boot" = {
       device = "/dev/disk/by-uuid/2A10-2D31";
