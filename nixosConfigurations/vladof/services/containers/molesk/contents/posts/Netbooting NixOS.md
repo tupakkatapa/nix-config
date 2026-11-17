@@ -84,20 +84,20 @@ The requirements for the bootable client, regardless of whether we are talking a
 
     There are also some additional use cases for this format. It can be used to [kexec](https://wiki.archlinux.org/title/Kexec) into another kernel from the currently running kernel, and it is suitable for use with the [rEFInd](http://www.rodsbooks.com/refind/) boot manager.
 
-    >>> /boot/EFI/BOOT/refind.conf
+    In `/boot/EFI/BOOT/refind.conf`:
 
-        timeout 1
-        default_selection 1
+    ```
+    timeout 1
+    default_selection 1
 
-        menuentry "Bandit" {
-          icon /EFI/BOOT/icons/os_linux.png
-          volume "EFI system partition"
-          loader images/bandit/bzImage
-          initrd images/bandit/initrd.zst
-          options "init=/nix/store/w95bhycbcnx5npfrvp88p8993qcj8nk1-nixos-system-bandit-23.11.20240308.2be119a/init loglevel=4"
-        }
-
-    >>>
+    menuentry "Bandit" {
+      icon /EFI/BOOT/icons/os_linux.png
+      volume "EFI system partition"
+      loader images/bandit/bzImage
+      initrd images/bandit/initrd.zst
+      options "init=/nix/store/w95bhycbcnx5npfrvp88p8993qcj8nk1-nixos-system-bandit-23.11.20240308.2be119a/init loglevel=4"
+    }
+    ```
 
     You can apply this format with [this](https://github.com/ponkila/nixobolus/blob/1667a313ed21acf69daf749208b1e42bc5814e1c/modules/netboot-kexec.nix) netboot-kexec NixOS module, but please be aware that there is an [issue](https://github.com/NixOS/nixpkgs/issues/203593) that prevents booting if the initrd exceeds 2.1 GB.
 

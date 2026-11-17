@@ -21,5 +21,3 @@ The second project, Nixie, started right after the first one and is a bit more i
 I think that both projects are mandatory steps and components in the overall picture that we have been painting as the projects have progressed. That's a subject for another post, though. By the way, here is a fun little post I wrote when I was 6 weeks into the first project, called [Learning the basics](https://github.com/ponkila/nixobolus/blob/pre-overhaul/docs/dev-learning-the-basics.md). I also started switching my own systems to NixOS after I got past the worst confusion and don't regret it one bit; Nix is awesome. It started with the good old `configuration.nix` and `hardware-configuration.nix`, then came the home-manager and flakes, then started to switch to ephemeral systems, more on that later.
 
 That's it, that's what I've been doing for just over a year.
-
-

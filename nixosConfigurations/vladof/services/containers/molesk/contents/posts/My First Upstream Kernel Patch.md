@@ -45,7 +45,7 @@ The kernel turned out to have a simple typo that the database's parser could not
 
 Contributing to the Linux kernel isn't as daunting as it seems, once you understand the workflow. I referred to [the official guide](https://www.kernel.org/doc/html/latest/process/submitting-patches.html) for contributing to the kernel throughout the process of figuring this out. Here's how I sent my patch upstream, step by step.
 
-1. **Clone an up‑to‑date tree**
+1. **Clone an up-to-date tree**
 
    ```bash
    git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
@@ -70,11 +70,11 @@ Contributing to the Linux kernel isn't as daunting as it seems, once you underst
    @@ -197,7 +197,7 @@ MODULE_DEVICE_TABLE(i2c, pca995x_id);
 
     static const struct of_device_id pca995x_of_match[] = {
-     { .compatible = "nxp,pca9952", .data = &pca9952_chipdef },
+    	{ .compatible = "nxp,pca9952", .data = &pca9952_chipdef },
    -	{ .compatible = "nxp,pca9955b", . data = &pca9955b_chipdef },
    +	{ .compatible = "nxp,pca9955b", .data = &pca9955b_chipdef },
-     { .compatible = "nxp,pca9956b", .data = &pca9956b_chipdef },
-     {},
+    	{ .compatible = "nxp,pca9956b", .data = &pca9956b_chipdef },
+    	{},
     };
    ```
 
@@ -84,14 +84,14 @@ Contributing to the Linux kernel isn't as daunting as it seems, once you underst
    git commit -s -m 'leds: pca995x: fix typo
 
    Remove the stray space between the "." and the "data" field name in
-   the PCA995x device‑tree match table.
+   the PCA995x device-tree match table.
 
    Signed-off-by: Jesse Karjalainen <jesse@ponkila.com>'
    ```
 
    The `-s` flag appends a `Signed-off-by` line, which certifies the patch under the *Developer Certificate of Origin*. Before sending, run `scripts/checkpatch.pl` on the patch and build the file you changed.
 
-5. **Generate a mail‑ready patch**
+5. **Generate a mail-ready patch**
 
    ```bash
    git format-patch -1 --base=auto
