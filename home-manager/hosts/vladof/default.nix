@@ -10,11 +10,6 @@ let
   colors = customLib.colors.${THEME};
   swayosd = "${config.services.swayosd.package}/bin/swayosd-client";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
-  mascot = name: colour: pkgs.runCommand name { nativeBuildInputs = [ pkgs.python3 ]; } ''
-    python3 ${./claude-mascot.py} $out ${colour}
-    python3 -c 'import struct, sys; d = open(sys.argv[1], "rb").read(24); assert d[:8] == b"\x89PNG\r\n\x1a\n" and struct.unpack(">II", d[16:24]) == (512, 512)' $out
-  '';
-
   # Runtime-module apps get installed (green), building (yellow) and missing (red) variants
   icons = pkgs.runCommand "couch-menu-icons" { nativeBuildInputs = [ pkgs.librsvg pkgs.imagemagick ]; } ''
     mkdir $out
@@ -146,14 +141,13 @@ in
       enable = true;
       homeserver = "https://matrix.coditon.com";
       owner = "@tupakkatapa:coditon.com";
-      displayName = "Claude";
-      avatar = mascot "claude-mascot.png" "d77757";
-      spawnAvatar = mascot "claude-mascot-blue.png" "4a90d9";
       environmentFile = osConfig.age.secrets.herdr-matrix-env.path;
       # The agent that works here: a plain name in its chat, and `wake` on the hour, whose answer `NOOP` posts nothing
       agents.assistant = {
         cwd = "${config.home.homeDirectory}/Workspace/tupakkatapa/assistant";
         prefix = false;
+        name = "kate";
+        avatar = ./assistant-avatar.png;
         prompts.wake = {
           text = "wake";
           onCalendar = "hourly";
