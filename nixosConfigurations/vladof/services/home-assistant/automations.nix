@@ -1,6 +1,7 @@
 cfg:
 let
   btnTransition = "{{ states('input_number.button_transition') | float }}";
+  notAway = { condition = "state"; entity_id = "input_boolean.away"; state = "off"; };
 
   # Build the choose block for applying a preset (color via hs_color, else temperature)
   mkPresetAction = slotKey: lights: transitionExpr: {
@@ -72,6 +73,7 @@ let
           { condition = "state"; entity_id = "input_boolean.schedule_enabled"; state = "on"; }
           { condition = "state"; entity_id = "input_boolean.sched_off_enabled"; state = "on"; }
           { condition = "state"; entity_id = "input_boolean.schedule_override"; state = "off"; }
+          notAway
         ];
         action = [{
           service = "light.turn_off";
@@ -99,6 +101,7 @@ let
         { condition = "state"; entity_id = "input_boolean.schedule_enabled"; state = "on"; }
         { condition = "state"; entity_id = "input_boolean.sched_${slot.key}_enabled"; state = "on"; }
         { condition = "state"; entity_id = "input_boolean.schedule_override"; state = "off"; }
+        notAway
       ];
 
       action =
@@ -176,6 +179,7 @@ let
             { condition = "state"; entity_id = "input_boolean.sched_${current.key}_enabled"; state = "on"; }
             { condition = "state"; entity_id = "input_boolean.schedule_override"; state = "off"; }
             { condition = "state"; entity_id = "input_boolean.continuous_transitions"; state = "on"; }
+            notAway
           ];
           action =
             let
@@ -207,6 +211,7 @@ let
       event_type = "timer.finished";
       event_data.entity_id = "timer.scene_${scene.key}";
     }];
+    condition = [ notAway ];
     action = [{
       choose = [{
         conditions = [{
@@ -252,6 +257,7 @@ builtins.concatMap mkSlotAutomation cfg.scheduleSlots
     }];
     condition = [
       { condition = "state"; entity_id = "input_boolean.wake_pc"; state = "on"; }
+      notAway
       # Skip weekends unless explicitly enabled (weekday(): 0=Mon .. 6=Sun)
       {
         condition = "template";
@@ -261,6 +267,26 @@ builtins.concatMap mkSlotAutomation cfg.scheduleSlots
     action = [{
       service = "switch.turn_on";
       target.entity_id = "switch.maliwan";
+    }];
+  }
+  # Away: lights off when it starts, back to the schedule when it ends. `from` keeps a restart,
+  # which restores the state, from firing either
+  {
+    alias = "Away: Start";
+    trigger = [{ platform = "state"; entity_id = "input_boolean.away"; from = "off"; to = "on"; }];
+    action = [{
+      service = "light.turn_off";
+      target.entity_id = cfg.group.all;
+      data = { transition = btnTransition; };
+    }];
+  }
+  {
+    alias = "Away: End";
+    trigger = [{ platform = "state"; entity_id = "input_boolean.away"; from = "on"; to = "off"; }];
+    condition = [{ condition = "state"; entity_id = "input_boolean.schedule_enabled"; state = "on"; }];
+    action = [{
+      service = "script.turn_on";
+      target.entity_id = "script.resume_schedule";
     }];
   }
 ]

@@ -33,6 +33,8 @@ rec {
     schedule_enabled = { name = "Schedule"; icon = "mdi:calendar-clock"; };
     continuous_transitions = { name = "Continuous"; icon = "mdi:transition"; };
     schedule_override = { name = "Override"; icon = "mdi:hand-back-right"; initial = false; };
+    # Set through `switch.away`. While on, the schedule, the temporary scenes and Wake PC do not act
+    away = { name = "Away state"; icon = "mdi:home-export-outline"; };
     # When on, Preset-tab buttons target all lights incl. off ones (see onLights)
     control_all_lights = { name = "Control All Lights"; icon = "mdi:lightbulb-group"; initial = false; };
   };
@@ -100,7 +102,7 @@ rec {
       key = "midday";
       alias = "Midday";
       icon = "mdi:white-balance-sunny";
-      lights = with lights; [ livingRoom dining hallway ];
+      lights = with lights; [ livingRoom dining hallway bedroom ];
 
       defaultTime = "12:00";
       defaultBrightness = 100;
@@ -111,7 +113,7 @@ rec {
       key = "evening";
       alias = "Evening";
       icon = "mdi:weather-sunset-down";
-      lights = with lights; [ livingRoom dining hallway ];
+      lights = with lights; [ livingRoom dining hallway bedroom ];
 
       defaultTime = "18:00";
       defaultBrightness = 60;
@@ -122,7 +124,7 @@ rec {
       key = "dusk";
       alias = "Dusk";
       icon = "mdi:weather-night-partly-cloudy";
-      lights = with lights; [ livingRoom dining hallway ];
+      lights = with lights; [ livingRoom dining hallway bedroom ];
 
       defaultTime = "20:00";
       defaultBrightness = 30;
@@ -183,11 +185,19 @@ rec {
     initial = 3;
   };
 
-  # Jinja expression: effective offset in hours. "Weekend" = logical Sat/Sun, where
-  # the day rolls over at 04:00 so Friday night stays unshifted and Sunday night's
-  # post-midnight slots stay shifted.
-  # ponytail: fixed 04:00 rollover, derive from the off slot if late nights exceed it
-  offsetHours = "(states('input_number.schedule_time_offset') | float + (states('input_number.schedule_weekend_offset') | float if (now() - timedelta(hours=4)).weekday() >= 5 else 0))";
+  # Jinja expression: effective offset in hours. The weekend offset covers the
+  # sleep-in part of Saturday and Sunday only: Morning and Midday shift, Evening
+  # and every later slot run on normal time. The window ends an hour before the
+  # Evening slot, the longest lead-in fade (transition -60), so each slot fires
+  # once; Midday shifted must still land before that point, or the day skips it.
+  # ponytail: fixed 06:00 start, must lie between the shifted Off slot and Morning's lead-in; derive from both if they move
+  offsetHours =
+    let
+      base = "states('input_number.schedule_time_offset') | float";
+      windowEnd = "state_attr('input_datetime.sched_evening_time', 'timestamp') | int - 3600 + ${base} * 3600";
+      weekend = "now().weekday() >= 5 and now().hour >= 6 and now().hour * 3600 + now().minute * 60 < ${windowEnd}";
+    in
+    "(${base} + (states('input_number.schedule_weekend_offset') | float if ${weekend} else 0))";
 
   # Wake PC
   wakePC = {

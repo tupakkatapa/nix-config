@@ -263,6 +263,7 @@ in
           title = "Settings";
           show_header_toggle = false;
           entities = [
+            "switch.away"
             "input_boolean.schedule_enabled"
             "input_boolean.continuous_transitions"
             "input_number.schedule_time_offset"

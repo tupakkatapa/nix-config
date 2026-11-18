@@ -4,7 +4,9 @@
 #   - scheduleSlots: ordered times of day (morning..off). The "active slot" is the
 #     latest slot whose offset-adjusted time is <= now (see activeSlotTemplate).
 #   - schedule_time_offset (input_number, hours): shifts ALL slot times; positive = later.
-#     schedule_weekend_offset adds to it on Sat/Sun (see cfg.offsetHours).
+#     schedule_weekend_offset adds to it on Sat/Sun until Evening (see cfg.offsetHours).
+#   - away (input_boolean, set through switch.away): while on, no schedule, temporary-scene
+#     or Wake PC automation acts. On: all lights off. Off: Resume, if the schedule is enabled.
 #   - schedule_override (input_boolean): any manual button/scene sets it, freezing the
 #     schedule; auto-cleared at the morning slot and by the Resume script.
 #   - Two mutually-exclusive transition modes, selected by the continuous_transitions
@@ -27,6 +29,50 @@ let
   dashboard = import ./dashboard.nix cfg;
   scripts = import ./scripts.nix cfg;
   automations = import ./automations.nix cfg;
+
+  lightGroup = name: entities: { platform = "group"; inherit name entities; };
+
+  # Assist and MCP see a switch by default; an input_boolean or a script only after a step in the UI.
+  # These switches give them what the dashboard's toggles and scene buttons do
+  call = service: entity: [{ inherit service; target.entity_id = entity; }];
+  toggleSwitch = name: icon: entity: {
+    inherit name icon;
+    state = "{{ is_state('${entity}', 'on') }}";
+    turn_on = call "input_boolean.turn_on" entity;
+    turn_off = call "input_boolean.turn_off" entity;
+  };
+  assistSwitches =
+    [
+      (toggleSwitch "Away" cfg.globalSettings.away.icon "input_boolean.away")
+      (toggleSwitch "Schedule" cfg.globalSettings.schedule_enabled.icon "input_boolean.schedule_enabled")
+      (toggleSwitch "Continuous Transitions" cfg.globalSettings.continuous_transitions.icon "input_boolean.continuous_transitions")
+      (toggleSwitch "Wake PC" cfg.wakePC.enabled.icon "input_boolean.wake_pc")
+      (toggleSwitch "Wake PC Weekend" cfg.wakePC.weekend.icon "input_boolean.wake_pc_weekend")
+      # Off is Resume
+      ((toggleSwitch "Schedule Override" cfg.globalSettings.schedule_override.icon "input_boolean.schedule_override") // {
+        turn_off = call "script.turn_on" "script.resume_schedule";
+      })
+    ]
+    # A scene of the schedule is a moment, not a state: on runs it, and the switch stays off
+    ++ map
+      (slot: {
+        name = slot.alias;
+        inherit (slot) icon;
+        state = "{{ false }}";
+        turn_on = call "script.turn_on" "script.scene_${slot.key}";
+        turn_off = [ ];
+      })
+      (builtins.filter (slot: slot.key != "off") cfg.scheduleSlots)
+    # A temporary scene is on while its countdown runs; off ends it as the countdown would
+    ++ map
+      (scene: {
+        name = scene.alias;
+        inherit (scene) icon;
+        state = "{{ is_state('timer.scene_${scene.key}', 'active') }}";
+        turn_on = call "script.turn_on" "script.scene_temp_${scene.key}";
+        turn_off = call "timer.finish" "timer.scene_${scene.key}";
+      })
+      cfg.temporaryScenes;
 
   # Global settings → input_boolean
   globalInputBooleans = builtins.mapAttrs
@@ -263,6 +309,7 @@ in
           state = activeSlotTemplate;
           icon = "mdi:calendar-clock";
         }];
+        switch = assistSwitches;
       }];
 
       input_boolean = globalInputBooleans // slotEnabledBooleans // {
@@ -288,17 +335,16 @@ in
 
       timer = tempSceneTimers;
 
-      light = [
-        {
-          platform = "group";
-          name = "All Lights";
-          entities = cfg.allLights;
-        }
-        {
-          platform = "group";
-          name = "All Except Bedside";
-          entities = cfg.allExceptBedside;
-        }
+      light = with cfg.lights; [
+        (lightGroup "All Lights" cfg.allLights)
+        (lightGroup "All Except Bedside" cfg.allExceptBedside)
+        # Assist and MCP find a bulb only by its registry name, the model, which
+        # all five share; a YAML group has no registry entry and matches by name
+        (lightGroup "Bedside" [ bedside ])
+        (lightGroup "Living Room" [ livingRoom ])
+        (lightGroup "Dining" [ dining ])
+        (lightGroup "Hallway" [ hallway ])
+        (lightGroup "Bedroom" [ bedroom ])
       ];
 
       switch = map
