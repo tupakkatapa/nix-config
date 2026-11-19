@@ -1050,11 +1050,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1794848218,
-        "narHash": "sha256-HLyC20/QnXvH1Rg6Ea0zDb0eLXjAeYSlE8jXjP2VoF4=",
+        "lastModified": 1795042745,
+        "narHash": "sha256-qP/72mEIxQXDtVNbJTDUOzbAjzS1pHL3Y0+sDXeCjUM=",
         "owner": "tupakkatapa",
         "repo": "herdr-matrix",
-        "rev": "0cff1777c3ba1a8e4735b30791327dff0d3f6725",
+        "rev": "5edc509126730c9ab894296057fe96060f8e8eb6",
         "type": "github"
       },
       "original": {

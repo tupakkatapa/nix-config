@@ -89,7 +89,12 @@
     };
 
     # NOTE: Default mode is normal-visual-op
-    keymaps = [
+    keymaps = builtins.genList
+      (i: {
+        mode = "n";
+        key = "<leader>${toString (i + 1)}";
+        action = ":BufferLineGoToBuffer ${toString (i + 1)}<CR>";
+      }) 9 ++ [
       # Do not yank when pasting or deleting
       {
         key = "p";
@@ -216,6 +221,8 @@
       bufferline = {
         enable = true;
         settings.options = {
+          # The number `<leader>1`-`9` takes
+          numbers = "ordinal";
           offsets = [
             {
               filetype = "neo-tree";

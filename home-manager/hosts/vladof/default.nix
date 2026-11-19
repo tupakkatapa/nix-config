@@ -146,7 +146,7 @@ in
       agents.assistant = {
         cwd = "${config.home.homeDirectory}/Workspace/tupakkatapa/assistant";
         prefix = false;
-        name = "kate";
+        displayName = "kate";
         avatar = ./assistant-avatar.png;
         prompts.wake = {
           text = "wake";
