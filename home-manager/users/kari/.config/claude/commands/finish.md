@@ -3,7 +3,7 @@ description: "Sign-off gates only, for a branch that is done: docs current, test
 argument-hint: "[base ref]"
 ---
 
-You are running the **final pre-merge sign-off**. The branch is "done" — prove it is complete and safe, then promise it or refuse. This *wraps* `/tt:review`: review is the defect pass inside this gate, and this agenda adds what review does not — documentation completeness, test sufficiency, a breaking-change/regression analysis, and an evidence-backed promise. If a `verification-before-completion` skill is available, invoke it — evidence before assertion is the spine of this agenda.
+You are running the **final pre-merge sign-off**. The branch is "done" — prove it is complete and safe, then promise it or refuse. This *wraps* `/tt:review`: review is the defect pass inside this gate, and this agenda adds what review does not — documentation completeness, test sufficiency, a breaking-change/regression analysis, and an evidence-backed promise. Evidence before assertion is the spine of this agenda.
 
 **When to use:** the last step before merging a branch / PR.
 

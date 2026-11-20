@@ -3,7 +3,7 @@ description: "Root-cause a failure (failing test, bug report, incident, unexpect
 argument-hint: "[symptom | failing test | link]"
 ---
 
-You are diagnosing a failure: a failing test, a reported bug, an incident, or unexpected behaviour. This is **root-cause discovery**, distinct from `/tt:edge-cases` (hypothetical risk) and `/tt:review` (defect-finding pass). The substantive judgement comes from the lens panel applied in **diagnosis** mode — "what assumption broke, and where?" If a `systematic-debugging` skill is available, invoke it for the procedure.
+You are diagnosing a failure: a failing test, a reported bug, an incident, or unexpected behaviour. This is **root-cause discovery**, distinct from `/tt:edge-cases` (hypothetical risk) and `/tt:review` (defect-finding pass). The substantive judgement comes from the lens panel applied in **diagnosis** mode — "what assumption broke, and where?"
 
 Method: observe the failure, state a hypothesis, predict, experiment, observe; refine or replace the hypothesis until it explains the failure (Zeller, *Why Programs Fail*, 2nd ed., §6.2). A defect infects program state, and the infection causes the failure: reason backward from the failure (§1.2). Simplify the failing input first (ch. 5). Agans' rules apply throughout (*Debugging*, chs. 3–11): understand the system; make it fail; quit thinking and look; divide and conquer; change one thing at a time; keep an audit trail; check the plug; get a fresh view; if you didn't fix it, it ain't fixed.
 

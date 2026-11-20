@@ -12,7 +12,7 @@ You are starting a piece of work in isolation and carrying it through `/tt:plan-
 ## 2. Worktree and branch
 - Base: the integration branch named in the project `CLAUDE.md`, else the remote default branch. Fetch it first; branch from the remote tip, not a stale local copy.
 - Branch name: the project convention (`./CLAUDE.md`, else the pattern of recent branches); include the issue id when there is one.
-- Create a git worktree for the branch, at the location the project uses for worktrees, else beside the repository. If a `using-git-worktrees` skill is available, use it for the procedure. Work only inside the worktree from here on.
+- Create a git worktree for the branch, at the location the project uses for worktrees, else beside the repository. Work only inside the worktree from here on.
 
 ## 3. Build
 - A bug or failure → `/tt:debug`.

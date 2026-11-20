@@ -17,7 +17,7 @@ User asks "how do other people configure X" / "show me a real example of Y" / "a
 - Wiring a new flake input and unsure of the conventional shape.
 - Debugging "this should work but doesn't" — others may have hit the same wall.
 
-Do **not** use for: official documentation lookups (use `context7` / `nixos` MCP first), package availability (use `nixos` MCP), or pure language questions.
+Do **not** use for: official documentation lookups (use web search / `nixos` MCP first), package availability (use `nixos` MCP), or pure language questions.
 
 ## Tooling
 

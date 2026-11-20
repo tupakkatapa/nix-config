@@ -1,6 +1,6 @@
 # Claude Configuration
 
-This file overrides instructions injected by plugins and skills at session start (skill-first rules, brainstorming gates, question-before-action rules) wherever they conflict.
+This file overrides instructions injected by plugins and skills at session start wherever they conflict.
 
 ## Principles (hard rules)
 
@@ -59,9 +59,8 @@ Capability → tool. Reach for these before improvising:
 
 | Need | Use |
 |---|---|
-| Library/framework docs | context7 MCP; web search when it is not connected |
 | NixOS packages/options | nixos MCP |
-| Web search | searxng MCP |
+| Library/framework docs, web search | searxng MCP |
 | Deep codebase search | `scout` agent (read-only) |
 | 3+ independent tasks | parallel subagents, dispatched in one message |
 
@@ -89,11 +88,9 @@ Subagents cannot ask questions, so give full context upfront:
 - Big-diff multi-lens review → one `lens` agent per lens (saves main context).
 - A blocked subagent returns: `Problem / Attempted / Solution / Alternative / Partial`.
 
-## Skills (superpowers)
+## Skills
 
 Invoke via the `Skill` tool. **Precedence:** an agenda owns its artefact's path, structure, gates and ending. A skill contributes technique inside a step; it never adds a second review, a question to the user, or a different output location.
-
-Agenda-relevant skills: `writing-plans`, `executing-plans`, `systematic-debugging`, `test-driven-development`, `verification-before-completion`, `requesting-code-review`, `using-git-worktrees`, `dispatching-parallel-agents`.
 
 ## Commands
 

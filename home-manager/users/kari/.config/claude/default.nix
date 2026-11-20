@@ -115,10 +115,6 @@ in
         command = "nix";
         args = [ "run" "github:utensils/mcp-nixos/6a517811658c21f97bd7703b35546085117fc310" "--" ];
       };
-      context7 = {
-        command = "${mcpNpm}";
-        args = [ "@upstash/context7-mcp" "4.4.4" ];
-      };
       searxng = {
         command = "${mcpNpm}";
         args = [ "mcp-searxng" "2.7.0" ];
@@ -131,14 +127,6 @@ in
         command = "${mcpNpm}";
         args = [ "@playwright/mcp" "0.0.83" ];
       };
-      houtini-lm = {
-        command = "${mcpNpm}";
-        args = [ "@houtini/lm" "3.3.4" ];
-        env = {
-          HOUTINI_LM_ENDPOINT_URL = "http://localhost:11434";
-          HOUTINI_LM_MODEL = "qwen3.5:9b";
-        };
-      };
     };
 
     # Global CLAUDE.md - applies to all projects
@@ -148,9 +136,6 @@ in
     pluginPackages = with pkgs.claude-plugins; [
       caveman
       ponytail
-      ralph-wiggum
-      superpowers
-      document-skills
     ];
   };
 

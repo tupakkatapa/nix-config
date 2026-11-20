@@ -101,10 +101,8 @@
     # Skills & MCP
     "Skill(*)"
     "mcp__plugin_claude-code-home-manager_nixos__*"
-    "mcp__plugin_claude-code-home-manager_context7__*"
     "mcp__plugin_claude-code-home-manager_searxng__*"
     "mcp__plugin_claude-code-home-manager_playwright__*"
-    "mcp__plugin_claude-code-home-manager_houtini-lm__*"
 
     # Vision (Wayland screenshots)
     "Bash(grim:*)"

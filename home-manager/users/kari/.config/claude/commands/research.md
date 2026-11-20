@@ -17,7 +17,7 @@ Read the user's brief and classify the research target. The target type drives i
 
 - **Local codebase** — a path that resolves on disk (this repo, another local checkout, a subdirectory). Investigation via Read / Grep / `scout` subagent and `git log` / `git blame`.
 - **Remote git repository** — a forge URL (`https://github.com/...`) or `owner/repo` shorthand. Investigation via `gh repo view`, `gh api`, optional shallow clone into `/tmp/research/<slug>`.
-- **Topic / library / concept** — no concrete artefact: a question, a library name, a protocol, a comparative survey. Investigation via `context7` (library docs), `nixos` MCP (packages/options), `searxng` (general web / `web_url_read` for full pages), authoritative specs.
+- **Topic / library / concept** — no concrete artefact: a question, a library name, a protocol, a comparative survey. Investigation via `nixos` MCP (packages/options), `searxng` (library docs, general web / `web_url_read` for full pages), authoritative specs.
 
 Heuristics for auto-detection (prefer over asking):
 - Path exists locally → codebase.
@@ -52,7 +52,7 @@ Cite as you go — URL, `file:line`, commit SHA. A brief without citations is a 
 - **Pin the commit SHA in the brief.** Remote state moves; the brief without a SHA decays into a guess.
 
 **Topic / library / concept.**
-- Library / framework / SDK / CLI docs → `context7` MCP. Prefer it over web search for any named library — training data drifts.
+- Library / framework / SDK / CLI docs → `searxng` MCP, the official docs first. Look it up for any named library — training data drifts.
 - NixOS packages / options → `nixos` MCP.
 - General web / surveys → `searxng` MCP. Read full pages via `web_url_read`; skimming snippets misses the load-bearing paragraph.
 - Specs / standards → fetch the authoritative source (RFC, W3C, vendor docs). Note version/date — protocols evolve.
